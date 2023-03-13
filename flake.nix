@@ -61,8 +61,8 @@
 
         modules = [
           ./system/machine/vm/hardware-configuration.nix
-          ./system/default.nix
-          ./system/machine/vm/default.nix
+          ./system
+          ./system/machine/vm
           home-manager.nixosModules.home-manager
           {
             home-manager = {
