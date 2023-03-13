@@ -118,14 +118,6 @@
       };
     };
 
-    qt = {
-      enable = true;
-      platformTheme = "gtk";
-    };
-
-
-
-
 
     home.stateVersion = "22.11";
   };

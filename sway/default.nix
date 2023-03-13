@@ -2,8 +2,21 @@
 
 {
   imports = [
-      ./waybar.nix
+    ./waybar.nix
   ];
+
+  home.packages = with pkgs; [
+    sway-contrib.grimshot
+    grim
+    slurp
+    wl-clipboard
+    swaynotificationcenter
+    autotiling-rs
+    polkit_gnome
+    networkmanagerapplet
+    fuzzel
+  ];
+
 
   wayland.windowManager.sway = {
     enable = true;
@@ -120,6 +133,6 @@
     daemonize = true;
   };
 
-  
+
 
 }
