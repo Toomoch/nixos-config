@@ -22,11 +22,9 @@
           {
             home-manager = {
               useGlobalPkgs = true;
-              useUserPackages = true;
               extraSpecialArgs = { inherit inputs; };
               users.arnau.imports = [ 
-                ./configs/home.nix 
-                ./configs/sway.nix
+                ./home/arnau
               ];
             };
           }
@@ -45,12 +43,9 @@
           {
             home-manager = {
               useGlobalPkgs = true;
-              useUserPackages = true;
               extraSpecialArgs = { inherit inputs; };
               users.arnau.imports = [ 
-                ./configs/home.nix 
-                ./configs/games.nix
-                ./configs/i3.nix
+                ./home/arnau
               ];
             };
           }

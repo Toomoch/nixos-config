@@ -13,10 +13,12 @@ in
     /etc/nixos/hardware-configuration.nix
     <home-manager/nixos>
     ./system
+    ./system/machine/b450
   ];
 
   #home-manager
   home-manager.useGlobalPkgs = true;
+  home-manager.useUserPackages = true;
   home-manager.users.arnau = { pkgs, ... }: {
     imports = [
       ./home/arnau
