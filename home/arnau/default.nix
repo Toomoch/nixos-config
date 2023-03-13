@@ -45,8 +45,8 @@
       upcdown = "rclone copy upc:/assig ~/assig/ --drive-acknowledge-abuse -P";
       upcup = "rclone copy ~/assig/ upc:/assig/ --drive-acknowledge-abuse -P";
       upcsync = "upcdown && upcup";
-      nixrebuild = "pushd ~/config && sudo nixos-rebuild switch -I nixos-config=configuration.nix && popd";
-      nixupgrade = "pushd ~/config && sudo nixos-rebuild switch --upgrade -I nixos-config=configuration.nix && popd";
+      nixrebuild = "pushd ~/config && sudo nixos-rebuild switch --flake . && popd";
+      nixupgrade = "pushd ~/config && sudo nixos-rebuild switch --upgrade --flake . && popd";
       codium = "codium --ozone-platform-hint=auto";
     };
 

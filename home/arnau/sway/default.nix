@@ -59,7 +59,7 @@
         { command = "oversteer --range 300"; }
 
       ];
-      menu = "fuzzel";
+      menu = "fuzzel --font=Rubik --dpi-aware=auto --icon-theme='Papirus-Dark' --background=323232ff --text=ffffffff --selection-color=00fffafa --selection-text-color=000000ff";
       keybindings = lib.mkOptionDefault {
         # Apps
         "${modifier}+e" = "exec thunar";
