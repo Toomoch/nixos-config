@@ -15,6 +15,7 @@
     polkit_gnome
     networkmanagerapplet
     fuzzel
+    brightnessctl
   ];
 
 
@@ -37,6 +38,10 @@
         "*" = {
           bg =
             "`find /home/arnau/Pictures/wallpapers -type f | shuf -n 1` fill";
+        };
+        # VM screen
+        "Virtual-1" = {
+          mode = "1920x1080@60Hz";
         };
       };
       startup = [

@@ -1,5 +1,7 @@
 { config, pkgs, lib, ... }:
 {
+  #List of services that you want to enable:
+
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
@@ -44,10 +46,6 @@
     # gtk portal needed to make gtk apps happy
     extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
   };
-
-  #G29 wheel
-  hardware.new-lg4ff.enable = true;
-  services.udev.packages = with pkgs; [ oversteer ];
 
   virtualisation = {
     podman = {
