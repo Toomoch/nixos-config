@@ -76,6 +76,8 @@
         "-I\${workspaceFolder}/include"
       ];
 
+      update.mode = "none";
+
     };
 
   };
