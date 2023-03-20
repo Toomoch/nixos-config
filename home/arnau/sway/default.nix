@@ -27,9 +27,11 @@
   wayland.windowManager.sway = {
     enable = true;
     xwayland = true;
+    wrapperFeatures.gtk = true;
     config = rec {
       modifier = "Mod4";
       terminal = "alacritty";
+
 
       fonts = {
         names = [ "Rubik" ];
@@ -61,6 +63,7 @@
           command =
             "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
         }
+        { command = "swayidle -w before-sleep 'swaylock'"; }
         { command = "oversteer --range 300"; }
 
       ];

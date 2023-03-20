@@ -5,6 +5,7 @@
     llvmPackages_15.libclang
     nixpkgs-fmt
     nixfmt
+    erlang
   ];
 
   imports = [
@@ -52,6 +53,7 @@
       nixrebuild = "pushd ~/config && sudo nixos-rebuild switch --flake . && popd";
       nixupgrade = "pushd ~/config && sudo nixos-rebuild switch --upgrade --flake . && popd";
       codium = "codium --ozone-platform-hint=auto";
+      sshgen = "ssh-keygen -t ed25519 -C 'vallsfustearnau@gmail.com'";
     };
 
   };
@@ -134,10 +136,19 @@
       package = pkgs.rubik;
       size = 11;
     };
-
-
-
-
+    gtk3.extraConfig = {
+      gtk-application-prefer-dark-theme = true;
+    };
+    gtk4.extraConfig = {
+      gtk-application-prefer-dark-theme = true;
+    };
   };
+
+  dconf.settings = {
+    "org/gnome/desktop/interface" = {
+      color-scheme = "prefer-dark";
+    };
+  };
+
   home.stateVersion = "22.11";
 }
