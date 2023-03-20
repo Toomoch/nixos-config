@@ -1,8 +1,6 @@
 { config, pkgs, lib, ... }:
 {
   imports = [
-    ./programs.nix
-    ./services.nix
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -49,7 +47,7 @@
   users.users.arnau = {
     isNormalUser = true;
     description = "Arnau";
-    extraGroups = [ "networkmanager" "wheel" "adbusers" "libvirtd" ];
+    extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [ ];
   };
 
@@ -65,39 +63,11 @@
     vulkan-tools
     pciutils
     neofetch
-    wayland
-    xorg.xwininfo
     glxinfo
-    firefox
-    gnome.file-roller
-    scrcpy
-    pavucontrol
-    gnome.gnome-disk-utility
-    ventoy-bin-full
-    glib
     xdg-utils
-    nixfmt
     usbutils
     libva-utils
-    gamescope
-    oversteer
-    webcord
-    legendary-gl
-    wineWowPackages.stable
-    obs-studio
-    dxvk
-    heroic
-    headsetcontrol
     rclone
-    podman-compose
-    distrobox
-    bottles
-    adwaita-qt
-    virt-manager
-    kooha
-    llvmPackages_15.libclang
-    nixpkgs-fmt
-    gnome.nautilus
   ];
 
   fonts.fonts = with pkgs; [ rubik fira-code fira-code-symbols font-awesome ];
@@ -116,12 +86,20 @@
     };
   };
 
+  #List of services that you want to enable:
 
+  # Enable the OpenSSH daemon.
+  services.openssh.enable = true;
 
+  #Udisks
+  services.udisks2.enable = true;
 
+  #gvfs
+  services.gvfs.enable = true;
+  services.dbus.enable = true;
 
-
-
+  #Allow all VPN traffic routing
+  networking.firewall.checkReversePath = "loose";
 
 
   # Open ports in the firewall.

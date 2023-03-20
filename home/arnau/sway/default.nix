@@ -16,6 +16,11 @@
     networkmanagerapplet
     fuzzel
     brightnessctl
+    gnome.nautilus
+    gnome.gnome-disk-utility
+    gnome.file-roller
+    pavucontrol
+    kooha
   ];
 
 

@@ -1,7 +1,11 @@
 { config, pkgs, lib, ... }:
 
 {
-
+  home.packages = with pkgs; [
+    llvmPackages_15.libclang
+    nixpkgs-fmt
+    nixfmt
+  ];
 
   imports = [
     ./sway
@@ -133,7 +137,7 @@
 
 
 
-    
+
   };
   home.stateVersion = "22.11";
 }
