@@ -1,6 +1,13 @@
 { config, pkgs, lib, ... }:
 {
   networking.hostName = "ps42-nix"; # Define your hostname.
+
+  imports = [
+    ../../desktop.nix
+    ../../sway.nix
+    ../../virtualisation.nix
+  ];
+
   # undervolt...
   services.power-profiles-daemon.enable = true;
   services.undervolt = {
