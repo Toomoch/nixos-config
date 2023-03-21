@@ -9,5 +9,8 @@
     ../../virtualisation.nix
   ];
 
+  #OpenRGB
+  services.hardware.openrgb.enable = true;
+
 
 }

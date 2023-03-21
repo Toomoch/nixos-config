@@ -8,7 +8,11 @@
     ../../virtualisation.nix
   ];
 
-  # vaapi
+  environment.systemPackages = with pkgs; [
+    powertop    
+  ];
+
+  # Enable vaapi hardware acceleration
   hardware.opengl = {
     enable = true;
     extraPackages = with pkgs; [
@@ -16,8 +20,17 @@
     ];
   };
 
-  # undervolt...
-  services.power-profiles-daemon.enable = true;
+  # Power management and undervolt
+  services.tlp = {
+    enable = true;
+    settings = {
+      SOUND_POWER_SAVE_ON_AC = 1;
+      SOUND_POWER_SAVE_ON_BAT = 1;
+      RUNTIME_PM_ON_AC = "auto";
+      PCIE_ASPM_ON_AC = "powersave";
+      PCIE_ASPM_ON_BAT = "powersave";
+    };
+  };
   services.undervolt = {
     enable = true;
     coreOffset = -70;
@@ -26,7 +39,7 @@
     analogioOffset = -20;
   };
 
-  #disable nvidia gpu
+  # Disable nvidia gpu
   boot.blacklistedKernelModules = [ "nouveau" ];
   # Remove NVIDIA VGA/3D controller devices
   services.udev.extraRules = ''

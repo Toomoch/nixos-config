@@ -33,9 +33,6 @@
   programs.adb.enable = true;
   users.users.arnau.extraGroups = [ "adbusers" ];
 
-  #OpenRGB
-  services.hardware.openrgb.enable = true;
-
   #Arctis 9
   services.udev.extraRules = ''
     KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="1038", ATTRS{idProduct}=="12c2", TAG+="uaccess"
@@ -46,6 +43,7 @@
     enable = true;
     preferences = {
       "media.ffmpeg.vaapi.enabled" = true;
+      "browser.fullscreen.autohide" = false;
     };
   };
   

@@ -2,10 +2,19 @@
 
 {
   home.packages = with pkgs; [
+    #dev tools
     llvmPackages_15.libclang
     nixpkgs-fmt
     nixfmt
-    erlang
+    erlang  
+
+    #desktop apps
+    gnome.nautilus
+    gnome.gnome-disk-utility
+    gnome.file-roller
+    pavucontrol
+    kooha
+    gnome.gnome-calculator
   ];
 
   imports = [
@@ -50,8 +59,8 @@
       upcdown = "rclone copy upc:/assig ~/assig/ --drive-acknowledge-abuse -P";
       upcup = "rclone copy ~/assig/ upc:/assig/ --drive-acknowledge-abuse -P";
       upcsync = "upcdown && upcup";
-      nixrebuild = "pushd ~/config && sudo nixos-rebuild switch --flake . && popd";
-      nixupgrade = "pushd ~/config && sudo nixos-rebuild switch --upgrade --flake . && popd";
+      nr = "pushd ~/config && sudo nixos-rebuild switch --flake . && popd";
+      nu = "pushd ~/config && sudo nixos-rebuild switch --upgrade --flake . && popd";
       codium = "codium --ozone-platform-hint=auto";
       sshgen = "ssh-keygen -t ed25519 -C 'vallsfustearnau@gmail.com'";
     };

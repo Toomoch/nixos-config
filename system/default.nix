@@ -3,7 +3,17 @@
   imports = [
   ];
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix = {
+    settings = {
+      experimental-features = [ "nix-command" "flakes" ];
+      auto-optimise-store = true;
+    };
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 15d";
+    };
+  };
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -101,6 +111,8 @@
   #Allow all VPN traffic routing
   networking.firewall.checkReversePath = "loose";
 
+  # Enable plymouth bootanimation
+  boot.plymouth.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];

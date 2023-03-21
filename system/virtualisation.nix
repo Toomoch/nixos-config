@@ -1,5 +1,11 @@
 { config, pkgs, lib, ... }:
 {
+  environment.systemPackages = with pkgs; [
+    virt-manager
+    podman-compose
+    distrobox
+  ];
+
   virtualisation = {
     podman = {
       enable = true;
@@ -15,11 +21,5 @@
   };
 
   users.users.arnau.extraGroups = [ "libvirtd" ];
-
-  environment.systemPackages = with pkgs; [
-    virt-manager
-    podman-compose
-    distrobox
-  ];
 
 }

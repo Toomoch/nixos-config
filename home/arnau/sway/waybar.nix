@@ -19,7 +19,6 @@
           "backlight"
           "keyboard-state"
           "battery"
-          "battery#bat2"
           "clock"
           "custom/power"
         ];
