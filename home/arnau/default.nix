@@ -28,8 +28,12 @@
     '';
     sessionVariables = { };
     shellAliases = {
-      ls = "ls --color=auto -l";
+      ls = "ls --human-readable--color=auto -l";
       ip = "ip -c";
+      gs = "git status";
+      gd = "git diff";
+      gl = "git log";
+      gaa = "git add --all";
       ".." = "cd ..";
       upcdown = "rclone copy upc:/assig ~/assig/ --drive-acknowledge-abuse -P";
       upcup = "rclone copy ~/assig/ upc:/assig/ --drive-acknowledge-abuse -P";
