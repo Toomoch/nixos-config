@@ -16,9 +16,13 @@
         specialArgs = { inherit inputs; };
 
         modules = [
+          ./system/machine/b450
           ./system/machine/b450/hardware-configuration.nix
           ./system
-          ./system/machine/b450
+          ./system/desktop.nix
+          ./system/gaming.nix
+          ./system/sway.nix
+          ./system/virtualisation.nix
           home-manager.nixosModules.home-manager
           {
             home-manager = {
@@ -26,6 +30,8 @@
               extraSpecialArgs = { inherit inputs; };
               users.arnau.imports = [
                 ./home/arnau
+                ./home/arnau/desktop.nix
+                ./home/arnau/sway
               ];
             };
           }
@@ -38,9 +44,12 @@
         specialArgs = { inherit inputs; };
 
         modules = [
+          ./system/machine/ps42
           ./system/machine/ps42/hardware-configuration.nix
           ./system
-          ./system/machine/ps42
+          ./system/desktop.nix
+          ./system/sway.nix
+          ./system/virtualisation.nix
           home-manager.nixosModules.home-manager
           {
             home-manager = {
@@ -48,6 +57,8 @@
               extraSpecialArgs = { inherit inputs; };
               users.arnau.imports = [
                 ./home/arnau
+                ./home/arnau/desktop.nix
+                ./home/arnau/sway
               ];
             };
           }
@@ -60,9 +71,11 @@
         specialArgs = { inherit inputs; };
 
         modules = [
+          ./system/machine/vm
           ./system/machine/vm/hardware-configuration.nix
           ./system
-          ./system/machine/vm
+          ./system/desktop.nix
+          ./system/gnome.nix
           home-manager.nixosModules.home-manager
           {
             home-manager = {
@@ -70,6 +83,7 @@
               extraSpecialArgs = { inherit inputs; };
               users.arnau.imports = [
                 ./home/arnau
+                ./home/arnau/desktop.nix
               ];
             };
           }

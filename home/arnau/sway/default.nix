@@ -18,6 +18,11 @@
     brightnessctl
   ];
 
+  programs.bash = {
+    profileExtra = ''
+      [ "$(tty)" = "/dev/tty1" ] && exec sway
+    '';
+  };
 
   wayland.windowManager.sway = {
     enable = true;

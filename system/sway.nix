@@ -21,4 +21,16 @@
   #Gnome Keyring
   services.gnome.gnome-keyring.enable = true;
 
+  # Enable wayland in electron apps
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
+  # Enable wayland in firefox
+  environment.sessionVariables.MOZ_ENABLE_WAYLAND = "1";
+
+  # For Gnome Disks
+  services.udisks2.enable = true;
+
+  # For auto mounting in Nautilus and Thunar
+  services.gvfs.enable = true;
+  services.dbus.enable = true;
+
 }

@@ -2,12 +2,6 @@
 {
   networking.hostName = "ps42-nix"; # Define your hostname.
 
-  imports = [
-    ../../desktop.nix
-    ../../sway.nix
-    ../../virtualisation.nix
-  ];
-
   environment.systemPackages = with pkgs; [
     powertop    
   ];

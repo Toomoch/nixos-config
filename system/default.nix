@@ -1,8 +1,5 @@
 { config, pkgs, lib, ... }:
 {
-  imports = [
-  ];
-
   nix = {
     settings = {
       experimental-features = [ "nix-command" "flakes" ];
@@ -100,13 +97,6 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
-
-  #Udisks
-  services.udisks2.enable = true;
-
-  #gvfs
-  services.gvfs.enable = true;
-  services.dbus.enable = true;
 
   #Allow all VPN traffic routing
   networking.firewall.checkReversePath = "loose";
