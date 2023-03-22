@@ -89,6 +89,9 @@
         # Notifications
         "${modifier}+Shift+n" = "exec swaync-client -t -sw";
 
+        # Workspace back and forth
+        "${modifier}+Tab" = "workspace back_and_forth";
+
       };
       input = {
         "type:keyboard" = { xkb_layout = "es"; };
@@ -109,10 +112,9 @@
           pointer_accel = "0.2";
         };
 
-        "1356:3302:Sony_Interactive_Entertainment_Wireless_Controller_Touchpad" =
-          {
-            pointer_accel = "0.1";
-          };
+        "1356:3302:Sony_Interactive_Entertainment_Wireless_Controller_Touchpad" = {
+          pointer_accel = "0.1";
+        };
 
         "1356:3302:Wireless_Controller_Touchpad" = { pointer_accel = "0.1"; };
       };

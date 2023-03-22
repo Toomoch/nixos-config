@@ -11,12 +11,12 @@
   # for a WiFi printer
   services.avahi.openFirewall = true;
 
-  #OpenGL    
+  # OpenGL    
   hardware.opengl.enable = true;
   hardware.opengl.driSupport = true;
   hardware.opengl.driSupport32Bit = true;
 
-  #PipeWire
+  # PipeWire
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -25,20 +25,20 @@
     wireplumber.enable = true;
   };
 
-  #Bluetooth
+  # Bluetooth
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
   
-  #ADB
+  # ADB
   programs.adb.enable = true;
   users.users.arnau.extraGroups = [ "adbusers" ];
 
-  #Arctis 9
+  # Arctis 9
   services.udev.extraRules = ''
     KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="1038", ATTRS{idProduct}=="12c2", TAG+="uaccess"
   '';
 
-  #Firefox
+  # Firefox
   programs.firefox = {
     enable = true;
     preferences = {
@@ -46,6 +46,9 @@
       "browser.fullscreen.autohide" = false;
     };
   };
+
+  # Enable wayland in electron apps
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
   
 
 }
