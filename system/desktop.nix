@@ -24,11 +24,12 @@
     pulse.enable = true;
     wireplumber.enable = true;
   };
+  hardware.pulseaudio.enable = false;
 
   # Bluetooth
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
-  
+
   # ADB
   programs.adb.enable = true;
   users.users.arnau.extraGroups = [ "adbusers" ];
@@ -47,7 +48,7 @@
     };
   };
 
-  
-  
+
+
 
 }
