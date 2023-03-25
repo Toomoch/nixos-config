@@ -28,7 +28,7 @@
     '';
     sessionVariables = { };
     shellAliases = {
-      ls = "ls --human-readable--color=auto -l";
+      ls = "ls --human-readable --color=auto -l";
       ip = "ip -c";
       gs = "git status";
       gd = "git diff";
