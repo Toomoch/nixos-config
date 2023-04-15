@@ -7,6 +7,7 @@
     nixfmt
     erlang
     gnumake
+    jetbrains.idea-community
 
     #desktop apps
     gnome.nautilus
@@ -16,13 +17,22 @@
     kooha
     gnome.gnome-calculator
     onlyoffice-bin
+    tdesktop
   ];
 
   programs.alacritty.enable = true;
 
+  programs.java = {
+    enable = true;
+    package = pkgs.jdk11;
+  };
+
+  
+
   programs.vscode = {
     enable = true;
-    package = pkgs.vscodium-fhs;
+    package = pkgs.vscodium.fhsWithPackages (ps: with ps; [ jdk17]);
+
     userSettings = {
       editor = {
         fontFamily = "'Noto Sans Mono','Fira Code','Font Awesome 6 Free','Font Awesome 6 Brands','Font Awesome 6 Free Solid', monospace";
@@ -46,9 +56,32 @@
 
       update.mode = "none";
 
+      java.jdt.ls.java.home = "${pkgs.jdk17}";
     };
 
   };
+
+  home.activation.boforeCheckLinkTargets = {
+      after = [];
+      before = [ "checkLinkTargets" ];
+      data = ''
+        userDir=/arnau/grmpf/.config/VSCodium/User
+        rm -rf $userDir/settings.json
+      '';
+    };
+
+    home.activation.afterWriteBoundary = {
+      after = [ "writeBoundary" ];
+      before = [];
+      data = ''
+        userDir=/home/arnau/.config/VSCodium/User
+        rm -rf $userDir/settings.json
+        cat \
+          ${(pkgs.formats.json {}).generate "blabla"
+            config.programs.vscode.userSettings} \
+          > $userDir/settings.json
+      '';
+    };
 
   programs.mpv = {
     enable = true;

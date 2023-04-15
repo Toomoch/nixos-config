@@ -16,6 +16,7 @@
     networkmanagerapplet
     fuzzel
     brightnessctl
+    wayvnc
   ];
 
   programs.bash = {
@@ -129,6 +130,7 @@
 
     extraConfig = ''
       include /etc/sway/config.d/*
+      include ./outputs
     '';
 
     swaynag = {

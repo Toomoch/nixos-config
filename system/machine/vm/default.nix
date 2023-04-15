@@ -1,5 +1,11 @@
 { config, pkgs, lib, ... }:
 {
-  networking.hostName = "vm-nix"; # Define your hostname.
+  imports = [
+    ./hardware-configuration.nix
+    ../../default.nix
+    ../../desktop.nix
+  ];
+
+  networking.hostName = "vm"; # Define your hostname.
   
 }

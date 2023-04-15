@@ -77,7 +77,17 @@
     rclone
   ];
 
-  fonts.fonts = with pkgs; [ rubik fira-code fira-code-symbols font-awesome ];
+  fonts.fonts = with pkgs; [
+    rubik
+    fira-code
+    fira-code-symbols
+    font-awesome
+    noto-fonts
+    noto-fonts-extra
+    noto-fonts-cjk
+    noto-fonts-emoji
+  ];
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
@@ -87,7 +97,8 @@
   # };
   fonts.fontconfig = {
     defaultFonts = {
-      sansSerif = [ "Rubik" ];
+      emoji = [ "Noto Color Emoji" ];
+      sansSerif = [ "Noto Sans" ];
       serif = [ "Noto Serif" ];
       monospace = [ "Noto Sans Mono" ];
     };

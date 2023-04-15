@@ -1,6 +1,14 @@
 { config, pkgs, lib, ... }:
 {
-  networking.hostName = "ps42-nix"; # Define your hostname.
+  imports = [
+    ./hardware-configuration.nix
+    ../../default.nix
+    ../../desktop.nix
+    ../../sway.nix
+    ../../virtualisation.nix
+  ];
+
+  networking.hostName = "ps42"; # Define your hostname.
 
   environment.systemPackages = with pkgs; [
     powertop    
