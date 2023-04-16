@@ -17,6 +17,7 @@
     fuzzel
     brightnessctl
     wayvnc
+    wpaperd
   ];
 
   programs.bash = {
@@ -43,10 +44,6 @@
 
       gaps.inner = 5;
       output = {
-        "*" = {
-          bg =
-            "`find /home/arnau/Pictures/wallpapers -type f | shuf -n 1` fill";
-        };
         # VM screen
         "Virtual-1" = {
           mode = "1920x1080@60Hz";
@@ -97,6 +94,9 @@
 
         # Workspace back and forth
         "${modifier}+Tab" = "workspace back_and_forth";
+
+        # Lock
+        "${modifier}+Escape" = "swaylock";
 
       };
       input = {
@@ -150,6 +150,10 @@
     daemonize = true;
   };
 
-
+  xdg.configFile."wpaperd/wallpaper.toml".text = ''
+    [default]
+    path = "${config.xdg.userDirs.pictures}/wallpapers"
+    duration = "5m"
+  '';
 
 }
