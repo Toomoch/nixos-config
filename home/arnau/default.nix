@@ -40,6 +40,7 @@
       upcdown = "rclone copy upc:/assig ~/assig/ --drive-acknowledge-abuse -P";
       upcup = "rclone copy ~/assig/ upc:/assig/ --drive-acknowledge-abuse -P";
       upcsync = "upcdown && upcup";
+      upclink = "${config.home.homeDirectory}/scripts/upclink.sh";
       nr = "cd ~/config && git add . && sudo nixos-rebuild switch --flake . && cd -";
       nu = "cd ~/config && git add . && sudo nix flake update && sudo nixos-rebuild switch --flake . && cd -";
       sshgen = "ssh-keygen -t ed25519 -C 'vallsfustearnau@gmail.com'";

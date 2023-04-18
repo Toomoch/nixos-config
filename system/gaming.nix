@@ -10,6 +10,7 @@
     oversteer
     obs-studio
     webcord
+    protonup-qt
   ];
 
 

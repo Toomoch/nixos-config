@@ -8,6 +8,7 @@
     erlang
     gnumake
     jetbrains.idea-community
+    openfortivpn
 
     #desktop apps
     gnome.nautilus
@@ -18,9 +19,15 @@
     gnome.gnome-calculator
     onlyoffice-bin
     tdesktop
+    whatsapp-for-linux
   ];
 
-  programs.alacritty.enable = true;
+  programs.alacritty = {
+    enable = true;
+    settings = {
+      window.opacity = 0.8;
+    };
+  };
 
   programs.java = {
     enable = true;
@@ -31,7 +38,7 @@
 
   programs.vscode = {
     enable = true;
-    package = pkgs.vscodium.fhsWithPackages (ps: with ps; [ jdk17]);
+    package = pkgs.vscodium;
 
     userSettings = {
       editor = {
@@ -56,32 +63,31 @@
 
       update.mode = "none";
 
-      java.jdt.ls.java.home = "${pkgs.jdk17}";
     };
 
   };
 
-  home.activation.boforeCheckLinkTargets = {
-      after = [];
-      before = [ "checkLinkTargets" ];
-      data = ''
-        userDir=/arnau/grmpf/.config/VSCodium/User
-        rm -rf $userDir/settings.json
-      '';
-    };
-
-    home.activation.afterWriteBoundary = {
-      after = [ "writeBoundary" ];
-      before = [];
-      data = ''
-        userDir=/home/arnau/.config/VSCodium/User
-        rm -rf $userDir/settings.json
-        cat \
-          ${(pkgs.formats.json {}).generate "blabla"
-            config.programs.vscode.userSettings} \
-          > $userDir/settings.json
-      '';
-    };
+  #home.activation.boforeCheckLinkTargets = {
+  #    after = [];
+  #    before = [ "checkLinkTargets" ];
+  #    data = ''
+  #      userDir=/arnau/grmpf/.config/VSCodium/User
+  #      rm -rf $userDir/settings.json
+  #    '';
+  #  };
+  #
+  #  home.activation.afterWriteBoundary = {
+  #    after = [ "writeBoundary" ];
+  #    before = [];
+  #    data = ''
+  #      userDir=/home/arnau/.config/VSCodium/User
+  #      rm -rf $userDir/settings.json
+  #      cat \
+  #        ${(pkgs.formats.json {}).generate "blabla"
+  #          config.programs.vscode.userSettings} \
+  #        > $userDir/settings.json
+  #    '';
+  #  };
 
   programs.mpv = {
     enable = true;
