@@ -1,15 +1,31 @@
 { config, pkgs, lib, ... }:
-
+let
+  screenshot = pkgs.writeShellScriptBin "screenshot" ''
+    if [ "$1" = "area" ]; then
+      slurpout=$(slurp)
+      if [ -z "$slurpout" ]; then
+          exit
+      else
+          grim -g "$slurpout" - | wl-copy --type image/png && wl-paste > ${config.xdg.userDirs.pictures}/screenshots/$(date +'screenshot_%Y%m%d_%H%M%S.png')
+      fi
+    elif [ "$1" = "output" ]; then
+      grim -o $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name') - | wl-copy --type image/png && wl-paste > ${config.xdg.userDirs.pictures}/screenshots/$(date +'screenshot_%Y%m%d_%H%M%S.png')
+    elif [ "$1" = "window" ]; then
+      grim -g "$(swaymsg -t get_tree | jq -j '.. | select(.type?) | select(.focused).rect | "\(.x),\(.y) \(.width)x\(.height)"')" - | wl-copy --type image/png && wl-paste > ${config.xdg.userDirs.pictures}/screenshots/$(date +'screenshot_%Y%m%d_%H%M%S.png')
+    fi
+  '';
+in
 {
   imports = [
     ./waybar.nix
   ];
 
   home.packages = with pkgs; [
-    sway-contrib.grimshot
+    jq
     grim
     slurp
     wl-clipboard
+    screenshot
     swaynotificationcenter
     autotiling-rs
     polkit_gnome
@@ -71,9 +87,9 @@
         "${modifier}+e" = "exec nautilus";
 
         # Screenshots
-        "print" = "exec grimshot copy area";
-        "${modifier}+print" =
-          "exec grimshot save area $(xdg-user-dir PICTURES)/$(date +'screenshot_%Y%m%d_%H%M%S.png')";
+        "print" = "exec screenshot area";
+        "${modifier}+print" = "exec screenshot output";
+        "Shift+print" = "exec screenshot window";
 
         # Media
         "XF86MonBrightnessDown" = "exec brightnessctl set 5%-";
