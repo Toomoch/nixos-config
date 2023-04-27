@@ -46,11 +46,12 @@
         fontLigatures = true;
       };
 
-      window.titleBarStyle = "none";
+      window.titleBarStyle = "custom";
 
       workbench = {
         iconTheme = "material-icon-theme";
-        colorTheme = "GitHub Dark";
+        productIconTheme = "adwaita";
+        colorTheme = "Adwaita Dark";
       };
 
       files.autoSave = "afterDelay";
