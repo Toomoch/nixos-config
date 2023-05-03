@@ -34,13 +34,10 @@ in
     brightnessctl
     wayvnc
     wpaperd
+    gtklock
+    gtklock-userinfo-module
+    gtklock-powerbar-module
   ];
-
-  programs.bash = {
-    profileExtra = ''
-      [ "$(tty)" = "/dev/tty1" ] && exec sway
-    '';
-  };
 
   wayland.windowManager.sway = {
     enable = true;
@@ -77,7 +74,7 @@ in
           command =
             "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
         }
-        { command = "swayidle -w before-sleep 'swaylock'"; }
+        { command = "swayidle -w before-sleep 'gtklock -d'"; }
         { command = "oversteer --range 300"; }
 
       ];
@@ -112,7 +109,7 @@ in
         "${modifier}+Tab" = "workspace back_and_forth";
 
         # Lock
-        "${modifier}+Escape" = "swaylock";
+        "${modifier}+Escape" = "gtklock -d";
 
       };
       input = {
@@ -160,16 +157,16 @@ in
 
   };
 
-  programs.swaylock.settings = {
-    image = "`find $HOME/Pictures/wallpapers -type f | shuf -n 1`";
-    font = "Rubik";
-    daemonize = true;
-  };
-
   xdg.configFile."wpaperd/wallpaper.toml".text = ''
     [default]
     path = "${config.xdg.userDirs.pictures}/wallpapers"
     duration = "5m"
   '';
+
+  xdg.configFile."gtklock/config.ini".text = ''
+    [main]
+    modules=${pkgs.gtklock-powerbar-module}/lib/gtklock/powerbar-module.so;
+  '';
+  
 
 }

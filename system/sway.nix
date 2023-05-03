@@ -1,4 +1,14 @@
 { config, pkgs, lib, ... }:
+let
+  swayConfig = pkgs.writeText "greetd-sway-config" ''
+    xwayland disable
+    input "type:touchpad" {
+      tap enabled
+    }
+    exec "${config.programs.regreet.package}/bin/regreet; swaymsg exit"
+    include /etc/sway/config.d/*
+  '';
+in
 {
   #xdg-portal
   xdg.portal = {
@@ -16,8 +26,10 @@
   environment.systemPackages = with pkgs; [
     wayland
     xorg.xwininfo
+    adw-gtk3
+    gnome.adwaita-icon-theme
   ];
-  
+
   #Gnome Keyring
   services.gnome.gnome-keyring.enable = true;
 
@@ -33,4 +45,38 @@
   services.gvfs.enable = true;
   services.dbus.enable = true;
 
+  services.greetd = {
+    enable = true;
+    settings = {
+      default_session = {
+        command = "${pkgs.sway}/bin/sway --config ${swayConfig}";
+      };
+    };
+  };
+
+  programs.regreet = {
+    enable = true;
+    settings = {
+      background = {
+        fit = "Cover";
+      };
+      GTK = {
+        cursor_theme_name = "Adwaita";
+        font_name = "Rubik 12";
+        icon_theme_name = "Adwaita";
+        theme_name = "adw-gtk3-dark";
+        application_prefer_dark_theme = true;
+      };
+    };
+  };
+
+  #environment.etc."greetd/environments".text = ''
+  #  sway
+  #  bash
+  #'';
+
+  security.pam.services.gtklock = { };
 }
+
+
+
