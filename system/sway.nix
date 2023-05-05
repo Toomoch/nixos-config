@@ -37,6 +37,8 @@ in
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
   # Enable wayland in firefox
   environment.sessionVariables.MOZ_ENABLE_WAYLAND = "1";
+  # Fix Java apps in WMs
+  environment.sessionVariables._JAVA_AWT_WM_NONREPARENTING = "1";
 
   # For Gnome Disks
   services.udisks2.enable = true;

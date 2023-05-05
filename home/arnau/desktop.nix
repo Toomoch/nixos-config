@@ -9,6 +9,7 @@
     gnumake
     jetbrains.idea-community
     openfortivpn
+    netbeans
 
     #desktop apps
     gnome.nautilus
