@@ -15,6 +15,7 @@
       environment.systemPackages = with pkgs; [
         netbeans
         libsForQt5.kpat
+        libsForQt5.kio-gdrive
       ];
 
       services.tlp.enable = lib.mkForce false;
