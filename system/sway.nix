@@ -72,10 +72,8 @@ in
     };
   };
 
-  #environment.etc."greetd/environments".text = ''
-  #  sway
-  #  bash
-  #'';
+
+  services.blueman.enable = true;
 
   security.pam.services.gtklock = { };
 }

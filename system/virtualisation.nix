@@ -20,6 +20,4 @@
     libvirtd.enable = true;
   };
 
-  users.users.arnau.extraGroups = [ "libvirtd" ];
-
 }

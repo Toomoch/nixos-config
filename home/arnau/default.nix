@@ -41,8 +41,11 @@
       upcup = "rclone copy ~/assig/ upc:/assig/ --drive-acknowledge-abuse -P";
       upcsync = "upcdown && upcup";
       upclink = "${config.home.homeDirectory}/scripts/upclink.sh";
-      nr = "cd ~/config && git add . && sudo nixos-rebuild switch --flake . && cd -";
-      nu = "cd ~/config && git add . && sudo nix flake update && sudo nixos-rebuild switch --flake . && cd -";
+      nrswitch = "cd ~/config && git add . && sudo nixos-rebuild switch --flake . && cd -";
+      nrboot = "cd ~/config && git add . && sudo nixos-rebuild boot --flake . && cd -";
+      nrtest = "cd ~/config && git add . && sudo nixos-rebuild test --flake . && cd -";
+      nrbuild = "cd ~/config && git add . && sudo nixos-rebuild build --flake . && cd -";
+      nu = "cd ~/config && git add . && sudo nix flake update && cd -";
       sshgen = "ssh-keygen -t ed25519 -C 'vallsfustearnau@gmail.com'";
     };
 

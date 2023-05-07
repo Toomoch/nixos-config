@@ -9,7 +9,6 @@
     gnumake
     jetbrains.idea-community
     openfortivpn
-    netbeans
 
     #desktop apps
     gnome.nautilus
@@ -21,6 +20,7 @@
     onlyoffice-bin
     tdesktop
     whatsapp-for-linux
+    scrcpy
   ];
 
   programs.alacritty = {

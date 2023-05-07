@@ -37,6 +37,7 @@ in
     gtklock
     gtklock-userinfo-module
     gtklock-powerbar-module
+    blueman
   ];
 
   wayland.windowManager.sway = {

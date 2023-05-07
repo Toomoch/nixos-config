@@ -2,7 +2,6 @@
 {
   environment.systemPackages = with pkgs; [
     headsetcontrol
-    scrcpy
   ];
 
   # Printing
@@ -28,16 +27,15 @@
 
   # Bluetooth
   hardware.bluetooth.enable = true;
-  services.blueman.enable = true;
-
-  # ADB
-  programs.adb.enable = true;
-  users.users.arnau.extraGroups = [ "adbusers" ];
+  hardware.bluetooth.powerOnBoot = false;
 
   # Arctis 9
   services.udev.extraRules = ''
     KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="1038", ATTRS{idProduct}=="12c2", TAG+="uaccess"
   '';
+
+  # ADB
+  programs.adb.enable = true;
 
   # Firefox
   programs.firefox = {
