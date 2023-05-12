@@ -77,6 +77,8 @@
     noto-fonts-extra
     noto-fonts-cjk
     noto-fonts-emoji
+    jost
+    material-symbols
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

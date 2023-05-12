@@ -2,6 +2,7 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ../../users/arnau.nix
     ../../default.nix
     ../../desktop.nix
     ../../gaming.nix

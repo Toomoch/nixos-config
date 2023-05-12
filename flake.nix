@@ -5,9 +5,11 @@
     nixpkgs.url = "nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    hyprland.url = "github:hyprwm/Hyprland";
+    eww.url = "github:fufexan/dotfiles";
   };
 
-  outputs = inputs@{ self, nixpkgs, home-manager, ... }: {
+  outputs = inputs@{ self, nixpkgs, home-manager, hyprland, ... }: {
     nixosConfigurations = {
 
       b450 = nixpkgs.lib.nixosSystem {
@@ -23,6 +25,7 @@
               useGlobalPkgs = true;
               extraSpecialArgs = { inherit inputs; };
               users.arnau.imports = [
+                hyprland.homeManagerModules.default
                 ./home/arnau/machine/b450.nix
               ];
             };

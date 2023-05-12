@@ -8,6 +8,7 @@
     erlang
     gnumake
     jetbrains.idea-community
+    graphviz
     openfortivpn
 
     #desktop apps
