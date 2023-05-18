@@ -5,6 +5,7 @@
     llvmPackages_15.libclang
     nixpkgs-fmt
     nixfmt
+    nil
     erlang
     gnumake
     jetbrains.idea-community
@@ -65,6 +66,9 @@
       ];
 
       update.mode = "none";
+
+      nix.enableLanguageServer = true;
+      nix.serverPath = "nil";
 
     };
 
