@@ -95,7 +95,10 @@
     '';
   };
 
-  imports = [inputs.eww.homeManagerModules.eww-hyprland];
+  imports = [
+    inputs.eww.homeManagerModules.eww-hyprland
+    inputs.hyprland.homeManagerModules.default
+  ];
 
   programs.eww-hyprland = {
     enable = true;
