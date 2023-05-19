@@ -1,12 +1,23 @@
-{ inputs, config, pkgs, lib, hyprland, ... }:
+{ inputs, config, pkgs, lib, ... }:
 {
   home.packages = with pkgs; [
+    eww-wayland
   ];
 
   wayland.windowManager.hyprland = {
     enable = true;
     extraConfig = ''
       exec-once = wpaperd
+      exec-once = swaync
+      exec-once = waybar
+      exec-once = blueman-applet
+      exec-once = nm-applet --indicator
+      exec-once = ${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1
+      exec-once = swayidle -w before-sleep 'gtklock -d'
+
+      general {
+        col.active_border = rgba(00fffafa)
+      }
 
       input {
         kb_layout = es
@@ -37,6 +48,7 @@
         shadow_range = 4
         shadow_render_power = 3
         col.shadow = rgba(1a1a1aee)
+        
       }
 
       animations {
@@ -56,8 +68,14 @@
 
       $mod = SUPER
       bind = $mod, Return, exec, alacritty
-      bind = $mod, D, exec, fuzzel --font=Rubik --dpi-aware=auto --icon-theme='Papirus-Dark' --background=323232ff --text=ffffffff --selection-color=00fffafa --selection-text-color=000000ff
+      bind = $mod, D, exec, fuzzel
       bind = $mod SHIFT, Q, killactive,
+      bind = $mod, F, fullscreen
+      bind = $mod, E, exec, nautilus
+      bind = , Print, exec, screenshot area
+      bind = $mod, Print, exec, screenshot output
+      bind = SHIFT, Print, exec, screenshot window
+      bind = $mod SHIFT, N, exec, swaync-client -t -sw
 
       # Move focus with mod + arrow keys
       bind = $mod, left, movefocus, l
@@ -96,20 +114,7 @@
   };
 
   imports = [
-    inputs.eww.homeManagerModules.eww-hyprland
     inputs.hyprland.homeManagerModules.default
   ];
 
-  programs.eww-hyprland = {
-    enable = true;
-
-    # default package
-    package = pkgs.eww-wayland;
-
-    # if you want to change colors
-    #colors = builtins.readFile ./macchiato.scss;
-
-    # set to true to reload on change
-    autoReload = false; 
-  };
 }

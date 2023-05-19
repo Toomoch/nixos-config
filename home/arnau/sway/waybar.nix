@@ -5,9 +5,10 @@
     enable = true;
     settings = {
       mainBar = {
+        layer = "top";
         height = 30;
         spacing = 4;
-        modules-left = [ "sway/workspaces" "sway/mode" "sway/window" ];
+        modules-left = [ "sway/workspaces" "sway/mode" "sway/window" "hyprland/window"];
         modules-center = [ "custom/media" ];
         modules-right = [
           "tray"
@@ -36,6 +37,10 @@
           "format" = "{title}";
           "max-length" = 50;
           "icon" = true;
+        };
+        "hyprland/window" = {
+            "format" = "{}";
+            "separate-outputs" = true;
         };
         "tray" = { "spacing" = 10; };
         "clock" = {

@@ -79,7 +79,7 @@ in
         { command = "oversteer --range 300"; }
 
       ];
-      menu = "fuzzel --font=Rubik --dpi-aware=auto --icon-theme='Papirus-Dark' --background=323232ff --text=ffffffff --selection-color=00fffafa --selection-text-color=000000ff";
+      menu = "fuzzel";
       keybindings = lib.mkOptionDefault {
         # Apps
         "${modifier}+e" = "exec nautilus";
@@ -167,6 +167,20 @@ in
   xdg.configFile."gtklock/config.ini".text = ''
     [main]
     modules=${pkgs.gtklock-powerbar-module}/lib/gtklock/powerbar-module.so;
+  '';
+
+  xdg.configFile."fuzzel/fuzzel.ini".text = ''
+    font="Rubik"
+    dpi-aware=auto
+    icon-theme="Papirus-Dark"
+
+    [colors]
+    background=00000080
+    text=ffffffff
+    match=cb4b16ff
+    selection=00fffafa
+    selection-text=000000ff
+    border=00fffafa
   '';
   
 
