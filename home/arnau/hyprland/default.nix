@@ -18,6 +18,7 @@
       general {
         col.active_border = rgba(00fffafa)
       }
+      monitor=eDP-1,preferred,auto,1
 
       input {
         kb_layout = es
@@ -29,7 +30,7 @@
         follow_mouse = 1
 
         touchpad {
-            natural_scroll = false
+            natural_scroll = true
         }
 
         sensitivity = 0 # -1.0 - 1.0, 0 means no modification.

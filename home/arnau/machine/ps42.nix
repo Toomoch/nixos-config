@@ -4,5 +4,6 @@
     ../default.nix
     ../desktop.nix
     ../sway
+    ../hyprland
   ];
 }
