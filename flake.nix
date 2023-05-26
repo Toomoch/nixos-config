@@ -6,7 +6,6 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     hyprland.url = "github:hyprwm/Hyprland";
-    eww.url = "github:fufexan/dotfiles";
   };
 
   outputs = inputs@{ self, nixpkgs, home-manager, ... }: {

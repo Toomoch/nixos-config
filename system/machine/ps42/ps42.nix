@@ -13,6 +13,12 @@
       intel-media-driver # LIBVA_DRIVER_NAME=iHD
     ];
   };
+  programs.firefox = {
+    enable = true;
+    preferences = {
+      "media.ffmpeg.vaapi.enabled" = true;
+    };
+  };
 
   # Power management and undervolt
   services.tlp = {

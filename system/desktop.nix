@@ -41,7 +41,6 @@
   programs.firefox = {
     enable = true;
     preferences = {
-      "media.ffmpeg.vaapi.enabled" = true;
       "browser.fullscreen.autohide" = false;
     };
   };

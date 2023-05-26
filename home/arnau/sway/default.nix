@@ -1,19 +1,6 @@
 { config, pkgs, lib, ... }:
 let
-  screenshot = pkgs.writeShellScriptBin "screenshot" ''
-    if [ "$1" = "area" ]; then
-      slurpout=$(slurp)
-      if [ -z "$slurpout" ]; then
-          exit
-      else
-          grim -g "$slurpout" - | wl-copy --type image/png && wl-paste > ${config.xdg.userDirs.pictures}/screenshots/$(date +'screenshot_%Y%m%d_%H%M%S.png')
-      fi
-    elif [ "$1" = "output" ]; then
-      grim -o $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name') - | wl-copy --type image/png && wl-paste > ${config.xdg.userDirs.pictures}/screenshots/$(date +'screenshot_%Y%m%d_%H%M%S.png')
-    elif [ "$1" = "window" ]; then
-      grim -g "$(swaymsg -t get_tree | jq -j '.. | select(.type?) | select(.focused).rect | "\(.x),\(.y) \(.width)x\(.height)"')" - | wl-copy --type image/png && wl-paste > ${config.xdg.userDirs.pictures}/screenshots/$(date +'screenshot_%Y%m%d_%H%M%S.png')
-    fi
-  '';
+  screenshot = pkgs.writeShellScriptBin "screenshot" (builtins.readFile (./swayscreenshot.sh));
 in
 {
   imports = [
@@ -38,6 +25,7 @@ in
     gtklock-userinfo-module
     gtklock-powerbar-module
     blueman
+    xdg-user-dirs
   ];
 
   wayland.windowManager.sway = {
@@ -55,7 +43,13 @@ in
       };
 
       floating.titlebar = true;
-
+      colors.focused = {
+        border = "#00fffaff";
+        background = "#00fffaff";
+        text = "#000000";
+        indicator = "#017a78ff";
+        childBorder = "#00fffaff";
+      };
       gaps.inner = 5;
       output = {
         # VM screen
@@ -150,7 +144,7 @@ in
     swaynag = {
       enable = true;
       settings = {
-        "default" = {
+        "<config>" = {
           font = "Rubik 12";
         };
       };
@@ -178,10 +172,10 @@ in
     background=00000080
     text=ffffffff
     match=cb4b16ff
-    selection=00fffafa
+    selection=00fffaff
     selection-text=000000ff
-    border=00fffafa
+    border=00fffaff
   '';
-  
+
 
 }
