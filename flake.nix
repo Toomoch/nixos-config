@@ -6,9 +6,15 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     hyprland.url = "github:hyprwm/Hyprland";
+
+    nixpkgs-stable.url = "nixpkgs/nixos-23.05";
+    home-manager-stable = {
+      url = "github:nix-community/home-manager/release-23.05";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
+    };
   };
 
-  outputs = inputs@{ self, nixpkgs, home-manager, ... }: {
+  outputs = inputs@{ self, nixpkgs, home-manager, nixpkgs-stable, home-manager-stable, ... }: {
     nixosConfigurations = {
 
       b450 = nixpkgs.lib.nixosSystem {
@@ -51,14 +57,14 @@
         ];
       };
 
-      vm = nixpkgs.lib.nixosSystem {
+      vm = nixpkgs-stable.lib.nixosSystem {
         system = "x86_64-linux";
 
         specialArgs = { inherit inputs; };
 
         modules = [
           ./system/machine/vm
-          home-manager.nixosModules.home-manager
+          home-manager-stable.nixosModules.home-manager
           {
             home-manager = {
               useGlobalPkgs = true;

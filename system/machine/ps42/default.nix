@@ -20,6 +20,7 @@
 
       services.tlp.enable = lib.mkForce false;
       i18n.defaultLocale = lib.mkDefault "ca_ES.UTF-8";
+      services.logind.extraConfig = lib.mkForce "";
 
     };
   };

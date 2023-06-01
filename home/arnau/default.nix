@@ -9,8 +9,6 @@
     };
   };
 
-
-
   programs.git = {
     enable = true;
     userName = "Toomoch";
@@ -52,8 +50,6 @@
 
   };
 
-
-
   programs.ssh = {
     enable = true;
     matchBlocks = {
@@ -67,9 +63,4 @@
     };
   };
 
-
-
-
-
-  home.stateVersion = "22.11";
 }

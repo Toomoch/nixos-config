@@ -6,6 +6,8 @@
     nixpkgs-fmt
     nixfmt
     nil
+    shellcheck
+    shfmt
     erlang
     gnumake
     jetbrains.idea-community
@@ -53,7 +55,7 @@
 
       workbench = {
         iconTheme = "material-icon-theme";
-        productIconTheme = "adwaita";
+        productIconTheme = "Default";
         colorTheme = "Adwaita Dark";
       };
 

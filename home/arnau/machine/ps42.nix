@@ -6,4 +6,6 @@
     ../sway
     ../hyprland
   ];
+
+  home.stateVersion = "22.11";
 }

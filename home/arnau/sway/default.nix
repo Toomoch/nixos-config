@@ -26,6 +26,7 @@ in
     gtklock-powerbar-module
     blueman
     xdg-user-dirs
+    libnotify
   ];
 
   wayland.windowManager.sway = {
