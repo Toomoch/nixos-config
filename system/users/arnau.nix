@@ -7,6 +7,6 @@
     extraGroups = [ "networkmanager" "wheel" "adbusers" "libvirtd" ];
     packages = with pkgs; [ ];
     initialPassword = "12345678";
-    passwordFile = "/etc/secrets/nixos/arnau-passwordFile";
+    #passwordFile = "/etc/secrets/nixos/arnau-passwordFile";
   };
 }
