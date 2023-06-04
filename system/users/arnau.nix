@@ -4,7 +4,7 @@
   users.users.arnau = {
     isNormalUser = true;
     description = "Arnau";
-    extraGroups = [ "networkmanager" "wheel" "adbusers" "libvirtd"];
+    extraGroups = [ "networkmanager" "wheel" "adbusers" "libvirtd" ];
     packages = with pkgs; [ ];
     initialPassword = "12345678";
     passwordFile = "/etc/secrets/nixos/arnau-passwordFile";

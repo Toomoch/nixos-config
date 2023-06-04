@@ -27,6 +27,7 @@ in
     blueman
     xdg-user-dirs
     libnotify
+    swayosd
   ];
 
   wayland.windowManager.sway = {
@@ -72,6 +73,7 @@ in
         }
         { command = "swayidle -w before-sleep 'gtklock -d'"; }
         { command = "oversteer --range 300"; }
+        { command = "swayosd"; }
 
       ];
       menu = "fuzzel";
@@ -88,10 +90,10 @@ in
         "XF86MonBrightnessDown" = "exec brightnessctl set 5%-";
         "XF86MonBrightnessUp" = "exec brightnessctl set 5%+";
         "XF86AudioRaiseVolume" =
-          "exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+";
+          "exec swayosd --output-volume raise";
         "XF86AudioLowerVolume" =
-          "exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-";
-        "XF86AudioMute" = "exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
+          "exec swayosd --output-volume lower";
+        "XF86AudioMute" = "exec swayosd --output-volume mute-toggle";
         "XF86AudioMicMute" =
           "exec wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle";
         "XF86AudioPlay" = "exec playerctl play-pause";

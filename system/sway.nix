@@ -23,7 +23,7 @@ in
   programs.sway.wrapperFeatures.gtk = true;
   programs.dconf.enable = true;
 
-  programs.hyprland.enable= true;
+  programs.hyprland.enable = true;
 
   environment.systemPackages = with pkgs; [
     wayland
@@ -73,7 +73,6 @@ in
       };
     };
   };
-
 
   services.blueman.enable = true;
 
