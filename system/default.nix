@@ -15,10 +15,7 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.efi.efiSysMountPoint = "/boot/efi";
-
-  boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_1;
-
+  boot.loader.systemd-boot.configurationLimit = 20;
 
   # Enable networking
   networking.networkmanager.enable = true;

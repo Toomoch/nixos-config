@@ -50,6 +50,12 @@
   services.logind.extraConfig = ''
     HandlePowerKey=ignore
   '';
+  
+  # Enable the IOMMU
+  boot.kernelParams = [ "intel_iommu=on" ];
+
+  # LTS Kernel
+  boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_1;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
