@@ -27,6 +27,14 @@
     scrcpy
   ];
 
+  xdg = {
+    enable = true;
+    userDirs = {
+      enable = true;
+      createDirectories = true;
+    };
+  };
+
   programs.alacritty = {
     enable = true;
     settings = {

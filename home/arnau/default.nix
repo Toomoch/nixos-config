@@ -1,16 +1,9 @@
 { config, pkgs, lib, ... }:
-let 
+let
   nixos-config = "~/projects/nixos-config";
 in
 {
-
-  xdg = {
-    enable = true;
-    userDirs = {
-      enable = true;
-      createDirectories = true;
-    };
-  };
+  xdg.enable = true;
 
   programs.git = {
     enable = true;
