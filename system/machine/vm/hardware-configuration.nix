@@ -10,16 +10,16 @@
 
   boot.initrd.availableKernelModules = [ "ahci" "xhci_pci" "virtio_pci" "sr_mod" "virtio_blk" ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-intel" ];
+  boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/5cef5f91-3dac-47b0-ba01-4c18cf4eacc0";
-      fsType = "ext4";
+    { device = "/dev/disk/by-uuid/c84a591f-dc24-428a-a86a-155d6cdeca13";
+      fsType = "f2fs";
     };
 
-  fileSystems."/boot/efi" =
-    { device = "/dev/disk/by-uuid/1B07-A4E1";
+  fileSystems."/boot" =
+    { device = "/dev/disk/by-uuid/DB48-309D";
       fsType = "vfat";
     };
 
@@ -33,5 +33,4 @@
   # networking.interfaces.enp1s0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }
