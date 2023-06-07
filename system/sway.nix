@@ -77,6 +77,7 @@ in
   services.blueman.enable = true;
 
   security.pam.services.gtklock = { };
+
 }
 
 

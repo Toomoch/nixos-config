@@ -23,8 +23,8 @@
     gnome.gnome-calculator
     onlyoffice-bin
     tdesktop
-    whatsapp-for-linux
     scrcpy
+    virt-manager
   ];
 
   xdg = {
@@ -32,6 +32,20 @@
     userDirs = {
       enable = true;
       createDirectories = true;
+    };
+    mimeApps = {
+      enable = true;
+      defaultApplications = {
+        "inode/directory" = "org.gnome.Nautilus.desktop";
+        "application/pdf" = "firefox.desktop";
+        "video/x-matroska" = "mpv.desktop";
+        "image/png" = "firefox.desktop";
+      };
+      associations.added = {
+        "application/pdf" = "firefox.desktop";
+        "image/png" = "firefox.desktop";
+        "video/x-matroska" = "mpv.desktop";
+      };
     };
   };
 

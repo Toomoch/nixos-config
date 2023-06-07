@@ -6,7 +6,6 @@
     description = "Aina";
     extraGroups = [ "networkmanager" "adbusers"];
     packages = with pkgs; [ ];
-    initialPassword = "12345678";
-    passwordFile = "/etc/secrets/nixos/aina-passwordFile";
+    initialHashedPassword = "$y$j9T$B3GNXEDtu.tLypNHqtugL1$0TLc8R/9W0PRyTz9XCS43gbj/Fig9r2GoWyxoVdNdZ.";
   };
 }

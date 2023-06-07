@@ -1,7 +1,6 @@
 { config, pkgs, lib, ... }:
 {
   environment.systemPackages = with pkgs; [
-    virt-manager
     podman-compose
     distrobox
   ];

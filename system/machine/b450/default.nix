@@ -6,8 +6,8 @@
     ../../default.nix
     ../../desktop.nix
     ../../gaming.nix
-    ../../sway.nix
     ../../virtualisation.nix
+    ../../sway.nix
   ];
 
   # Enable vaapi hardware acceleration
@@ -19,8 +19,8 @@
   };
 
   networking.hostName = "b450"; # Define your hostname.
-  
-  #OpenRGB
+
+  # OpenRGB
   services.hardware.openrgb.enable = true;
 
   # Don’t shutdown when power button is short-pressed
