@@ -5,7 +5,6 @@
     wineWowPackages.stable
     dxvk
     heroic
-    bottles
     gamescope
     oversteer
     obs-studio

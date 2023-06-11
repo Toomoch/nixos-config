@@ -1,44 +1,43 @@
 { config, pkgs, lib, ... }:
 {
+  networking.hostName = "ps42"; # Define your hostname.
+
   specialisation.kde = {
     configuration = {
-      imports = [
-        ../../kde.nix
-      ];
-
+      desktop.kde.enable = true;
       environment.systemPackages = with pkgs; [
         netbeans
         libsForQt5.kpat
         libsForQt5.kio-gdrive
       ];
 
-      services.tlp.enable = lib.mkForce false;
       i18n.defaultLocale = lib.mkDefault "ca_ES.UTF-8";
-      services.logind.extraConfig = lib.mkForce "";
-
     };
   };
 
   imports = [
     ./hardware-configuration.nix
     ../../users/arnau.nix
-    ../../default.nix
-    ../../desktop.nix
-    ../../default-de-specialised.nix
-    ../../virtualisation.nix
+    ../../users/aina.nix
+    ../../common.nix
+    ./non-specialised.nix
   ];
 
-  networking.hostName = "ps42"; # Define your hostname.
+  
 
   environment.systemPackages = with pkgs; [
     powertop
   ];
 
-  # Enable vaapi hardware acceleration
+  desktop.enable = true;
+  desktop.arctis9.enable = false;
+  vm.podman.enable = true;
+
+  # Enable VAAPI hardware acceleration
   hardware.opengl = {
     enable = true;
     extraPackages = with pkgs; [
-      intel-media-driver # LIBVA_DRIVER_NAME=iHD
+      intel-media-driver
     ];
   };
   programs.firefox = {
@@ -48,17 +47,7 @@
     };
   };
 
-  # Power management and undervolt
-  services.tlp = {
-    enable = true;
-    settings = {
-      SOUND_POWER_SAVE_ON_AC = 1;
-      SOUND_POWER_SAVE_ON_BAT = 1;
-      RUNTIME_PM_ON_AC = "auto";
-      PCIE_ASPM_ON_AC = "powersave";
-      PCIE_ASPM_ON_BAT = "powersave";
-    };
-  };
+  # Undervolt
   services.undervolt = {
     enable = true;
     coreOffset = -70;
@@ -67,18 +56,13 @@
     analogioOffset = -20;
   };
 
-  # Disable nvidia gpu
+  # Disable NVIDIA module
   boot.blacklistedKernelModules = [ "nouveau" ];
   # Remove NVIDIA VGA/3D controller devices
   services.udev.extraRules = ''
     ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x03[0-9]*", ATTR{power/control}="auto", ATTR{remove}="1"
   '';
 
-  # Don’t shutdown when power button is short-pressed
-  services.logind.extraConfig = ''
-    HandlePowerKey=ignore
-  '';
-  
   # Enable the IOMMU
   boot.kernelParams = [ "intel_iommu=on" ];
 

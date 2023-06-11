@@ -2,7 +2,7 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ../../default.nix
+    ../../common.nix
     ../../users/arnau.nix
     ../../server.nix
   ];

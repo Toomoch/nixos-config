@@ -1,16 +1,15 @@
 { config, pkgs, lib, ... }:
 {
+  networking.hostName = "b450"; # Define your hostname.
+
   imports = [
     ./hardware-configuration.nix
     ../../users/arnau.nix
-    ../../default.nix
-    ../../desktop.nix
+    ../../common.nix
     ../../gaming.nix
-    ../../virtualisation.nix
-    ../../sway.nix
   ];
 
-  # Enable vaapi hardware acceleration
+  # Enable VAAPI hardware acceleration
   programs.firefox = {
     enable = true;
     preferences = {
@@ -18,15 +17,14 @@
     };
   };
 
-  networking.hostName = "b450"; # Define your hostname.
+  desktop.enable = true;
+  desktop.arctis9.enable = true;
+  desktop.sway.enable = true;
+  vm.podman.enable = true;
+  vm.libvirtd.enable = true;
 
   # OpenRGB
   services.hardware.openrgb.enable = true;
-
-  # Don’t shutdown when power button is short-pressed
-  services.logind.extraConfig = ''
-    HandlePowerKey=ignore
-  '';
 
   # Enable the IOMMU
   boot.kernelParams = [ "amd_iommu=on" ];

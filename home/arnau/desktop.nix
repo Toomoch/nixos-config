@@ -37,6 +37,7 @@
       enable = true;
       defaultApplications = {
         "inode/directory" = "org.gnome.Nautilus.desktop";
+        "application/zip"= "org.gnome.FileRoller.desktop";
         "application/pdf" = "firefox.desktop";
         "video/x-matroska" = "mpv.desktop";
         "image/png" = "firefox.desktop";

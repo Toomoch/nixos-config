@@ -1,14 +1,13 @@
 { config, pkgs, lib, ... }:
 {
+  imports = [
+    ./modules
+  ];
+
   nix = {
     settings = {
       experimental-features = [ "nix-command" "flakes" ];
       auto-optimise-store = true;
-    };
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 15d";
     };
   };
 
@@ -46,6 +45,8 @@
 
   # Configure console keymap
   console.keyMap = "es";
+  console.packages = [ pkgs.terminus_font ];
+  console.font = "${pkgs.terminus_font}/share/consolefonts/ter-i22b.psf.gz";
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -74,8 +75,6 @@
     noto-fonts-extra
     noto-fonts-cjk
     noto-fonts-emoji
-    jost
-    material-symbols
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

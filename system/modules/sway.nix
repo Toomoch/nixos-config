@@ -1,6 +1,8 @@
-{ config, pkgs, lib, ... }:
-let
-  swayConfig = pkgs.writeText "greetd-sway-config" ''
+{ config, lib, pkgs, ... }:
+with lib; let
+  cfg = config.desktop;
+
+  greetdSwayConfig = pkgs.writeText "greetd-sway-config" ''
     xwayland disable
     input "type:touchpad" {
       tap enabled
@@ -10,7 +12,11 @@ let
   '';
 in
 {
-  config = lib.mkIf (config.specialisation != { }) {
+  options.desktop.sway = {
+    enable = mkEnableOption ("Whether to enable Sway with GTKgreet");
+  };
+
+  config = mkIf cfg.sway.enable {
     #xdg-portal
     xdg.portal = {
       enable = true;
@@ -24,7 +30,7 @@ in
     programs.sway.wrapperFeatures.gtk = true;
     programs.dconf.enable = true;
 
-    programs.hyprland.enable = true;
+    #programs.hyprland.enable = true;
 
     environment.systemPackages = with pkgs; [
       wayland
@@ -33,7 +39,7 @@ in
       gnome.adwaita-icon-theme
     ];
 
-    #Gnome Keyring
+    # Gnome Keyring
     services.gnome.gnome-keyring.enable = true;
 
     # Enable wayland in electron apps
@@ -50,11 +56,16 @@ in
     services.gvfs.enable = true;
     services.dbus.enable = true;
 
+    # Don’t shutdown when power button is short-pressed
+    services.logind.extraConfig = ''
+      HandlePowerKey=ignore
+    '';
+
     services.greetd = {
       enable = true;
       settings = {
         default_session = {
-          command = "${pkgs.sway}/bin/sway --config ${swayConfig}";
+          command = "${pkgs.sway}/bin/sway --config ${greetdSwayConfig}";
         };
       };
     };
@@ -80,6 +91,3 @@ in
     security.pam.services.gtklock = { };
   };
 }
-
-
-
