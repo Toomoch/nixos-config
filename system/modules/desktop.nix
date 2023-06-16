@@ -6,6 +6,9 @@ in
   options.desktop = {
     enable = mkEnableOption ("Whether to enable common stuff for desktop systems");
     arctis9.enable = mkEnableOption ("Whether to enable Arctis9 support");
+    flatpak.enable = mkEnableOption ("Whether to enable Flatpak support");
+    gaming.enable = mkEnableOption ("Whether to enable gaming stuff");
+    gaming.g29.enable = mkEnableOption ("Whether to enable G29 wheel support");
   };
 
   config = mkMerge [
@@ -62,6 +65,54 @@ in
         headsetcontrol
       ];
 
+    })
+    (mkIf cfg.flatpak.enable {
+      services.flatpak.enable = true;
+      system.fsPackages = [ pkgs.bindfs ];
+      fileSystems =
+        let
+          mkRoSymBind = path: {
+            device = path;
+            fsType = "fuse.bindfs";
+            options = [ "ro" "resolve-symlinks" "x-gvfs-hide" ];
+          };
+          aggregatedFonts = pkgs.buildEnv {
+            name = "system-fonts";
+            paths = config.fonts.fonts;
+            pathsToLink = [ "/share/fonts" ];
+          };
+        in
+        {
+          # Create an FHS mount to support flatpak host icons/fonts
+          "/usr/share/icons" = mkRoSymBind (config.system.path + "/share/icons");
+          "/usr/share/fonts" = mkRoSymBind (aggregatedFonts + "/share/fonts");
+        };
+    })
+    (mkIf cfg.gaming.enable {
+      environment.systemPackages = with pkgs; [
+        legendary-gl
+        wineWowPackages.stable
+        dxvk
+        heroic
+        gamescope
+        obs-studio
+        webcord
+        protonup-qt
+      ] ++ optional cfg.gaming.g29.enable oversteer;
+      #G29 wheel
+      hardware.new-lg4ff.enable = cfg.gaming.g29.enable;
+      services.udev.packages = with pkgs; [ ] ++ optional cfg.gaming.g29.enable oversteer;
+
+      #Steam
+      programs.steam = {
+        enable = true;
+        remotePlay.openFirewall =
+          true; # Open ports in the firewall for Steam Remote Play
+        dedicatedServer.openFirewall =
+          true; # Open ports in the firewall for Source Dedicated Server
+      };
+
+      
     })
 
 

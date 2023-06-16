@@ -5,6 +5,7 @@ in
 {
   options.vm = {
     podman.enable = mkEnableOption ("Wheter to enable podman");
+    docker.enable = mkEnableOption ("Wheter to enable Docker");
     libvirtd.enable = mkEnableOption ("Whether to enable libvirtd");
   };
 
@@ -18,10 +19,19 @@ in
         podman = {
           enable = true;
           # Create a `docker` alias for podman, to use it as a drop-in replacement
-          dockerCompat = true;
+          dockerCompat = false;
           # Required for containers under podman-compose to be able to talk to each other.
           defaultNetwork.settings.dns_enabled = true;
         };
+        docker.enable = true;
+      };
+    })
+    (mkIf cfg.docker.enable {
+      environment.systemPackages = with pkgs; [
+        docker-compose
+      ];
+      virtualisation = {
+        docker.enable = true;
       };
     })
     (mkIf cfg.libvirtd.enable {

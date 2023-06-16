@@ -6,7 +6,6 @@
     ./hardware-configuration.nix
     ../../users/arnau.nix
     ../../common.nix
-    ../../gaming.nix
   ];
 
   # Enable VAAPI hardware acceleration
@@ -20,8 +19,12 @@
   desktop.enable = true;
   desktop.arctis9.enable = true;
   desktop.sway.enable = true;
+  desktop.flatpak.enable = true;
+  desktop.gaming.enable = true;
+  desktop.gaming.g29.enable = true;
   vm.podman.enable = true;
   vm.libvirtd.enable = true;
+  vm.docker.enable = true;
 
   # OpenRGB
   services.hardware.openrgb.enable = true;
