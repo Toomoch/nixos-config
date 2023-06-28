@@ -7,7 +7,7 @@
     ../../homelab.nix
   ];
 
-  networking.hostName = "vm"; # Define your hostname.
+  networking.hostName = "h81"; # Define your hostname.
 
   virtualisation.vmVariant = {
     # following configuration is added only when building VM with build-vm

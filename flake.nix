@@ -76,6 +76,26 @@
           }
         ];
       };
+
+      h81 = nixpkgs-stable.lib.nixosSystem {
+        system = "x86_64-linux";
+
+        specialArgs = { inherit inputs; };
+
+        modules = [
+          ./system/machine/h81
+          home-manager-stable.nixosModules.home-manager
+          {
+            home-manager = {
+              useGlobalPkgs = true;
+              extraSpecialArgs = { inherit inputs; };
+              users.arnau.imports = [
+                ./home/arnau/machine/h81.nix
+              ];
+            };
+          }
+        ];
+      };
     };
   };
 }
