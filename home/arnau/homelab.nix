@@ -81,7 +81,7 @@ in
         --name homer \
         -v ${homer_config}:/www/assets:Z \
         -p 8080:8080 \
-        --tz=local ghcr.io/b4bz/homer:stable
+        --tz=local docker.io/b4bz/homer:latest
         '';
       ExecStop = ''
         /run/current-system/sw/bin/podman stop \
