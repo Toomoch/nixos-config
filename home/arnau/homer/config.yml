@@ -1,0 +1,96 @@
+---
+
+title: "The Home Server"
+subtitle: "Just that, it's my home server"
+documentTitle: "Homeserver"
+logo: "assets/icons/homer.png"
+
+header: true
+footer: ''
+
+columns: "3"
+
+defaults:
+  layout: columns
+  colorTheme: auto
+
+# Optional theming
+theme: default
+
+links:
+  - name: "Source Code"
+    icon: "fab fa-github"
+    url: "https://github.com/albertcanales/homeserver"
+    target: "_blank" # optional html tag target attribute
+  - name: "Documentation"
+    icon: "fas fa-book"
+    url: "https://docs.{{ public_url }}"
+
+services:
+  - name: "Applications"
+    icon: "fas fa-cloud"
+    items:
+      - name: "Nextcloud"
+        logo: "assets/icons/nextcloud.png"
+        subtitle: "File hosting service"
+        url: "https://nextcloud.{{ public_url }}"
+      - name: "Jellyfin"
+        logo: "assets/icons/jellyfin.png"
+        subtitle: "Movie and show library"
+        url: "https://jellyfin.{{ public_url }}"
+      - name: "Calibre"
+        logo: "assets/icons/calibre.png"
+        subtitle: "Book library"
+        url: "https://calibre.{{ public_url }}"
+      - name: "Home Assistant"
+        logo: "assets/icons/homeassistant.png"
+        subtitle: "Home Automation"
+        url: "http://truenas.lan:20810"
+      - name: "Overleaf"
+        logo: "assets/icons/overleaf.svg"
+        subtitle: "LaTeX editor"
+        url: "https://overleaf.{{ public_url }}"
+      - name: "PufferPanel"
+        logo: "assets/icons/pufferpanel.png"
+        subtitle: "Game managment panel"
+        url: "https://games.{{ public_url }}"
+      - name: "FreshRSS"
+        logo: "assets/icons/freshrss.png"
+        subtitle: "A RSS Aggregator"
+        url: "https://freshrss.{{ public_url }}"
+  - name: "Media Management"
+    icon: "fas fa-photo-film"
+    items:
+      - name: "Deluge"
+        logo: "assets/icons/deluge.svg"
+        subtitle: "BitTorrent client"
+        url: "https://deluge.{{ public_url }}"
+      - name: "Sonarr"
+        logo: "assets/icons/sonarr.png"
+        subtitle: "Shows manager"
+        url: "https://sonarr.{{ public_url }}"
+      - name: "Radarr"
+        logo: "assets/icons/radarr.png"
+        subtitle: "Movies manager"
+        url: "https://radarr.{{ public_url }}"
+      - name: "Bazarr"
+        logo: "assets/icons/bazarr.png"
+        subtitle: "Subtitles manager"
+        url: "https://bazarr.{{ public_url }}"
+      - name: "Prowlarr"
+        logo: "assets/icons/prowlarr.svg"
+        subtitle: "Indexer manager"
+        url: "https://prowlarr.{{ public_url }}"
+  - name: "Administration"
+    icon: "fas fa-tools"
+    items:
+      - name: "Wireguard"
+        logo: "assets/icons/wireguard.png"
+        subtitle: "VPN service"
+        url: "https://wireguard.{{ public_url }}"
+      - name: "Main Router configuration"
+        logo: "assets/icons/router.png"
+        url: "https://router.{{ public_url }}"
+      - name: "mi4A-1 configuration"
+        logo: "assets/icons/openwrt.svg"
+        url: "https://mi4a-1.{{ public_url }}"

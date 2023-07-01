@@ -5,9 +5,8 @@
     openFirewall = true;
     settings = {
       WebService = {
-        Origins = "https://cockpit.vafu.duckdns.org/ https://192.168.0.20:9090";
+        Origins = "https://cockpit.vafu.duckdns.org/ wss://cockpit.vafu.duckdns.org/";
         ProtocolHeader = "X-Forwarded-Proto";
-        UrlRoot = "/mgmt/";
       };
     };
   };
