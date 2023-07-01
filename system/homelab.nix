@@ -5,8 +5,8 @@
 
   systemd.tmpfiles.rules = [
     "d /var/lib/jmusicbot 0755 root root"
-    "d /home/arnau/projects/proxy/data 0755 root root"
-    "d /home/arnau/projects/proxy/letsencrypt 0755 root root"
+    "d /etc/nginx/data 0755 root root"
+    "d /etc/nginx/letsencrypt 0755 root root"
   ];
   services.jmusicbot.enable = true;
 
@@ -22,8 +22,8 @@
       "81:81"
     ];
     volumes = [
-      "/home/arnau/projects/proxy/data:/data"
-      "/home/arnau/projects/proxy/letsencrypt:/etc/letsencrypt"
+      "/etc/nginx/data:/data"
+      "/etc/nginx/letsencrypt:/etc/letsencrypt"
     ];
   };
 
