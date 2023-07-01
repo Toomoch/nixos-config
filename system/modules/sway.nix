@@ -12,8 +12,9 @@ with lib; let
   '';
 in
 {
-  options.desktop.sway = {
-    enable = mkEnableOption ("Whether to enable Sway with GTKgreet");
+  options.desktop = {
+    sway.enable = mkEnableOption ("Whether to enable Sway with GTKgreet");
+    hyprland.enable = mkEnableOption ("Whether to enable Hyprland");
   };
 
   config = mkIf cfg.sway.enable {
@@ -25,12 +26,13 @@ in
       extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
     };
 
-    #Sway
+    # Sway
     programs.sway.enable = true;
     programs.sway.wrapperFeatures.gtk = true;
     programs.dconf.enable = true;
 
-    #programs.hyprland.enable = true;
+    # Hyprland
+    programs.hyprland.enable = cfg.hyprland.enable;
 
     environment.systemPackages = with pkgs; [
       wayland

@@ -52,6 +52,20 @@ in
         indicator = "#017a78ff";
         childBorder = "#00fffaff";
       };
+      colors.unfocused = {
+        border = "#333333";
+        background = "#222222";
+        text = "#888888";
+        indicator = "#292d2e";
+        childBorder = "#00000000";
+      };
+      colors.focusedInactive = {
+        border = "#333333";
+        background = "#5f676a";
+        text = "#ffffff";
+        indicator = "#484e50";
+        childBorder = "#00000000";
+      };
       gaps.inner = 5;
       output = {
         # VM screen

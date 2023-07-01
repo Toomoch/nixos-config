@@ -4,6 +4,7 @@
     ./hardware-configuration.nix
     ../../users/arnau.nix
     ../../users/aina.nix
+    ../../common.nix
   ];
 
   config = lib.mkMerge [
@@ -30,6 +31,7 @@
       desktop.enable = true;
       desktop.arctis9.enable = false;
       vm.podman.enable = true;
+      vm.libvirtd.enable = true;
 
       # Enable VAAPI hardware acceleration
       hardware.opengl = {
@@ -77,6 +79,7 @@
     })
     (lib.mkIf (config.specialisation != { }) {
       desktop.sway.enable = true;
+      desktop.hyprland.enable = true;
       # Power management 
       services.tlp = {
         enable = true;

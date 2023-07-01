@@ -6,7 +6,10 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     hyprland.url = "github:hyprwm/Hyprland";
-
+    hyprland.inputs.nixpkgs.follows = "nixpkgs";
+    fufexan.url = "github:fufexan/dotfiles";
+    fufexan.inputs.nixpkgs.follows = "nixpkgs";
+    
     nixpkgs-stable.url = "nixpkgs/nixos-23.05";
     home-manager-stable = {
       url = "github:nix-community/home-manager/release-23.05";

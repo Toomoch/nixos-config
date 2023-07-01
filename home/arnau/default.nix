@@ -32,6 +32,7 @@ in
       gl = "git log";
       gaa = "git add --all";
       ".." = "cd ..";
+      lsperms = "stat --format '%a'";
       upcdown = "rclone copy upc:/assig ~/assig/ --drive-acknowledge-abuse -P";
       upcup = "rclone copy ~/assig/ upc:/assig/ --drive-acknowledge-abuse -P";
       upcsync = "upcdown && upcup";
