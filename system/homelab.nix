@@ -19,6 +19,8 @@
   ];
   services.jmusicbot.enable = true;
 
+  services.code-server.enable = true;
+
   # Open ports in the firewall.
   networking.firewall.allowedTCPPorts = [ 8123 8080 9090 ]; #HomeAssistant
 
