@@ -2,14 +2,14 @@
   description = "Arnau NixOS configs";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-unstable";
+    nixpkgs-unstable.url = "nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs-unstable";
     hyprland.url = "github:hyprwm/Hyprland";
-    hyprland.inputs.nixpkgs.follows = "nixpkgs";
+    hyprland.inputs.nixpkgs.follows = "nixpkgs-unstable";
     fufexan.url = "github:fufexan/dotfiles";
-    fufexan.inputs.nixpkgs.follows = "nixpkgs";
-    
+    fufexan.inputs.nixpkgs.follows = "nixpkgs-unstable";
+
     nixpkgs-stable.url = "nixpkgs/nixos-23.05";
     home-manager-stable = {
       url = "github:nix-community/home-manager/release-23.05";
@@ -17,10 +17,10 @@
     };
   };
 
-  outputs = inputs@{ self, nixpkgs, home-manager, nixpkgs-stable, home-manager-stable, ... }: {
+  outputs = inputs@{ self, nixpkgs-unstable, home-manager, nixpkgs-stable, home-manager-stable, ... }: {
     nixosConfigurations = {
 
-      b450 = nixpkgs.lib.nixosSystem {
+      b450 = nixpkgs-unstable.lib.nixosSystem {
         system = "x86_64-linux";
 
         specialArgs = { inherit inputs; };
@@ -40,10 +40,8 @@
         ];
       };
 
-      ps42 = nixpkgs.lib.nixosSystem {
+      ps42 = nixpkgs-unstable.lib.nixosSystem {
         system = "x86_64-linux";
-
-        specialArgs = { inherit inputs; };
 
         modules = [
           ./system/machine/ps42
@@ -80,10 +78,18 @@
         ];
       };
 
-      h81 = nixpkgs-stable.lib.nixosSystem {
+      h81 = nixpkgs-stable.lib.nixosSystem rec {
         system = "x86_64-linux";
 
-        specialArgs = { inherit inputs; };
+        specialArgs = {
+          pkgs-unstable = import nixpkgs-unstable {
+            system = system; # refer the `system` parameter form outer scope recursively
+            config.permittedInsecurePackages = [
+              "nodejs-16.20.1"
+            ];
+          };
+          inherit inputs;
+        };
 
         modules = [
           ./system/machine/h81

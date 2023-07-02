@@ -25,6 +25,7 @@
     tdesktop
     scrcpy
     virt-manager
+    gnome-network-displays
   ];
 
   xdg = {

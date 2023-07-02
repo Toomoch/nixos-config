@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs-unstable, ... }:
 {
   services.cockpit = {
     enable = true;
@@ -20,6 +20,8 @@
   services.jmusicbot.enable = true;
 
   services.code-server.enable = true;
+  services.code-server.user = "arnau";
+  services.code-server.package = pkgs-unstable.code-server;
 
   # Open ports in the firewall.
   networking.firewall.allowedTCPPorts = [ 8123 8080 9090 ]; #HomeAssistant

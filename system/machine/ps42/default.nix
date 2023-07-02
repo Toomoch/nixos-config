@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ inputs, config, pkgs, lib, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -68,6 +68,9 @@
 
       # LTS Kernel
       boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_1;
+
+      
+      #services.code-server.package = inputs.nixpkgs-stable.packages.x86_64-linux.code-server;
 
       # This value determines the NixOS release from which the default
       # settings for stateful data, like file locations and database versions
