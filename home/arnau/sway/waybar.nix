@@ -8,7 +8,7 @@
         layer = "top";
         height = 30;
         spacing = 4;
-        modules-left = [ "sway/workspaces" "wlr/workspaces" "sway/mode" "sway/window" "hyprland/window" ];
+        modules-left = [ "sway/workspaces" "sway/mode" "sway/window" ];
         modules-center = [ "custom/media" ];
         modules-right = [
           "tray"
@@ -42,12 +42,6 @@
           "format" = "{}";
           "separate-outputs" = true;
           "max-length" = 200;
-        };
-        "wlr/workspaces" = {
-          "format" = "{icon}";
-          "on-scroll-up" = "hyprctl dispatch workspace e+1";
-          "on-scroll-down" = "hyprctl dispatch workspace e-1";
-          "on-click" = "activate";
         };
         "tray" = { "spacing" = 10; };
         "clock" = {
