@@ -5,7 +5,6 @@
     nixpkgs-unstable.url = "nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs-unstable";
-    hyprland.url = "github:hyprwm/Hyprland";
     fufexan.url = "github:fufexan/dotfiles";
     fufexan.inputs.nixpkgs.follows = "nixpkgs-unstable";
 

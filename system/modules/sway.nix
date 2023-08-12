@@ -31,9 +31,6 @@ in
     programs.sway.wrapperFeatures.gtk = true;
     programs.dconf.enable = true;
 
-    # Hyprland
-    programs.hyprland.enable = cfg.hyprland.enable;
-
     environment.systemPackages = with pkgs; [
       wayland
       xorg.xwininfo
