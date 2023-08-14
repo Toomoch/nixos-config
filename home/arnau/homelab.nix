@@ -1,16 +1,16 @@
 { config, lib, ... }:
 let
   hass_config = "${config.home.homeDirectory}/hass_config";
-  homer_config = "${config.home.homeDirectory}/homer";
+  dashy_config = "${config.home.homeDirectory}/dashy.yml";
 in
 {
   home.activation.create_service_config = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     mkdir -p ${hass_config}
   '';
   
-  home.file."homer/" = {
-    source = ./homer; 
-    recursive = true; 
+  home.file."dashy.yml" = {
+    source = ./dashy.yml; 
+    #recursive = true; 
   };
 
   systemd.user.services.homeassistant = {
@@ -58,9 +58,9 @@ in
     };
   };
 
-  systemd.user.services.homer = {
+  systemd.user.services.dashy = {
     Unit = {
-      Description = "Podman container-homer.service";
+      Description = "Podman container-dashy.service";
       Documentation = [ "man:podman-generate-systemd(1)" ];
       Wants = "network-online.target";
       After = "network-online.target";
@@ -78,19 +78,19 @@ in
         --sdnotify=conmon \
         --replace \
         -d \
-        --name homer \
-        -v ${homer_config}:/www/assets:Z \
-        -p 8080:8080 \
-        --tz=local docker.io/b4bz/homer:latest
+        --name dashy \
+        -v ${dashy_config}:/app/public/conf.yml:ro \
+        -p 8080:80 \
+        --tz=local docker.io/lissy93/dashy:latest
         '';
       ExecStop = ''
         /run/current-system/sw/bin/podman stop \
-        --ignore -t 20 homer
+        --ignore -t 20 dashy
       '';
       ExecStopPost = ''
         /run/current-system/sw/bin/podman rm \
         -f \
-        --ignore -t 20 homer
+        --ignore -t 20 dashy
       '';
       Type = "notify";
       NotifyAccess = "all";
