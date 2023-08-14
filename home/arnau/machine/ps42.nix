@@ -4,7 +4,7 @@
     ../default.nix
     ../desktop.nix
     ../sway
-    ../hyprland
+    #../hyprland
   ];
 
   home.stateVersion = "22.11";
