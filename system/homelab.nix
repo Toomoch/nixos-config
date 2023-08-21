@@ -1,4 +1,9 @@
 { pkgs-unstable, ... }:
+let
+  nginx-data = "/var/lib/nginx/data";
+  nginx-letsencrypt = "/var/lib/nginx/letsencrypt";
+  jmusicbot = "/var/lib/jmusicbot";
+in
 {
   services.cockpit = {
     enable = true;
@@ -6,11 +11,9 @@
   };
 
   systemd.tmpfiles.rules = [
-    "d /var/lib/jmusicbot 0755 root root"
-    "d /var/lib/nginx/data 0755 root root"
-    "d /var/lib/nginx/letsencrypt 0755 root root"
-    "d /etc/nginx/data 0755 root root"
-    "d /etc/nginx/letsencrypt 0755 root root"
+    "d ${jmusicbot} 0755 root root"
+    "d ${nginx-data} 0755 root root"
+    "d ${nginx-letsencrypt} 0755 root root"
   ];
   services.jmusicbot.enable = true;
 
@@ -42,8 +45,8 @@
       "81:81"
     ];
     volumes = [
-      "/var/lib/nginx/data:/data"
-      "/var/lib/nginx/letsencrypt:/etc/letsencrypt"
+      "${nginx-data}:/data"
+      "${nginx-letsencrypt}:/etc/letsencrypt"
     ];
   };
   systemd.services."docker-nginx" = {
