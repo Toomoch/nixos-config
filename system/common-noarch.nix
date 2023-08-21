@@ -11,11 +11,6 @@
     };
   };
 
-  # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.systemd-boot.configurationLimit = 20;
-
   # Enable networking
   networking.networkmanager.enable = true;
 
@@ -46,7 +41,7 @@
   # Configure console keymap
   console.keyMap = "es";
   console.packages = [ pkgs.terminus_font ];
-  console.font = "${pkgs.terminus_font}/share/consolefonts/ter-i22b.psf.gz";
+  console.font = "Lat2-Terminus16";
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -56,14 +51,10 @@
   environment.systemPackages = with pkgs; [
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
-    vulkan-tools
     pciutils
     neofetch
-    glxinfo
     xdg-utils
     usbutils
-    libva-utils
-    rclone
   ];
 
   fonts.fonts = with pkgs; [
@@ -97,12 +88,12 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
-
+  
+  # Enable mosh
+  programs.mosh.enable = true;
+  
   #Allow all VPN traffic routing
   networking.firewall.checkReversePath = "loose";
-
-  # Enable plymouth bootanimation
-  boot.plymouth.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];

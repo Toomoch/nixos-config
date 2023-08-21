@@ -1,17 +1,16 @@
-{ config, lib, ... }:
+{ inputs, config, lib, ... }:
 let
   hass_config = "${config.home.homeDirectory}/hass_config";
   dashy_config = "${config.home.homeDirectory}/dashy.yml";
 in
 {
+  imports = [
+    inputs.sops-nix.homeManagerModules.sops
+  ];
+
   home.activation.create_service_config = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     mkdir -p ${hass_config}
   '';
-  
-  home.file."dashy.yml" = {
-    source = ./dashy.yml; 
-    #recursive = true; 
-  };
 
   systemd.user.services.homeassistant = {
     Unit = {
@@ -36,6 +35,8 @@ in
         --name homeassistant \
         -v ${hass_config}:/config:Z \
         -p 8123:8123 \
+        --device=/dev/serial/by-id/usb-1a86_USB_Serial-if00-port0:/dev/ttyUSB0:rw \
+        --group-add keep-groups \
         --cap-add=CAP_NET_RAW \
         --tz=local ghcr.io/home-assistant/home-assistant:stable
         '';
@@ -58,12 +59,21 @@ in
     };
   };
 
+  sops = {
+    age.sshKeyPaths = [ "${config.home.homeDirectory}/.ssh/id_ed25519" ];
+    secrets.dashy = {
+      format = "binary";
+      sopsFile = ./dashy;
+      path = "${dashy_config}";
+    };
+  };
+
   systemd.user.services.dashy = {
     Unit = {
       Description = "Podman container-dashy.service";
       Documentation = [ "man:podman-generate-systemd(1)" ];
       Wants = "network-online.target";
-      After = "network-online.target";
+      After = [ "network-online.target" "sops-nix.service" ];
       RequiresMountsFor = "%t/containers";
     };
 

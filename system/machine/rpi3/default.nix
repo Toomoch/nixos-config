@@ -2,21 +2,17 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ../../common-x86.nix
+    ../../common-noarch.nix
     ../../users/arnau.nix
   ];
 
-  networking.hostName = "vm"; # Define your hostname.
+  networking.hostName = "rpi3"; # Define your hostname.
 
-  virtualisation.vmVariant = {
-    # following configuration is added only when building VM with build-vm
-    virtualisation = {
-      memorySize = 4096; # Use 2048MiB memory.
-      cores = 4;
-    };
-  };
-
-  vm.podman.enable = true;
+  hardware.enableRedistributableFirmware = true;
+  # Use the extlinux boot loader. (NixOS wants to enable GRUB by default)
+  boot.loader.grub.enable = false;
+  # Enables the generation of /boot/extlinux/extlinux.conf
+  boot.loader.generic-extlinux-compatible.enable = true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

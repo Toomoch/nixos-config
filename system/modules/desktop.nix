@@ -19,6 +19,12 @@ in
       #
       #services.udev.extraRules = optionalString cfg.arctis9.enable ''
       #  KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="1038", ATTRS{idProduct}=="12c2", TAG+="uaccess"'';
+      
+      environment.systemPackages = with pkgs; [
+        vulkan-tools
+        glxinfo
+        libva-utils
+      ];
 
       # Printing
       services.printing.enable = true;
@@ -55,6 +61,10 @@ in
           "browser.fullscreen.autohide" = false;
         };
       };
+
+      # Enable plymouth bootanimation
+      boot.plymouth.enable = true;
+
     })
     (mkIf cfg.arctis9.enable {
       # Arctis 9
@@ -68,6 +78,7 @@ in
     })
     (mkIf cfg.flatpak.enable {
       services.flatpak.enable = true;
+      # Flatpak workarounds
       system.fsPackages = [ pkgs.bindfs ];
       fileSystems =
         let
@@ -112,7 +123,7 @@ in
           true; # Open ports in the firewall for Source Dedicated Server
       };
 
-      
+
     })
 
 

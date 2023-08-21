@@ -13,6 +13,7 @@
     jetbrains.idea-community
     graphviz
     openfortivpn
+    sops
 
     #desktop apps
     gnome.nautilus

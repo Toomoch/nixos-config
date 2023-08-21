@@ -4,7 +4,7 @@
     ./hardware-configuration.nix
     ../../users/arnau.nix
     ../../users/aina.nix
-    ../../common.nix
+    ../../common-x86.nix
   ];
 
   config = lib.mkMerge [

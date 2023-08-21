@@ -2,7 +2,7 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ../../common.nix
+    ../../common-x86.nix
     ../../users/arnau.nix
     ../../homelab.nix
   ];

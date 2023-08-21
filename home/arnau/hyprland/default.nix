@@ -7,15 +7,11 @@
   #
   imports = [
     ../sway/waybar.nix
-    inputs.hyprland.homeManagerModules.default
-    inputs.fufexan.homeManagerModules.eww-hyprland
   ];
   
-  #programs.eww-hyprland = {
-  #  enable = true;
-  #};
   wayland.windowManager.hyprland = {
     enable = true;
+    package = inputs.hyprland.packages.${pkgs.system}.hyprland;
     extraConfig = ''
       exec-once = wpaperd
       exec-once = swaync
@@ -50,17 +46,19 @@
         # See https://wiki.hyprland.org/Configuring/Variables/ for more
 
         rounding = 10
-        blur = true
-        blur_size = 3
-        blur_passes = 1
-        blur_new_optimizations = true
 
         drop_shadow = true
         shadow_range = 4
         shadow_render_power = 3
         col.shadow = rgba(1a1a1aee)
-        
+
+        blur = true
+        blur_size = 3
+        blur_passes = 1
+        blur_new_optimizations = true
       }
+
+      
 
       animations {
         enabled = true

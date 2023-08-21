@@ -5,104 +5,166 @@
     nixpkgs-unstable.url = "nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs-unstable";
-    fufexan.url = "github:fufexan/dotfiles";
-    fufexan.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
     nixpkgs-stable.url = "nixpkgs/nixos-23.05";
     home-manager-stable = {
       url = "github:nix-community/home-manager/release-23.05";
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
+
+    sops-nix.url = "github:Mic92/sops-nix";
+    deploy-rs.url = "github:serokell/deploy-rs";
+    hyprland.url = "github:hyprwm/Hyprland";
   };
 
-  outputs = inputs@{ self, nixpkgs-unstable, home-manager, nixpkgs-stable, home-manager-stable, ... }: {
-    nixosConfigurations = {
-
-      b450 = nixpkgs-unstable.lib.nixosSystem {
-        system = "x86_64-linux";
-
-        specialArgs = { inherit inputs; };
-
-        modules = [
-          ./system/machine/b450
-          home-manager.nixosModules.home-manager
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              extraSpecialArgs = { inherit inputs; };
-              users.arnau.imports = [
-                ./home/arnau/machine/b450.nix
-              ];
-            };
-          }
+  outputs = inputs@{ self, nixpkgs-unstable, home-manager, nixpkgs-stable, home-manager-stable, sops-nix, deploy-rs, hyprland, ... }:
+    let
+      # use cache for building deploy-rs aarch64
+      system = "aarch64-linux";
+      # Unmodified nixpkgs
+      pkgs = import nixpkgs-unstable { inherit system; };
+      # nixpkgs with deploy-rs overlay but force the nixpkgs package
+      deployPkgs = import nixpkgs-unstable {
+        inherit system;
+        overlays = [
+          deploy-rs.overlay
+          (self: super: { deploy-rs = { inherit (pkgs) deploy-rs; lib = super.deploy-rs.lib; }; })
         ];
       };
+    in
+    {
+      nixosConfigurations = {
 
-      ps42 = nixpkgs-unstable.lib.nixosSystem {
-        system = "x86_64-linux";
+        b450 = nixpkgs-unstable.lib.nixosSystem {
+          system = "x86_64-linux";
 
-        modules = [
-          ./system/machine/ps42
-          home-manager.nixosModules.home-manager
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              extraSpecialArgs = { inherit inputs; };
-              users.arnau.imports = [
-                ./home/arnau/machine/ps42.nix
-              ];
-            };
-          }
-        ];
-      };
+          specialArgs = { inherit inputs; };
 
-      vm = nixpkgs-stable.lib.nixosSystem {
-        system = "x86_64-linux";
-
-        specialArgs = { inherit inputs; };
-
-        modules = [
-          ./system/machine/vm
-          home-manager-stable.nixosModules.home-manager
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              extraSpecialArgs = { inherit inputs; };
-              users.arnau.imports = [
-                ./home/arnau/machine/vm.nix
-              ];
-            };
-          }
-        ];
-      };
-
-      h81 = nixpkgs-stable.lib.nixosSystem rec {
-        system = "x86_64-linux";
-
-        specialArgs = {
-          pkgs-unstable = import nixpkgs-unstable {
-            system = system; # refer the `system` parameter form outer scope recursively
-            config.permittedInsecurePackages = [
-              "nodejs-16.20.1"
-            ];
-          };
-          inherit inputs;
+          modules = [
+            ./system/machine/b450
+            home-manager.nixosModules.home-manager
+            {
+              home-manager = {
+                useGlobalPkgs = true;
+                extraSpecialArgs = { inherit inputs; };
+                users.arnau.imports = [
+                  ./home/arnau/machine/b450.nix
+                ];
+              };
+            }
+            sops-nix.nixosModules.sops
+          ];
         };
 
-        modules = [
-          ./system/machine/h81
-          home-manager-stable.nixosModules.home-manager
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              extraSpecialArgs = { inherit inputs; };
-              users.arnau.imports = [
-                ./home/arnau/machine/h81.nix
+        ps42 = nixpkgs-unstable.lib.nixosSystem {
+          system = "x86_64-linux";
+
+          modules = [
+            ./system/machine/ps42
+            home-manager.nixosModules.home-manager
+            {
+              home-manager = {
+                useGlobalPkgs = true;
+                extraSpecialArgs = { inherit inputs; };
+                users.arnau.imports = [
+                  ./home/arnau/machine/ps42.nix
+                ];
+              };
+            }
+          ];
+        };
+
+        vm = nixpkgs-stable.lib.nixosSystem {
+          system = "x86_64-linux";
+
+          specialArgs = { inherit inputs; };
+
+          modules = [
+            ./system/machine/vm
+            home-manager-stable.nixosModules.home-manager
+            {
+              home-manager = {
+                useGlobalPkgs = true;
+                extraSpecialArgs = { inherit inputs; };
+                users.arnau.imports = [
+                  ./home/arnau/machine/vm.nix
+                ];
+              };
+            }
+          ];
+        };
+
+        h81 = nixpkgs-stable.lib.nixosSystem rec {
+          system = "x86_64-linux";
+
+          specialArgs = {
+            pkgs-unstable = import nixpkgs-unstable {
+              system = system; # refer the `system` parameter form outer scope recursively
+              config.permittedInsecurePackages = [
+                "nodejs-16.20.2"
               ];
             };
-          }
-        ];
+            inherit inputs;
+          };
+
+          modules = [
+            ./system/machine/h81
+            home-manager-stable.nixosModules.home-manager
+            {
+              home-manager = {
+                useGlobalPkgs = true;
+                extraSpecialArgs = { inherit inputs; };
+                users.arnau.imports = [
+                  ./home/arnau/machine/h81.nix
+                ];
+              };
+            }
+          ];
+        };
+        rpi3 = nixpkgs-stable.lib.nixosSystem {
+          system = "aarch64-linux";
+          modules = [
+            ./system/machine/rpi3
+            home-manager-stable.nixosModules.home-manager
+            {
+              home-manager = {
+                useGlobalPkgs = true;
+                extraSpecialArgs = { inherit inputs; };
+                users.arnau.imports = [
+                  ./home/arnau/machine/rpi3.nix
+                ];
+              };
+            }
+          ];
+        };
+      };
+
+      # deploy-rs node configuration
+      deploy.nodes = {
+        h81 = {
+          hostname = "h81.lan";
+          profiles.system = {
+            sshUser = "arnau";
+            sshOpts = [ "-t" ];
+            magicRollback = false;
+            path =
+              deploy-rs.lib.x86_64-linux.activate.nixos
+                self.nixosConfigurations.h81;
+            user = "root";
+          };
+        };
+        rpi3 = {
+          hostname = "rpi3.lan";
+          profiles.system = {
+            sshUser = "arnau";
+            sshOpts = [ "-t" ];
+            magicRollback = false;
+            path =
+              deployPkgs.deploy-rs.lib.activate.nixos
+                self.nixosConfigurations.rpi3;
+            user = "root";
+          };
+        };
       };
     };
-  };
 }
