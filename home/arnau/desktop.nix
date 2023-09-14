@@ -39,7 +39,7 @@
       enable = true;
       defaultApplications = {
         "inode/directory" = "org.gnome.Nautilus.desktop";
-        "application/zip"= "org.gnome.FileRoller.desktop";
+        "application/zip" = "org.gnome.FileRoller.desktop";
         "application/pdf" = "firefox.desktop";
         "video/x-matroska" = "mpv.desktop";
         "image/png" = "firefox.desktop";
@@ -49,6 +49,12 @@
         "image/png" = "firefox.desktop";
         "video/x-matroska" = "mpv.desktop";
       };
+    };
+  };
+
+  programs.bash = {
+    shellAliases = {
+      matlab = "MESA_GL_VERSION_OVERRIDE=3.0 matlab";
     };
   };
 
@@ -64,7 +70,7 @@
     package = pkgs.jdk11;
   };
 
-  
+
 
   programs.vscode = {
     enable = true;
@@ -96,8 +102,8 @@
 
       nix.enableLanguageServer = true;
       nix.serverPath = "nil";
-      nix.serverSettings.nil.formatting = { 
-        command = ["nixpkgs-fmt"];
+      nix.serverSettings.nil.formatting = {
+        command = [ "nixpkgs-fmt" ];
       };
 
     };
@@ -167,6 +173,15 @@
     gtk4.extraConfig = {
       gtk-application-prefer-dark-theme = true;
     };
+  };
+
+  xresources.properties = {
+    "Xft.antialias" = 1;
+    "Xft.autohint" = 0;
+    "Xft.hinting" = 1;
+    "Xft.hintstyle" = "hintnone";
+    "Xft.rgba" = "rgb";
+    "Xft.lcdfilter" = "lcddefault";
   };
 
   dconf.settings = {

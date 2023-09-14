@@ -15,10 +15,19 @@
     sops-nix.url = "github:Mic92/sops-nix";
     deploy-rs.url = "github:serokell/deploy-rs";
     hyprland.url = "github:hyprwm/Hyprland";
+
+    nix-matlab = {
+      url = "gitlab:doronbehar/nix-matlab";
+    };
+
   };
 
-  outputs = inputs@{ self, nixpkgs-unstable, home-manager, nixpkgs-stable, home-manager-stable, sops-nix, deploy-rs, hyprland, ... }:
+  outputs = inputs@{ self, nixpkgs-unstable, home-manager, nixpkgs-stable, home-manager-stable, sops-nix, deploy-rs, hyprland, nix-matlab, ... }:
     let
+      flake-overlays = [
+        nix-matlab.overlay
+      ];
+
       # use cache for building deploy-rs aarch64
       system = "aarch64-linux";
       # Unmodified nixpkgs
@@ -60,7 +69,7 @@
           system = "x86_64-linux";
 
           modules = [
-            ./system/machine/ps42
+            (import ./system/machine/ps42 flake-overlays)
             home-manager.nixosModules.home-manager
             {
               home-manager = {

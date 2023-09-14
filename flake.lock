@@ -36,6 +36,22 @@
         "type": "github"
       }
     },
+    "flake-compat_2": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1673956053,
+        "narHash": "sha256-4gtG9iQuiKITOjNQQeQIpoIB6b16fm+504Ch3sNKLd8=",
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "rev": "35bb57c0c8d8b62bbfd284272c928ceb64ddbde9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -124,6 +140,25 @@
         "type": "github"
       }
     },
+    "nix-matlab": {
+      "inputs": {
+        "flake-compat": "flake-compat_2",
+        "nixpkgs": "nixpkgs_3"
+      },
+      "locked": {
+        "lastModified": 1694617287,
+        "narHash": "sha256-aLuPaOuiGyE4gApkHDXNmGP1zq8Liiz4BSwE5oJRHTA=",
+        "owner": "doronbehar",
+        "repo": "nix-matlab",
+        "rev": "308ae526e11f81ca510d03ca6ccf9d93d1d6a323",
+        "type": "gitlab"
+      },
+      "original": {
+        "owner": "doronbehar",
+        "repo": "nix-matlab",
+        "type": "gitlab"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1671417167,
@@ -204,6 +239,20 @@
     },
     "nixpkgs_3": {
       "locked": {
+        "lastModified": 1694593561,
+        "narHash": "sha256-WSaIQZ5s9N9bDFkEMTw6P9eaZ9bv39ZhsiW12GtTNM0=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "1697b7d480449b01111e352021f46e5879e47643",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "type": "indirect"
+      }
+    },
+    "nixpkgs_4": {
+      "locked": {
         "lastModified": 1692463654,
         "narHash": "sha256-F8hZmsQINI+S6UROM4jyxAMbQLtzE44pI8Nk6NtMdao=",
         "owner": "NixOS",
@@ -224,6 +273,7 @@
         "home-manager": "home-manager",
         "home-manager-stable": "home-manager-stable",
         "hyprland": "hyprland",
+        "nix-matlab": "nix-matlab",
         "nixpkgs-stable": "nixpkgs-stable",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "sops-nix": "sops-nix"
@@ -231,7 +281,7 @@
     },
     "sops-nix": {
       "inputs": {
-        "nixpkgs": "nixpkgs_3",
+        "nixpkgs": "nixpkgs_4",
         "nixpkgs-stable": "nixpkgs-stable_2"
       },
       "locked": {

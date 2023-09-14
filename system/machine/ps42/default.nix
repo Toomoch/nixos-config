@@ -1,3 +1,5 @@
+flake-overlays:
+
 { inputs, config, pkgs, lib, ... }:
 {
   imports = [
@@ -26,6 +28,9 @@
 
       environment.systemPackages = with pkgs; [
         powertop
+        matlab
+        matlab-mlint
+        matlab-mex
       ];
 
       desktop.enable = true;
@@ -69,6 +74,7 @@
       # LTS Kernel
       boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_1;
 
+      nixpkgs.overlays = flake-overlays;
       
       #services.code-server.package = inputs.nixpkgs-stable.packages.x86_64-linux.code-server;
 
