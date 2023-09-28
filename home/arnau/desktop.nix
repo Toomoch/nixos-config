@@ -70,7 +70,16 @@
     package = pkgs.jdk11;
   };
 
+  programs.foot = {
+    enable = true;
+    settings = {
+      main = {
+        font = "Noto Sans Mono:size=7";
+        dpi-aware = "yes";
+      };
 
+    };
+  };
 
   programs.vscode = {
     enable = true;

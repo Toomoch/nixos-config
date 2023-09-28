@@ -36,7 +36,7 @@ in
     wrapperFeatures.gtk = true;
     config = rec {
       modifier = "Mod4";
-      terminal = "alacritty";
+      terminal = "foot";
 
 
       fonts = {
