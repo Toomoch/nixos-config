@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ inputs, config, lib, pkgs, ... }:
 with lib; let
   cfg = config.desktop;
 in
@@ -9,6 +9,7 @@ in
     flatpak.enable = mkEnableOption ("Whether to enable Flatpak support");
     gaming.enable = mkEnableOption ("Whether to enable gaming stuff");
     gaming.g29.enable = mkEnableOption ("Whether to enable G29 wheel support");
+    matlab.enable = mkEnableOption("Whether to enable MATLAB");
   };
 
   config = mkMerge [
@@ -122,6 +123,20 @@ in
         dedicatedServer.openFirewall =
           true; # Open ports in the firewall for Source Dedicated Server
       };
+
+
+    })
+    (mkIf cfg.matlab.enable {
+      environment.systemPackages = with pkgs; [
+        matlab
+        matlab-mlint
+        matlab-mex
+      ];
+      
+      nixpkgs.overlays = [
+        inputs.nix-matlab.overlay
+      ];
+      
 
 
     })

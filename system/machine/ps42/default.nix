@@ -1,5 +1,3 @@
-flake-overlays:
-
 { inputs, config, pkgs, lib, ... }:
 {
   imports = [
@@ -29,13 +27,11 @@ flake-overlays:
 
       environment.systemPackages = with pkgs; [
         powertop
-        matlab
-        matlab-mlint
-        matlab-mex
       ];
 
       desktop.enable = true;
       desktop.arctis9.enable = false;
+      desktop.matlab.enable = true;
       vm.podman.enable = true;
       vm.libvirtd.enable = true;
 
@@ -74,8 +70,6 @@ flake-overlays:
 
       # LTS Kernel
       boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_1;
-
-      nixpkgs.overlays = flake-overlays;
       
       #services.code-server.package = inputs.nixpkgs-stable.packages.x86_64-linux.code-server;
 
