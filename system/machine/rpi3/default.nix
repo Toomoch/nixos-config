@@ -4,6 +4,7 @@
     ./hardware-configuration.nix
     ../../common-noarch.nix
     ../../users/arnau.nix
+    ../../common-legacy.nix
   ];
 
   networking.hostName = "rpi3"; # Define your hostname.

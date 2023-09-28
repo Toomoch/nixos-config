@@ -6,6 +6,7 @@
     ./hardware-configuration.nix
     ../../users/arnau.nix
     ../../common-x86.nix
+    ../../common-unstable.nix
   ];
 
   # Enable VAAPI hardware acceleration

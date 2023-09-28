@@ -4,6 +4,7 @@
     ./hardware-configuration.nix
     ../../common-x86.nix
     ../../users/arnau.nix
+    ../../common-legacy.nix
   ];
 
   networking.hostName = "vm"; # Define your hostname.

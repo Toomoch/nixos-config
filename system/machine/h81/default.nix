@@ -5,6 +5,7 @@
     ../../common-x86.nix
     ../../users/arnau.nix
     ../../homelab.nix
+    ../../common-legacy.nix
   ];
 
   networking.hostName = "h81"; # Define your hostname.

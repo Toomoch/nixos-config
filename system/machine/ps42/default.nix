@@ -7,6 +7,7 @@ flake-overlays:
     ../../users/arnau.nix
     ../../users/aina.nix
     ../../common-x86.nix
+    ../../common-unstable.nix
   ];
 
   config = lib.mkMerge [
