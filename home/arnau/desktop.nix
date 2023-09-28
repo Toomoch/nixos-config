@@ -27,6 +27,7 @@
     scrcpy
     virt-manager
     gnome-network-displays
+    gitg
   ];
 
   xdg = {
