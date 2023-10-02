@@ -49,15 +49,6 @@ in
 
   programs.ssh = {
     enable = true;
-    matchBlocks = {
-      "ubuntu" = {
-        hostname = "192.168.122.16";
-        user = "alumne";
-        port = 22;
-        forwardX11 = true;
-        forwardX11Trusted = true;
-      };
-    };
   };
 
 }
