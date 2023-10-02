@@ -35,6 +35,17 @@
       };
     in
     {
+      homeConfigurations = {
+            "arnau@ingenieriamax" = home-manager.lib.homeManagerConfiguration {
+                pkgs = import nixpkgs-unstable { system = "x86_64-linux"; };
+                home.username = "arnau";
+                home.homeDirectory = "/home/arnau";
+                home.stateVersion = "23.05";
+                modules = [ ./home/arnau/default.nix ];
+                programs.home-manager.enable = true;
+            };
+        };
+
       nixosConfigurations = {
 
         b450 = nixpkgs-unstable.lib.nixosSystem {
