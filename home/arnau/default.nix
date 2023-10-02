@@ -5,11 +5,11 @@ in
 {
   xdg.enable = true;
 
-  programs.git = {
-    enable = true;
-    userName = "Toomoch";
-    userEmail = "vallsfustearnau@gmail.com";
-  };
+  #programs.git = {
+  #  enable = true;
+  #  userName = "Toomoch";
+  #  userEmail = "vallsfustearnau@gmail.com";
+  #};
 
   programs.direnv.enable = true;
   programs.direnv.nix-direnv.enable = true;
