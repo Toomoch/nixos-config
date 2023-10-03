@@ -166,7 +166,12 @@ in
         };
       };
     };
+  };
 
+  dconf.settings = {
+    "org/gnome/desktop/wm/preferences" = {
+      button-layout = "appmenu";
+    };
   };
 
   xdg.configFile."wpaperd/wallpaper.toml".text = ''

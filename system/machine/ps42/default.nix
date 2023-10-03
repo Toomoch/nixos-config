@@ -83,7 +83,7 @@
     })
     (lib.mkIf (config.specialisation != { }) {
       desktop.sway.enable = true;
-      desktop.hyprland.enable = true;
+      desktop.hyprland.enable = false;
       # Power management 
       services.tlp = {
         enable = true;

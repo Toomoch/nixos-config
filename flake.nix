@@ -36,17 +36,11 @@
     in
     {
       homeConfigurations = {
-            "arnau@ingenieriamax" = home-manager.lib.homeManagerConfiguration {
+            "arnau@ingenieriaarnauv" = home-manager.lib.homeManagerConfiguration {
                 pkgs = import nixpkgs-unstable { system = "x86_64-linux"; };
                 
                 modules = [ 
-                  ./home/arnau/default.nix
-                  {
-                    home.username = "arnau";
-                    home.homeDirectory = "/home/arnau";
-                    home.stateVersion = "23.05";
-                    programs.home-manager.enable = true;
-                  }
+                  ./home/arnau/machine/ingenieriaarnauv.nix
                 ];
                 
             };

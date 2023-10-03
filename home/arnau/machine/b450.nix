@@ -4,6 +4,7 @@
     ../default.nix
     ../desktop.nix
     ../sway
+    ../personal.nix
     inputs.sops-nix.homeManagerModules.sops
   ];
 

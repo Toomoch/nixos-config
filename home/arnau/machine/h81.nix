@@ -3,6 +3,7 @@
   imports = [
     ../default.nix
     ../homelab.nix
+    ../personal.nix
   ];
 
   sops = {

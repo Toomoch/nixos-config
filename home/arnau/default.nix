@@ -5,11 +5,19 @@ in
 {
   xdg.enable = true;
 
-  #programs.git = {
-  #  enable = true;
-  #  userName = "Toomoch";
-  #  userEmail = "vallsfustearnau@gmail.com";
-  #};
+  programs.git = {
+    enable = true;
+    aliases = {
+      co = "checkout";
+      ci = "commit";
+      a = "add";
+      aa = "add --all";
+      r = "restore";
+      s = "status";
+      l = "log --graph --all --decorate";
+      d = "diff";
+    };
+  };
 
   programs.direnv.enable = true;
   programs.direnv.nix-direnv.enable = true;
@@ -31,10 +39,6 @@ in
     shellAliases = {
       ls = "ls --human-readable --color=auto -la";
       ip = "ip -c";
-      gs = "git status";
-      gd = "git diff";
-      gl = "git log";
-      gaa = "git add --all";
       ".." = "cd ..";
       lsperms = "stat --format '%a'";
       upcdown = "rclone copy upc:/assig ~/assig/ --drive-acknowledge-abuse -P";
