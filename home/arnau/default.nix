@@ -3,6 +3,10 @@ let
   nixos-config = "~/projects/nixos-config";
 in
 {
+  home.username = "arnau";
+  home.homeDirectory = "/home/arnau";
+  programs.home-manager.enable = true;
+
   xdg.enable = true;
 
   programs.git = {
@@ -17,6 +21,10 @@ in
       l = "log --graph --all --decorate";
       d = "diff";
     };
+  };
+
+  programs.tmux = {
+    enable = true;
   };
 
   programs.direnv.enable = true;

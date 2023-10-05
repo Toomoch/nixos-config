@@ -5,8 +5,7 @@
   imports = [
     ./hardware-configuration.nix
     ../../users/arnau.nix
-    ../../common-x86.nix
-    ../../common-unstable.nix
+    ../../modules
   ];
 
   # Enable VAAPI hardware acceleration
@@ -17,6 +16,8 @@
     };
   };
 
+  common.enable = true;
+  common.x86.enable = true;
   desktop.enable = true;
   desktop.arctis9.enable = true;
   desktop.sway.enable = true;

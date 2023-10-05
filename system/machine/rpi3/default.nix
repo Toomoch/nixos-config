@@ -2,13 +2,14 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ../../common-noarch.nix
+    ../../modules
     ../../users/arnau.nix
-    ../../common-legacy.nix
   ];
 
   networking.hostName = "rpi3"; # Define your hostname.
 
+
+  common.enable = true;
   hardware.enableRedistributableFirmware = true;
   # Use the extlinux boot loader. (NixOS wants to enable GRUB by default)
   boot.loader.grub.enable = false;

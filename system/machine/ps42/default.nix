@@ -4,8 +4,7 @@
     ./hardware-configuration.nix
     ../../users/arnau.nix
     ../../users/aina.nix
-    ../../common-x86.nix
-    ../../common-unstable.nix
+    ../../modules
   ];
 
   config = lib.mkMerge [
@@ -29,6 +28,8 @@
         powertop
       ];
 
+      common.enable = true;
+      common.x86.enable = true;
       desktop.enable = true;
       desktop.arctis9.enable = false;
       desktop.matlab.enable = true;
@@ -70,7 +71,7 @@
 
       # LTS Kernel
       boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_1;
-      
+
       #services.code-server.package = inputs.nixpkgs-stable.packages.x86_64-linux.code-server;
 
       # This value determines the NixOS release from which the default

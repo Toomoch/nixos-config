@@ -2,9 +2,7 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ../../common-x86.nix
     ../../users/arnau.nix
-    ../../common-legacy.nix
   ];
 
   networking.hostName = "vm"; # Define your hostname.
@@ -17,6 +15,8 @@
     };
   };
 
+  common.enable = true;
+  common.x86.enable = true;
   vm.podman.enable = true;
 
   # This value determines the NixOS release from which the default

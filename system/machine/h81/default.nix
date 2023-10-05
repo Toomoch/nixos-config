@@ -2,10 +2,8 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ../../common-x86.nix
+    ../../modules
     ../../users/arnau.nix
-    ../../homelab.nix
-    ../../common-legacy.nix
   ];
 
   networking.hostName = "h81"; # Define your hostname.
@@ -18,6 +16,9 @@
     };
   };
 
+  common.enable = true;
+  common.x86.enable = true;
+  homelab.enable = true;
   vm.podman.enable = true;
   vm.libvirtd.enable = true;
   security.polkit.enable = true;
