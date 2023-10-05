@@ -46,11 +46,8 @@
         };
       };
 
-      nixosModules.default = { config }: {
-        imports = [
-          ./system/modules
-        ];
-      };
+      nixosModules.common = import ./system/modules;
+      
 
 
       nixosConfigurations = {
