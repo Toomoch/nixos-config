@@ -48,7 +48,7 @@
 
       nixosModules.default = { config }: {
         imports = [
-          ./system/common-noarch
+          ./system/modules
         ];
       };
 
