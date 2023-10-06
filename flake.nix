@@ -45,7 +45,11 @@
 
         };
       };
-
+      homeManagerModules = {
+        default = import ./home/arnau;
+        sway = import ./home/arnau/sway;
+        desktop = import ./home/arnau/desktop.nix;
+      };
       nixosModules.common = import ./system/modules;
       
 
