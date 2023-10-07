@@ -18,4 +18,4 @@ And then run:
 
 `git clone https://github.com/Toomoch/nixos-config.git && cd nixos-config`
 
-`home-manager switch --flake .#user@hostname`
+`home-manager switch --flake .#user`

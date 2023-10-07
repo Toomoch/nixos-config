@@ -36,27 +36,27 @@
     in
     {
       homeConfigurations = {
-        "arnau@ingenieriaarnauv" = home-manager.lib.homeManagerConfiguration {
+        "arnau" = home-manager.lib.homeManagerConfiguration {
           pkgs = import nixpkgs-unstable { system = "x86_64-linux"; };
 
           modules = [
-            ./home/arnau/machine/ingenieriaarnauv.nix
+            ./home/arnau
           ];
 
         };
       };
+
       homeManagerModules = {
         default = import ./home/arnau;
         sway = import ./home/arnau/sway;
         desktop = import ./home/arnau/desktop.nix;
       };
-      nixosModules.common = import ./system/modules;
-      
 
+      nixosModules.common = import ./system/modules;
 
       nixosConfigurations = {
-
         b450 = nixpkgs-unstable.lib.nixosSystem {
+
           system = "x86_64-linux";
 
           specialArgs = { inherit inputs; };
