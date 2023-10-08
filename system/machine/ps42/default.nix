@@ -50,6 +50,8 @@
         };
       };
 
+      boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+
       # Undervolt
       services.undervolt = {
         enable = true;
