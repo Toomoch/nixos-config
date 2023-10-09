@@ -43,7 +43,8 @@ in
         names = [ "Rubik" ];
         size = 12.0;
       };
-
+      
+      window.titlebar = false;
       floating.titlebar = true;
       colors.focused = {
         border = "#00fffaff";
