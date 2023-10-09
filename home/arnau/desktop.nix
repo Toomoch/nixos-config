@@ -76,7 +76,7 @@
     settings = {
       main = {
         font = "Noto Sans Mono:size=7";
-        dpi-aware = "yes";
+        dpi-aware = "no";
       };
 
     };
