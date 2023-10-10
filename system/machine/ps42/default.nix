@@ -72,7 +72,7 @@
       boot.kernelParams = [ "intel_iommu=on" ];
 
       # LTS Kernel
-      boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_1;
+      boot.kernelPackages = pkgs.linuxPackages_latest;
 
       #services.code-server.package = inputs.nixpkgs-stable.packages.x86_64-linux.code-server;
 
@@ -88,6 +88,7 @@
       desktop.sway.enable = true;
       desktop.hyprland.enable = false;
       # Power management 
+      services.auto-cpufreq.enable = true;
       services.tlp = {
         enable = true;
         settings = {
@@ -95,7 +96,7 @@
           SOUND_POWER_SAVE_ON_BAT = 1;
           RUNTIME_PM_ON_AC = "auto";
           PCIE_ASPM_ON_AC = "powersave";
-          PCIE_ASPM_ON_BAT = "powersave";
+          PCIE_ASPM_ON_BAT = "powersupersave";
         };
       };
     })
