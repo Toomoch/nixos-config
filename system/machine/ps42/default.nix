@@ -50,12 +50,17 @@
         };
       };
 
+      services.caddy = {
+        enable = true;
+        package = pkgs.callPackage ../../../packages/caddy { };
+      };
+
       boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
       # Undervolt
       services.undervolt = {
         enable = true;
-        coreOffset = -70;
+        coreOffset = -77;
         uncoreOffset = -20;
         gpuOffset = -30;
         analogioOffset = -20;
