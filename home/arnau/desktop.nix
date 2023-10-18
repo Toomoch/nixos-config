@@ -79,8 +79,8 @@
         dpi-aware = "no";
       };
       colors = {
-        background = "002b36";
-        foreground = "839496";
+        background = "242424";
+        foreground = "ffffff";
       };
     };
   };
