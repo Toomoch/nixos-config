@@ -78,7 +78,10 @@
         font = "Noto Sans Mono:size=12";
         dpi-aware = "no";
       };
-
+      colors = {
+        background = "002b36";
+        foreground = "839496";
+      };
     };
   };
 
