@@ -1,4 +1,4 @@
-{ inputs, pkgs, lib, ... }:
+{ inputs, config, pkgs, lib, ... }:
 {
   imports = [
     ../default.nix
@@ -6,7 +6,7 @@
     ../sway
     ../personal.nix
     #../hyprland
-  ];
+  ];  
 
   home.stateVersion = "22.11";
 }

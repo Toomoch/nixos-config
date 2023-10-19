@@ -1,11 +1,9 @@
 { inputs, config, lib, ... }:
 let
   hass_config = "${config.home.homeDirectory}/hass_config";
-  dashy_config = "${config.home.homeDirectory}/dashy.yml";
 in
 {
   imports = [
-    inputs.sops-nix.homeManagerModules.sops
   ];
 
   home.activation.create_service_config = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
@@ -59,56 +57,4 @@ in
     };
   };
 
-  sops = {
-    age.sshKeyPaths = [ "${config.home.homeDirectory}/.ssh/id_ed25519" ];
-    secrets.dashy = {
-      format = "binary";
-      sopsFile = ./dashy;
-      path = "${dashy_config}";
-    };
-  };
-
-  systemd.user.services.dashy = {
-    Unit = {
-      Description = "Podman container-dashy.service";
-      Documentation = [ "man:podman-generate-systemd(1)" ];
-      Wants = "network-online.target";
-      After = [ "network-online.target" "sops-nix.service" ];
-      RequiresMountsFor = "%t/containers";
-    };
-
-    Service = {
-      Environment = "PODMAN_SYSTEMD_UNIT=%n";
-      Restart = "on-failure";
-      TimeoutStopSec = 70;
-      ExecStart = '' 
-        /run/current-system/sw/bin/podman run \
-        --cgroups=no-conmon \
-        --rm \
-        --sdnotify=conmon \
-        --replace \
-        -d \
-        --name dashy \
-        -v ${dashy_config}:/app/public/conf.yml:ro \
-        -p 8080:80 \
-        --tz=local docker.io/lissy93/dashy:latest
-        '';
-      ExecStop = ''
-        /run/current-system/sw/bin/podman stop \
-        --ignore -t 20 dashy
-      '';
-      ExecStopPost = ''
-        /run/current-system/sw/bin/podman rm \
-        -f \
-        --ignore -t 20 dashy
-      '';
-      Type = "notify";
-      NotifyAccess = "all";
-      RestartForceExitStatus = 100;
-    };
-
-    Install = {
-      WantedBy = [ "default.target" ];
-    };
-  };
 }

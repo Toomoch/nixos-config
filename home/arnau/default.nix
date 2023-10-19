@@ -7,6 +7,8 @@ in
   home.homeDirectory = "/home/arnau";
   programs.home-manager.enable = true;
 
+  sops.age.sshKeyPaths = [ "${config.home.homeDirectory}/.ssh/id_ed25519" ];
+
   xdg.enable = true;
 
   programs.git = {

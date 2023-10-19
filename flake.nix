@@ -17,22 +17,13 @@
     hyprland.url = "github:hyprwm/Hyprland";
 
     nix-matlab.url = "gitlab:doronbehar/nix-matlab";
+
+    private.url = "git+ssh://git@github.com/Toomoch/nixos-config-private.git";
   };
 
-  outputs = inputs@{ self, nixpkgs-unstable, home-manager, nixpkgs-stable, home-manager-stable, sops-nix, deploy-rs, hyprland, nix-matlab, ... }:
+  outputs = inputs@{ self, nixpkgs-unstable, home-manager, nixpkgs-stable, home-manager-stable, sops-nix, deploy-rs, hyprland, nix-matlab, private, ... }:
     let
-      # use cache for building deploy-rs aarch64
       system = "aarch64-linux";
-      # Unmodified nixpkgs
-      pkgs = import nixpkgs-unstable { inherit system; };
-      # nixpkgs with deploy-rs overlay but force the nixpkgs package
-      deployPkgs = import nixpkgs-unstable {
-        inherit system;
-        overlays = [
-          deploy-rs.overlay
-          (self: super: { deploy-rs = { inherit (pkgs) deploy-rs; lib = super.deploy-rs.lib; }; })
-        ];
-      };
     in
     {
       homeConfigurations = {
@@ -80,7 +71,9 @@
         ps42 = nixpkgs-unstable.lib.nixosSystem {
           system = "x86_64-linux";
 
-          specialArgs = { inherit inputs; };
+          specialArgs = {
+            inherit inputs;
+          };
 
           modules = [
             ./system/machine/ps42
@@ -91,9 +84,11 @@
                 extraSpecialArgs = { inherit inputs; };
                 users.arnau.imports = [
                   ./home/arnau/machine/ps42.nix
+                  sops-nix.homeManagerModules.sops
                 ];
               };
             }
+            sops-nix.nixosModules.sops
           ];
         };
 
@@ -114,6 +109,7 @@
                 ];
               };
             }
+            sops-nix.nixosModules.sops
           ];
         };
 
@@ -142,6 +138,7 @@
                 ];
               };
             }
+            sops-nix.nixosModules.sops
           ];
         };
         rpi3 = nixpkgs-stable.lib.nixosSystem {
@@ -158,36 +155,67 @@
                 ];
               };
             }
+            sops-nix.nixosModules.sops
           ];
         };
       };
 
       # deploy-rs node configuration
       deploy.nodes = {
-        h81 = {
-          hostname = "h81.lan";
-          profiles.system = {
-            sshUser = "arnau";
-            sshOpts = [ "-t" ];
-            magicRollback = false;
-            path =
-              deploy-rs.lib.x86_64-linux.activate.nixos
-                self.nixosConfigurations.h81;
-            user = "root";
+        h81 =
+          let
+            # use cache for building deploy-rs aarch64
+            system = "x86_64-linux";
+            # Unmodified nixpkgs
+            pkgs = import nixpkgs-unstable { inherit system; };
+            # nixpkgs with deploy-rs overlay but force the nixpkgs package
+            deployPkgs = import nixpkgs-unstable {
+              inherit system;
+              overlays = [
+                deploy-rs.overlay
+                (self: super: { deploy-rs = { inherit (pkgs) deploy-rs; lib = super.deploy-rs.lib; }; })
+              ];
+            };
+          in
+          {
+            hostname = "h81.lan";
+            profiles.system = {
+              sshUser = "arnau";
+              sshOpts = [ "-t" ];
+              magicRollback = false;
+              path =
+                deployPkgs.deploy-rs.lib.activate.nixos
+                  self.nixosConfigurations.h81;
+              user = "root";
+            };
           };
-        };
-        rpi3 = {
-          hostname = "rpi3.lan";
-          profiles.system = {
-            sshUser = "arnau";
-            sshOpts = [ "-t" ];
-            magicRollback = false;
-            path =
-              deployPkgs.deploy-rs.lib.activate.nixos
-                self.nixosConfigurations.rpi3;
-            user = "root";
+        rpi3 =
+          let
+            # use cache for building deploy-rs aarch64
+            system = "aarch64-linux";
+            # Unmodified nixpkgs
+            pkgs = import nixpkgs-unstable { inherit system; };
+            # nixpkgs with deploy-rs overlay but force the nixpkgs package
+            deployPkgs = import nixpkgs-unstable {
+              inherit system;
+              overlays = [
+                deploy-rs.overlay
+                (self: super: { deploy-rs = { inherit (pkgs) deploy-rs; lib = super.deploy-rs.lib; }; })
+              ];
+            };
+          in
+          {
+            hostname = "rpi3.lan";
+            profiles.system = {
+              sshUser = "arnau";
+              sshOpts = [ "-t" ];
+              magicRollback = false;
+              path =
+                deployPkgs.deploy-rs.lib.activate.nixos
+                  self.nixosConfigurations.rpi3;
+              user = "root";
+            };
           };
-        };
       };
     };
 }

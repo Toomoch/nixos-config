@@ -37,11 +37,6 @@
   # Enable the IOMMU
   boot.kernelParams = [ "amd_iommu=on" ];
 
-  # Sops
-  sops.defaultSopsFile = "/root/.sops/secrets/example.yaml";
-  sops.validateSopsFiles = false;
-  sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-  sops.secrets."arnau_passwd" = {};
   # LTS Kernel
   boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_1;
 

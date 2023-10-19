@@ -50,11 +50,6 @@
         };
       };
 
-      services.caddy = {
-        enable = true;
-        package = pkgs.callPackage ../../../packages/caddy { };
-      };
-
       boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
       # Undervolt
@@ -77,9 +72,7 @@
       boot.kernelParams = [ "intel_iommu=on" ];
 
       # LTS Kernel
-      boot.kernelPackages = pkgs.linuxPackages_latest;
-
-      #services.code-server.package = inputs.nixpkgs-stable.packages.x86_64-linux.code-server;
+      boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_1;
 
       # This value determines the NixOS release from which the default
       # settings for stateful data, like file locations and database versions

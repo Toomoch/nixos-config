@@ -106,6 +106,7 @@ in
       # networking.firewall.allowedUDPPorts = [ ... ];
       # Or disable the firewall altogether.
       # networking.firewall.enable = false;
+      sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
 
     })
     (mkIf cfg.x86.enable {

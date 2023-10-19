@@ -4,6 +4,7 @@ with lib; let
   nginx-data = "/var/lib/nginx/data";
   nginx-letsencrypt = "/var/lib/nginx/letsencrypt";
   jmusicbot = "/var/lib/jmusicbot";
+  dashy_config = "${inputs.private}/configfiles/dashy.yml";
 in
 {
   options.homelab = {
@@ -40,23 +41,34 @@ in
         8080 #dashy
         9090 #cockpit
         4444 #code-server
-        81 #nginx-proxy-manager
       ];
 
+      #Caddy reverse proxy
+      services.caddy = {
+        enable = true;
+        package = pkgs.callPackage ../packages/caddy-plugins.nix { };
+        extraConfig = builtins.readFile ("${inputs.private}/configfiles/Caddyfile");
+      };
+
+      sops.secrets."duckdns/token".sopsFile = "${inputs.private}/secrets/duckdns.env";
+      sops.secrets."duckdns/token".format = "dotenv";
+
+      systemd.services.caddy.serviceConfig = {
+        EnvironmentFile = "${config.sops.secrets."duckdns/token".path}";
+      };
+
+      #Dashy
       virtualisation.oci-containers.backend = "docker";
-      virtualisation.oci-containers.containers.nginx = {
-        image = "docker.io/jc21/nginx-proxy-manager:latest";
+      virtualisation.oci-containers.containers.dashy = {
+        image = "docker.io/lissy93/dashy:latest";
         ports = [
-          "80:80"
-          "443:443"
-          "81:81"
+          "8080:80"
         ];
         volumes = [
-          "${nginx-data}:/data"
-          "${nginx-letsencrypt}:/etc/letsencrypt"
+          "${dashy_config}:/app/public/conf.yml:ro"
         ];
       };
-      systemd.services."docker-nginx" = {
+      systemd.services."docker-dashy" = {
         serviceConfig = {
           DynamicUser = true;
           SupplementaryGroups = "docker";
