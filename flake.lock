@@ -381,11 +381,11 @@
         "sops-nix": "sops-nix"
       },
       "locked": {
-        "lastModified": 1697884977,
-        "narHash": "sha256-MDV4SgZNfbjXAUhL75q/NdJX1ZHAiBAgNXMlnpIqwMM=",
+        "lastModified": 1697910310,
+        "narHash": "sha256-2+bOB58Y4dAa5i9sq4AtmJMcK5R2cAW83Ng44EGd6Pg=",
         "ref": "refs/heads/master",
-        "rev": "826442f2771efa6aa35f95cfb4cb1f5eac3ce6d6",
-        "revCount": 6,
+        "rev": "cfc8b1e4b8c0139737d4e47cbe98de7607458f59",
+        "revCount": 7,
         "type": "git",
         "url": "ssh://git@github.com/Toomoch/nixos-config-private.git"
       },
