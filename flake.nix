@@ -61,6 +61,7 @@
                 extraSpecialArgs = { inherit inputs; };
                 users.arnau.imports = [
                   ./home/arnau/machine/b450.nix
+                  sops-nix.homeManagerModules.sops
                 ];
               };
             }
@@ -135,6 +136,7 @@
                 extraSpecialArgs = { inherit inputs; };
                 users.arnau.imports = [
                   ./home/arnau/machine/h81.nix
+                  sops-nix.homeManagerModules.sops
                 ];
               };
             }
@@ -178,7 +180,7 @@
             };
           in
           {
-            hostname = "h81.lan";
+            hostname = "h81.casa.lan";
             profiles.system = {
               sshUser = "arnau";
               sshOpts = [ "-t" ];

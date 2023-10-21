@@ -41,6 +41,8 @@ in
         8080 #dashy
         9090 #cockpit
         4444 #code-server
+        80 #caddy
+        443 #caddy
       ];
 
       #Caddy reverse proxy
