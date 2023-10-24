@@ -10,7 +10,6 @@
     shfmt
     erlang
     gnumake
-    jetbrains.idea-community
     graphviz
     openfortivpn
     sops

@@ -1,6 +1,15 @@
 { config, lib, pkgs, ... }:
 with lib; let
   cfg = config.desktop;
+  discover-wrapped = pkgs.symlinkJoin
+    {
+      name = "discover-flatpak-backend";
+      paths = [ pkgs.libsForQt5.discover ];
+      buildInputs = [ pkgs.makeWrapper ];
+      postBuild = ''
+        wrapProgram $out/bin/plasma-discover --add-flags "--backends flatpak"
+      '';
+    };
 in
 {
   options.desktop = {
@@ -22,6 +31,10 @@ in
       services.xserver.desktopManager.plasma5.enable = true;
       services.xserver.displayManager.defaultSession = "plasmawayland";
       programs.dconf.enable = true;
+
+      environment.systemPackages = with pkgs; [
+        discover-wrapped
+      ];
     })
   ];
 }
