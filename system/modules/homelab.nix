@@ -1,10 +1,9 @@
 { inputs, config, lib, pkgs, pkgs-unstable, ... }:
 with lib; let
   cfg = config.homelab;
-  nginx-data = "/var/lib/nginx/data";
-  nginx-letsencrypt = "/var/lib/nginx/letsencrypt";
   jmusicbot = "/var/lib/jmusicbot";
   dashy_config = "${inputs.private}/configfiles/dashy.yml";
+  hass_config = "/var/lib/hass";
 in
 {
   options.homelab = {
@@ -20,8 +19,6 @@ in
 
       systemd.tmpfiles.rules = [
         "d ${jmusicbot} 0755 root root"
-        "d ${nginx-data} 0755 root root"
-        "d ${nginx-letsencrypt} 0755 root root"
       ];
       services.jmusicbot.enable = true;
 
@@ -61,15 +58,37 @@ in
 
       #Dashy
       virtualisation.oci-containers.backend = "docker";
-      virtualisation.oci-containers.containers.dashy = {
-        image = "docker.io/lissy93/dashy:latest";
-        ports = [
-          "8080:80"
-        ];
-        volumes = [
-          "${dashy_config}:/app/public/conf.yml:ro"
-        ];
+      virtualisation.oci-containers.containers = {
+        dashy = {
+          image = "docker.io/lissy93/dashy:latest";
+          ports = [
+            "8080:80"
+          ];
+          volumes = [
+            "${dashy_config}:/app/public/conf.yml:ro"
+          ];
+        };
+
+        homeassistant = {
+          image = "ghcr.io/home-assistant/home-assistant:stable";
+          ports = [
+            "8123:8123"
+          ];
+          volumes = [
+            "${hass_config}:/config:Z"
+          ];
+          environment = {
+            TZ = "Europe/Madrid";
+          };
+          extraOptions = [
+            "--network=host"
+            "--device=/dev/serial/by-id/usb-1a86_USB_Serial-if00-port0:/dev/ttyUSB0:rw"
+          ];
+
+        };
       };
+
+
       systemd.services."docker-dashy" = {
         serviceConfig = {
           DynamicUser = true;

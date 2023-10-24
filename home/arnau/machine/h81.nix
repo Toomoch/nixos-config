@@ -2,7 +2,7 @@
 {
   imports = [
     ../default.nix
-    ../homelab.nix
+    #../homelab.nix
     ../personal.nix
   ];
 
