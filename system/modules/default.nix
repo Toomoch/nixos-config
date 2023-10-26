@@ -1,4 +1,4 @@
-inputs: { ...}:
+{ ...}:
 {
   imports = [
     ./desktop.nix
@@ -6,6 +6,5 @@ inputs: { ...}:
     ./sway.nix
     ./virtualisation.nix
     ./common.nix
-    ./homelab.nix
   ];
 }

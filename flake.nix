@@ -43,7 +43,8 @@
         desktop = import ./home/arnau/desktop.nix;
       };
 
-      nixosModules.common = import ./system/modules inputs;
+      nixosModules.common = import ./system/modules;
+      nixosModules.homelab = import ./system/modules/homelab.nix;
       nixosConfigurations = {
         b450 = nixpkgs-unstable.lib.nixosSystem {
 
@@ -132,6 +133,7 @@
           modules = [
             ./system/machine/h81
             self.nixosModules.common
+            self.nixosModules.homelab
             home-manager-stable.nixosModules.home-manager
             {
               home-manager = {
