@@ -1,4 +1,4 @@
-{ ...}:
+inputs: { sops-nix, ...}:
 {
   imports = [
     ./desktop.nix
