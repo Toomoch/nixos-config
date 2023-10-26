@@ -4,7 +4,6 @@
     ./hardware-configuration.nix
     ../../users/arnau.nix
     ../../users/aina.nix
-    ../../modules
   ];
 
   config = lib.mkMerge [
@@ -35,6 +34,7 @@
       desktop.matlab.enable = true;
       vm.podman.enable = true;
       vm.libvirtd.enable = true;
+
 
       # Enable VAAPI hardware acceleration
       hardware.opengl = {

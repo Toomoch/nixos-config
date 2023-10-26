@@ -5,7 +5,6 @@
   imports = [
     ./hardware-configuration.nix
     ../../users/arnau.nix
-    ../../modules
   ];
 
   # Enable VAAPI hardware acceleration

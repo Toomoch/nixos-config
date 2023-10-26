@@ -3,7 +3,6 @@
   imports = [
     ./hardware-configuration.nix
     ../../users/arnau.nix
-    ../../modules
   ];
 
   networking.hostName = "vm"; # Define your hostname.

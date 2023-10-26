@@ -1,4 +1,4 @@
-{ inputs, config, lib, pkgs, pkgs-unstable, ... }:
+{ inputs, config, lib, pkgs, ... }:
 with lib; let
   cfg = config.homelab;
   jmusicbot = "/var/lib/jmusicbot";
@@ -22,9 +22,13 @@ in
       ];
       services.jmusicbot.enable = true;
 
+      nixpkgs.config.permittedInsecurePackages = [
+        "nodejs-16.20.2"
+      ];
+
       services.code-server.enable = true;
       services.code-server.user = "arnau";
-      services.code-server.package = pkgs-unstable.code-server;
+      #services.code-server.package = pkgs-unstable.code-server;
       services.code-server.host = "0.0.0.0";
       services.code-server.auth = "none";
       systemd.services."code-server" = {

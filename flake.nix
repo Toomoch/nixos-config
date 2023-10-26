@@ -43,8 +43,7 @@
         desktop = import ./home/arnau/desktop.nix;
       };
 
-      nixosModules.common = import ./system/modules inputs; 
-
+      nixosModules.common = import ./system/modules {inherit  inputs;};
       nixosConfigurations = {
         b450 = nixpkgs-unstable.lib.nixosSystem {
 
@@ -54,6 +53,7 @@
 
           modules = [
             ./system/machine/b450
+            self.nixosModules.common
             home-manager.nixosModules.home-manager
             {
               home-manager = {
@@ -78,6 +78,7 @@
 
           modules = [
             ./system/machine/ps42
+            self.nixosModules.common
             home-manager.nixosModules.home-manager
             {
               home-manager = {
@@ -100,6 +101,7 @@
 
           modules = [
             ./system/machine/vm
+            self.nixosModules.common
             home-manager-stable.nixosModules.home-manager
             {
               home-manager = {
@@ -129,6 +131,7 @@
 
           modules = [
             ./system/machine/h81
+            self.nixosModules.common
             home-manager-stable.nixosModules.home-manager
             {
               home-manager = {
@@ -147,6 +150,7 @@
           system = "aarch64-linux";
           modules = [
             ./system/machine/rpi3
+            self.nixosModules.common
             home-manager-stable.nixosModules.home-manager
             {
               home-manager = {
