@@ -43,7 +43,7 @@
         desktop = import ./home/arnau/desktop.nix;
       };
 
-      nixosModules.common = import ./system/modules {inherit  inputs;};
+      nixosModules.common = import ./system/modules inputs;
       nixosConfigurations = {
         b450 = nixpkgs-unstable.lib.nixosSystem {
 
