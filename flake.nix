@@ -23,7 +23,11 @@
 
   outputs = inputs@{ self, nixpkgs-unstable, home-manager, nixpkgs-stable, home-manager-stable, sops-nix, deploy-rs, hyprland, nix-matlab, private, ... }:
     let
-      system = "aarch64-linux";
+      workpath = "${private}/system/machine/";
+      workpathhost = workpath + "/hostname";
+      workpathmod = workpath + "/work.nix";
+      workpathhard = workpath + "/work-hardware-configuration.nix";
+
     in
     {
       homeConfigurations = {
@@ -110,6 +114,34 @@
                 extraSpecialArgs = { inherit inputs; };
                 users.arnau.imports = [
                   ./home/arnau/machine/vm.nix
+                  sops-nix.homeManagerModules.sops
+                ];
+              };
+            }
+            sops-nix.nixosModules.sops
+          ];
+        };
+
+        "${builtins.readFile workpathhost}" = nixpkgs-stable.lib.nixosSystem {
+          system = "x86_64-linux";
+
+          specialArgs = { inherit inputs; };
+
+          modules = [
+            workpathmod
+            workpathhard
+            self.nixosModules.common
+            home-manager-stable.nixosModules.home-manager
+            {
+              home-manager = {
+                useGlobalPkgs = true;
+                extraSpecialArgs = { inherit inputs; };
+                users.arnau.imports = [
+                  self.homeManagerModules.default
+                  self.homeManagerModules.sway
+                  self.homeManagerModules.desktop
+                  sops-nix.homeManagerModules.sops
+                  "${private}/home/arnau"
                 ];
               };
             }
