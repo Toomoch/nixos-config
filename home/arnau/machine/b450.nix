@@ -5,6 +5,7 @@
     ../desktop.nix
     ../sway
     ../personal.nix
+    ../devtools.nix
   ];
 
   home.stateVersion = "22.11";

@@ -43,6 +43,7 @@
         default = import ./home/arnau;
         sway = import ./home/arnau/sway;
         desktop = import ./home/arnau/desktop.nix;
+        devtools = import ./home/arnau/devtools.nix;
       };
 
       nixosModules.common = import ./system/modules { inherit inputs; };
@@ -138,6 +139,7 @@
                   self.homeManagerModules.default
                   self.homeManagerModules.sway
                   self.homeManagerModules.desktop
+                  self.homeManagerModules.devtools
                   sops-nix.homeManagerModules.sops
                   workpathhome
                 ];

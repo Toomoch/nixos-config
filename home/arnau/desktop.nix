@@ -1,21 +1,6 @@
 { config, pkgs, lib, ... }:
 {
   home.packages = with pkgs; [
-    #dev tools
-    llvmPackages_15.libclang
-    nixpkgs-fmt
-    nixfmt
-    nil
-    shellcheck
-    shfmt
-    erlang
-    gnumake
-    graphviz
-    openfortivpn
-    sops
-    ansible
-    just
-
     #desktop apps
     gnome.nautilus
     gnome.gnome-disk-utility
