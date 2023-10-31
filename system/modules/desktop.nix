@@ -137,6 +137,7 @@ in
 
       hardware.new-lg4ff.enable = true;
       services.udev.packages = with pkgs; [ oversteer ];
+#TODO try with a systemd service, https://unix.stackexchange.com/questions/436666/run-service-after-ttyusb0-becomes-available
       services.udev.extraRules = ''
         ACTION=="add", SUBSYSTEM=="hid", ATTRS{idVendor}=="046d", ATTRS{idProduct}=="c24f", RUN+="${pkgs.at}/bin/at -M -f ${g29init}/bin/g29init now"
       '';
