@@ -14,6 +14,7 @@
     openfortivpn
     sops
     ansible
+    ansible-lint
     just
     tio
   ];
