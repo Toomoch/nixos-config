@@ -1,6 +1,10 @@
 { inputs, config, lib, pkgs, ... }:
 with lib; let
   cfg = config.desktop;
+  g29init = pkgs.writeShellScriptBin "g29init" ''
+    ${pkgs.coreutils-full}/bin/sleep 8
+    ${pkgs.oversteer}/bin/oversteer --range 300
+  '';
 in
 {
   options.desktop = {
@@ -9,7 +13,7 @@ in
     flatpak.enable = mkEnableOption ("Whether to enable Flatpak support");
     gaming.enable = mkEnableOption ("Whether to enable gaming stuff");
     gaming.g29.enable = mkEnableOption ("Whether to enable G29 wheel support");
-    matlab.enable = mkEnableOption("Whether to enable MATLAB");
+    matlab.enable = mkEnableOption ("Whether to enable MATLAB");
   };
 
   config = mkMerge [
@@ -20,7 +24,7 @@ in
       #
       #services.udev.extraRules = optionalString cfg.arctis9.enable ''
       #  KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="1038", ATTRS{idProduct}=="12c2", TAG+="uaccess"'';
-      
+
       environment.systemPackages = with pkgs; [
         vulkan-tools
         glxinfo
@@ -110,10 +114,7 @@ in
         obs-studio
         webcord
         protonup-qt
-      ] ++ optional cfg.gaming.g29.enable oversteer;
-      #G29 wheel
-      hardware.new-lg4ff.enable = cfg.gaming.g29.enable;
-      services.udev.packages = with pkgs; [ ] ++ optional cfg.gaming.g29.enable oversteer;
+      ];
 
       #Steam
       programs.steam = {
@@ -126,17 +127,32 @@ in
 
 
     })
+    (mkIf cfg.gaming.g29.enable {
+      environment.systemPackages = with pkgs; [
+        oversteer
+        at
+        g29init
+      ];
+      services.atd.enable = true;
+
+      hardware.new-lg4ff.enable = true;
+      services.udev.packages = with pkgs; [ oversteer ];
+      services.udev.extraRules = ''
+        ACTION=="add", SUBSYSTEM=="hid", ATTRS{idVendor}=="046d", ATTRS{idProduct}=="c24f", RUN+="${pkgs.at}/bin/at -M -f ${g29init}/bin/g29init now"
+      '';
+
+    })
     (mkIf cfg.matlab.enable {
       environment.systemPackages = with pkgs; [
         matlab
         matlab-mlint
         matlab-mex
       ];
-      
+
       nixpkgs.overlays = [
         inputs.nix-matlab.overlay
       ];
-      
+
 
 
     })

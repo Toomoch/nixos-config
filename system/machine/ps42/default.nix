@@ -13,6 +13,7 @@
       specialisation.kde = {
         configuration = {
           desktop.kde.enable = true;
+          desktop.flatpak.enable = true;
           environment.systemPackages = with pkgs; [
             netbeans
             libsForQt5.kpat

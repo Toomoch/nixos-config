@@ -4,6 +4,7 @@ with lib; let
   jmusicbot = "/var/lib/jmusicbot";
   dashy_config = "${inputs.private}/configfiles/dashy.yml";
   hass_config = "/var/lib/hass";
+  domain = "${builtins.readFile "${inputs.private}/secrets/domain"}";
 in
 {
   options.homelab = {
@@ -17,7 +18,7 @@ in
         openFirewall = true;
         settings = {
           WebService = {
-            Origins = "https://cockpit.domain wss://cockpit.domain";
+            Origins = "https://cockpit.${domain} wss://cockpit.${domain}";
             ProtocolHeader = "X-Forwarded-Proto";
           };
         };

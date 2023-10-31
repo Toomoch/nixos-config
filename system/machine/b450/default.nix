@@ -24,9 +24,14 @@
   desktop.flatpak.enable = true;
   desktop.gaming.enable = true;
   desktop.gaming.g29.enable = true;
+  desktop.matlab.enable = true;
   vm.podman.enable = true;
   vm.libvirtd.enable = true;
   vm.docker.enable = true;
+
+  nixpkgs.config.permittedInsecurePackages = [
+    "electron-24.8.6"
+  ];
 
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 

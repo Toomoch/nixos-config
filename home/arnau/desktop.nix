@@ -13,6 +13,8 @@
     graphviz
     openfortivpn
     sops
+    ansible
+    just
 
     #desktop apps
     gnome.nautilus

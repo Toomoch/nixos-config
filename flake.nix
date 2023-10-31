@@ -24,9 +24,7 @@
   outputs = inputs@{ self, nixpkgs-unstable, home-manager, nixpkgs-stable, home-manager-stable, sops-nix, deploy-rs, hyprland, nix-matlab, private, ... }:
     let
       workpath = "${private}/system/machine/";
-      workpathhost = workpath + "/hostname";
-      workpathmod = workpath + "/work.nix";
-      workpathhard = workpath + "/work-hardware-configuration.nix";
+      workpathhome = "${private}/home/arnau";
 
     in
     {
@@ -47,7 +45,7 @@
         desktop = import ./home/arnau/desktop.nix;
       };
 
-      nixosModules.common = import ./system/modules {inherit inputs;};
+      nixosModules.common = import ./system/modules { inherit inputs; };
       nixosModules.homelab = import ./system/modules/homelab.nix;
       nixosConfigurations = {
         b450 = nixpkgs-unstable.lib.nixosSystem {
@@ -122,14 +120,14 @@
           ];
         };
 
-        "${builtins.readFile workpathhost}" = nixpkgs-stable.lib.nixosSystem {
+        "${builtins.readFile (workpath + "/hostname")}" = nixpkgs-stable.lib.nixosSystem {
           system = "x86_64-linux";
 
           specialArgs = { inherit inputs; };
 
           modules = [
-            workpathmod
-            workpathhard
+            (workpath + "/work.nix")
+            (workpath + "/work-hardware-configuration.nix")
             self.nixosModules.common
             home-manager-stable.nixosModules.home-manager
             {
@@ -141,7 +139,7 @@
                   self.homeManagerModules.sway
                   self.homeManagerModules.desktop
                   sops-nix.homeManagerModules.sops
-                  "${private}/home/arnau"
+                  workpathhome
                 ];
               };
             }
