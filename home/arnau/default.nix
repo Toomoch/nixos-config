@@ -1,13 +1,15 @@
 { config, pkgs, lib, ... }:
 let
   nixos-config = "~/projects/nixos-config";
+  sshpath = "${config.home.homeDirectory}/.ssh/id_ed25519";
+  sshfix = "NIX_SSHOPTS=-i ${sshpath}";
 in
 {
   home.username = "arnau";
   home.homeDirectory = "/home/arnau";
   programs.home-manager.enable = true;
 
-  sops.age.sshKeyPaths = [ "${config.home.homeDirectory}/.ssh/id_ed25519" ];
+  sops.age.sshKeyPaths = [ "${sshpath}" ];
 
   xdg.enable = true;
 
@@ -55,11 +57,11 @@ in
       upcup = "rclone copy ~/assig/ upc:/assig/ --drive-acknowledge-abuse -P";
       upcsync = "upcdown && upcup";
       upclink = "${config.home.homeDirectory}/scripts/upclink.sh";
-      nrswitch = "cd ${nixos-config} && git add . && sudo nixos-rebuild switch --flake . && cd -";
-      nrboot = "cd ${nixos-config} && git add . && sudo nixos-rebuild boot --flake . && cd -";
-      nrtest = "cd ${nixos-config} && git add . && sudo nixos-rebuild test --flake . && cd -";
-      nrbuild = "cd ${nixos-config} && git add . && sudo nixos-rebuild build --flake . && cd -";
-      nu = "cd ${nixos-config} && git add . && sudo nix flake update && cd -";
+      nrswitch = "cd ${nixos-config} && git add . && sudo '${sshfix}' nixos-rebuild switch --flake . && cd -";
+      nrboot = "cd ${nixos-config} && git add . && sudo '${sshfix}' nixos-rebuild boot --flake . && cd -";
+      nrtest = "cd ${nixos-config} && git add . && sudo '${sshfix}' nixos-rebuild test --flake . && cd -";
+      nrbuild = "cd ${nixos-config} && git add . && nixos-rebuild build --flake . && cd -";
+      nu = "cd ${nixos-config} && git add . && nix flake update && cd -";
       sshgen = "ssh-keygen -t ed25519 -C 'vallsfustearnau@gmail.com'";
     };
 
