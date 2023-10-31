@@ -15,6 +15,12 @@ in
       services.cockpit = {
         enable = true;
         openFirewall = true;
+        settings = {
+          WebService = {
+            Origins = "https://cockpit.domain wss://cockpit.domain";
+            ProtocolHeader = "X-Forwarded-Proto";
+          };
+        };
       };
 
       systemd.tmpfiles.rules = [
