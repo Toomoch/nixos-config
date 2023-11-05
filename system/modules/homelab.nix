@@ -45,10 +45,10 @@ in
       };
 
       networking.firewall.allowedTCPPorts = [
-        8123 #HomeAssistant
-        8080 #dashy
-        9090 #cockpit
-        4444 #code-server
+        #8123 HomeAssistant
+        #8080 dashy
+        #9090 cockpit
+        #4444 code-server
         80 #caddy
         443 #caddy
       ];
