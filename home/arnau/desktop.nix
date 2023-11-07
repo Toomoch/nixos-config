@@ -17,6 +17,11 @@
     gitg
   ];
 
+  home.file."${config.xdg.userDirs.pictures}/wallpapers/" = {
+    source = ./wallpapers;
+    recursive = true;
+  };
+
   xdg = {
     enable = true;
     userDirs = {
