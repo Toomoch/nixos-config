@@ -17,5 +17,6 @@
     ansible-lint
     just
     tio
+    python3
   ];
 }
