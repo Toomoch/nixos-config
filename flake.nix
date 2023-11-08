@@ -14,14 +14,14 @@
 
     sops-nix.url = "github:Mic92/sops-nix";
     deploy-rs.url = "github:serokell/deploy-rs";
-    hyprland.url = "github:hyprwm/Hyprland";
+    #hyprland.url = "github:hyprwm/Hyprland";
 
     nix-matlab.url = "gitlab:doronbehar/nix-matlab";
 
     private.url = "git+ssh://git@github.com/Toomoch/nixos-config-private.git";
   };
 
-  outputs = inputs@{ self, nixpkgs-unstable, home-manager, nixpkgs-stable, home-manager-stable, sops-nix, deploy-rs, hyprland, nix-matlab, private, ... }:
+  outputs = inputs@{ self, nixpkgs-unstable, home-manager, nixpkgs-stable, home-manager-stable, sops-nix, deploy-rs, nix-matlab, private, ... }:
     let
       workpath = "${private}/system/machine/";
       workpathhome = "${private}/home/arnau";

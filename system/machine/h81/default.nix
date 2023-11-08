@@ -1,8 +1,14 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, pkgs-unstable, ... }:
 {
   imports = [
     ./hardware-configuration.nix
     ../../users/arnau.nix
+  ];
+
+  nixpkgs.overlays = [
+    (self: super: {
+      code-server = pkgs-unstable.code-server;
+    })
   ];
 
   networking.hostName = "h81"; # Define your hostname.
