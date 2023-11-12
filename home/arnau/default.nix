@@ -62,7 +62,7 @@ in
       nrtest = "cd ${nixos-config} && git add . && sudo '${sshfix}' nixos-rebuild test --flake . && cd -";
       nrbuild = "cd ${nixos-config} && git add . && nixos-rebuild build --flake . && cd -";
       nu = "cd ${nixos-config} && git add . && nix flake update && cd -";
-      sshgen = "ssh-keygen -t ed25519 -C 'vallsfustearnau@gmail.com'";
+      sshgen = "ssh-keygen -t ed25519 -C $USER@$HOSTNAME";
     };
 
   };
