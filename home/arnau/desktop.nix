@@ -15,6 +15,7 @@
     gnome-network-displays
     logseq
     gitg
+    thunderbird
   ];
 
   home.file."${config.xdg.userDirs.pictures}/wallpapers/" = {
