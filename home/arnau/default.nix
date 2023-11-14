@@ -74,6 +74,9 @@ in
         TERM = "xterm-256color";
       };
     };
+    includes = [
+      "config.d/*"
+    ];
   };
 
 }
