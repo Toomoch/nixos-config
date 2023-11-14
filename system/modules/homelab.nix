@@ -33,6 +33,8 @@ in
         "nodejs-16.20.2"
       ];
 
+      services.zerotierone.enable = true;
+
       services.code-server.enable = true;
       services.code-server.user = "arnau";
       #services.code-server.package = pkgs-unstable.code-server;
@@ -40,7 +42,6 @@ in
       services.code-server.auth = "none";
       systemd.services."code-server" = {
         serviceConfig = {
-          PrivateDevices = true;
         };
       };
 
@@ -49,6 +50,7 @@ in
         #8080 dashy
         #9090 cockpit
         #4444 code-server
+        5900
         80 #caddy
         443 #caddy
       ];

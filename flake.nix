@@ -158,6 +158,7 @@
               config.permittedInsecurePackages = [
                 "nodejs-16.20.2"
               ];
+              config.allowUnfree = true;
             };
             inherit inputs;
           };
