@@ -18,5 +18,6 @@
     just
     tio
     python3
+    texlive
   ];
 }
