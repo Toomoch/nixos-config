@@ -2,9 +2,9 @@
   description = "Arnau NixOS configs";
 
   inputs = {
-    nixpkgs-unstable.url = "nixpkgs/nixos-unstable";
+    nixpkgs.url = "nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     nixpkgs-stable.url = "nixpkgs/nixos-23.05";
     home-manager-stable = {
@@ -21,7 +21,7 @@
     private.url = "git+ssh://git@github.com/Toomoch/nixos-config-private.git";
   };
 
-  outputs = inputs@{ self, nixpkgs-unstable, home-manager, nixpkgs-stable, home-manager-stable, sops-nix, deploy-rs, nix-matlab, private, ... }:
+  outputs = inputs@{ self, nixpkgs, home-manager, nixpkgs-stable, home-manager-stable, sops-nix, deploy-rs, nix-matlab, private, ... }:
     let
       workpath = "${private}/system/machine/";
       workpathhome = "${private}/home/arnau";
@@ -30,7 +30,7 @@
     {
       homeConfigurations = {
         "arnau" = home-manager.lib.homeManagerConfiguration {
-          pkgs = import nixpkgs-unstable { system = "x86_64-linux"; };
+          pkgs = import nixpkgs { system = "x86_64-linux"; };
 
           modules = [
             ./home/arnau
@@ -49,7 +49,7 @@
       nixosModules.common = import ./system/modules { inherit inputs; };
       nixosModules.homelab = import ./system/modules/homelab.nix;
       nixosConfigurations = {
-        b450 = nixpkgs-unstable.lib.nixosSystem {
+        b450 = nixpkgs.lib.nixosSystem {
 
           system = "x86_64-linux";
 
@@ -73,7 +73,7 @@
           ];
         };
 
-        ps42 = nixpkgs-unstable.lib.nixosSystem {
+        ps42 = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
 
           specialArgs = {
@@ -153,7 +153,7 @@
           system = "x86_64-linux";
 
           specialArgs = {
-            pkgs-unstable = import nixpkgs-unstable {
+            pkgs-unstable = import nixpkgs {
               system = system; # refer the `system` parameter form outer scope recursively
               config.permittedInsecurePackages = [
                 "nodejs-16.20.2"
@@ -208,9 +208,9 @@
             # use cache for building deploy-rs aarch64
             system = "x86_64-linux";
             # Unmodified nixpkgs
-            pkgs = import nixpkgs-unstable { inherit system; };
+            pkgs = import nixpkgs { inherit system; };
             # nixpkgs with deploy-rs overlay but force the nixpkgs package
-            deployPkgs = import nixpkgs-unstable {
+            deployPkgs = import nixpkgs {
               inherit system;
               overlays = [
                 deploy-rs.overlay
@@ -235,9 +235,9 @@
             # use cache for building deploy-rs aarch64
             system = "aarch64-linux";
             # Unmodified nixpkgs
-            pkgs = import nixpkgs-unstable { inherit system; };
+            pkgs = import nixpkgs { inherit system; };
             # nixpkgs with deploy-rs overlay but force the nixpkgs package
-            deployPkgs = import nixpkgs-unstable {
+            deployPkgs = import nixpkgs {
               inherit system;
               overlays = [
                 deploy-rs.overlay
