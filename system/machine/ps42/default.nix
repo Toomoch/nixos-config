@@ -95,10 +95,10 @@ in
           "${builtins.readFile zerotier_net}"
         ];
       };
-      # Power management 
+      # Power management
       services.auto-cpufreq.enable = true;
       services.tlp = {
-        enable = true;
+        enable = false;
         settings = {
           SOUND_POWER_SAVE_ON_AC = 1;
           SOUND_POWER_SAVE_ON_BAT = 1;

@@ -105,19 +105,20 @@
       ];
 
       update.mode = "none";
-
       nix.enableLanguageServer = true;
-      nix.serverPath = "nil";
-      nix.serverSettings.nil = {
+      nix.serverPath = "nixd";
+      nix.serverSettings.nixd = {
         formatting = {
           command = [ "nixpkgs-fmt" ];
         };
-        flake = {
-          autoArchive = true;
+        options = {
+          enable = true;
+          target = {
+            installable = ".#nixosConfigurations.ps42.options";
+          };
         };
       };
     };
-
   };
 
   #home.activation.boforeCheckLinkTargets = {

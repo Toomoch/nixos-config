@@ -5,7 +5,7 @@
     llvmPackages_15.libclang
     nixpkgs-fmt
     nixfmt
-    nil
+    nixd
     shellcheck
     shfmt
     erlang
