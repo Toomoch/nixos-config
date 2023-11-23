@@ -147,6 +147,8 @@
     config = { hwdec = "auto"; };
   };
 
+  programs.nix-ld.enable = true;
+
   home.pointerCursor = {
     name = "Adwaita";
     package = pkgs.gnome.adwaita-icon-theme;
