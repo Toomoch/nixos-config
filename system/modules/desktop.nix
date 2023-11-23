@@ -29,6 +29,8 @@ in
         "electron-24.8.6"
       ];
 
+      programs.nix-ld.enable = true;
+
       environment.systemPackages = with pkgs; [
         vulkan-tools
         glxinfo
