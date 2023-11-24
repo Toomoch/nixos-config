@@ -5,7 +5,7 @@
     llvmPackages_15.libclang
     nixpkgs-fmt
     nixfmt
-    nixd
+    nil
     shellcheck
     shfmt
     erlang
@@ -17,8 +17,6 @@
     ansible-lint
     just
     tio
-    python3
-    texliveFull
-    
+    python3    
   ];
 }

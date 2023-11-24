@@ -107,15 +107,12 @@
       update.mode = "none";
       nix.enableLanguageServer = true;
       nix.serverPath = "nixd";
-      nix.serverSettings.nixd = {
+      nix.serverSettings.nil = {
         formatting = {
           command = [ "nixpkgs-fmt" ];
         };
-        options = {
-          enable = true;
-          target = {
-            installable = ".#nixosConfigurations.ps42.options";
-          };
+        flake = {
+          autoArchive = true;
         };
       };
     };
