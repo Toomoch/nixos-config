@@ -106,7 +106,7 @@
 
       update.mode = "none";
       nix.enableLanguageServer = true;
-      nix.serverPath = "nixd";
+      nix.serverPath = "nil";
       nix.serverSettings.nil = {
         formatting = {
           command = [ "nixpkgs-fmt" ];

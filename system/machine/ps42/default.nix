@@ -1,7 +1,4 @@
 { inputs, config, pkgs, lib, ... }:
-let
-  zerotier_net = "${inputs.private}/secrets/ptinetwork";
-in
 {
   imports = [
     ./hardware-configuration.nix
@@ -89,12 +86,6 @@ in
     (lib.mkIf (config.specialisation != { }) {
       desktop.sway.enable = true;
       desktop.hyprland.enable = false;
-      services.zerotierone = {
-        enable = true;
-        joinNetworks = [
-          "${builtins.readFile zerotier_net}"
-        ];
-      };
       # Power management
       services.auto-cpufreq.enable = true;
       services.tlp = {

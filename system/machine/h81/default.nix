@@ -10,7 +10,6 @@
   nixpkgs.overlays = [
     (self: super: {
       code-server = pkgs-unstable.code-server;
-      zerotierone = pkgs-unstable.zerotierone;
     })
   ];
 

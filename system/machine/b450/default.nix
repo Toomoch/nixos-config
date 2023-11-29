@@ -1,7 +1,4 @@
 { config, pkgs, lib, sops-nix, inputs, ... }:
-let
-  zerotier_net = "${inputs.private}/secrets/ptinetwork";
-in
 {
   networking.hostName = "b450"; # Define your hostname.
 
@@ -35,13 +32,6 @@ in
   nixpkgs.config.permittedInsecurePackages = [
     "electron-24.8.6"
   ];
-
-  services.zerotierone = {
-    enable = true;
-    joinNetworks = [
-      "${builtins.readFile zerotier_net}"
-    ];
-  };
 
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 

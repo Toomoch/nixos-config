@@ -29,21 +29,10 @@ in
       ];
       services.jmusicbot.enable = true;
 
-      nixpkgs.config.permittedInsecurePackages = [
-        "nodejs-16.20.2"
-      ];
-
-      services.zerotierone.enable = true;
-
-      services.code-server.enable = true;
-      services.code-server.user = "arnau";
-      #services.code-server.package = pkgs-unstable.code-server;
-      services.code-server.host = "0.0.0.0";
-      services.code-server.auth = "none";
-      systemd.services."code-server" = {
-        serviceConfig = {
-        };
-      };
+      services.openvscode-server.enable = true;
+      services.openvscode-server.user = "arnau";
+      services.openvscode-server.port = 4444;
+      services.openvscode-server.host = "0.0.0.0";
 
       networking.firewall.allowedTCPPorts = [
         #8123 HomeAssistant

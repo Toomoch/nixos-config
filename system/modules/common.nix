@@ -61,6 +61,7 @@ in
         neofetch
         xdg-utils
         usbutils
+        tailscale
       ];
 
       # Some programs need SUID wrappers, can be configured further or are
@@ -78,7 +79,7 @@ in
           monospace = [ "Noto Sans Mono" ];
         };
 
-        fonts = with pkgs; [
+        packages = with pkgs; [
           rubik
           fira-code
           fira-code-symbols
@@ -97,6 +98,9 @@ in
 
       # Enable mosh
       programs.mosh.enable = true;
+
+      # Enable Tailscale
+      services.tailscale.enable = true;
 
       #Allow all VPN traffic routing
       networking.firewall.checkReversePath = "loose";
