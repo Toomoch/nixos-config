@@ -16,6 +16,7 @@
     logseq
     gitg
     thunderbird
+    openlens
   ];
 
   home.file."${config.xdg.userDirs.pictures}/wallpapers/" = {

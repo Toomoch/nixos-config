@@ -1,4 +1,4 @@
-{pkgs, lib, ...}:
+{ pkgs, lib, ... }:
 {
   home.packages = with pkgs; [
     #dev tools
@@ -17,6 +17,7 @@
     ansible-lint
     just
     tio
-    python3    
+    python3
+    kubectl
   ];
 }
