@@ -37,13 +37,18 @@
     configFile."mimeapps.list".force = true;
     mimeApps = {
       enable = true;
-      defaultApplications = {
-        "inode/directory" = "org.gnome.Nautilus.desktop";
-        "application/zip" = "org.gnome.FileRoller.desktop";
-        "application/pdf" = "firefox.desktop";
-        "video/x-matroska" = "mpv.desktop";
-        "image/png" = "firefox.desktop";
-      };
+      defaultApplications = 
+        #"inode/directory" = "org.gnome.Nautilus.desktop";
+        #"application/zip" = "org.gnome.FileRoller.desktop";
+        config.lib.xdg.mimeAssociations [ 
+          pkgs.gnome.nautilus
+          pkgs.gnome.file-roller
+          pkgs.mpv
+          pkgs.firefox
+         ];
+        #"video/x-matroska" = "mpv.desktop";
+        #"image/png" = "firefox.desktop";
+      
       associations.added = {
         "application/pdf" = "firefox.desktop";
         "image/png" = "firefox.desktop";
