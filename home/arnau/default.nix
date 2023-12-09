@@ -29,6 +29,8 @@ in
 
   programs.tmux = {
     enable = true;
+    mouse = true;
+    clock24 = true;
   };
 
   programs.direnv.enable = true;
@@ -39,7 +41,8 @@ in
   programs.bash = {
     enable = true;
     bashrcExtra = ''
-      eval "$(starship init bash)"
+      ${builtins.readFile(./dotfiles/osc7.sh)}
+      
       function set_win_title(){
         echo -ne "\033]0; $PWD \007"
       }

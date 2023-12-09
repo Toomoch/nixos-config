@@ -5,6 +5,9 @@ with lib; let
     ${pkgs.coreutils-full}/bin/sleep 8
     ${pkgs.oversteer}/bin/oversteer --range 300
   '';
+  matlab-wrapped = pkgs.writeShellScriptBin "matlab" ''
+    exec env MESA_GL_VERSION_OVERRIDE=3.0 ${pkgs.matlab}/bin/matlab
+  '';
 in
 {
   options.desktop = {
@@ -151,7 +154,7 @@ in
     })
     (mkIf cfg.matlab.enable {
       environment.systemPackages = with pkgs; [
-        matlab
+        matlab-wrapped
         matlab-mlint
         matlab-mex
       ];

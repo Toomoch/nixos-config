@@ -57,12 +57,6 @@
     };
   };
 
-  programs.bash = {
-    shellAliases = {
-      matlab = "MESA_GL_VERSION_OVERRIDE=3.0 matlab";
-    };
-  };
-
   programs.alacritty = {
     enable = true;
     settings = {
