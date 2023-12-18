@@ -28,6 +28,7 @@ in
     xdg-user-dirs
     libnotify
     swayosd
+    nwg-displays
   ];
 
   wayland.windowManager.sway = {
@@ -73,6 +74,9 @@ in
         "Virtual-1" = {
           mode = "1920x1080@60Hz";
         };
+        "LG Electronics 2D FHD LG TV 0x00000101" = {
+          mode = "1920x1080@60Hz";
+        };
       };
       startup = [
         { command = "nm-applet --indicator"; }
@@ -87,7 +91,6 @@ in
             "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
         }
         { command = "swayidle -w before-sleep 'gtklock -d'"; }
-        { command = "oversteer --range 300"; }
         { command = "swayosd"; }
 
       ];
@@ -156,7 +159,6 @@ in
 
     extraConfig = ''
       include /etc/sway/config.d/*
-      include ./outputs
     '';
 
     swaynag = {
