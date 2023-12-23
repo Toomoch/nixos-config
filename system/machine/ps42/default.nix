@@ -34,7 +34,7 @@
       desktop.arctis9.enable = false;
       desktop.matlab.enable = true;
       vm.podman.enable = true;
-      vm.libvirtd.enable = true;
+      vm.libvirtd.enable = false;
 
 
       # Enable VAAPI hardware acceleration

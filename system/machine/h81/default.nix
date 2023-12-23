@@ -27,6 +27,7 @@
   common.x86.enable = true;
   homelab.enable = true;
   vm.podman.enable = true;
+  vm.docker.enable  = true;
   vm.libvirtd.enable = true;
   security.polkit.enable = true;
 
