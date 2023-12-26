@@ -63,6 +63,7 @@ in
         usbutils
         lm_sensors
         htop
+        just
       ];
 
       # Some programs need SUID wrappers, can be configured further or are
