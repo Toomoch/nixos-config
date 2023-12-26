@@ -23,6 +23,10 @@
         mode = "1920x1080@60Hz";
         pos = "0 0";
       };
+      "Samsung Electric Company SyncMaster H1AK500000" = {
+        mode = "1360x768@60Hz";
+        pos = "280 312";
+      };
     };
     workspaceOutputAssign = [
       {

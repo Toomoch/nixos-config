@@ -61,7 +61,8 @@ in
         neofetch
         xdg-utils
         usbutils
-        tailscale
+        lm_sensors
+        htop
       ];
 
       # Some programs need SUID wrappers, can be configured further or are
@@ -98,9 +99,6 @@ in
 
       # Enable mosh
       programs.mosh.enable = true;
-
-      # Enable Tailscale
-      services.tailscale.enable = true;
 
       #Allow all VPN traffic routing
       networking.firewall.checkReversePath = "loose";

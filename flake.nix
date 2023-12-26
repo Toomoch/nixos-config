@@ -48,6 +48,7 @@
 
       nixosModules.common = import ./system/modules { inherit inputs; };
       nixosModules.homelab = import ./system/modules/homelab.nix;
+
       nixosConfigurations = {
         b450 = nixpkgs.lib.nixosSystem {
 
@@ -183,19 +184,13 @@
         };
         rpi3 = nixpkgs-stable.lib.nixosSystem {
           system = "aarch64-linux";
+
+          specialArgs = { inherit inputs; };
+
           modules = [
             ./system/machine/rpi3
             self.nixosModules.common
-            home-manager-stable.nixosModules.home-manager
-            {
-              home-manager = {
-                useGlobalPkgs = true;
-                extraSpecialArgs = { inherit inputs; };
-                users.arnau.imports = [
-                  ./home/arnau/machine/rpi3.nix
-                ];
-              };
-            }
+            "${nixpkgs-stable}/nixos/modules/installer/sd-card/sd-image-aarch64.nix"
             sops-nix.nixosModules.sops
           ];
         };
@@ -246,7 +241,7 @@
             };
           in
           {
-            hostname = "rpi3.lan";
+            hostname = "rpi3.casa.lan";
             profiles.system = {
               sshUser = "arnau";
               sshOpts = [ "-t" ];

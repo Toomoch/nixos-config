@@ -13,7 +13,6 @@
     scrcpy
     virt-manager
     gnome-network-displays
-    logseq
     gitg
     thunderbird
     openlens
