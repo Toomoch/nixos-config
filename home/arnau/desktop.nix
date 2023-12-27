@@ -16,7 +16,6 @@
     gitg
     thunderbird
     openlens
-    discord-screenaudio
   ];
 
   home.file."${config.xdg.userDirs.pictures}/wallpapers/" = {
