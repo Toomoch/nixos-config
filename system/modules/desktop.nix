@@ -129,6 +129,7 @@ in
         obs-studio
         webcord
         protonup-qt
+        cemu
       ];
 
       #Steam

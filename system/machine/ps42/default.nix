@@ -10,22 +10,68 @@
     ({
       networking.hostName = "ps42"; # Define your hostname.
 
-      specialisation.kde = {
-        configuration = {
-          desktop.kde.enable = true;
-          desktop.flatpak.enable = true;
-          environment.systemPackages = with pkgs; [
-            netbeans
-            libsForQt5.kpat
-            libsForQt5.kio-gdrive
-          ];
+      specialisation = {
+        kde = {
+          configuration = {
+            # Disable NVIDIA module
+            boot.blacklistedKernelModules = [ "nouveau" ];
+            # Remove NVIDIA VGA/3D controller devices
+            services.udev.extraRules = ''
+              ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x03[0-9]*", ATTR{power/control}="auto", ATTR{remove}="1"
+            '';
 
-          i18n.defaultLocale = lib.mkDefault "ca_ES.UTF-8";
+            desktop.kde.enable = true;
+            desktop.flatpak.enable = true;
+            environment.systemPackages = with pkgs; [
+              netbeans
+              libsForQt5.kpat
+              libsForQt5.kio-gdrive
+            ];
+
+            i18n.defaultLocale = lib.mkDefault "ca_ES.UTF-8";
+          };
+        };
+        nvidia = {
+          configuration = {
+            desktop.sway.enable = true;
+            desktop.hyprland.enable = false;
+            # Power management
+            services.auto-cpufreq.enable = true;
+            services.tlp = {
+              enable = false;
+              settings = {
+                SOUND_POWER_SAVE_ON_AC = 1;
+                SOUND_POWER_SAVE_ON_BAT = 1;
+                RUNTIME_PM_ON_AC = "auto";
+                PCIE_ASPM_ON_AC = "powersave";
+                PCIE_ASPM_ON_BAT = "powersupersave";
+              };
+            };
+            services.xserver.videoDrivers = [ "nvidia" ];
+            environment.sessionVariables.WLR_DRM_DEVICES = "/dev/dri/card0";
+            hardware.nvidia = {
+
+              # Modesetting is required.
+              modesetting.enable = true;
+              powerManagement.enable = true;
+              powerManagement.finegrained = true;
+              nvidiaSettings = true;
+              prime = {
+                intelBusId = "PCI:0:2:0";
+                nvidiaBusId = "PCI:3:0:0";
+                offload = {
+                  enable = true;
+                  enableOffloadCmd = true;
+                };
+              };
+            };
+          };
         };
       };
 
       environment.systemPackages = with pkgs; [
         powertop
+        cemu
       ];
 
       common.enable = true;
@@ -62,12 +108,6 @@
         analogioOffset = -20;
       };
 
-      # Disable NVIDIA module
-      boot.blacklistedKernelModules = [ "nouveau" ];
-      # Remove NVIDIA VGA/3D controller devices
-      services.udev.extraRules = ''
-        ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x03[0-9]*", ATTR{power/control}="auto", ATTR{remove}="1"
-      '';
 
       # Enable the IOMMU
       boot.kernelParams = [ "intel_iommu=on" ];
@@ -84,6 +124,13 @@
       system.stateVersion = "22.11"; # Did you read the comment?
     })
     (lib.mkIf (config.specialisation != { }) {
+      # Disable NVIDIA module
+      boot.blacklistedKernelModules = [ "nouveau" ];
+      # Remove NVIDIA VGA/3D controller devices
+      services.udev.extraRules = ''
+        ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x03[0-9]*", ATTR{power/control}="auto", ATTR{remove}="1"
+      '';
+
       desktop.sway.enable = true;
       desktop.hyprland.enable = false;
       # Power management
