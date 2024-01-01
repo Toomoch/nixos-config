@@ -1,4 +1,13 @@
 { inputs, config, pkgs, lib, ... }:
+let
+  nvidia-offload = pkgs.writeShellScriptBin "nvidia-offload" ''
+    export __NV_PRIME_RENDER_OFFLOAD=1
+    export __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0
+    export __GLX_VENDOR_LIBRARY_NAME=nvidia
+    export __VK_LAYER_NV_optimus=NVIDIA_only
+    exec "$@"
+  '';
+in
 {
   imports = [
     ./hardware-configuration.nix
@@ -13,17 +22,10 @@
       specialisation = {
         kde = {
           configuration = {
-            # Disable NVIDIA module
-            boot.blacklistedKernelModules = [ "nouveau" ];
-            # Remove NVIDIA VGA/3D controller devices
-            services.udev.extraRules = ''
-              ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x03[0-9]*", ATTR{power/control}="auto", ATTR{remove}="1"
-            '';
-
+            desktop.disablenvidiagpu.enable = true;
             desktop.kde.enable = true;
             desktop.flatpak.enable = true;
             environment.systemPackages = with pkgs; [
-              netbeans
               libsForQt5.kpat
               libsForQt5.kio-gdrive
             ];
@@ -34,6 +36,9 @@
         nvidia = {
           configuration = {
             desktop.sway.enable = true;
+            environment.systemPackages = [
+              nvidia-offload
+            ];
             desktop.hyprland.enable = false;
             # Power management
             services.auto-cpufreq.enable = true;
@@ -54,7 +59,6 @@
               # Modesetting is required.
               modesetting.enable = true;
               powerManagement.enable = true;
-              powerManagement.finegrained = true;
               nvidiaSettings = true;
               prime = {
                 intelBusId = "PCI:0:2:0";
@@ -124,13 +128,7 @@
       system.stateVersion = "22.11"; # Did you read the comment?
     })
     (lib.mkIf (config.specialisation != { }) {
-      # Disable NVIDIA module
-      boot.blacklistedKernelModules = [ "nouveau" ];
-      # Remove NVIDIA VGA/3D controller devices
-      services.udev.extraRules = ''
-        ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x03[0-9]*", ATTR{power/control}="auto", ATTR{remove}="1"
-      '';
-
+      desktop.disablenvidiagpu.enable = true;
       desktop.sway.enable = true;
       desktop.hyprland.enable = false;
       # Power management

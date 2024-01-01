@@ -29,6 +29,9 @@ in
     # Sway
     programs.sway.enable = true;
     programs.sway.wrapperFeatures.gtk = true;
+    programs.sway.extraOptions = [
+      "--unsupported-gpu"
+    ];
     programs.dconf.enable = true;
 
     programs.hyprland.enable = cfg.hyprland.enable;
@@ -66,7 +69,7 @@ in
       enable = true;
       settings = {
         default_session = {
-          command = "${pkgs.sway}/bin/sway --config ${greetdSwayConfig}";
+          command = "sway --config ${greetdSwayConfig}";
         };
       };
     };

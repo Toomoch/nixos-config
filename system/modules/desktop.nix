@@ -17,6 +17,7 @@ in
     gaming.enable = mkEnableOption ("Whether to enable gaming stuff");
     gaming.g29.enable = mkEnableOption ("Whether to enable G29 wheel support");
     matlab.enable = mkEnableOption ("Whether to enable MATLAB");
+    disablenvidiagpu.enable = mkEnableOption ("Whether to disable and hide all detected Nvidia GPUs");
   };
 
   config = mkMerge [
@@ -169,11 +170,24 @@ in
       nixpkgs.overlays = [
         inputs.nix-matlab.overlay
       ];
-
-
-
     })
+    (mkIf cfg.disablenvidiagpu.enable {
+      boot.extraModprobeConfig = ''
+        blacklist nouveau
+        options nouveau modeset=0
+      '';
 
-
+      services.udev.extraRules = ''
+        # Remove NVIDIA USB xHCI Host Controller devices, if present
+        ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x0c0330", ATTR{power/control}="auto", ATTR{remove}="1"
+        # Remove NVIDIA USB Type-C UCSI devices, if present
+        ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x0c8000", ATTR{power/control}="auto", ATTR{remove}="1"
+        # Remove NVIDIA Audio devices, if present
+        ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x040300", ATTR{power/control}="auto", ATTR{remove}="1"
+        # Remove NVIDIA VGA/3D controller devices
+        ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x03[0-9]*", ATTR{power/control}="auto", ATTR{remove}="1"
+      '';
+      boot.blacklistedKernelModules = [ "nouveau" "nvidia" "nvidia_drm" "nvidia_modeset" ];
+    })
   ];
 }

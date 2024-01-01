@@ -44,7 +44,7 @@ in
         names = [ "Rubik" ];
         size = 12.0;
       };
-      
+
       window.titlebar = false;
       floating.titlebar = true;
       colors.focused = {
@@ -160,6 +160,7 @@ in
     extraConfig = ''
       include /etc/sway/config.d/*
     '';
+    extraOptions = [ "--unsupported-gpu" ];
 
     swaynag = {
       enable = true;
