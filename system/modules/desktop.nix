@@ -34,6 +34,7 @@ in
       ];
 
       programs.nix-ld.enable = true;
+      services.envfs.enable = true;
 
       environment.systemPackages = with pkgs; [
         vulkan-tools
@@ -91,35 +92,51 @@ in
       ];
 
     })
-    (mkIf cfg.flatpak.enable {
-      services.flatpak.enable = true;
-      # Ugly hack to add remote
-      system.activationScripts = {
-        flathub = ''
-          /run/current-system/sw/bin/flatpak remote-add --system --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-        '';
-      };
-      # Flatpak workarounds
-      system.fsPackages = [ pkgs.bindfs ];
-      fileSystems =
-        let
-          mkRoSymBind = path: {
-            device = path;
-            fsType = "fuse.bindfs";
-            options = [ "ro" "resolve-symlinks" "x-gvfs-hide" ];
+    (mkIf cfg.flatpak.enable
+      {
+        services.flatpak.enable = true;
+        # Ugly hack to add remote
+        systemd.services."flatpak-remote-add" =
+          let
+            name = "flathub";
+            location = ./flathub.flatpakrepo;
+          in
+          {
+            #wants = [
+            #  "network-online.target"
+            #];
+            wantedBy = [
+              "multi-user.target"
+            ];
+            serviceConfig = {
+              Type = "oneshot";
+              ExecStart = "/run/current-system/sw/bin/flatpak remote-add --system --if-not-exists ${name} ${location}";
+            };
           };
-          aggregatedFonts = pkgs.buildEnv {
-            name = "system-fonts";
-            paths = config.fonts.packages;
-            pathsToLink = [ "/share/fonts" ];
+
+        # Flatpak workarounds
+        system.fsPackages =
+          [ pkgs.bindfs ];
+        fileSystems =
+          let
+            mkRoSymBind = path: {
+              device = path;
+              fsType = "fuse.bindfs";
+              options = [ "ro" "resolve-symlinks" "x-gvfs-hide" ];
+            };
+            aggregatedFonts = pkgs.buildEnv
+              {
+                name = "system-fonts";
+                paths = config.fonts.packages;
+                pathsToLink = [ "/share/fonts" ];
+              };
+          in
+          {
+            # Create an FHS mount to support flatpak host icons/fonts
+            "/usr/share/icons" = mkRoSymBind (config.system.path + "/share/icons");
+            "/usr/share/fonts" = mkRoSymBind (aggregatedFonts + "/share/fonts");
           };
-        in
-        {
-          # Create an FHS mount to support flatpak host icons/fonts
-          "/usr/share/icons" = mkRoSymBind (config.system.path + "/share/icons");
-          "/usr/share/fonts" = mkRoSymBind (aggregatedFonts + "/share/fonts");
-        };
-    })
+      })
     (mkIf cfg.gaming.enable {
       environment.systemPackages = with pkgs; [
         legendary-gl
