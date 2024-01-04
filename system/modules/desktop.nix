@@ -96,7 +96,7 @@ in
       {
         services.flatpak.enable = true;
         # Ugly hack to add remote
-        systemd.services."flatpak-remote-add" =
+        systemd.user.services."flatpak-remote-add" =
           let
             name = "flathub";
             location = ./flathub.flatpakrepo;
@@ -106,11 +106,11 @@ in
             #  "network-online.target"
             #];
             wantedBy = [
-              "multi-user.target"
+              "default.target"
             ];
             serviceConfig = {
               Type = "oneshot";
-              ExecStart = "/run/current-system/sw/bin/flatpak remote-add --system --if-not-exists ${name} ${location}";
+              ExecStart = "/run/current-system/sw/bin/flatpak remote-add --user --if-not-exists ${name} ${location}";
             };
           };
 
