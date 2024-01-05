@@ -3,6 +3,7 @@
   imports = [
     ./hardware-configuration.nix
     ../../users/j.nix
+    ../../users/arnau.nix
   ];
 
   networking.hostName = "cp6230"; 

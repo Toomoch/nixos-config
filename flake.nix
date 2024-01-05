@@ -237,6 +237,33 @@
               user = "root";
             };
           };
+        cp6230 =
+          let
+            # use cache for building deploy-rs aarch64
+            system = "x86_64-linux";
+            # Unmodified nixpkgs
+            pkgs = import nixpkgs-stable { inherit system; };
+            # nixpkgs with deploy-rs overlay but force the nixpkgs package
+            deployPkgs = import nixpkgs-stable {
+              inherit system;
+              overlays = [
+                deploy-rs.overlay
+                (self: super: { deploy-rs = { inherit (pkgs) deploy-rs; lib = super.deploy-rs.lib; }; })
+              ];
+            };
+          in
+          {
+            hostname = "cp6230.casa.lan";
+            profiles.system = {
+              sshUser = "arnau";
+              sshOpts = [ "-t" ];
+              magicRollback = false;
+              path =
+                deployPkgs.deploy-rs.lib.activate.nixos
+                  self.nixosConfigurations.cp6230;
+              user = "root";
+            };
+          };
         rpi3 =
           let
             # use cache for building deploy-rs aarch64
