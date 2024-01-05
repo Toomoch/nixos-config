@@ -26,8 +26,13 @@
       workpath = "${private}/system/machine/";
       workpathhome = "${private}/home/arnau";
       secrets = "${private}/secrets/";
+      forAllSystems = nixpkgs.lib.genAttrs [ "aarch64-linux" "x86_64-linux" ];
     in
     {
+      devShells = forAllSystems (system: {
+        default = nixpkgs.legacyPackages.${system}.callPackage ./shell.nix { };
+      });
+
       homeConfigurations = {
         "arnau" = home-manager.lib.homeManagerConfiguration {
           pkgs = import nixpkgs { system = "x86_64-linux"; };
@@ -49,248 +54,175 @@
       nixosModules.common = import ./system/modules { inherit inputs; };
       nixosModules.homelab = import ./system/modules/homelab.nix;
 
-      nixosConfigurations = {
-        b450 = nixpkgs.lib.nixosSystem {
-
-          system = "x86_64-linux";
-
+      nixosConfigurations =
+        let
+          defaultModules = [
+            self.nixosModules.common
+            sops-nix.nixosModules.sops
+          ];
           specialArgs = { inherit inputs; };
-
-          modules = [
-            ./system/machine/b450
-            self.nixosModules.common
-            home-manager.nixosModules.home-manager
-            {
-              home-manager = {
-                useGlobalPkgs = true;
-                extraSpecialArgs = { inherit inputs; };
-                users.arnau.imports = [
-                  ./home/arnau/machine/b450.nix
-                  sops-nix.homeManagerModules.sops
-                ];
-              };
-            }
-            sops-nix.nixosModules.sops
-          ];
-        };
-
-        ps42 = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-
-          specialArgs = {
-            inherit inputs;
-          };
-
-          modules = [
-            ./system/machine/ps42
-            self.nixosModules.common
-            home-manager.nixosModules.home-manager
-            {
-              home-manager = {
-                useGlobalPkgs = true;
-                extraSpecialArgs = { inherit inputs; };
-                users.arnau.imports = [
-                  ./home/arnau/machine/ps42.nix
-                  sops-nix.homeManagerModules.sops
-                ];
-              };
-            }
-            sops-nix.nixosModules.sops
-          ];
-        };
-
-        vm = nixpkgs-stable.lib.nixosSystem {
-          system = "x86_64-linux";
-
-          specialArgs = { inherit inputs; };
-
-          modules = [
-            ./system/machine/vm
-            self.nixosModules.common
-            home-manager-stable.nixosModules.home-manager
-            {
-              home-manager = {
-                useGlobalPkgs = true;
-                extraSpecialArgs = { inherit inputs; };
-                users.arnau.imports = [
-                  ./home/arnau/machine/vm.nix
-                  sops-nix.homeManagerModules.sops
-                ];
-              };
-            }
-            sops-nix.nixosModules.sops
-          ];
-        };
-
-        "${builtins.readFile (secrets + "/hostname")}" = nixpkgs-stable.lib.nixosSystem {
-          system = "x86_64-linux";
-
-          specialArgs = { inherit inputs; };
-
-          modules = [
-            (workpath + "/work.nix")
-            (workpath + "/work-hardware-configuration.nix")
-            self.nixosModules.common
-            home-manager-stable.nixosModules.home-manager
-            {
-              home-manager = {
-                useGlobalPkgs = true;
-                extraSpecialArgs = { inherit inputs; };
-                users.arnau.imports = [
-                  self.homeManagerModules.default
-                  self.homeManagerModules.sway
-                  self.homeManagerModules.desktop
-                  self.homeManagerModules.devtools
-                  sops-nix.homeManagerModules.sops
-                  workpathhome
-                ];
-              };
-            }
-            sops-nix.nixosModules.sops
-          ];
-        };
-
-        h81 = nixpkgs-stable.lib.nixosSystem rec {
-          system = "x86_64-linux";
-
-          specialArgs = {
-            pkgs-unstable = import nixpkgs {
-              system = system; # refer the `system` parameter form outer scope recursively
-              config.permittedInsecurePackages = [
-                "nodejs-16.20.2"
-              ];
-              config.allowUnfree = true;
-            };
-            inherit inputs;
-          };
-
-          modules = [
-            ./system/machine/h81
-            self.nixosModules.common
-            self.nixosModules.homelab
-            home-manager-stable.nixosModules.home-manager
-            {
-              home-manager = {
-                useGlobalPkgs = true;
-                extraSpecialArgs = { inherit inputs; };
-                users.arnau.imports = [
-                  ./home/arnau/machine/h81.nix
-                  sops-nix.homeManagerModules.sops
-                ];
-              };
-            }
-            sops-nix.nixosModules.sops
-          ];
-        };
-        rpi3 = nixpkgs-stable.lib.nixosSystem {
-          system = "aarch64-linux";
-
-          specialArgs = { inherit inputs; };
-
-          modules = [
-            ./system/machine/rpi3
-            self.nixosModules.common
-            "${nixpkgs-stable}/nixos/modules/installer/sd-card/sd-image-aarch64.nix"
-            sops-nix.nixosModules.sops
-          ];
-        };
-
-        cp6230 = nixpkgs-stable.lib.nixosSystem {
-          system = "aarch64-linux";
-
-          specialArgs = { inherit inputs; };
-
-          modules = [
-            ./system/machine/cp6230
-            self.nixosModules.common
-            sops-nix.nixosModules.sops
-          ];
-        };
-      };
-
-      # deploy-rs node configuration
-      deploy.nodes = {
-        h81 =
-          let
-            # use cache for building deploy-rs aarch64
+          extraSpecialArgs = { inherit inputs; };
+        in
+        {
+          b450 = nixpkgs.lib.nixosSystem {
             system = "x86_64-linux";
-            # Unmodified nixpkgs
-            pkgs = import nixpkgs { inherit system; };
-            # nixpkgs with deploy-rs overlay but force the nixpkgs package
-            deployPkgs = import nixpkgs {
-              inherit system;
-              overlays = [
-                deploy-rs.overlay
-                (self: super: { deploy-rs = { inherit (pkgs) deploy-rs; lib = super.deploy-rs.lib; }; })
-              ];
-            };
-          in
-          {
-            hostname = "h81.casa.lan";
-            profiles.system = {
-              sshUser = "arnau";
-              sshOpts = [ "-t" ];
-              magicRollback = false;
-              path =
-                deployPkgs.deploy-rs.lib.activate.nixos
-                  self.nixosConfigurations.h81;
-              user = "root";
-            };
+            inherit specialArgs;
+            modules = defaultModules ++ [
+              ./system/machine/b450
+              home-manager.nixosModules.home-manager
+              {
+                home-manager = {
+                  useGlobalPkgs = true;
+                  extraSpecialArgs = { inherit inputs; };
+                  users.arnau.imports = [
+                    ./home/arnau/machine/b450.nix
+                    sops-nix.homeManagerModules.sops
+                  ];
+                };
+              }
+            ];
           };
-        cp6230 =
-          let
-            # use cache for building deploy-rs aarch64
+
+          ps42 = nixpkgs.lib.nixosSystem {
             system = "x86_64-linux";
-            # Unmodified nixpkgs
-            pkgs = import nixpkgs-stable { inherit system; };
-            # nixpkgs with deploy-rs overlay but force the nixpkgs package
-            deployPkgs = import nixpkgs-stable {
-              inherit system;
-              overlays = [
-                deploy-rs.overlay
-                (self: super: { deploy-rs = { inherit (pkgs) deploy-rs; lib = super.deploy-rs.lib; }; })
-              ];
-            };
-          in
-          {
-            hostname = "cp6230.casa.lan";
-            profiles.system = {
-              sshUser = "arnau";
-              sshOpts = [ "-t" ];
-              magicRollback = false;
-              path =
-                deployPkgs.deploy-rs.lib.activate.nixos
-                  self.nixosConfigurations.cp6230;
-              user = "root";
-            };
+            inherit specialArgs;
+            modules = defaultModules ++ [
+              ./system/machine/ps42
+              home-manager.nixosModules.home-manager
+              {
+                home-manager = {
+                  useGlobalPkgs = true;
+                  inherit extraSpecialArgs;
+                  users.arnau.imports = [
+                    ./home/arnau/machine/ps42.nix
+                    sops-nix.homeManagerModules.sops
+                  ];
+                };
+              }
+            ];
           };
-        rpi3 =
-          let
-            # use cache for building deploy-rs aarch64
+
+          vm = nixpkgs-stable.lib.nixosSystem {
+            system = "x86_64-linux";
+            inherit specialArgs;
+            modules = defaultModules ++ [
+              ./system/machine/vm
+              home-manager-stable.nixosModules.home-manager
+              {
+                home-manager = {
+                  useGlobalPkgs = true;
+                  extraSpecialArgs = { inherit inputs; };
+                  users.arnau.imports = [
+                    ./home/arnau/machine/vm.nix
+                    sops-nix.homeManagerModules.sops
+                  ];
+                };
+              }
+            ];
+          };
+
+          "${builtins.readFile (secrets + "/hostname")}" = nixpkgs-stable.lib.nixosSystem {
+            system = "x86_64-linux";
+            inherit specialArgs;
+            modules = defaultModules ++ [
+              (workpath + "/work.nix")
+              (workpath + "/work-hardware-configuration.nix")
+              home-manager-stable.nixosModules.home-manager
+              {
+                home-manager = {
+                  useGlobalPkgs = true;
+                  extraSpecialArgs = { inherit inputs; };
+                  users.arnau.imports = [
+                    self.homeManagerModules.default
+                    self.homeManagerModules.sway
+                    self.homeManagerModules.desktop
+                    self.homeManagerModules.devtools
+                    sops-nix.homeManagerModules.sops
+                    workpathhome
+                  ];
+                };
+              }
+            ];
+          };
+
+          h81 = nixpkgs-stable.lib.nixosSystem rec {
+            system = "x86_64-linux";
+            specialArgs = {
+              pkgs-unstable = import nixpkgs {
+                system = system; # refer the `system` parameter form outer scope recursively
+                config.permittedInsecurePackages = [
+                  "nodejs-16.20.2"
+                ];
+                config.allowUnfree = true;
+              };
+              inherit inputs;
+            };
+
+            modules = defaultModules ++ [
+              ./system/machine/h81
+              self.nixosModules.homelab
+              home-manager-stable.nixosModules.home-manager
+              {
+                home-manager = {
+                  useGlobalPkgs = true;
+                  extraSpecialArgs = { inherit inputs; };
+                  users.arnau.imports = [
+                    ./home/arnau/machine/h81.nix
+                    sops-nix.homeManagerModules.sops
+                  ];
+                };
+              }
+            ];
+          };
+
+          rpi3 = nixpkgs-stable.lib.nixosSystem {
             system = "aarch64-linux";
-            # Unmodified nixpkgs
-            pkgs = import nixpkgs { inherit system; };
-            # nixpkgs with deploy-rs overlay but force the nixpkgs package
-            deployPkgs = import nixpkgs {
-              inherit system;
-              overlays = [
-                deploy-rs.overlay
-                (self: super: { deploy-rs = { inherit (pkgs) deploy-rs; lib = super.deploy-rs.lib; }; })
-              ];
-            };
-          in
-          {
-            hostname = "rpi3.casa.lan";
-            profiles.system = {
-              sshUser = "arnau";
-              sshOpts = [ "-t" ];
-              magicRollback = false;
-              path =
-                deployPkgs.deploy-rs.lib.activate.nixos
-                  self.nixosConfigurations.rpi3;
-              user = "root";
-            };
+            inherit specialArgs;
+            modules = defaultModules ++ [
+              ./system/machine/rpi3
+              "${nixpkgs-stable}/nixos/modules/installer/sd-card/sd-image-aarch64.nix"
+            ];
           };
-      };
+
+          cp6230 = nixpkgs-stable.lib.nixosSystem {
+            system = "x86_64-linux";
+            inherit specialArgs;
+            modules = defaultModules ++ [
+              ./system/machine/cp6230
+            ];
+          };
+
+          l50 = nixpkgs-stable.lib.nixosSystem {
+            system = "x86_64-linux";
+            inherit specialArgs;
+            modules = defaultModules ++ [
+              ./system/machine/l50
+            ];
+          };
+        };
+
+      # deploy-rs node configuration stolen from https://github.com/LongerHV/nixos-configuration
+      deploy.nodes =
+        let
+          mkDeployConfig = hostname: configuration: {
+            inherit hostname;
+            profiles.system =
+              let
+                inherit (configuration.config.nixpkgs.hostPlatform) system;
+              in
+              {
+                path = deploy-rs.lib."${system}".activate.nixos configuration;
+                sshUser = "arnau";
+                user = "root";
+                sshOpts = [ "-t" ];
+                magicRollback = false; # Disable because it breaks remote sudo :<
+              };
+          };
+        in
+        {
+          h81 = mkDeployConfig "h81.casa.lan" self.nixosConfigurations.h81;
+          rpi3 = mkDeployConfig "rpi3.casa.lan" self.nixosConfigurations.rpi3;
+          cp6230 = mkDeployConfig "cp6230.casa.lan" self.nixosConfigurations.cp6230;
+        };
     };
 }
