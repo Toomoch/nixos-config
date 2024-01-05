@@ -223,6 +223,7 @@
           h81 = mkDeployConfig "h81.casa.lan" self.nixosConfigurations.h81;
           rpi3 = mkDeployConfig "rpi3.casa.lan" self.nixosConfigurations.rpi3;
           cp6230 = mkDeployConfig "cp6230.casa.lan" self.nixosConfigurations.cp6230;
+          l50 = mkDeployConfig "l50.casa.lan" self.nixosConfigurations.l50;
         };
     };
 }

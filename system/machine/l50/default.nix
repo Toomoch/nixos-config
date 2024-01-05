@@ -16,6 +16,7 @@
     gnome.gnome-boxes
   ];
 
+  i18n.defaultLocale = lib.mkForce "ca_ES.UTF-8";
   common.enable = true;
   common.x86.enable = true;
   desktop.enable = true;
