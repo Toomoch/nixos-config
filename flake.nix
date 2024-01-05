@@ -25,7 +25,7 @@
     let
       workpath = "${private}/system/machine/";
       workpathhome = "${private}/home/arnau";
-
+      secrets = "${private}/secrets/";
     in
     {
       homeConfigurations = {
@@ -122,7 +122,7 @@
           ];
         };
 
-        "${builtins.readFile (workpath + "/hostname")}" = nixpkgs-stable.lib.nixosSystem {
+        "${builtins.readFile (secrets + "/hostname")}" = nixpkgs-stable.lib.nixosSystem {
           system = "x86_64-linux";
 
           specialArgs = { inherit inputs; };
@@ -191,6 +191,18 @@
             ./system/machine/rpi3
             self.nixosModules.common
             "${nixpkgs-stable}/nixos/modules/installer/sd-card/sd-image-aarch64.nix"
+            sops-nix.nixosModules.sops
+          ];
+        };
+
+        cp6230 = nixpkgs-stable.lib.nixosSystem {
+          system = "aarch64-linux";
+
+          specialArgs = { inherit inputs; };
+
+          modules = [
+            ./system/machine/cp6230
+            self.nixosModules.common
             sops-nix.nixosModules.sops
           ];
         };

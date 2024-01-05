@@ -17,7 +17,7 @@ in
     gaming.enable = mkEnableOption ("Whether to enable gaming stuff");
     gaming.g29.enable = mkEnableOption ("Whether to enable G29 wheel support");
     matlab.enable = mkEnableOption ("Whether to enable MATLAB");
-    disablenvidiagpu.enable = mkEnableOption ("Whether to disable and hide all detected Nvidia GPUs");
+    blacklistnvidia.enable = mkEnableOption ("Whether to disable and hide all detected Nvidia GPUs");
   };
 
   config = mkMerge [
@@ -99,12 +99,12 @@ in
         systemd.user.services."flatpak-remote-add" =
           let
             name = "flathub";
-            location = ./flathub.flatpakrepo;
+            location = builtins.fetchurl {
+              url = "https://dl.flathub.org/repo/flathub.flatpakrepo";
+              sha256 = "sha256:0fm0zvlf4fipqfhazx3jdx1d8g0mvbpky1rh6riy3nb11qjxsw9k";
+            };
           in
           {
-            #wants = [
-            #  "network-online.target"
-            #];
             wantedBy = [
               "default.target"
             ];
@@ -188,7 +188,7 @@ in
         inputs.nix-matlab.overlay
       ];
     })
-    (mkIf cfg.disablenvidiagpu.enable {
+    (mkIf cfg.blacklistnvidia.enable {
       boot.extraModprobeConfig = ''
         blacklist nouveau
         options nouveau modeset=0

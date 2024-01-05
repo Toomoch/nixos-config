@@ -22,7 +22,7 @@ in
       specialisation = {
         kde = {
           configuration = {
-            desktop.disablenvidiagpu.enable = true;
+            desktop.blacklistnvidia.enable = true;
             desktop.kde.enable = true;
             desktop.flatpak.enable = true;
             environment.systemPackages = with pkgs; [
@@ -136,7 +136,7 @@ in
       system.stateVersion = "22.11"; # Did you read the comment?
     })
     (lib.mkIf (config.specialisation != { }) {
-      desktop.disablenvidiagpu.enable = true;
+      desktop.blacklistnvidia.enable = true;
       desktop.sway.enable = true;
       desktop.hyprland.enable = false;
       # Power management
