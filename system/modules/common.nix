@@ -25,21 +25,9 @@ in
 
       # Select internationalisation properties.
       i18n = {
-        supportedLocales = [ "en_GB.UTF-8/UTF-8" "ca_ES.UTF-8/UTF-8" ];
+        supportedLocales = [ "ca_ES.UTF-8/UTF-8" ];
       };
-      i18n.defaultLocale = "en_GB.UTF-8";
-
-      i18n.extraLocaleSettings = {
-        LC_ADDRESS = "ca_ES.UTF-8";
-        LC_IDENTIFICATION = "ca_ES.UTF-8";
-        LC_MEASUREMENT = "ca_ES.UTF-8";
-        LC_MONETARY = "ca_ES.UTF-8";
-        LC_NAME = "ca_ES.UTF-8";
-        LC_NUMERIC = "ca_ES.UTF-8";
-        LC_PAPER = "ca_ES.UTF-8";
-        LC_TELEPHONE = "ca_ES.UTF-8";
-        LC_TIME = "ca_ES.UTF-8";
-      };
+      i18n.defaultLocale = "ca_ES.UTF-8";
 
       # Configure keymap in X11
       services.xserver = {

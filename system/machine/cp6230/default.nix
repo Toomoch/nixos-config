@@ -12,7 +12,6 @@
 
   ];
 
-  i18n.defaultLocale = lib.mkDefault "ca_ES.UTF-8";
   common.enable = true;
   common.x86.enable = true;
   desktop.enable = true;
