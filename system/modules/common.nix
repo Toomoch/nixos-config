@@ -25,7 +25,7 @@ in
 
       # Select internationalisation properties.
       i18n = {
-        supportedLocales = [ "ca_ES.UTF-8/UTF-8" ];
+        supportedLocales = [ "en_GB.UTF-8/UTF-8" "ca_ES.UTF-8/UTF-8" ];
       };
       i18n.defaultLocale = "ca_ES.UTF-8";
 

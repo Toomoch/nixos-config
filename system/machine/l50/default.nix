@@ -21,6 +21,7 @@
   desktop.enable = true;
   desktop.kde.enable = true;
   desktop.flatpak.enable = true;
+  vm.libvirtd.enable = true;
 
   # Enable VAAPI hardware acceleration
   hardware.opengl = {
