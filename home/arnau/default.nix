@@ -6,7 +6,7 @@ let
 in
 {
   home.username = "arnau";
-  home.homeDirectory = "/home/arnau";
+  home.homeDirectory = lib.mkDefault "/home/arnau";
   programs.home-manager.enable = true;
 
   sops.age.sshKeyPaths = [ "${sshpath}" ];

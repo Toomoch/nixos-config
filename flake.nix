@@ -127,6 +127,7 @@
             modules = defaultModules ++ [
               (workpath + "/work.nix")
               (workpath + "/work-hardware-configuration.nix")
+              ./system/users/arnau.nix
               home-manager-stable.nixosModules.home-manager
               {
                 home-manager = {
@@ -225,5 +226,6 @@
           cp6230 = mkDeployConfig "cp6230.casa.lan" self.nixosConfigurations.cp6230;
           l50 = mkDeployConfig "l50.casa.lan" self.nixosConfigurations.l50;
         };
+      checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
     };
 }

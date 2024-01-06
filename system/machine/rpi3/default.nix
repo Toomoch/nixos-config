@@ -10,7 +10,7 @@
   environment.systemPackages = [
     pkgs.libraspberrypi
   ];
-  
+
   common.enable = true;
   hardware.enableRedistributableFirmware = true;
   # Use the extlinux boot loader. (NixOS wants to enable GRUB by default)
@@ -18,6 +18,11 @@
   # Enables the generation of /boot/extlinux/extlinux.conf
   boot.loader.generic-extlinux-compatible.enable = true;
 
+  nixpkgs.hostPlatform = lib.mkDefault "aarch64-linux";
+  boot.initrd.availableKernelModules = [ "usb_storage" ];
+
+  # NixOS bruh moment https://github.com/NixOS/nixpkgs/issues/180175, afaik fixed in 24.05
+  systemd.services.NetworkManager-wait-online.enable = false;
 
   networking.firewall = {
     allowedUDPPorts = [ 51820 ];
@@ -65,7 +70,7 @@
     };
   };
 
-  boot.kernelParams = ["cma=32M"];
+  boot.kernelParams = [ "cma=32M" ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

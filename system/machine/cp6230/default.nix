@@ -9,7 +9,8 @@
   networking.hostName = "cp6230"; 
 
   environment.systemPackages = with pkgs; [
-
+    qucs-s
+    onlyoffice-bin
   ];
 
   common.enable = true;

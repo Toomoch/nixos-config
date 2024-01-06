@@ -44,9 +44,24 @@ in
 
       # Printing
       services.printing.enable = true;
-      services.avahi.enable = true;
-      # for a WiFi printer
-      services.avahi.openFirewall = true;
+
+      #hardware.printers = {
+      #  ensureDefaultPrinter = "brother";
+      #  ensurePrinters = [
+      #    {
+      #      name = "brother";
+      #      deviceUri = "ipp://BRWD46A6A756DB9/ipp";
+      #      model = "drv:///cupsfilters.drv/pwgrast.ppd ";
+      #      description = "Brother DCP-L2530DW Series";
+      #      location = "Casa";
+      #    }
+      #  ];
+      #};
+      services.avahi = {
+        enable = true;
+        nssmdns = true;
+        openFirewall = true;
+      };
 
       # OpenGL    
       hardware.opengl.enable = true;
