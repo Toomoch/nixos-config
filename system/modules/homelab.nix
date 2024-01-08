@@ -70,7 +70,7 @@ in
             "${dashy_config}:/app/public/conf.yml:ro"
           ];
           extraOptions = [
-            "--pull=newer"
+            "--pull=always"
           ];
 
         };
@@ -89,7 +89,7 @@ in
           extraOptions = [
             "--network=host"
             "--device=/dev/serial/by-id/usb-1a86_USB_Serial-if00-port0:/dev/ttyUSB0:rw"
-            "--pull=newer"
+            "--pull=always"
           ];
 
         };
