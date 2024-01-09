@@ -1,48 +1,26 @@
-name: update-flakes
+name: update-flake-lock
 on:
+  workflow_dispatch: # allows manual triggering
   schedule:
-    - cron: "0 23 * * 0" # Every Sunday at 11:00 PM
-  workflow_dispatch:
-
-permissions: {}
+    - cron: '0 0 * * 0' # runs weekly on Sunday at 00:00
 
 jobs:
-  get-flake-inputs:
+  lockfile:
     runs-on: ubuntu-latest
-    outputs:
-      flake-inputs: ${{ steps.get-flake-inputs.outputs.flake-inputs }}
+    environment: update
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Install Nix
+        uses: cachix/install-nix-action@v24
         with:
-          lfs: false
-          sparse-checkout: flake.lock
-      - id: get-flake-inputs
-        run: |
-          flake_inputs="$(jq -c '.nodes.root.inputs | {flake: keys}' flake.lock)"
-
-          echo "flake-inputs=${flake_inputs}" >> "$GITHUB_OUTPUT"
-  update-flake:
-    name: update-${{ matrix.flake }}
-    runs-on: ubuntu-latest
-    needs: get-flake-inputs
-    strategy:
-      fail-fast: false
-      matrix: ${{ fromJson(needs.get-flake-inputs.outputs.flake-inputs) }}
-    steps:
-      - uses: actions/checkout@v4
+          extra_nix_config: |
+            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+      - name: Update flake.lock
+        uses: DeterminateSystems/update-flake-lock@v20
         with:
-          lfs: false
-      - uses: DeterminateSystems/nix-installer-action@v9
-        with:
-          extra-conf: accept-flake-config = true
-      - run: git config --global user.email "noreply@github.com"
-      - run: git config --global user.name "github[bot]"
-      - uses: cpcloud/flake-update-action@v1.0.4
-        with:
-          dependency: ${{ matrix.flake }}
-          pull-request-token: ${{ secrets.PAT }}
-          pull-request-author: github[bot] <noreply@github.com>
-          delete-branch: true
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          pull-request-branch-prefix: update-
-          automerge: true
+          token: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
+          pr-labels: |
+            dependencies
+            automated
+            nix
