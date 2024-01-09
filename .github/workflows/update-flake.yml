@@ -1,0 +1,22 @@
+on:
+  schedule:
+    - cron: "0 23 * * 0" # Every Sunday at 11:00 PM
+  workflow_dispatch:
+
+jobs:
+  update-deps:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        dependency:
+          - nixpkgs
+          - poetry2nix
+    steps:
+      - name: Update ${{ matrix.dependency }}
+        uses: cpcloud/flake-update-action@*
+        with:
+          dependency: ${{ matrix.dependency }}
+          pull-request-token: ${{ secrets.ANOTHER_TOKEN }}
+          pull-request-author: "vallsfustearnau@gmail.com"
+          github-token: ${{ secrets.GITHUB_TOKEN }}
