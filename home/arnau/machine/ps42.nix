@@ -20,11 +20,9 @@
         pos = "0 1080";
       };
       "LG Electronics 2D FHD LG TV 0x00000101" = {
-        mode = "1920x1080@60Hz";
         pos = "0 0";
       };
       "Samsung Electric Company SyncMaster H1AK500000" = {
-        mode = "1360x768@60Hz";
         pos = "280 312";
       };
     };

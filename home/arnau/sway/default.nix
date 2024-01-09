@@ -77,6 +77,12 @@ in
         "LG Electronics 2D FHD LG TV 0x00000101" = {
           mode = "1920x1080@60Hz";
         };
+        "LG Electronics LG ULTRAWIDE 0x0000BFCD" = {
+          mode = "2560x1080@100Hz";
+        };
+        "Samsung Electric Company SyncMaster H1AK500000" = {
+          mode = "1360x768@60Hz";
+        };
       };
       startup = [
         { command = "nm-applet --indicator"; }
@@ -126,6 +132,8 @@ in
 
         # Lock
         "${modifier}+Escape" = "gtklock -d";
+
+        "${modifier}+Shift+s" = "sticky toggle";
 
       };
       input = {
