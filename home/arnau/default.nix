@@ -31,6 +31,7 @@ in
     enable = true;
     mouse = true;
     clock24 = true;
+    extraConfig = builtins.readFile (./dotfiles/tmux.conf);
   };
 
   programs.direnv.enable = true;
@@ -47,6 +48,11 @@ in
         echo -ne "\033]0; $PWD \007"
       }
       starship_precmd_user_func="set_win_title"
+
+      # if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+      #   tmux a -t default || exec tmux new -s default;
+      # fi
+      
     '';
     profileExtra = ''
     '';
