@@ -6,6 +6,7 @@
     ../sway
     ../personal.nix
     ../devtools.nix
+    ../nvim.nix
   ];
 
   home.packages = with pkgs; [

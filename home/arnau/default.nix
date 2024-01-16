@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, inputs, ... }:
 let
   nixos-config = "~/projects/nixos-config";
   sshpath = "${config.home.homeDirectory}/.ssh/id_ed25519";
@@ -48,11 +48,6 @@ in
         echo -ne "\033]0; $PWD \007"
       }
       starship_precmd_user_func="set_win_title"
-
-      # if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
-      #   tmux a -t default || exec tmux new -s default;
-      # fi
-      
     '';
     profileExtra = ''
     '';

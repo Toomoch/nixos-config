@@ -12,6 +12,11 @@
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
+    nixvim = {
+      url = "github:nix-community/nixvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     sops-nix.url = "github:Mic92/sops-nix";
     deploy-rs.url = "github:serokell/deploy-rs";
     #hyprland.url = "github:hyprwm/Hyprland";
@@ -21,7 +26,7 @@
     private.url = "git+ssh://git@github.com/Toomoch/nixos-config-private.git";
   };
 
-  outputs = inputs@{ self, nixpkgs, home-manager, nixpkgs-stable, home-manager-stable, sops-nix, deploy-rs, nix-matlab, private, ... }:
+  outputs = inputs@{ self, nixpkgs, home-manager, nixpkgs-stable, home-manager-stable, sops-nix, deploy-rs, nix-matlab, private, nixvim, ... }:
     let
       workpath = "${private}/system/machine/";
       workpathhome = "${private}/home/arnau";
@@ -121,14 +126,14 @@
             ];
           };
 
-          "${builtins.readFile (secrets + "/hostname")}" = nixpkgs-stable.lib.nixosSystem {
+          "${builtins.readFile (secrets + "/hostname")}" = nixpkgs.lib.nixosSystem {
             system = "x86_64-linux";
             inherit specialArgs;
             modules = defaultModules ++ [
               (workpath + "/work.nix")
               (workpath + "/work-hardware-configuration.nix")
               ./system/users/arnau.nix
-              home-manager-stable.nixosModules.home-manager
+              home-manager.nixosModules.home-manager
               {
                 home-manager = {
                   useGlobalPkgs = true;
@@ -139,6 +144,8 @@
                     self.homeManagerModules.desktop
                     self.homeManagerModules.devtools
                     sops-nix.homeManagerModules.sops
+                    nixvim.homeManagerModules.nixvim
+                    ./home/arnau/nvim.nix
                     workpathhome
                   ];
                 };

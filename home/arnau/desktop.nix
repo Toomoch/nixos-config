@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, inputs, ... }:
 {
   home.packages = with pkgs; [
     #desktop apps
@@ -16,7 +16,10 @@
     gitg
     thunderbird
     openlens
+    (pkgs.nerdfonts.override { fonts = [ "Noto" ]; })
   ];
+
+  fonts.fontconfig.enable = true;
 
   home.file."${config.xdg.userDirs.pictures}/wallpapers/" = {
     source = ./wallpapers;
@@ -34,26 +37,30 @@
     #   '/nix/store/...-home-manager-files/.config/mimeapps.list'
     # Issue: https://github.com/nix-community/home-manager/issues/1213
     configFile."mimeapps.list".force = true;
+    configFile."firefoxprofileswitcher/config.json".text = ''
+      	{"browser_binary": "/run/current-system/sw/bin/firefox"}
+    '';
     mimeApps = {
       enable = true;
-      defaultApplications = 
+      defaultApplications =
         #"inode/directory" = "org.gnome.Nautilus.desktop";
         #"application/zip" = "org.gnome.FileRoller.desktop";
-        config.lib.xdg.mimeAssociations [ 
+        config.lib.xdg.mimeAssociations [
           pkgs.gnome.nautilus
           pkgs.gnome.file-roller
           pkgs.mpv
           pkgs.firefox
-         ];
-        #"video/x-matroska" = "mpv.desktop";
-        #"image/png" = "firefox.desktop";
-      
+        ];
+      #"video/x-matroska" = "mpv.desktop";
+      #"image/png" = "firefox.desktop";
+
       associations.added = {
         "application/pdf" = "firefox.desktop";
         "image/png" = "firefox.desktop";
         "video/x-matroska" = "mpv.desktop";
       };
     };
+
   };
 
   programs.alacritty = {
@@ -72,7 +79,7 @@
     enable = true;
     settings = {
       main = {
-        font = "Noto Sans Mono:size=12";
+        font = "NotoSansM Nerd Font Mono:size=12";
         dpi-aware = "no";
       };
       colors = {
@@ -110,13 +117,16 @@
 
       update.mode = "none";
       nix.enableLanguageServer = true;
-      nix.serverPath = "nil";
-      nix.serverSettings.nil = {
+      nix.serverPath = "nixd";
+      nix.serverSettings.nixd = {
         formatting = {
           command = [ "nixpkgs-fmt" ];
         };
-        flake = {
-          autoArchive = true;
+        options = {
+          enable = true;
+          target = {
+            installable = ".#nixosConfigurations.ps42.options";
+          };
         };
       };
     };

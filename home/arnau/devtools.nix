@@ -19,5 +19,6 @@
     tio
     python3
     kubectl
+    nixd
   ];
 }

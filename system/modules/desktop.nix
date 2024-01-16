@@ -1,5 +1,6 @@
 { inputs, config, lib, pkgs, ... }:
-with lib; let
+with lib;
+let
   cfg = config.desktop;
   g29init = pkgs.writeShellScriptBin "g29init" ''
     ${pkgs.coreutils-full}/bin/sleep 8
@@ -11,13 +12,15 @@ with lib; let
 in
 {
   options.desktop = {
-    enable = mkEnableOption ("Whether to enable common stuff for desktop systems");
+    enable =
+      mkEnableOption ("Whether to enable common stuff for desktop systems");
     arctis9.enable = mkEnableOption ("Whether to enable Arctis9 support");
     flatpak.enable = mkEnableOption ("Whether to enable Flatpak support");
     gaming.enable = mkEnableOption ("Whether to enable gaming stuff");
     gaming.g29.enable = mkEnableOption ("Whether to enable G29 wheel support");
     matlab.enable = mkEnableOption ("Whether to enable MATLAB");
-    blacklistnvidia.enable = mkEnableOption ("Whether to disable and hide all detected Nvidia GPUs");
+    blacklistnvidia.enable =
+      mkEnableOption ("Whether to disable and hide all detected Nvidia GPUs");
   };
 
   config = mkMerge [
@@ -29,9 +32,7 @@ in
       #services.udev.extraRules = optionalString cfg.arctis9.enable ''
       #  KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="1038", ATTRS{idProduct}=="12c2", TAG+="uaccess"'';
 
-      nixpkgs.config.permittedInsecurePackages = [
-        "electron-24.8.6"
-      ];
+      nixpkgs.config.permittedInsecurePackages = [ "electron-24.8.6" ];
 
       programs.nix-ld.enable = true;
       services.envfs.enable = true;
@@ -86,12 +87,20 @@ in
       programs.adb.enable = true;
 
       # Firefox
-      programs.firefox = {
-        enable = true;
-        preferences = {
-          "browser.fullscreen.autohide" = false;
+      programs.firefox =
+        let
+          firefox-package = pkgs.wrapFirefox pkgs.firefox-unwrapped {
+            nativeMessagingHosts =
+              [ (pkgs.callPackage ../packages/firefox-profile-switcher-connector.nix { }) ];
+            extraPolicies = { ExtensionSettings = { }; };
+          };
+
+        in
+        {
+          enable = true;
+          package = firefox-package;
+          preferences = { "browser.fullscreen.autohide" = false; };
         };
-      };
 
       # Enable plymouth bootanimation
       boot.plymouth.enable = true;
@@ -102,56 +111,51 @@ in
       services.udev.extraRules = ''
         KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="1038", ATTRS{idProduct}=="12c2", TAG+="uaccess"
       '';
-      environment.systemPackages = with pkgs; [
-        headsetcontrol
-      ];
+      environment.systemPackages = with pkgs; [ headsetcontrol ];
 
     })
-    (mkIf cfg.flatpak.enable
-      {
-        services.flatpak.enable = true;
-        # Ugly hack to add remote
-        systemd.user.services."flatpak-remote-add" =
-          let
-            name = "flathub";
-            location = builtins.fetchurl {
-              url = "https://dl.flathub.org/repo/flathub.flatpakrepo";
-              sha256 = "sha256:0fm0zvlf4fipqfhazx3jdx1d8g0mvbpky1rh6riy3nb11qjxsw9k";
-            };
-          in
-          {
-            wantedBy = [
-              "default.target"
-            ];
-            serviceConfig = {
-              Type = "oneshot";
-              ExecStart = "/run/current-system/sw/bin/flatpak remote-add --user --if-not-exists ${name} ${location}";
-            };
+    (mkIf cfg.flatpak.enable {
+      services.flatpak.enable = true;
+      # Ugly hack to add remote
+      systemd.user.services."flatpak-remote-add" =
+        let
+          name = "flathub";
+          location = builtins.fetchurl {
+            url = "https://dl.flathub.org/repo/flathub.flatpakrepo";
+            sha256 =
+              "sha256:0fm0zvlf4fipqfhazx3jdx1d8g0mvbpky1rh6riy3nb11qjxsw9k";
           };
+        in
+        {
+          wantedBy = [ "default.target" ];
+          serviceConfig = {
+            Type = "oneshot";
+            ExecStart =
+              "/run/current-system/sw/bin/flatpak remote-add --user --if-not-exists ${name} ${location}";
+          };
+        };
 
-        # Flatpak workarounds
-        system.fsPackages =
-          [ pkgs.bindfs ];
-        fileSystems =
-          let
-            mkRoSymBind = path: {
-              device = path;
-              fsType = "fuse.bindfs";
-              options = [ "ro" "resolve-symlinks" "x-gvfs-hide" ];
-            };
-            aggregatedFonts = pkgs.buildEnv
-              {
-                name = "system-fonts";
-                paths = config.fonts.packages;
-                pathsToLink = [ "/share/fonts" ];
-              };
-          in
-          {
-            # Create an FHS mount to support flatpak host icons/fonts
-            "/usr/share/icons" = mkRoSymBind (config.system.path + "/share/icons");
-            "/usr/share/fonts" = mkRoSymBind (aggregatedFonts + "/share/fonts");
+      # Flatpak workarounds
+      system.fsPackages = [ pkgs.bindfs ];
+      fileSystems =
+        let
+          mkRoSymBind = path: {
+            device = path;
+            fsType = "fuse.bindfs";
+            options = [ "ro" "resolve-symlinks" "x-gvfs-hide" ];
           };
-      })
+          aggregatedFonts = pkgs.buildEnv {
+            name = "system-fonts";
+            paths = config.fonts.packages;
+            pathsToLink = [ "/share/fonts" ];
+          };
+        in
+        {
+          # Create an FHS mount to support flatpak host icons/fonts
+          "/usr/share/icons" = mkRoSymBind (config.system.path + "/share/icons");
+          "/usr/share/fonts" = mkRoSymBind (aggregatedFonts + "/share/fonts");
+        };
+    })
     (mkIf cfg.gaming.enable {
       environment.systemPackages = with pkgs; [
         legendary-gl
@@ -174,14 +178,9 @@ in
           true; # Open ports in the firewall for Source Dedicated Server
       };
 
-
     })
     (mkIf cfg.gaming.g29.enable {
-      environment.systemPackages = with pkgs; [
-        oversteer
-        at
-        g29init
-      ];
+      environment.systemPackages = with pkgs; [ oversteer at g29init ];
       services.atd.enable = true;
 
       hardware.new-lg4ff.enable = true;
@@ -199,9 +198,7 @@ in
         matlab-mex
       ];
 
-      nixpkgs.overlays = [
-        inputs.nix-matlab.overlay
-      ];
+      nixpkgs.overlays = [ inputs.nix-matlab.overlay ];
     })
     (mkIf cfg.blacklistnvidia.enable {
       boot.extraModprobeConfig = ''
@@ -219,7 +216,8 @@ in
         # Remove NVIDIA VGA/3D controller devices
         ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x03[0-9]*", ATTR{power/control}="auto", ATTR{remove}="1"
       '';
-      boot.blacklistedKernelModules = [ "nouveau" "nvidia" "nvidia_drm" "nvidia_modeset" ];
+      boot.blacklistedKernelModules =
+        [ "nouveau" "nvidia" "nvidia_drm" "nvidia_modeset" ];
     })
   ];
 }
