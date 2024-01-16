@@ -82,6 +82,7 @@
                   users.arnau.imports = [
                     ./home/arnau/machine/b450.nix
                     sops-nix.homeManagerModules.sops
+                    nixvim.homeManagerModules.nixvim
                   ];
                 };
               }
@@ -101,6 +102,7 @@
                   users.arnau.imports = [
                     ./home/arnau/machine/ps42.nix
                     sops-nix.homeManagerModules.sops
+                    nixvim.homeManagerModules.nixvim
                   ];
                 };
               }
@@ -189,6 +191,14 @@
             modules = defaultModules ++ [
               ./system/machine/rpi3
               "${nixpkgs-stable}/nixos/modules/installer/sd-card/sd-image-aarch64.nix"
+            ];
+          };
+          
+          oracle2 = nixpkgs.lib.nixosSystem {
+            system = "aarch64-linux";
+            inherit specialArgs;
+            modules = defaultModules ++ [
+              ./system/machine/oracle2
             ];
           };
 
