@@ -2,6 +2,7 @@
 {
   home.packages = with pkgs; [ ripgrep ];
   programs.nixvim = {
+    extraPlugins = with pkgs; [ vimPlugins.vim-just ];
     enable = true;
     clipboard.providers.wl-copy.enable = true;
     keymaps = [
