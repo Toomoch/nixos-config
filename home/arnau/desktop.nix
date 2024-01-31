@@ -16,6 +16,7 @@
     gitg
     thunderbird
     openlens
+    zapzap
     (pkgs.nerdfonts.override { fonts = [ "Noto" ]; })
   ];
 
