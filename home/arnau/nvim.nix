@@ -4,6 +4,7 @@
   programs.nixvim = {
     extraPlugins = with pkgs; [ vimPlugins.vim-just ];
     enable = true;
+    vimAlias = true;
     clipboard.providers.wl-copy.enable = true;
     keymaps = [
       {
