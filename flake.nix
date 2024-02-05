@@ -142,12 +142,13 @@
                   extraSpecialArgs = { inherit inputs; };
                   users.arnau.imports = [
                     self.homeManagerModules.default
-                    self.homeManagerModules.sway
                     self.homeManagerModules.desktop
+                    self.homeManagerModules.sway
                     self.homeManagerModules.devtools
                     sops-nix.homeManagerModules.sops
                     nixvim.homeManagerModules.nixvim
                     ./home/arnau/nvim.nix
+                    ./home/arnau/hyprland/default.nix
                     workpathhome
                   ];
                 };

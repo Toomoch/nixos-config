@@ -19,6 +19,7 @@
   common.x86.enable = true;
   desktop.enable = true;
   desktop.arctis9.enable = true;
+  desktop.regreet.enable = true;
   desktop.sway.enable = true;
   desktop.hyprland.enable = false;
   desktop.flatpak.enable = true;

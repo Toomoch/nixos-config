@@ -35,6 +35,7 @@ in
         };
         nvidia = {
           configuration = {
+            desktop.regreet.enable = true;
             desktop.sway.enable = true;
             environment.systemPackages = [
               nvidia-offload
@@ -138,6 +139,7 @@ in
     (lib.mkIf (config.specialisation != { }) {
       desktop.blacklistnvidia.enable = true;
       desktop.sway.enable = true;
+      desktop.regreet.enable = true;
       desktop.hyprland.enable = false;
       # Power management
       services.auto-cpufreq.enable = true;

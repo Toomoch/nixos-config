@@ -11,7 +11,7 @@
   
   wayland.windowManager.hyprland = {
     enable = true;
-    package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+    systemd.enable = true;
     extraConfig = ''
       exec-once = wpaperd
       exec-once = swaync
@@ -52,10 +52,13 @@
         shadow_render_power = 3
         col.shadow = rgba(1a1a1aee)
 
-        blur = true
-        blur_size = 3
-        blur_passes = 1
-        blur_new_optimizations = true
+        blur {
+          enabled = true
+          size = 3
+          passes = 1
+        
+          vibrancy = 0.1696
+        }
       }
 
       
