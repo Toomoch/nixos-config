@@ -17,6 +17,9 @@
     thunderbird
     openlens
     zapzap
+    meld
+    imhex
+    ungoogled-chromium
     (pkgs.nerdfonts.override { fonts = [ "Noto" ]; })
   ];
 
