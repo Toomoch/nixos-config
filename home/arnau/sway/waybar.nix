@@ -8,7 +8,7 @@
         layer = "top";
         height = 30;
         spacing = 4;
-        modules-left = [ "hyprland/workspaces" "sway/workspaces" "sway/mode" "sway/window" "hyprland/window" ];
+        modules-left = [ "sway/workspaces" "sway/mode" "sway/window" ];
         modules-center = [ "custom/media" ];
         modules-right = [
           "tray"

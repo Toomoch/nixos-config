@@ -7,7 +7,7 @@
 
   nixpkgs.config.allowUnfree = true;
 
-  networking.hostName = "oracle2";
+  networking.hostName = "oracle1";
 
   common.enable = true;
   common.x86.enable = true;
@@ -15,7 +15,7 @@
   vm.docker.enable  = true;
   security.polkit.enable = true;
   services.boinc.enable = true;
-  
+
   boot.initrd.availableKernelModules = [
     "virtio_net"
     "virtio_pci"

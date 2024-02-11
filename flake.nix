@@ -148,7 +148,6 @@
                     sops-nix.homeManagerModules.sops
                     nixvim.homeManagerModules.nixvim
                     ./home/arnau/nvim.nix
-                    ./home/arnau/hyprland/default.nix
                     workpathhome
                   ];
                 };
@@ -194,7 +193,15 @@
               "${nixpkgs-stable}/nixos/modules/installer/sd-card/sd-image-aarch64.nix"
             ];
           };
-          
+
+          oracle1 = nixpkgs.lib.nixosSystem {
+            system = "x86_64-linux";
+            inherit specialArgs;
+            modules = defaultModules ++ [
+              ./system/machine/oracle1
+            ];
+          };
+
           oracle2 = nixpkgs.lib.nixosSystem {
             system = "aarch64-linux";
             inherit specialArgs;
@@ -243,6 +250,8 @@
           rpi3 = mkDeployConfig "rpi3.casa.lan" self.nixosConfigurations.rpi3;
           cp6230 = mkDeployConfig "cp6230.casa.lan" self.nixosConfigurations.cp6230;
           l50 = mkDeployConfig "l50.casa.lan" self.nixosConfigurations.l50;
+          oracle1 = mkDeployConfig "${builtins.readFile (secrets + "/plain/oracle1_ip")}" self.nixosConfigurations.oracle1;
+          oracle2 = mkDeployConfig "${builtins.readFile (secrets + "/plain/oracle2_ip")}" self.nixosConfigurations.oracle2;
         };
       checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
     };
