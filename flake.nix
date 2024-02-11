@@ -251,6 +251,7 @@
           cp6230 = mkDeployConfig "cp6230.casa.lan" self.nixosConfigurations.cp6230;
           l50 = mkDeployConfig "l50.casa.lan" self.nixosConfigurations.l50;
           oracle1 = mkDeployConfig "${builtins.readFile (secrets + "/plain/oracle1_ip")}" self.nixosConfigurations.oracle1;
+          oracle2 = mkDeployConfig "${builtins.readFile (secrets + "/plain/oracle2_ip")}" self.nixosConfigurations.oracle2;
         };
       checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
     };

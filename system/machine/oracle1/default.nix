@@ -14,6 +14,7 @@
   vm.podman.enable = true;
   vm.docker.enable  = true;
   security.polkit.enable = true;
+  services.boinc.enable = true;
 
   boot.initrd.availableKernelModules = [
     "virtio_net"
