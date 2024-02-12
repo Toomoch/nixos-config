@@ -10,6 +10,7 @@ with lib; let
     exec "${config.programs.regreet.package}/bin/regreet; swaymsg exit"
     include /etc/sway/config.d/*
   '';
+
 in
 {
   options.desktop = {
@@ -80,6 +81,7 @@ in
         settings = {
           background = {
             fit = "Cover";
+            path = ../assets/lockscreen.png;
           };
           GTK = {
             cursor_theme_name = "Adwaita";
