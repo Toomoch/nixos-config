@@ -56,13 +56,7 @@ in
             services.xserver.videoDrivers = [ "nvidia" ];
             environment.sessionVariables.WLR_DRM_DEVICES = "/dev/dri/card0";
             # Nvidia driver bruh moment https://github.com/NVIDIA/egl-wayland/issues/72 TODO revert on nvidia 550
-            hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable.overrideAttrs (old: {
-              postPatch = ''
-                substituteInPlace ./kernel/nvidia-drm/nvidia-drm-drv.c --replace \
-                  '#if defined(NV_SYNC_FILE_GET_FENCE_PRESENT)' \
-                  '#if 0'
-              '';
-            });
+            hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.beta;
             hardware.nvidia = {
 
               # Modesetting is required.
@@ -84,7 +78,6 @@ in
 
       environment.systemPackages = with pkgs; [
         powertop
-        cemu
       ];
 
       common.enable = true;
