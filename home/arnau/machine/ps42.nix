@@ -14,54 +14,36 @@
 
   ];
 
-  wayland.windowManager.sway.config = {
-    output = {
-      "Chimei Innolux Corporation 0x14D5 Unknown" = {
-        mode = "1920x1080@60Hz";
-        pos = "0 1080";
+  services.kanshi = {
+    enable = true;
+
+    profiles = {
+      laptop = {
+        outputs = [
+          {
+            criteria = "Chimei Innolux Corporation 0x14D5 Unknown";
+            status = "enable";
+          }
+        ];
       };
-      "LG Electronics 2D FHD LG TV 0x00000101" = {
-        pos = "0 0";
-      };
-      "Samsung Electric Company SyncMaster H1AK500000" = {
-        pos = "280 312";
+      desk_flat = {
+        outputs = [
+          {
+            criteria = "LG Electronics LG ULTRAWIDE 0x0000BFCD";
+            position = "0,0";
+            mode = "2560x1080@99.943";
+            adaptiveSync = true;
+            status = "enable";
+          }
+          {
+            criteria = "Chimei Innolux Corporation 0x14D5 Unknown";
+            status = "disable";
+          }
+        ];
       };
     };
-    workspaceOutputAssign = [
-      {
-        workspace = "1";
-        output = "eDP-1";
-      }
-      {
-        workspace = "2";
-        output = "eDP-1";
-      }
-      {
-        workspace = "3";
-        output = "eDP-1";
-      }
-      {
-        workspace = "4";
-        output = "eDP-1";
-      }
-      {
-        workspace = "5";
-        output = "HDMI-A-1";
-      }
-      {
-        workspace = "6";
-        output = "HDMI-A-1";
-      }
-      {
-        workspace = "7";
-        output = "HDMI-A-1";
-      }
-      {
-        workspace = "8";
-        output = "HDMI-A-1";
-      }
-    ];
   };
 
+  
   home.stateVersion = "22.11";
 }

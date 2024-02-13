@@ -69,20 +69,7 @@ in
         childBorder = "#00000000";
       };
       gaps.inner = 5;
-      output = {
-        # VM screen
-        "Virtual-1" = {
-          mode = "1920x1080@60Hz";
-        };
-        "LG Electronics 2D FHD LG TV 0x00000101" = {
-          mode = "1920x1080@60Hz";
-        };
-        "LG Electronics LG ULTRAWIDE 0x0000BFCD" = {
-          mode = "2560x1080@100Hz";
-        };
-        "Samsung Electric Company SyncMaster H1AK500000" = {
-          mode = "1360x768@60Hz";
-        };
+      output = { 
       };
       startup = [
         { command = "nm-applet --indicator"; }
@@ -131,7 +118,7 @@ in
         "${modifier}+Tab" = "workspace back_and_forth";
 
         # Lock
-        "${modifier}+Escape" = "gtklock -d";
+        "${modifier}+Escape" = "exec gtklock -d";
 
         "${modifier}+Shift+s" = "sticky toggle";
 

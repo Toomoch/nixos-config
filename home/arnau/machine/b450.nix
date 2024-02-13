@@ -12,6 +12,24 @@
   home.packages = with pkgs; [
     discord-screenaudio
   ];
+  
+  services.kanshi = {
+    enable = true;
+
+    profiles = {
+      desk_flat = {
+        outputs = [
+          {
+            criteria = "LG Electronics LG ULTRAWIDE 0x0000BFCD";
+            position = "0,0";
+            mode = "2560x1080@99.943";
+            adaptiveSync = true;
+            status = "enable";
+          } 
+        ];
+      };
+    };
+  };
 
   home.stateVersion = "22.11";
 }
