@@ -44,6 +44,8 @@ in
         names = [ "Rubik" ];
         size = 12.0;
       };
+      
+      defaultWorkspace = "workspace number 1";
 
       window.titlebar = false;
       floating.titlebar = true;
