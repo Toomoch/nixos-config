@@ -207,6 +207,7 @@
             inherit specialArgs;
             modules = defaultModules ++ [
               ./system/machine/oracle2
+              self.nixosModules.homelab
             ];
           };
 
@@ -240,8 +241,8 @@
                 path = deploy-rs.lib."${system}".activate.nixos configuration;
                 sshUser = "arnau";
                 user = "root";
-                sshOpts = [ "-t" ];
-                magicRollback = false; # Disable because it breaks remote sudo :<
+                interactiveSudo = true;
+                magicRollback = true;
               };
           };
         in

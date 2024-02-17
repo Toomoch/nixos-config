@@ -17,6 +17,7 @@
     ansible-lint
     just
     tio
+    tldr
     python3
     kubectl
     nixd
