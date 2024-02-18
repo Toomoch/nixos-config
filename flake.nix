@@ -132,23 +132,18 @@
             system = "x86_64-linux";
             inherit specialArgs;
             modules = defaultModules ++ [
-              (workpath + "/work.nix")
-              (workpath + "/work-hardware-configuration.nix")
+              ./system/machine/work/default.nix
               ./system/users/arnau.nix
+
               home-manager.nixosModules.home-manager
               {
                 home-manager = {
                   useGlobalPkgs = true;
                   extraSpecialArgs = { inherit inputs; };
                   users.arnau.imports = [
-                    self.homeManagerModules.default
-                    self.homeManagerModules.desktop
-                    self.homeManagerModules.sway
-                    self.homeManagerModules.devtools
                     sops-nix.homeManagerModules.sops
                     nixvim.homeManagerModules.nixvim
-                    ./home/arnau/nvim.nix
-                    workpathhome
+                    ./home/arnau/machine/work.nix
                   ];
                 };
               }

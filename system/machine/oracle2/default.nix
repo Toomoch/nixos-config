@@ -15,7 +15,7 @@
   vm.docker.enable  = true;
   security.polkit.enable = true;
   services.boinc.enable = true;
-  homelab.enablevps = false;
+  homelab.enablevps = true;
   
   boot.initrd.availableKernelModules = [
     "virtio_net"

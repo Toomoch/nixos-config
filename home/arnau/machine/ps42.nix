@@ -1,10 +1,7 @@
 { inputs, config, pkgs, lib, ... }:
+with import ../sway/functions.nix { inherit pkgs lib; }; 
 let
-  monitor_workspace = begin: end: monitor:
-    let
-      size = end - begin + 1;
-    in
-      lib.lists.imap1 (i: v: "${pkgs.sway}/bin/swaymsg workspace ${toString (i + begin - 1)}, move workspace to output \'\"${monitor}\"\'") (lib.lists.replicate size "");
+  internal_name = "Chimei Innolux Corporation 0x14D5 Unknown"; 
 in
 {
   imports = [
@@ -23,30 +20,32 @@ in
 
   services.kanshi = {
     enable = true;
-
     profiles = {
       laptop = {
-        exec = monitor_workspace 1 10 "Chimei Innolux Corporation 0x14D5 Unknown";
+        exec = monitor_workspace 1 10 internal_name;
         outputs = [
           {
-            criteria = "Chimei Innolux Corporation 0x14D5 Unknown";
+            criteria = internal_name;
             status = "enable";
             
           }
         ];
       };
+
       desk_flat = {
+        exec = monitor_workspace 1 5 internal_name ++ monitor_workspace 6 10 ultrawide_name;
         outputs = [
           {
-            criteria = "LG Electronics LG ULTRAWIDE 0x0000BFCD";
+            criteria = ultrawide_name;
             position = "0,0";
             mode = "2560x1080@100Hz";
             adaptiveSync = true;
             status = "enable";
           }
           {
-            criteria = "Chimei Innolux Corporation 0x14D5 Unknown";
-            status = "disable";
+            criteria = internal_name;
+            position = "320,1080";
+            status = "enable";
           }
         ];
       };

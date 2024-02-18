@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 let
   screenshot = pkgs.writeShellScriptBin "screenshot" (builtins.readFile (./swayscreenshot.sh));
-  font = "Rubik";
+  font = "Rubik"; 
 in
 {
   imports = [
@@ -30,7 +30,8 @@ in
     libnotify
     swayosd
     nwg-displays
-  ];
+  ]; 
+
 
   wayland.windowManager.sway = {
     enable = true;
