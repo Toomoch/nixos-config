@@ -44,13 +44,13 @@ in
         outputs = [
           {
             criteria = workplace_name;
-            position = "0,0";
+            position = "1920,0";
             mode = "1920x1080@75Hz";
             status = "enable";
           }
           {
             criteria = internal_name;
-            position = "1920,0";
+            position = "0,0";
             status = "enable";
           }
         ];
