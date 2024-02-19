@@ -3,6 +3,8 @@ let
   nixos-config = "~/projects/nixos-config";
   sshpath = "${config.home.homeDirectory}/.ssh/id_ed25519";
   sshfix = "NIX_SSHOPTS=-i ${sshpath}";
+  ip_path = "${inputs.private}/secrets/plain";
+
 in
 {
   home.username = "arnau";
@@ -73,10 +75,14 @@ in
 
   programs.ssh = {
     enable = true;
-    matchBlocks."*" = {
-      setEnv = {
-        TERM = "xterm-256color";
+    matchBlocks = {
+      "*" = {
+        setEnv = {
+          TERM = "xterm-256color";
+        };
       };
+      "oracle1" = { hostname = "${builtins.readFile (ip_path + "/oracle1_ip")}"; };
+      "oracle2" = { hostname = "${builtins.readFile (ip_path + "/oracle2_ip")}"; };
     };
     includes = [
       "config.d/*"
@@ -86,7 +92,7 @@ in
   # Workaround for NixOS bruh moment https://github.com/nix-community/home-manager/issues/322
   home.file.".ssh/config" = {
     target = ".ssh/config_source";
-    onChange = ''cat ~/.ssh/config_source > ~/.ssh/config && chmod 400 ~/.ssh/config'';
+    onChange = ''cat ~/.ssh/config_source > ~/.ssh/config && chmod 600 ~/.ssh/config'';
   };
 
 }

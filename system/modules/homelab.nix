@@ -4,11 +4,16 @@ with lib; let
   jmusicbot = "/var/lib/jmusicbot";
   dashy_config = "${inputs.private}/configfiles/dashy.yml";
   hass_config = "/var/lib/hass";
+  tgtg_volume = "/var/lib/tgtg";
   domain = "${builtins.readFile "${inputs.private}/secrets/domain"}";
+  commonextraOptions = [
+    "--pull=always"
+  ];
 in
 {
   options.homelab = {
     enable = mkEnableOption ("Whether to enable homelab stuff");
+    enablevps = mkEnableOption ("Whether to enable VPS homelab stuff");
   };
 
   config = mkMerge [
@@ -69,9 +74,7 @@ in
           volumes = [
             "${dashy_config}:/app/public/conf.yml:ro"
           ];
-          extraOptions = [
-            "--pull=always"
-          ];
+          extraOptions = commonextraOptions;
 
         };
 
@@ -86,10 +89,9 @@ in
           environment = {
             TZ = "Europe/Madrid";
           };
-          extraOptions = [
+          extraOptions = commonextraOptions ++ [
             "--network=host"
             "--device=/dev/serial/by-id/usb-1a86_USB_Serial-if00-port0:/dev/ttyUSB0:rw"
-            "--pull=always"
           ];
 
         };
@@ -105,6 +107,32 @@ in
           PrivateDevices = true;
         };
       };
+    })
+    (mkIf cfg.enablevps {
+      sops.secrets."tgtg/env" = {
+        sopsFile = "${inputs.private}/secrets/sops/tgtg.env";
+        format = "dotenv";
+      };
+      virtualisation.oci-containers.backend = "docker";
+      virtualisation.oci-containers.containers = {
+        tgtg = {
+          image = "derhenning/tgtg:latest-alpine";
+
+          environment = {
+            TZ = "Europe/Madrid";
+            LOCALE = "es_ES";
+            SLEEP_TIME = "60";
+            TELEGRAM = "true";
+          };
+          environmentFiles = [ "${config.sops.secrets."tgtg/env".path}" ];
+          extraOptions = commonextraOptions;
+          volumes = [
+            "${tgtg_volume}:/tokens"
+          ];
+        };
+      };
+
+
     })
 
 

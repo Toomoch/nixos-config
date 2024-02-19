@@ -2,7 +2,7 @@
 {
   home.packages = with pkgs; [ ripgrep ];
   programs.nixvim = {
-    extraPlugins = with pkgs; [ vimPlugins.vim-just ];
+    extraPlugins = with pkgs; [ vimPlugins.vim-just vimPlugins.vim-shellcheck vimPlugins.markdown-preview-nvim ];
     enable = true;
     vimAlias = true;
     clipboard.providers.wl-copy.enable = true;
@@ -80,6 +80,12 @@
           clangd = {
             enable = true;
           };
+          pylsp = {
+            enable = true;
+            settings.plugins.pylint.enabled = true;
+            settings.plugins.jedi_completion.enabled = true;
+          };
+          bashls.enable = true;
           ansiblels.enable = true;
         };
       };

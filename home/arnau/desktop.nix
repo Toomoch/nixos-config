@@ -15,7 +15,6 @@
     gnome-network-displays
     gitg
     thunderbird
-    openlens
     zapzap
     meld
     imhex
@@ -72,149 +71,156 @@
     enable = true;
     settings = {
       window.opacity = 1;
-    };
-  };
-
-  programs.java = {
-    enable = true;
-    package = pkgs.jdk11;
-  };
-
-  programs.foot = {
-    enable = true;
-    settings = {
-      main = {
-        font = "NotoSansM Nerd Font Mono:size=12";
-        dpi-aware = "no";
-      };
-      colors = {
-        background = "242424";
-        foreground = "ffffff";
-      };
-    };
-  };
-
-  programs.vscode = {
-    enable = true;
-    package = pkgs.vscodium;
-
-    userSettings = {
-      editor = {
-        fontFamily = "'Noto Sans Mono','Fira Code','Font Awesome 6 Free','Font Awesome 6 Brands','Font Awesome 6 Free Solid', monospace";
-        fontLigatures = true;
-      };
-
-      window.titleBarStyle = "custom";
-
-      workbench = {
-        iconTheme = "material-icon-theme";
-        productIconTheme = "Default";
-        colorTheme = "Adwaita Dark";
-      };
-
-      files.autoSave = "afterDelay";
-
-      redhat.telemetry.enabled = false;
-
-      clangd.fallbackFlags = [
-        "-I\${workspaceFolder}/include"
-      ];
-
-      update.mode = "none";
-      nix.enableLanguageServer = true;
-      nix.serverPath = "nixd";
-      nix.serverSettings.nixd = {
-        formatting = {
-          command = [ "nixpkgs-fmt" ];
+      font = {
+        normal = {
+          family = "NotoSansM Nerd Font Mono";
+          style = "Regular";
         };
-        options = {
-          enable = true;
-          target = {
-            installable = ".#nixosConfigurations.ps42.options";
+        size = 12;
+      };
+    };
+  };
+
+    programs.java = {
+      enable = true;
+      package = pkgs.jdk11;
+    };
+
+    programs.foot = {
+      enable = true;
+      settings = {
+        main = {
+          font = "NotoSansM Nerd Font Mono:size=12";
+          dpi-aware = "no";
+        };
+        colors = {
+          background = "242424";
+          foreground = "ffffff";
+        };
+      };
+    };
+
+    programs.vscode = {
+      enable = true;
+      package = pkgs.vscodium;
+
+      userSettings = {
+        editor = {
+          fontFamily = "'Noto Sans Mono','Fira Code','Font Awesome 6 Free','Font Awesome 6 Brands','Font Awesome 6 Free Solid', monospace";
+          fontLigatures = true;
+        };
+
+        window.titleBarStyle = "custom";
+
+        workbench = {
+          iconTheme = "material-icon-theme";
+          productIconTheme = "Default";
+          colorTheme = "Adwaita Dark";
+        };
+
+        files.autoSave = "afterDelay";
+
+        redhat.telemetry.enabled = false;
+
+        clangd.fallbackFlags = [
+          "-I\${workspaceFolder}/include"
+        ];
+
+        update.mode = "none";
+        nix.enableLanguageServer = true;
+        nix.serverPath = "nixd";
+        nix.serverSettings.nixd = {
+          formatting = {
+            command = [ "nixpkgs-fmt" ];
+          };
+          options = {
+            enable = true;
+            target = {
+              installable = ".#nixosConfigurations.ps42.options";
+            };
           };
         };
       };
     };
-  };
 
-  #home.activation.boforeCheckLinkTargets = {
-  #    after = [];
-  #    before = [ "checkLinkTargets" ];
-  #    data = ''
-  #      userDir=/arnau/grmpf/.config/VSCodium/User
-  #      rm -rf $userDir/settings.json
-  #    '';
-  #  };
-  #
-  #  home.activation.afterWriteBoundary = {
-  #    after = [ "writeBoundary" ];
-  #    before = [];
-  #    data = ''
-  #      userDir=/home/arnau/.config/VSCodium/User
-  #      rm -rf $userDir/settings.json
-  #      cat \
-  #        ${(pkgs.formats.json {}).generate "blabla"
-  #          config.programs.vscode.userSettings} \
-  #        > $userDir/settings.json
-  #    '';
-  #  };
+    #home.activation.boforeCheckLinkTargets = {
+    #    after = [];
+    #    before = [ "checkLinkTargets" ];
+    #    data = ''
+    #      userDir=/arnau/grmpf/.config/VSCodium/User
+    #      rm -rf $userDir/settings.json
+    #    '';
+    #  };
+    #
+    #  home.activation.afterWriteBoundary = {
+    #    after = [ "writeBoundary" ];
+    #    before = [];
+    #    data = ''
+    #      userDir=/home/arnau/.config/VSCodium/User
+    #      rm -rf $userDir/settings.json
+    #      cat \
+    #        ${(pkgs.formats.json {}).generate "blabla"
+    #          config.programs.vscode.userSettings} \
+    #        > $userDir/settings.json
+    #    '';
+    #  };
 
-  programs.mpv = {
-    enable = true;
-    config = { hwdec = "auto"; };
-  };
-
-
-  home.pointerCursor = {
-    name = "Adwaita";
-    package = pkgs.gnome.adwaita-icon-theme;
-    size = 24;
-    x11 = {
+    programs.mpv = {
       enable = true;
-      defaultCursor = "Adwaita";
+      config = { hwdec = "auto"; };
     };
-    gtk.enable = true;
-  };
 
-  gtk = {
-    enable = true;
-    theme = {
-      name = "adw-gtk3-dark";
-      package = pkgs.adw-gtk3;
-    };
-    iconTheme = {
-      name = "Papirus-Dark";
-      package = pkgs.papirus-icon-theme;
-    };
-    cursorTheme = {
+
+    home.pointerCursor = {
       name = "Adwaita";
       package = pkgs.gnome.adwaita-icon-theme;
+      size = 24;
+      x11 = {
+        enable = true;
+        defaultCursor = "Adwaita";
+      };
+      gtk.enable = true;
     };
-    font = {
-      name = "Rubik";
-      package = pkgs.rubik;
-      size = 11;
-    };
-    gtk3.extraConfig = {
-      gtk-application-prefer-dark-theme = true;
-    };
-    gtk4.extraConfig = {
-      gtk-application-prefer-dark-theme = true;
-    };
-  };
 
-  xresources.properties = {
-    "Xft.antialias" = 1;
-    "Xft.autohint" = 0;
-    "Xft.hinting" = 1;
-    "Xft.hintstyle" = "hintnone";
-    "Xft.rgba" = "rgb";
-    "Xft.lcdfilter" = "lcddefault";
-  };
-
-  dconf.settings = {
-    "org/gnome/desktop/interface" = {
-      color-scheme = "prefer-dark";
+    gtk = {
+      enable = true;
+      theme = {
+        name = "adw-gtk3-dark";
+        package = pkgs.adw-gtk3;
+      };
+      iconTheme = {
+        name = "Papirus-Dark";
+        package = pkgs.papirus-icon-theme;
+      };
+      cursorTheme = {
+        name = "Adwaita";
+        package = pkgs.gnome.adwaita-icon-theme;
+      };
+      font = {
+        name = "Rubik";
+        package = pkgs.rubik;
+        size = 11;
+      };
+      gtk3.extraConfig = {
+        gtk-application-prefer-dark-theme = true;
+      };
+      gtk4.extraConfig = {
+        gtk-application-prefer-dark-theme = true;
+      };
     };
-  };
-}
+
+    xresources.properties = {
+      "Xft.antialias" = 1;
+      "Xft.autohint" = 0;
+      "Xft.hinting" = 1;
+      "Xft.hintstyle" = "hintnone";
+      "Xft.rgba" = "rgb";
+      "Xft.lcdfilter" = "lcddefault";
+    };
+
+    dconf.settings = {
+      "org/gnome/desktop/interface" = {
+        color-scheme = "prefer-dark";
+      };
+    };
+  }

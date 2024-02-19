@@ -12,5 +12,5 @@ deployremote HOSTNAME:
 rebuild HOSTNAME="$(hostname)":
   git add . && nix flake archive && sudo 'NIX_SSHOPTS=-i $HOME/.ssh/id_ed25519' nixos-rebuild switch --flake .#{{HOSTNAME}}
 
-update:
+updateprivate:
   nix flake lock --update-input private

@@ -1,6 +1,7 @@
 { config, pkgs, lib, ... }:
 let
   screenshot = pkgs.writeShellScriptBin "screenshot" (builtins.readFile (./swayscreenshot.sh));
+  font = "Rubik"; 
 in
 {
   imports = [
@@ -29,7 +30,8 @@ in
     libnotify
     swayosd
     nwg-displays
-  ];
+  ]; 
+
 
   wayland.windowManager.sway = {
     enable = true;
@@ -37,14 +39,13 @@ in
     wrapperFeatures.gtk = true;
     config = rec {
       modifier = "Mod4";
-      terminal = "foot";
-
+      terminal = "alacritty";
 
       fonts = {
-        names = [ "Rubik" ];
+        names = [ "${font}" ];
         size = 12.0;
       };
-      
+
       defaultWorkspace = "workspace number 1";
 
       window.titlebar = false;
@@ -71,8 +72,7 @@ in
         childBorder = "#00000000";
       };
       gaps.inner = 5;
-      output = { 
-      };
+      output = { };
       startup = [
         { command = "nm-applet --indicator"; }
         { command = "blueman-applet"; }
@@ -163,7 +163,7 @@ in
       enable = true;
       settings = {
         "<config>" = {
-          font = "Rubik 12";
+          font = "${font} 12";
         };
       };
     };
@@ -188,7 +188,7 @@ in
   '';
 
   xdg.configFile."fuzzel/fuzzel.ini".text = ''
-    font="Rubik"
+    font=${font}
     dpi-aware=auto
     icon-theme="Papirus-Dark"
 
