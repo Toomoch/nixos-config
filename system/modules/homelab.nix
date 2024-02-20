@@ -9,6 +9,7 @@ with lib; let
   commonextraOptions = [
     "--pull=always"
   ];
+  cockpit-machines = pkgs.callPackage ../packages/cockpit-machines.nix { };
 in
 {
   options.homelab = {
@@ -28,7 +29,8 @@ in
           };
         };
       };
-
+      environment.systemPackages = with pkgs; [ 
+      ];
       systemd.tmpfiles.rules = [
         "d ${jmusicbot} 0755 root root"
       ];

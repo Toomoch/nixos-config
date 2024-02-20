@@ -83,7 +83,7 @@ in
       common.x86.enable = true;
       desktop.enable = true;
       desktop.arctis9.enable = false;
-      desktop.matlab.enable = true;
+      desktop.matlab.enable = false;
       vm.podman.enable = true;
       vm.libvirtd.enable = false;
 
