@@ -29,6 +29,7 @@
   vm.podman.enable = true;
   vm.libvirtd.enable = true;
   vm.docker.enable = true;
+  virtualisation.waydroid.enable = true;
 
   nixpkgs.config.permittedInsecurePackages = [
     "electron-24.8.6"
