@@ -16,7 +16,7 @@ in
     ../devtools.nix
   ];
   
-  home.packages = with pkgs; [ teams-for-linux ];
+  home.packages = with pkgs; [ teams-for-linux glab ];
 
   programs.git.lfs.enable = true;
 
