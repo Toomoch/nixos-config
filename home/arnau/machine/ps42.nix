@@ -1,7 +1,8 @@
 { inputs, config, pkgs, lib, ... }:
 with import ../sway/functions.nix { inherit pkgs lib; }; 
 let
-  internal_name = "Chimei Innolux Corporation 0x14D5 Unknown"; 
+  internal_name = "Chimei Innolux Corporation 0x14D5 Unknown";
+  home_name = "Samsung Electric Company SyncMaster H1AK500000";
 in
 {
   imports = [
@@ -45,6 +46,22 @@ in
           {
             criteria = internal_name;
             position = "320,1080";
+            status = "enable";
+          }
+        ];
+      };
+
+      home = {
+        exec = monitor_workspace 1 5 internal_name ++ monitor_workspace 6 10 home_name;
+        outputs = [
+          {
+            criteria = home_name;
+            status = "enable";
+            position = "280,0";
+          }
+          {
+            criteria = internal_name;
+            position = "0,768";
             status = "enable";
           }
         ];
