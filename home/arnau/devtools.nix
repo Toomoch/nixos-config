@@ -21,5 +21,6 @@
     python3
     kubectl
     nixd
+    file
   ];
 }
