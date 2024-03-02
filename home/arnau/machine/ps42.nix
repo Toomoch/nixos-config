@@ -12,6 +12,7 @@ in
     ../personal.nix
     ../devtools.nix
     ../nvim.nix
+    inputs.nixvim.homeManagerModules.nixvim
     #../hyprland
   ];
 

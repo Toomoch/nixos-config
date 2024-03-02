@@ -23,6 +23,10 @@
     };
   };
 
+  boot.supportedFilesystems = [ "zfs" ];
+  boot.zfs.forceImportRoot = false;
+  networking.hostId = "e0684fdb";
+
   common.enable = true;
   common.x86.enable = true;
   homelab.enable = true;
