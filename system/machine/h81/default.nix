@@ -3,6 +3,7 @@
   imports = [
     ./hardware-configuration.nix
     ../../users/arnau.nix
+    ./disko.nix
   ];
 
   nixpkgs.config.allowUnfree = true;

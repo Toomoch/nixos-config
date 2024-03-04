@@ -20,13 +20,19 @@
     sops-nix.url = "github:Mic92/sops-nix";
     deploy-rs.url = "github:serokell/deploy-rs";
     #hyprland.url = "github:hyprwm/Hyprland";
+    
+    disko.url = "github:nix-community/disko";
+    disko.inputs.nixpkgs.follows = "nixpkgs";
+
+    disko-stable.url = "github:nix-community/disko";
+    disko-stable.inputs.nixpkgs.follows = "nixpkgs-stable";
 
     nix-matlab.url = "gitlab:doronbehar/nix-matlab";
 
     private.url = "git+ssh://git@github.com/Toomoch/nixos-config-private.git";
   };
 
-  outputs = inputs@{ self, nixpkgs, home-manager, nixpkgs-stable, home-manager-stable, sops-nix, deploy-rs, nix-matlab, private, nixvim, ... }:
+  outputs = inputs@{ self, nixpkgs, home-manager, nixpkgs-stable, home-manager-stable, sops-nix, deploy-rs, nix-matlab, private, nixvim, disko-stable, disko, ... }:
     let
       workpath = "${private}/system/machine/";
       workpathhome = "${private}/home/arnau";
@@ -60,10 +66,14 @@
 
       nixosConfigurations =
         let
-          defaultModules = host: home-manager: [
+          defaultModules = host: disko: [
             self.nixosModules.common
             sops-nix.nixosModules.sops
+            disko.nixosModules.disko
+            ./system/machine/${host}
+          ];
 
+          defaultModulesHomeManager = home-manager: host: [
             home-manager.nixosModules.home-manager
             {
               home-manager = {
@@ -71,7 +81,7 @@
                 inherit extraSpecialArgs;
                 users.arnau.imports = defaultModulesHome host;
               };
-            }
+            } 
           ];
 
           defaultModulesHome = host: [
@@ -81,18 +91,18 @@
           specialArgs = { inherit inputs; };
           extraSpecialArgs = { inherit inputs; };
 
-          mkHostConfig = { host, arch, nixpkgs, hm, home-manager }: {
+          mkHostConfig = { host, arch, nixpkgs, hm, home-manager, disko, ... }: {
             name = "${host}";
             value = nixpkgs.lib.nixosSystem {
               system = "${arch}";
               specialArgs = { inherit inputs; };
-              modules = defaultModules host home-manager ++ [ ./system/machine/${host} ];
+              modules = defaultModules host disko ++ nixpkgs.lib.optionals hm (defaultModulesHomeManager home-manager host);
             };
           };
           hosts = [
-            { host = "oracle1"; arch = "x86_64-linux"; nixpkgs = nixpkgs; hm = true; home-manager = home-manager; }
-            { host = "ps42"; arch = "x86_64-linux"; nixpkgs = nixpkgs; hm = true; home-manager = home-manager; }
-            { host = "h81"; arch = "x86_64-linux"; nixpkgs = nixpkgs-stable; hm = true; home-manager = home-manager-stable; }
+            { host = "oracle1"; arch = "x86_64-linux"; nixpkgs = nixpkgs; hm = false; home-manager = null; disko = disko; }
+            { host = "ps42"; arch = "x86_64-linux"; nixpkgs = nixpkgs; hm = true; home-manager = home-manager; disko = disko; }
+            { host = "h81"; arch = "x86_64-linux"; nixpkgs = nixpkgs-stable; hm = true; home-manager = home-manager-stable; disko = disko-stable; }
           ];
           autoMachineConfigs = map mkHostConfig hosts;
 
