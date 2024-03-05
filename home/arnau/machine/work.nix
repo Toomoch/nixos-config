@@ -14,6 +14,7 @@ in
     ../sway
     ../nvim.nix
     ../devtools.nix
+    inputs.nixvim.homeManagerModules.nixvim
   ];
   
   home.packages = with pkgs; [ teams-for-linux glab ];

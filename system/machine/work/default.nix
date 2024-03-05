@@ -3,6 +3,7 @@
   imports = [
     ./hardware-configuration.nix
     "${inputs.private}/system/machine/work.nix"
+    ../../users/arnau.nix
   ];
 
   common.enable = true;

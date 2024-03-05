@@ -11,6 +11,7 @@ in
     ../personal.nix
     ../devtools.nix
     ../nvim.nix
+    inputs.nixvim.homeManagerModules.nixvim
   ];
 
   home.packages = with pkgs; [
