@@ -5,7 +5,7 @@ with lib; let
   dashy_config = "${inputs.private}/configfiles/dashy.yml";
   hass_config = "/var/lib/hass";
   tgtg_volume = "/var/lib/tgtg";
-  domain = "${builtins.readFile "${inputs.private}/secrets/domain"}";
+  domain = "${builtins.readFile "${inputs.private}/secrets/plain/domain"}";
   commonextraOptions = [
     "--pull=always"
   ];
@@ -58,7 +58,7 @@ in
         extraConfig = builtins.readFile ("${inputs.private}/configfiles/Caddyfile");
       };
 
-      sops.secrets."duckdns/token".sopsFile = "${inputs.private}/secrets/duckdns.env";
+      sops.secrets."duckdns/token".sopsFile = "${inputs.private}/secrets/sops/duckdns.env";
       sops.secrets."duckdns/token".format = "dotenv";
 
       systemd.services.caddy.serviceConfig = {

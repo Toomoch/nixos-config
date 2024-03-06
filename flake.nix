@@ -33,11 +33,12 @@
   };
 
   outputs = inputs@{ self, nixpkgs, home-manager, nixpkgs-stable, home-manager-stable, sops-nix, deploy-rs, nix-matlab, private, nixvim, disko-stable, disko, ... }:
-    let
-      workpath = "${private}/system/machine/";
-      workpathhome = "${private}/home/arnau";
+  let
       secrets = "${private}/secrets/";
+      workhostname = "${builtins.readFile (secrets + "plain/hostname")}";
       forAllSystems = nixpkgs.lib.genAttrs [ "aarch64-linux" "x86_64-linux" ];
+      hostip = host: "${builtins.readFile (secrets + "plain/" + host + "_ip")}";
+
     in
     {
       devShells = forAllSystems (system: {
@@ -47,19 +48,10 @@
       homeConfigurations = {
         "arnau" = home-manager.lib.homeManagerConfiguration {
           pkgs = import nixpkgs { system = "x86_64-linux"; };
-
           modules = [
             ./home/arnau
           ];
-
         };
-      };
-
-      homeManagerModules = {
-        default = import ./home/arnau;
-        sway = import ./home/arnau/sway;
-        desktop = import ./home/arnau/desktop.nix;
-        devtools = import ./home/arnau/devtools.nix;
       };
 
       nixosModules.common = import ./system/modules { inherit inputs; };
@@ -102,7 +94,7 @@
                   else
                     abort "branch is invalid";
                 host-folder =
-                  if host == "${builtins.readFile (private + "/secrets/hostname")}" then
+                  if host == workhostname then
                     "work"
                   else
                     host;
@@ -110,8 +102,8 @@
               nixpkgs-local.lib.nixosSystem {
                 system = arch;
                 inherit specialArgs;
-                modules = defaultModules host-folder disko-local ++ nixpkgs.lib.optionals hm [
-                  home-manager.nixosModules.home-manager
+                modules = defaultModules host-folder disko-local ++ nixpkgs-local.lib.optionals hm [
+                  home-manager-local.nixosModules.home-manager
                   {
                     home-manager = {
                       useGlobalPkgs = true;
@@ -132,7 +124,7 @@
             { host = "b450"; arch = "x86_64-linux"; branch = "unstable"; hm = true; }
             { host = "rpi3"; arch = "aarch64-linux"; branch = "stable"; hm = false; }
             { host = "oracle2"; arch = "aarch64-linux"; branch = "unstable"; hm = false; }
-            { host = "${builtins.readFile (private + "/secrets/hostname")}"; arch = "x86_64-linux"; branch = "unstable"; hm = true; }
+            { host = workhostname; arch = "x86_64-linux"; branch = "unstable"; hm = true; }
 
             #{ host = "vm"; arch = "x86_64-linux"; nixpkgs = nixpkgs-stable; hm = true; home-manager = home-manager-stable; disko = disko-stable; }
 
@@ -167,8 +159,8 @@
           rpi3 = mkDeployConfig "rpi3.casa.lan" self.nixosConfigurations.rpi3;
           cp6230 = mkDeployConfig "cp6230.casa.lan" self.nixosConfigurations.cp6230;
           l50 = mkDeployConfig "l50.casa.lan" self.nixosConfigurations.l50;
-          oracle1 = mkDeployConfig "${builtins.readFile (secrets + "/plain/oracle1_ip")}" self.nixosConfigurations.oracle1;
-          oracle2 = mkDeployConfig "${builtins.readFile (secrets + "/plain/oracle2_ip")}" self.nixosConfigurations.oracle2;
+          oracle1 = mkDeployConfig (hostip "oracle1") self.nixosConfigurations.oracle1;
+          oracle2 = mkDeployConfig (hostip "oracle2") self.nixosConfigurations.oracle2;
         };
       checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
     };

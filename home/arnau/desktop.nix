@@ -19,6 +19,7 @@
     meld
     imhex
     ungoogled-chromium
+    mission-center
     krita
     (pkgs.nerdfonts.override { fonts = [ "Noto" ]; })
   ];
