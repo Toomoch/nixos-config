@@ -75,6 +75,7 @@ in
       nrbuild = "cd ${nixos-config} && git add . && nix flake archive && nixos-rebuild build --flake . && cd -";
       nu = "cd ${nixos-config} && git add . && nix flake update && cd -";
       sshgen = "ssh-keygen -t ed25519 -C $USER@$HOSTNAME";
+      tiomenu = ''tio -b 115200 /dev/serial/by-id/$(find /dev/serial/by-id -printf "%f\n"| tail -n +2 | fuzzel --dmenu)'';
     };
 
   };
