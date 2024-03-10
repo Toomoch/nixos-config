@@ -49,6 +49,11 @@
             <big>{:%Y %B}</big>
             <tt><small>{calendar}</small></tt>'';
           "format-alt" = "{:%d-%m-%Y}";
+          "calendar" = {
+            "format" = {
+              "today" = "<span color='#ff6699'><b><u>{}</u></b></span>";
+            };
+          };
         };
         "cpu" = {
           "format" = " {usage}% ";

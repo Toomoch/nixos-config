@@ -1,10 +1,14 @@
 { lib, pkgs, config, ... }:
 {
   home.packages = with pkgs; [ ripgrep ];
+  
+  programs.bash.shellAliases = {
+    vim = "nvim";
+  }; 
+
   programs.nixvim = {
     extraPlugins = with pkgs; [ vimPlugins.vim-just vimPlugins.vim-shellcheck vimPlugins.markdown-preview-nvim ];
     enable = true;
-    vimAlias = true;
     clipboard.providers.wl-copy.enable = true;
     keymaps = [
       {
