@@ -71,7 +71,7 @@
           mkHostConfig = { host, arch, branch, hm, ... }: {
             name = host;
             value =
-              let
+              let # surely theres a better way of doing this
                 nixpkgs-local =
                   if branch == "stable" then
                     nixpkgs-stable

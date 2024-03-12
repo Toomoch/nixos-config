@@ -72,9 +72,13 @@
         mountpoint = "/storage";
 
         datasets = {
-          zfs_fs = {
+          data = {
             type = "zfs_fs";
-            mountpoint = "/storage/dataset";
+            mountpoint = "/storage/data";
+          };
+          share = {
+            type = "zfs_fs";
+            mountpoint = "/storage/share";
           };
         };
       };
