@@ -417,11 +417,11 @@
     },
     "private": {
       "locked": {
-        "lastModified": 1709731746,
-        "narHash": "sha256-L6b+s4STi4gnLfJCry4MNZsfnUwpAF6RLxGFml3Bsh4=",
+        "lastModified": 1710246258,
+        "narHash": "sha256-uR0uUXIWcRP3J2b3CAogWKB/pO5SPeVmd0D9gsydCis=",
         "ref": "refs/heads/master",
-        "rev": "cf6052574cbf5f52580ec72b43f43554a81b3696",
-        "revCount": 67,
+        "rev": "2564d80550b91b45166e7730718e2d1c1e722741",
+        "revCount": 68,
         "type": "git",
         "url": "ssh://git@github.com/Toomoch/nixos-config-private.git"
       },
