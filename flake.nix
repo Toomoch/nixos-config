@@ -3,8 +3,10 @@
 
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-unstable";
-    home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     nixpkgs-stable.url = "nixpkgs/nixos-23.11";
     home-manager-stable = {
@@ -21,11 +23,14 @@
     deploy-rs.url = "github:serokell/deploy-rs";
     #hyprland.url = "github:hyprwm/Hyprland";
 
-    disko.url = "github:nix-community/disko";
-    disko.inputs.nixpkgs.follows = "nixpkgs";
-
-    disko-stable.url = "github:nix-community/disko";
-    disko-stable.inputs.nixpkgs.follows = "nixpkgs-stable";
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    disko-stable = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
+    };
 
     nix-matlab.url = "gitlab:doronbehar/nix-matlab";
 
@@ -33,12 +38,13 @@
   };
 
   outputs = inputs@{ self, nixpkgs, home-manager, nixpkgs-stable, home-manager-stable, sops-nix, deploy-rs, nix-matlab, private, nixvim, disko-stable, disko, ... }:
-  let
+    let
       secrets = "${private}/secrets/";
       workhostname = "${builtins.readFile (secrets + "plain/hostname")}";
       forAllSystems = nixpkgs.lib.genAttrs [ "aarch64-linux" "x86_64-linux" ];
       hostip = host: "${builtins.readFile (secrets + "plain/" + host + "_ip")}";
-
+      stable = { nixpkgs = nixpkgs-stable; home-manager = home-manager-stable; disko = disko-stable; };
+      unstable = { nixpkgs = nixpkgs; home-manager = home-manager; disko = disko; };
     in
     {
       devShells = forAllSystems (system: {
@@ -72,38 +78,17 @@
             name = host;
             value =
               let # surely theres a better way of doing this
-                nixpkgs-local =
-                  if branch == "stable" then
-                    nixpkgs-stable
-                  else if branch == "unstable" then
-                    nixpkgs
-                  else
-                    abort "branch is invalid";
-                home-manager-local =
-                  if branch == "stable" then
-                    home-manager-stable
-                  else if branch == "unstable" then
-                    home-manager
-                  else
-                    abort "branch is invalid";
-                disko-local =
-                  if branch == "stable" then
-                    disko-stable
-                  else if branch == "unstable" then
-                    disko
-                  else
-                    abort "branch is invalid";
                 host-folder =
                   if host == workhostname then
                     "work"
                   else
                     host;
               in
-              nixpkgs-local.lib.nixosSystem {
+              branch.nixpkgs.lib.nixosSystem {
                 system = arch;
                 inherit specialArgs;
-                modules = defaultModules host-folder disko-local ++ nixpkgs-local.lib.optionals hm [
-                  home-manager-local.nixosModules.home-manager
+                modules = defaultModules host-folder branch.disko ++ branch.nixpkgs.lib.optionals hm [
+                  branch.home-manager.nixosModules.home-manager
                   {
                     home-manager = {
                       useGlobalPkgs = true;
@@ -118,15 +103,14 @@
               };
           };
           hosts = [
-            { host = "oracle1"; arch = "x86_64-linux"; branch = "stable"; hm = false; }
-            { host = "ps42"; arch = "x86_64-linux"; branch = "unstable"; hm = true; }
-            { host = "h81"; arch = "x86_64-linux"; branch = "stable"; hm = true; }
-            { host = "b450"; arch = "x86_64-linux"; branch = "unstable"; hm = true; }
-            { host = "rpi3"; arch = "aarch64-linux"; branch = "stable"; hm = false; }
-            { host = "oracle2"; arch = "aarch64-linux"; branch = "unstable"; hm = false; }
-            { host = workhostname; arch = "x86_64-linux"; branch = "unstable"; hm = true; }
-
-            #{ host = "vm"; arch = "x86_64-linux"; nixpkgs = nixpkgs-stable; hm = true; home-manager = home-manager-stable; disko = disko-stable; }
+            { host = "oracle1"; arch = "x86_64-linux"; branch = stable; hm = false; }
+            { host = "ps42"; arch = "x86_64-linux"; branch = unstable; hm = true; }
+            { host = "h81"; arch = "x86_64-linux"; branch = stable; hm = true; }
+            { host = "b450"; arch = "x86_64-linux"; branch = unstable; hm = true; }
+            { host = "rpi3"; arch = "aarch64-linux"; branch = stable; hm = false; }
+            { host = "oracle2"; arch = "aarch64-linux"; branch = unstable; hm = false; }
+            { host = workhostname; arch = "x86_64-linux"; branch = unstable; hm = true; }
+            { host = "vm"; arch = "x86_64-linux"; branch = stable; hm = true; }
 
           ];
           autoMachineConfigs = map mkHostConfig hosts;
