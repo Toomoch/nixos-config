@@ -1,11 +1,10 @@
 { lib, pkgs, config, ... }:
 {
   home.packages = with pkgs; [ ripgrep ];
-  
+
   programs.bash.shellAliases = {
     vim = "nvim";
-  }; 
-
+  };
   programs.nixvim = {
     extraPlugins = with pkgs; [ vimPlugins.vim-just vimPlugins.vim-shellcheck vimPlugins.markdown-preview-nvim ];
     enable = true;
@@ -39,6 +38,7 @@
       expandtab = true;
       clipboard = "unnamedplus";
       number = true;
+      wrap = false;
     };
     globals = {
       mapleader = " ";
@@ -90,9 +90,16 @@
 
       lsp = {
         enable = true;
+        keymaps.lspBuf = {
+          "<space>lf" = "format";
+        };
         servers = {
           nixd = {
             enable = true;
+            settings.options = {
+              enable = true;
+              target.installable = ".#nixosConfigurations.ps42.options";
+            };
           };
           dockerls.enable = true;
           clangd = {
@@ -100,6 +107,7 @@
           };
           pylsp = {
             enable = true;
+            autostart = true;
             settings.plugins.pylint.enabled = true;
             settings.plugins.jedi_completion.enabled = true;
           };
