@@ -4,12 +4,17 @@ let
   sshpath = "${config.home.homeDirectory}/.ssh/id_ed25519";
   sshfix = "NIX_SSHOPTS=-i ${sshpath}";
   ip_path = "${inputs.private}/secrets/plain";
-
+  tmux-sessionizer = pkgs.writeShellScriptBin "sessionizer" (builtins.readFile (./dotfiles/tmux-sessionizer.sh));
 in
 {
   home.username = "arnau";
   home.homeDirectory = lib.mkDefault "/home/arnau";
   programs.home-manager.enable = true;
+
+  home.packages = with pkgs; [
+    fzf
+    tmux-sessionizer
+  ];
 
   sops.age.sshKeyPaths = [ "${sshpath}" ];
 
@@ -75,7 +80,7 @@ in
       nrbuild = "cd ${nixos-config} && git add . && nix flake archive && nixos-rebuild build --flake . && cd -";
       nu = "cd ${nixos-config} && git add . && nix flake update && cd -";
       sshgen = "ssh-keygen -t ed25519 -C $USER@$HOSTNAME";
-      tiomenu = ''tio -b 115200 /dev/serial/by-id/$(find /dev/serial/by-id -printf "%f\n"| tail -n +2 | fuzzel --dmenu)'';
+      tiomenu = ''tio -b 115200 $(FZF_DEFAULT_COMMAND='find /dev/serial/by-id | tail -n +2 ' fzf --header="Pick a serial port")'';
     };
 
   };
