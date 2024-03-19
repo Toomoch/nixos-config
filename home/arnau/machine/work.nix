@@ -17,7 +17,7 @@ in
     inputs.nixvim.homeManagerModules.nixvim
   ];
   
-  home.packages = with pkgs; [ teams-for-linux glab ];
+  home.packages = with pkgs; [ teams-for-linux glab uuu ];
 
   programs.git.lfs.enable = true;
 
