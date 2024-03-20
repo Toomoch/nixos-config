@@ -1,10 +1,15 @@
 { lib, pkgs, config, ... }:
+let
+  shellaliases = {
+    vim = "nvim";
+  };
+in
 {
   home.packages = with pkgs; [ ripgrep ];
 
-  programs.bash.shellAliases = {
-    vim = "nvim";
-  };
+  programs.bash.shellAliases = shellaliases;
+  programs.zsh.shellAliases = shellaliases;
+
   programs.nixvim = {
     extraPlugins = with pkgs; [ vimPlugins.vim-just vimPlugins.vim-shellcheck vimPlugins.markdown-preview-nvim ];
     enable = true;
