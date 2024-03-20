@@ -55,6 +55,7 @@ in
       s = "status";
       l = "log --graph --all --decorate";
       d = "diff";
+      ds = "diff --staged";
     };
   };
 
@@ -63,6 +64,10 @@ in
     mouse = true;
     clock24 = true;
     extraConfig = builtins.readFile (./dotfiles/tmux.conf);
+  };
+
+  programs.zellij = {
+    enable = true;
   };
 
   programs.direnv.enable = true;
@@ -92,7 +97,13 @@ in
     enableAutosuggestions = true;
     syntaxHighlighting.enable = true;
     shellAliases = shellaliases;
-
+    initExtraFirst = ''
+      zstyle ':completion:*' menu select
+      zstyle ':completion::*' menu yes select
+      zstyle ':completion::complete:*' use-cache 1
+      zmodload zsh/complist
+      _comp_options+=(globdots)		# Include hidden files.
+    '';
   };
 
   programs.ssh = {
