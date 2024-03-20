@@ -10,8 +10,9 @@
     openssh.authorizedKeys.keyFiles = [ 
       "${inputs.private}/secrets/keys.pub"
     ];
+    shell = pkgs.zsh;
   };
-
+  programs.zsh.enable = true;
 
 
   nix.settings.trusted-users = [ "arnau" ];

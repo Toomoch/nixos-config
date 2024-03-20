@@ -43,6 +43,7 @@ in
         sway
         adw-gtk3
         gnome.adwaita-icon-theme
+        waypipe
       ];
 
       # Gnome Keyring

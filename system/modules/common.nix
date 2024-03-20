@@ -70,6 +70,7 @@ in
         lm_sensors
         htop
         just
+        dig
       ];
 
       # Some programs need SUID wrappers, can be configured further or are

@@ -5,6 +5,24 @@ let
   sshfix = "NIX_SSHOPTS=-i ${sshpath}";
   ip_path = "${inputs.private}/secrets/plain";
   tmux-sessionizer = pkgs.writeShellScriptBin "sessionizer" (builtins.readFile (./dotfiles/tmux-sessionizer.sh));
+
+  shellaliases = {
+    ls = "ls --human-readable --color=auto -la";
+    ip = "ip -c";
+    ".." = "cd ..";
+    lsperms = "stat --format '%a'";
+    upcdown = "rclone copy upc:/assig ~/assig/ --drive-acknowledge-abuse -P";
+    upcup = "rclone copy ~/assig/ upc:/assig/ --drive-acknowledge-abuse -P";
+    upcsync = "upcdown && upcup";
+    upclink = "${config.home.homeDirectory}/scripts/upclink.sh";
+    nrswitch = "cd ${nixos-config} && git add . && nix flake archive && sudo '${sshfix}' nixos-rebuild switch --flake . && cd -";
+    nrboot = "cd ${nixos-config} && git add . && nix flake archive && sudo '${sshfix}' nixos-rebuild boot --flake . && cd -";
+    nrtest = "cd ${nixos-config} && git add . && nix flake archive && sudo '${sshfix}' nixos-rebuild test --flake . && cd -";
+    nrbuild = "cd ${nixos-config} && git add . && nix flake archive && nixos-rebuild build --flake . && cd -";
+    nu = "cd ${nixos-config} && git add . && nix flake update && cd -";
+    sshgen = "ssh-keygen -t ed25519 -C $USER@$HOSTNAME";
+    tiomenu = ''tio -b 115200 $(FZF_DEFAULT_COMMAND='find /dev/serial/by-id | tail -n +2 ' fzf --header="Pick a serial port")'';
+  };
 in
 {
   home.username = "arnau";
@@ -65,23 +83,15 @@ in
     profileExtra = ''
     '';
     sessionVariables = { };
-    shellAliases = {
-      ls = "ls --human-readable --color=auto -la";
-      ip = "ip -c";
-      ".." = "cd ..";
-      lsperms = "stat --format '%a'";
-      upcdown = "rclone copy upc:/assig ~/assig/ --drive-acknowledge-abuse -P";
-      upcup = "rclone copy ~/assig/ upc:/assig/ --drive-acknowledge-abuse -P";
-      upcsync = "upcdown && upcup";
-      upclink = "${config.home.homeDirectory}/scripts/upclink.sh";
-      nrswitch = "cd ${nixos-config} && git add . && nix flake archive && sudo '${sshfix}' nixos-rebuild switch --flake . && cd -";
-      nrboot = "cd ${nixos-config} && git add . && nix flake archive && sudo '${sshfix}' nixos-rebuild boot --flake . && cd -";
-      nrtest = "cd ${nixos-config} && git add . && nix flake archive && sudo '${sshfix}' nixos-rebuild test --flake . && cd -";
-      nrbuild = "cd ${nixos-config} && git add . && nix flake archive && nixos-rebuild build --flake . && cd -";
-      nu = "cd ${nixos-config} && git add . && nix flake update && cd -";
-      sshgen = "ssh-keygen -t ed25519 -C $USER@$HOSTNAME";
-      tiomenu = ''tio -b 115200 $(FZF_DEFAULT_COMMAND='find /dev/serial/by-id | tail -n +2 ' fzf --header="Pick a serial port")'';
-    };
+    shellAliases = shellaliases;
+  };
+
+  programs.zsh = {
+    enable = true;
+    enableCompletion = true;
+    enableAutosuggestions = true;
+    syntaxHighlighting.enable = true;
+    shellAliases = shellaliases;
 
   };
 
