@@ -3,6 +3,11 @@
 ## Installing NixOS in UEFI x86
 Follow [the official manual](https://nixos.org/manual/nixos/stable/#sec-installation-manual)
 
+or install using nixos-anywhere (boot the installer and change the root password first):
+```bash
+nix run github:nix-community/nixos-anywhere -- --flake .#hostname root@ip
+```
+
 ## Building a NixOS sdimage for the Raspberry Pi
 ```bash
 nix build .#nixosConfigurations.rpi3.config.system.build.sdImage
