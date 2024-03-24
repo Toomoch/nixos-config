@@ -35,13 +35,17 @@ in
         action = "<cmd>wincmd h<cr>";
         key = "<leader><Left>";
       }
+      {
+        action = ''"+y'';
+        key = "<leader>y"; 
+      }
     ];
 
     colorschemes.gruvbox.enable = true;
     options = {
       smartindent = true;
       expandtab = true;
-      clipboard = "unnamedplus";
+      #clipboard = "unnamedplus";
       number = true;
       wrap = false;
     };
