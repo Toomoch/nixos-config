@@ -47,10 +47,6 @@
       unstable = { nixpkgs = nixpkgs; home-manager = home-manager; disko = disko; };
     in
     {
-      devShells = forAllSystems (system: {
-        default = nixpkgs.legacyPackages.${system}.callPackage ./shell.nix { };
-      });
-
       homeConfigurations = {
         "arnau" = home-manager.lib.homeManagerConfiguration {
           pkgs = import nixpkgs { system = "x86_64-linux"; };
