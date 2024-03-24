@@ -69,16 +69,22 @@
         rootFsOptions = {
           compression = "zstd";
         };
-        mountpoint = "/storage";
+        mountpoint = "/zstorage";
 
         datasets = {
           data = {
             type = "zfs_fs";
-            mountpoint = "/storage/data";
+            mountpoint = "/zstorage/data";
+            options = {
+              mountpoint = "legacy";
+            };
           };
           share = {
             type = "zfs_fs";
-            mountpoint = "/storage/share";
+            mountpoint = "/zstorage/share";
+            options = {
+              mountpoint = "legacy";
+            };
           };
         };
       };
