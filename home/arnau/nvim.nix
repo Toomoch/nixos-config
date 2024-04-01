@@ -16,7 +16,7 @@ in
     clipboard.providers.wl-copy.enable = true;
     keymaps = [
       {
-        action = "<cmd>CHADopen<cr>";
+        action = "<cmd>NvimTreeToggle<cr>";
         key = "<leader>e";
       }
       {
@@ -37,7 +37,7 @@ in
       }
       {
         action = ''"+y'';
-        key = "<leader>y"; 
+        key = "<leader>y";
       }
     ];
 
@@ -57,40 +57,28 @@ in
       nix.enable = true;
       treesitter.enable = true;
       auto-save.enable = true;
-      chadtree.enable = true;
       luasnip.enable = true;
+      nvim-tree.enable = true;
       telescope.enable = true;
       cmp_luasnip.enable = true;
-      nvim-cmp = {
+      cmp = {
         enable = true;
         autoEnableSources = true;
-        sources = [
+        settings.sources = [
           { name = "path"; }
           { name = "nvim_lsp"; }
           { name = "luasnip"; }
           { name = "buffer"; }
         ];
-        snippet.expand = "luasnip";
-        mapping = {
+        settings.snippet.expand = "function(args) require('luasnip').lsp_expand(args.body) end";
+        settings.mapping = {
           "<C-Space>" = "cmp.mapping.complete()";
           "<C-d>" = "cmp.mapping.scroll_docs(-4)";
           "<C-e>" = "cmp.mapping.close()";
           "<C-f>" = "cmp.mapping.scroll_docs(4)";
           "<CR>" = "cmp.mapping.confirm({ select = true })";
-          "<S-Tab>" = {
-            action = "cmp.mapping.select_prev_item()";
-            modes = [
-              "i"
-              "s"
-            ];
-          };
-          "<Tab>" = {
-            action = "cmp.mapping.select_next_item()";
-            modes = [
-              "i"
-              "s"
-            ];
-          };
+          "<S-Tab>" = "cmp.mapping(cmp.mapping.select_prev_item(), {'i', 's'})";
+          "<Tab>" = "cmp.mapping(cmp.mapping.select_next_item(), {'i', 's'})";
         };
       };
 

@@ -1,15 +1,31 @@
 { inputs, config, lib, pkgs, ... }:
 with lib; let
   cfg = config.homelab;
-  jmusicbot = "/var/lib/jmusicbot";
+  serviceData = # If host is h81, use the ZFS array 
+    if config.networking.hostName == "h81" then
+      "/zstorage/data"
+    else
+      "/var/lib";
+
+  jmusicbot = "${serviceData}/jmusicbot";
   dashy_config = "${inputs.private}/configfiles/dashy.yml";
-  hass_config = "/var/lib/hass";
-  tgtg_volume = "/var/lib/tgtg";
+  hass_config = "${serviceData}/hass";
+  tgtg_volume = "${serviceData}/tgtg";
   domain = "${builtins.readFile "${inputs.private}/secrets/plain/domain"}";
   commonextraOptions = [
     "--pull=always"
   ];
+
   cockpit-machines = pkgs.callPackage ../packages/cockpit-machines.nix { };
+
+  immichNetwork = "immich-net";
+  immichextraOptions = commonextraOptions ++ [ "--network=${immichNetwork}" ];
+
+  immichRoot = "${serviceData}/immich";
+  postgresRoot = "${immichRoot}/pgsql";
+  postgresPassword = "testtest";
+  postgresUser = "immich";
+  postgresDb = "immich";
 in
 {
   options.homelab = {
@@ -29,7 +45,7 @@ in
           };
         };
       };
-      environment.systemPackages = with pkgs; [ 
+      environment.systemPackages = with pkgs; [
       ];
       systemd.tmpfiles.rules = [
         "d ${jmusicbot} 0755 root root"
@@ -50,6 +66,8 @@ in
         80 #caddy
         443 #caddy
       ];
+
+      services.homepage-dashboard.enable = true;
 
       #Caddy reverse proxy
       services.caddy = {
@@ -99,16 +117,73 @@ in
         };
       };
 
+      # Immich Network
+      systemd.services.init-filerun-network-and-files =
+        {
+          description = "Create the network bridge for Immich.";
+          after = [ "network.target" ];
+          wantedBy = [ "multi-user.target" ];
 
-      systemd.services."docker-dashy" = {
-        serviceConfig = {
-          DynamicUser = true;
-          SupplementaryGroups = "docker";
-          RestrictSUIDSGID = true;
-          ProtectHome = true;
-          PrivateDevices = true;
+          serviceConfig.Type = "oneshot";
+          script =
+            let dockercli = "${config.virtualisation.docker.package}/bin/docker";
+            in ''
+              # immich-net network
+              check=$(${dockercli} network ls | grep "${immichNetwork}" || true)
+              if [ -z "$check" ]; then
+                ${dockercli} network create ${immichNetwork}
+              else
+                echo "${immichNetwork} already exists in docker"
+              fi
+            '';
+        };
+
+      # Immich
+      virtualisation.oci-containers.containers = {
+        immich = {
+          autoStart = true;
+          image = "ghcr.io/imagegenius/immich:latest";
+          volumes = [
+            "${immichRoot}/config:/config"
+            "${immichRoot}/photos:/photos"
+          ];
+          ports = [ "2283:8080" ];
+          environment = {
+            PUID = "1000";
+            PGID = "100";
+            TZ = "Europe/Madrid";
+            DB_HOSTNAME = "postgres14";
+            DB_USERNAME = postgresUser;
+            DB_PASSWORD = postgresPassword;
+            DB_DATABASE_NAME = postgresDb;
+            REDIS_HOSTNAME = "redis";
+          };
+          extraOptions = immichextraOptions;
+        };
+
+        redis = {
+          autoStart = true;
+          image = "redis";
+          ports = [ "6379:6379" ];
+          extraOptions = immichextraOptions;
+        };
+
+        postgres14 = {
+          autoStart = true;
+          image = "tensorchord/pgvecto-rs:pg14-v0.2.0";
+          ports = [ "5432:5432" ];
+          volumes = [
+            "${postgresRoot}:/var/lib/postgresql/data"
+          ];
+          environment = {
+            POSTGRES_USER = postgresUser;
+            POSTGRES_PASSWORD = postgresPassword;
+            POSTGRES_DB = postgresDb;
+          };
+          extraOptions = immichextraOptions;
         };
       };
+
     })
     (mkIf cfg.enablevps {
       sops.secrets."tgtg/env" = {

@@ -45,6 +45,18 @@
       hostip = host: "${builtins.readFile (secrets + "plain/" + host + "_ip")}";
       stable = { nixpkgs = nixpkgs-stable; home-manager = home-manager-stable; disko = disko-stable; };
       unstable = { nixpkgs = nixpkgs; home-manager = home-manager; disko = disko; };
+
+      hosts = [
+            { host = "oracle1"; arch = "x86_64-linux"; branch = stable; hm = false; }
+            { host = "ps42"; arch = "x86_64-linux"; branch = unstable; hm = true; }
+            { host = "h81"; arch = "x86_64-linux"; branch = stable; hm = true; }
+            { host = "b450"; arch = "x86_64-linux"; branch = unstable; hm = true; }
+            { host = "rpi3"; arch = "aarch64-linux"; branch = stable; hm = false; }
+            { host = "oracle2"; arch = "aarch64-linux"; branch = unstable; hm = false; }
+            { host = workhostname; arch = "x86_64-linux"; branch = unstable; hm = true; }
+            { host = "vm"; arch = "x86_64-linux"; branch = stable; hm = true; }
+
+          ];
     in
     {
       homeConfigurations = {
@@ -98,17 +110,7 @@
                 ];
               };
           };
-          hosts = [
-            { host = "oracle1"; arch = "x86_64-linux"; branch = stable; hm = false; }
-            { host = "ps42"; arch = "x86_64-linux"; branch = unstable; hm = true; }
-            { host = "h81"; arch = "x86_64-linux"; branch = stable; hm = true; }
-            { host = "b450"; arch = "x86_64-linux"; branch = unstable; hm = true; }
-            { host = "rpi3"; arch = "aarch64-linux"; branch = stable; hm = false; }
-            { host = "oracle2"; arch = "aarch64-linux"; branch = unstable; hm = false; }
-            { host = workhostname; arch = "x86_64-linux"; branch = unstable; hm = true; }
-            { host = "vm"; arch = "x86_64-linux"; branch = stable; hm = true; }
-
-          ];
+          
           autoMachineConfigs = map mkHostConfig hosts;
 
           machineConfigs = autoMachineConfigs ++ [ ];

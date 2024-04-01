@@ -99,7 +99,11 @@ in
         {
           enable = true;
           package = firefox-package;
-          preferences = { "browser.fullscreen.autohide" = false; };
+          preferences = 
+          { 
+            "browser.fullscreen.autohide" = false; 
+            "pdfjs.defaultZoomValue" = "page-fit";
+          };
         };
 
       # Enable plymouth bootanimation
