@@ -87,8 +87,19 @@ in
 
       lsp = {
         enable = true;
-        keymaps.lspBuf = {
-          "<space>lf" = "format";
+        keymaps = {
+          lspBuf = {
+            "<space>lf" = "format";
+            K = "hover";
+            gD = "references";
+            gd = "definition";
+            gi = "implementation";
+            gt = "type_definition";
+          };
+          diagnostic = {
+            "<leader>j" = "goto_next";
+            "<leader>k" = "goto_prev";
+          };
         };
         servers = {
           nixd = {
@@ -102,12 +113,7 @@ in
           clangd = {
             enable = true;
           };
-          pylsp = {
-            enable = true;
-            autostart = true;
-            settings.plugins.pylint.enabled = true;
-            settings.plugins.jedi_completion.enabled = true;
-          };
+          ruff-lsp.enable = true;
           bashls.enable = true;
           ansiblels.enable = true;
         };
