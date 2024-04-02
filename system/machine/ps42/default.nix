@@ -55,7 +55,7 @@ in
             };
             services.xserver.videoDrivers = [ "nvidia" ];
             environment.sessionVariables.WLR_DRM_DEVICES = "/dev/dri/card0";
-            hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.beta;
+            hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable;
             hardware.nvidia = {
 
               # Modesetting is required.
@@ -118,7 +118,7 @@ in
       boot.kernelParams = [ "intel_iommu=on" ];
 
       # LTS Kernel
-      boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_1;
+      #boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_1;
 
       # This value determines the NixOS release from which the default
       # settings for stateful data, like file locations and database versions

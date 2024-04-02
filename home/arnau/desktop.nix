@@ -2,9 +2,7 @@
 {
   home.packages = with pkgs; [
     #desktop apps
-    gnome.nautilus
     gnome.gnome-disk-utility
-    gnome.file-roller
     pavucontrol
     kooha
     gnome.gnome-calculator

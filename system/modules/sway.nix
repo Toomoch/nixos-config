@@ -48,7 +48,15 @@ in
 
       # Gnome Keyring
       services.gnome.gnome-keyring.enable = true;
-
+      programs.thunar = {
+        enable = true;
+        plugins = with pkgs.xfce; [
+          thunar-archive-plugin
+          thunar-volman
+          thunar-media-tags-plugin
+        ];
+      };
+      programs.file-roller.enable = true;
       # Enable wayland in electron apps
       environment.sessionVariables.NIXOS_OZONE_WL = "1"; #Disabled because of https://github.com/microsoft/vscode/issues/184124
       # Enable wayland in firefox
