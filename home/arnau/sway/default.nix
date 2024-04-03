@@ -86,7 +86,7 @@ in
             "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
         }
         { command = "swayidle -w before-sleep 'gtklock -d'"; }
-        { command = "swayosd"; }
+        { command = "swayosd-server"; }
 
       ];
       menu = "fuzzel";
@@ -103,10 +103,10 @@ in
         "XF86MonBrightnessDown" = "exec brightnessctl set 5%-";
         "XF86MonBrightnessUp" = "exec brightnessctl set 5%+";
         "XF86AudioRaiseVolume" =
-          "exec swayosd --output-volume raise";
+          "exec swayosd-client --output-volume raise";
         "XF86AudioLowerVolume" =
-          "exec swayosd --output-volume lower";
-        "XF86AudioMute" = "exec swayosd --output-volume mute-toggle";
+          "exec swayosd-client --output-volume lower";
+        "XF86AudioMute" = "exec swayosd-client --output-volume mute-toggle";
         "XF86AudioMicMute" =
           "exec wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle";
         "XF86AudioPlay" = "exec playerctl play-pause";
