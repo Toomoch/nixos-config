@@ -38,12 +38,6 @@ in
 
   xdg.enable = true;
 
-  #nix.gc = {
-  #  automatic = true;
-  #  frequency = "weekly";
-  #  options = "--delete-older-than 15d";
-  #};
-
   programs.git = {
     enable = true;
     aliases = {

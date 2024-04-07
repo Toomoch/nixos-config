@@ -107,7 +107,7 @@
                       users.arnau.imports = [
                         ./home/arnau/machine/${host-folder}.nix
                         sops-nix.homeManagerModules.sops
-                      ];
+                      ] ++ branch.nixpkgs.lib.optional (branch == unstable) ./home/arnau/unstable.nix;
                     };
                   }
                 ];
