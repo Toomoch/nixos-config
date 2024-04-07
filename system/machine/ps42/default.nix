@@ -29,7 +29,6 @@ in
               libsForQt5.kpat
               libsForQt5.kio-gdrive
             ];
-
             i18n.defaultLocale = lib.mkDefault "ca_ES.UTF-8";
           };
         };
@@ -42,9 +41,8 @@ in
             ];
             desktop.hyprland.enable = false;
             # Power management
-            services.auto-cpufreq.enable = true;
             services.tlp = {
-              enable = false;
+              enable = true;
               settings = {
                 SOUND_POWER_SAVE_ON_AC = 1;
                 SOUND_POWER_SAVE_ON_BAT = 1;
@@ -57,7 +55,6 @@ in
             environment.sessionVariables.WLR_DRM_DEVICES = "/dev/dri/card0";
             hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable;
             hardware.nvidia = {
-
               # Modesetting is required.
               modesetting.enable = true;
               powerManagement.enable = true;
@@ -113,12 +110,11 @@ in
         analogioOffset = -20;
       };
 
-
       # Enable the IOMMU
       boot.kernelParams = [ "intel_iommu=on" ];
 
       # LTS Kernel
-      #boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_1;
+      # boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_1;
 
       # This value determines the NixOS release from which the default
       # settings for stateful data, like file locations and database versions
@@ -133,10 +129,8 @@ in
       desktop.sway.enable = true;
       desktop.regreet.enable = true;
       desktop.hyprland.enable = false;
-      # Power management
-      services.auto-cpufreq.enable = true;
       services.tlp = {
-        enable = false;
+        enable = true;
         settings = {
           SOUND_POWER_SAVE_ON_AC = 1;
           SOUND_POWER_SAVE_ON_BAT = 1;

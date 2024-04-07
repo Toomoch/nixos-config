@@ -138,7 +138,7 @@ in
 
         "type:pointer" = { accel_profile = "flat"; };
 
-        "2:7:SynPS/2_Synaptics_TouchPad" = { pointer_accel = "0.3"; };
+        "2:7:SynPS/2_Synaptics_TouchPad" = { pointer_accel = "0.2"; };
 
         "4152:5929:SteelSeries_SteelSeries_Rival_110_Gaming_Mouse" = {
           pointer_accel = "0.2";
