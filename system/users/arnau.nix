@@ -14,6 +14,7 @@
   };
   programs.zsh.enable = true;
 
-
+  security.pam.enableSSHAgentAuth = true;
+  security.pam.services.sudo.sshAgentAuth = true;
   nix.settings.trusted-users = [ "arnau" ];
 }
