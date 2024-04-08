@@ -94,16 +94,17 @@
                     "work"
                   else
                     host;
+		pkgs-unstable = import nixpkgs { system = arch; };
               in
               branch.nixpkgs.lib.nixosSystem {
                 system = arch;
-                inherit specialArgs;
+		specialArgs = { inherit pkgs-unstable; inherit inputs; };
                 modules = defaultModules host-folder branch.disko ++ branch.nixpkgs.lib.optionals hm [
                   branch.home-manager.nixosModules.home-manager
                   {
                     home-manager = {
                       useGlobalPkgs = true;
-                      inherit extraSpecialArgs;
+		      extraSpecialArgs = { inherit pkgs-unstable; inherit inputs; };
                       users.arnau.imports = [
                         ./home/arnau/machine/${host-folder}.nix
                         sops-nix.homeManagerModules.sops
