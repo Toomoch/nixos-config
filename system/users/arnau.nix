@@ -16,5 +16,9 @@
 
   security.pam.enableSSHAgentAuth = true;
   security.pam.services.sudo.sshAgentAuth = true;
+  services.openssh.authorizedKeysFiles = lib.mkForce [ "/etc/ssh/authorized_keys.d/%u" ];
+  security.pam.services.arnau.sshAgentAuth = true;
+  # for unstable: (check https://github.com/NixOS/nixpkgs/issues/31611)
+  # security.pam.sshAgentAuth.authorizedKeysFiles = lib.mkForce [ "/etc/ssh/authorized_keys.d/%u" ];
   nix.settings.trusted-users = [ "arnau" ];
 }

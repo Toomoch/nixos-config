@@ -1,7 +1,9 @@
 { config, pkgs, lib, ... }:
 let
   screenshot = pkgs.writeShellScriptBin "screenshot" (builtins.readFile (./swayscreenshot.sh));
-  font = "Rubik"; 
+  font = "Rubik";
+  kanshi_assign_sway = pkgs.writeShellScriptBin "kanshi_assign_sway" (builtins.readFile (../dotfiles/kanshi_assign_sway.sh));
+
 in
 {
   imports = [
@@ -30,6 +32,8 @@ in
     libnotify
     swayosd
     nwg-displays
+    kanshi_assign_sway
+    kanshi
   ]; 
 
 

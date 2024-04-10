@@ -6,6 +6,7 @@ let
 in
 {
   home.packages = with pkgs; [ ripgrep ];
+  # :autocmd BufNewFile,BufRead sw-description set ft=cfg
 
   programs.bash.shellAliases = shellaliases;
   programs.zsh.shellAliases = shellaliases;
