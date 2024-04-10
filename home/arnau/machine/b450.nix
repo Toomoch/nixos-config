@@ -1,7 +1,7 @@
 { inputs, config, pkgs, lib, ... }:
 with import ../sway/functions.nix { inherit pkgs lib; }; 
 let
-  DP_ultrawide = "LG Electronics LG ULTRAWIDE 0x0000BFCD";
+  DP_ultrawide = "LG Electronics LG ULTRAWIDE 0x0003BECD";
 in
 {
   imports = [
@@ -21,7 +21,9 @@ in
     enable = true;
     profiles = {
       desk_flat = {
-        exec = monitor_workspace 1 10 DP_ultrawide;
+        exec = ''
+          kanshi_assign_sway -m "${DP_ultrawide}" -b 1 -e 10
+        ''; 
         outputs = [
           {
             criteria = DP_ultrawide;
