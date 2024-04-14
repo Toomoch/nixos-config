@@ -8,12 +8,6 @@
 
   nixpkgs.config.allowUnfree = true;
 
-  nixpkgs.overlays = [
-    (self: super: {
-      code-server = pkgs-unstable.code-server;
-    })
-  ];
-
   networking.hostName = "h81"; # Define your hostname.
 
   virtualisation.vmVariant = {
@@ -31,6 +25,10 @@
   common.enable = true;
   common.x86.enable = true;
   homelab.enable = true;
+  homelab.homepage-dashboard.enable = true;
+  homelab.homeassistant.enable = true;
+  homelab.immich.enable = true;
+  homelab.smb.enable = true;
   vm.podman.enable = true;
   vm.docker.enable  = true;
   vm.libvirtd.enable = true;

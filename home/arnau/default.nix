@@ -5,7 +5,7 @@ let
   sshfix = "NIX_SSHOPTS=-i ${sshpath}";
   ip_path = "${inputs.private}/secrets/plain";
   tmux-sessionizer = pkgs.writeShellScriptBin "sessionizer" (builtins.readFile (./dotfiles/tmux-sessionizer.sh));
-
+  domain = "${builtins.readFile "${inputs.private}/secrets/plain/domain"}";
   shellaliases = {
     ls = "ls --human-readable --color=auto -la";
     ip = "ip -c";
@@ -20,7 +20,7 @@ let
     nrtest = "cd ${nixos-config} && git add . && nix flake archive && sudo '${sshfix}' nixos-rebuild test --flake . && cd -";
     nrbuild = "cd ${nixos-config} && git add . && nix flake archive && nixos-rebuild build --flake . && cd -";
     nu = "cd ${nixos-config} && git add . && nix flake update && cd -";
-    sshgen = "ssh-keygen -t ed25519 -C $USER@$HOSTNAME";
+    sshgen = "ssh-keygen -t ed25519 -C $USER@$(hostname)";
     tiomenu = ''tio -b 115200 $(FZF_DEFAULT_COMMAND='find /dev/serial/by-id | tail -n +2 ' fzf --header="Pick a serial port")'';
   };
 in
@@ -108,8 +108,23 @@ in
           TERM = "xterm-256color";
         };
       };
-      "oracle1" = { hostname = "${builtins.readFile (ip_path + "/oracle1_ip")}"; };
-      "oracle2" = { hostname = "${builtins.readFile (ip_path + "/oracle2_ip")}"; };
+
+      "oracle1" = {
+        hostname = "${builtins.readFile (ip_path + "/oracle1_ip")}";
+        extraOptions = { AddKeysToAgent = "yes"; };
+        forwardAgent = true;
+      };
+      "oracle2" = {
+        hostname = "${builtins.readFile (ip_path + "/oracle2_ip")}";
+        extraOptions = { AddKeysToAgent = "yes"; };
+        forwardAgent = true;
+      };
+
+      "h81" = {
+        hostname = "h81.casa.lan";
+        extraOptions = { AddKeysToAgent = "yes"; };
+        forwardAgent = true;
+      };
     };
     includes = [
       "config.d/*"

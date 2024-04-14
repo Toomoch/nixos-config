@@ -99,7 +99,8 @@
               branch.nixpkgs.lib.nixosSystem {
                 system = arch;
 		specialArgs = { inherit pkgs-unstable; inherit inputs; };
-                modules = defaultModules host-folder branch.disko ++ branch.nixpkgs.lib.optionals hm [
+                modules = defaultModules host-folder branch.disko ++ branch.nixpkgs.lib.optional (branch == stable) ./system/modules/stable-overlays.nix
+                ++ branch.nixpkgs.lib.optionals hm [
                   branch.home-manager.nixosModules.home-manager
                   {
                     home-manager = {
@@ -125,8 +126,8 @@
       # deploy-rs node configuration stolen from https://github.com/LongerHV/nixos-configuration
       deploy.nodes =
         let
-          mkDeployConfig = hostname: configuration: {
-            inherit hostname;
+          mkDeployConfig = hostname: configuration: interactiveSudo: remoteBuild: {
+            inherit hostname interactiveSudo remoteBuild;
             profiles.system =
               let
                 inherit (configuration.config.nixpkgs.hostPlatform) system;
@@ -135,18 +136,18 @@
                 path = deploy-rs.lib."${system}".activate.nixos configuration;
                 sshUser = "arnau";
                 user = "root";
-                interactiveSudo = true;
+                #interactiveSudo = true;
+                #sshOpts = ["-A"];
                 magicRollback = true;
               };
           };
         in
         {
-          h81 = mkDeployConfig "h81.casa.lan" self.nixosConfigurations.h81;
-          rpi3 = mkDeployConfig "rpi3.casa.lan" self.nixosConfigurations.rpi3;
-          cp6230 = mkDeployConfig "cp6230.casa.lan" self.nixosConfigurations.cp6230;
-          l50 = mkDeployConfig "l50.casa.lan" self.nixosConfigurations.l50;
-          oracle1 = mkDeployConfig (hostip "oracle1") self.nixosConfigurations.oracle1;
-          oracle2 = mkDeployConfig (hostip "oracle2") self.nixosConfigurations.oracle2;
+          h81 = mkDeployConfig "h81" self.nixosConfigurations.h81 false true;
+          rpi3 = mkDeployConfig "rpi3.casa.lan" self.nixosConfigurations.rpi3 true false;
+          l50 = mkDeployConfig "l50.casa.lan" self.nixosConfigurations.l50 true false;
+          oracle1 = mkDeployConfig "oracle1" self.nixosConfigurations.oracle1 false false;
+          oracle2 = mkDeployConfig "oracle2" self.nixosConfigurations.oracle2 false true;
         };
       checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
     };

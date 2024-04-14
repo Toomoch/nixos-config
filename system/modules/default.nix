@@ -6,6 +6,6 @@ inputs: { sops-nix, ...}:
     ./sway.nix
     ./virtualisation.nix
     ./common.nix
-    ./homelab.nix
+    ./homelab
   ];
 }

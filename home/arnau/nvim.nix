@@ -12,7 +12,7 @@ in
   programs.zsh.shellAliases = shellaliases;
 
   programs.nixvim = {
-    extraPlugins = with pkgs; [ vimPlugins.vim-just vimPlugins.vim-shellcheck vimPlugins.markdown-preview-nvim ];
+    extraPlugins = with pkgs; [ vimPlugins.vim-just vimPlugins.vim-shellcheck vimPlugins.markdown-preview-nvim vimPlugins.vim-caddyfile ];
     enable = true;
     clipboard.providers.wl-copy.enable = true;
     keymaps = [
