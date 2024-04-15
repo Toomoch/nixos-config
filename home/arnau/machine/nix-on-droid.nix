@@ -3,6 +3,9 @@
 {
   # Read the changelog before changing this value
   home.stateVersion = "23.11";
-  imports = [ ../default.nix ];
+  imports = [ 
+    ../default.nix
+    ../personal.nix 
+  ];
   # insert home-manager config
 }

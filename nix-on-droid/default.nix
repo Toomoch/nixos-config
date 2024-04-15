@@ -4,7 +4,13 @@
   environment.packages = with pkgs; [
     # User-facing stuff that you really really want to have
     vim # or some other editor, e.g. nano or neovim
-
+    openssh
+    mosh
+    git
+    neofetch
+    zsh
+    findutils
+    procps
     # Some common stuff that people expect to have
     #diffutils
     #findutils
@@ -42,5 +48,7 @@
 
   # Set your time zone
   time.timeZone = "Europe/Madrid";
+
+  user.shell = "${pkgs.zsh}/bin/zsh";
 }
 
