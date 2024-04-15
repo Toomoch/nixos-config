@@ -3,7 +3,7 @@ let
   screenshot = pkgs.writeShellScriptBin "screenshot" (builtins.readFile (./swayscreenshot.sh));
   font = "Rubik";
   kanshi_assign_sway = pkgs.writeShellScriptBin "kanshi_assign_sway" (builtins.readFile (../dotfiles/kanshi_assign_sway.sh));
-
+  filemanager = "thunar";
 in
 {
   imports = [
@@ -96,7 +96,7 @@ in
       menu = "fuzzel";
       keybindings = lib.mkOptionDefault {
         # Apps
-        "${modifier}+e" = "exec nautilus";
+        "${modifier}+e" = "exec ${filemanager}";
 
         # Screenshots
         "print" = "exec screenshot area";
