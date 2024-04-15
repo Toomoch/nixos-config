@@ -41,8 +41,11 @@ in
         vulkan-tools
         glxinfo
         libva-utils
+        localsend
       ];
-
+      networking.firewall.allowedTCPPorts = [
+        53317
+      ];
       # Printing
       services.printing.enable = true;
 
@@ -99,11 +102,11 @@ in
         {
           enable = true;
           package = firefox-package;
-          preferences = 
-          { 
-            "browser.fullscreen.autohide" = false; 
-            "pdfjs.defaultZoomValue" = "page-fit";
-          };
+          preferences =
+            {
+              "browser.fullscreen.autohide" = false;
+              "pdfjs.defaultZoomValue" = "page-fit";
+            };
         };
 
       # Enable plymouth bootanimation
