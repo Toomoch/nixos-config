@@ -20,6 +20,7 @@
     resources
     krita
     vesktop
+    localsend
     (pkgs.nerdfonts.override { fonts = [ "Noto" ]; })
   ];
 
