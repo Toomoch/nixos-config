@@ -37,6 +37,7 @@
   home-manager = {
     config = ../home/arnau;
     useGlobalPkgs = true;
+    backupFileExtension = "hm-bak";
   };
 
   # Set your time zone
