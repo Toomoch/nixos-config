@@ -33,14 +33,18 @@
     };
 
     nix-matlab.url = "gitlab:doronbehar/nix-matlab";
-
+    
+    nix-on-droid = {
+      url = "github:nix-community/nix-on-droid/release-23.11";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
+    };
     #ags.url = "github:Aylur/ags";
     #matugen.url = "github:InioX/matugen";
 
     private.url = "git+ssh://git@github.com/Toomoch/nixos-config-private.git";
   };
 
-  outputs = inputs@{ self, nixpkgs, home-manager, nixpkgs-stable, home-manager-stable, sops-nix, deploy-rs, nix-matlab, private, nixvim, disko-stable, disko, ... }:
+  outputs = inputs@{ self, nixpkgs, home-manager, nixpkgs-stable, home-manager-stable, sops-nix, deploy-rs, nix-matlab, private, nixvim, disko-stable, disko, nix-on-droid, ... }:
     let
       secrets = "${private}/secrets/";
       workhostname = "${builtins.readFile (secrets + "plain/hostname")}";
@@ -62,6 +66,11 @@
       ];
     in
     {
+      nixOnDroidConfigurations.default = nix-on-droid.lib.nixOnDroidConfiguration {
+        modules = [ ./nix-on-droid ];
+        home-manager-path = home-manager-stable.outPath;
+      };
+
       homeConfigurations = {
         "arnau" = home-manager.lib.homeManagerConfiguration {
           pkgs = import nixpkgs { system = "x86_64-linux"; };
@@ -94,18 +103,18 @@
                     "work"
                   else
                     host;
-		pkgs-unstable = import nixpkgs { system = arch; };
+                pkgs-unstable = import nixpkgs { system = arch; };
               in
               branch.nixpkgs.lib.nixosSystem {
                 system = arch;
-		specialArgs = { inherit pkgs-unstable; inherit inputs; };
+                specialArgs = { inherit pkgs-unstable; inherit inputs; };
                 modules = defaultModules host-folder branch.disko ++ branch.nixpkgs.lib.optional (branch == stable) ./system/modules/stable-overlays.nix
-                ++ branch.nixpkgs.lib.optionals hm [
+                  ++ branch.nixpkgs.lib.optionals hm [
                   branch.home-manager.nixosModules.home-manager
                   {
                     home-manager = {
                       useGlobalPkgs = true;
-		      extraSpecialArgs = { inherit pkgs-unstable; inherit inputs; };
+                      extraSpecialArgs = { inherit pkgs-unstable; inherit inputs; };
                       users.arnau.imports = [
                         ./home/arnau/machine/${host-folder}.nix
                         sops-nix.homeManagerModules.sops

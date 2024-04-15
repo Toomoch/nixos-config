@@ -65,11 +65,7 @@ just rebuild hostname
 ```
 
 ### Deploying NixOS over the network with deploy-rs
-To build the configuration locally, and then copy it to the target (useful for systems with limited resources, such as a pi):
+To deploy:
 ```bash
 just deploy hostname
-```
-To build the configuration directly on the target machine:
-```bash
-just deployremote hostname
 ```
