@@ -33,7 +33,7 @@
     };
 
     nix-matlab.url = "gitlab:doronbehar/nix-matlab";
-    
+
     nix-on-droid = {
       url = "github:nix-community/nix-on-droid/release-23.11";
       inputs.nixpkgs.follows = "nixpkgs-stable";
@@ -67,9 +67,18 @@
     in
     {
       nixOnDroidConfigurations.default = nix-on-droid.lib.nixOnDroidConfiguration {
-        modules = [ ./nix-on-droid ];
+        modules = [
+          ./nix-on-droid
+          {
+            home-manager = {
+              config.imports = [ sops-nix.homeManagerModules.sops ];
+              extraSpecialArgs = { inherit inputs; };
+            };
+          }
+        ];
         home-manager-path = home-manager-stable.outPath;
       };
+
 
       homeConfigurations = {
         "arnau" = home-manager.lib.homeManagerConfiguration {
@@ -116,6 +125,10 @@
                       useGlobalPkgs = true;
                       extraSpecialArgs = { inherit pkgs-unstable; inherit inputs; };
                       users.arnau.imports = [
+                        {
+                          home.username = "arnau";
+                          home.homeDirectory = "/home/arnau";
+                        }
                         ./home/arnau/machine/${host-folder}.nix
                         sops-nix.homeManagerModules.sops
                       ] ++ branch.nixpkgs.lib.optional (branch == unstable) ./home/arnau/unstable.nix;

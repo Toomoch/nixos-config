@@ -35,7 +35,7 @@
   '';
 
   home-manager = {
-    config = ../home/arnau;
+    config = ../home/arnau/machine/nix-on-droid.nix;
     useGlobalPkgs = true;
     backupFileExtension = "hm-bak";
   };

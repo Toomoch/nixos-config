@@ -25,8 +25,6 @@ let
   };
 in
 {
-  home.username = "arnau";
-  home.homeDirectory = lib.mkDefault "/home/arnau";
   programs.home-manager.enable = true;
 
   home.packages = with pkgs; [
