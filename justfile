@@ -15,6 +15,9 @@ build HOSTNAME="$(hostname)":
 rebuild HOSTNAME="$(hostname)":
   sudo -v && git add . && nix flake archive && sudo 'NIX_SSHOPTS=-i $HOME/.ssh/id_ed25519' nixos-rebuild switch --flake .#{{HOSTNAME}}
 
+droid:
+  git add . && nix-on-droid switch --flake .
+
 update:
   nix flake update
 
