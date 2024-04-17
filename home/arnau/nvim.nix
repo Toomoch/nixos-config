@@ -43,7 +43,7 @@ in
     ];
 
     colorschemes.gruvbox.enable = true;
-    options = {
+    opts = {
       smartindent = true;
       expandtab = true;
       #clipboard = "unnamedplus";
@@ -59,6 +59,7 @@ in
       treesitter.enable = true;
       auto-save.enable = true;
       luasnip.enable = true;
+      fugitive.enable = true;
       nvim-tree.enable = true;
       telescope.enable = true;
       cmp_luasnip.enable = true;
