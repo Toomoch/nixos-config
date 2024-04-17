@@ -102,6 +102,7 @@ in
     enable = true;
     matchBlocks = {
       "*" = {
+        user = "arnau";
         setEnv = {
           TERM = "xterm-256color";
         };
