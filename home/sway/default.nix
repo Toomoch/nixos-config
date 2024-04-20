@@ -188,7 +188,7 @@ in
   xdg.configFile."gtklock/config.ini".text = ''
     [main]
     modules=${pkgs.gtklock-powerbar-module}/lib/gtklock/powerbar-module.so;
-    background=${../../../system/assets/lockscreen.png};
+    background=${../../system/assets/lockscreen.png};
   '';
 
   xdg.configFile."fuzzel/fuzzel.ini".text = ''

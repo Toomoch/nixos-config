@@ -1,4 +1,4 @@
-{ inputs, config, lib, pkgs, ... }:
+{ inputs, config, lib, pkgs, nixpkgs, ... }:
 with lib; let
   cfg = config.common;
 in
@@ -17,6 +17,7 @@ in
           substituters = [ "https://deploy-rs.cachix.org" ];
           trusted-public-keys = [ "deploy-rs.cachix.org-1:xfNobmiwF/vzvK1gpfediPwpdIP0rpDV2rYqx40zdSI=" ];
         };
+        registry.nixpkgs.flake = nixpkgs;
         gc = {
           automatic = true;
           dates = "weekly";

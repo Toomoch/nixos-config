@@ -23,7 +23,7 @@ in
               {
                 "Immich" = {
                   description = "Immich";
-                  icon = "immich";
+                  icon = "immich"; # https://github.com/walkxcode/dashboard-icons
                   href = "https://immich.${domain}";
                   widget = {
                     type = "immich";
@@ -42,6 +42,18 @@ in
                     url = "https://homeassistant.${domain}";
                     key = "{{HOMEPAGE_VAR_HASS_API}}";
                   };
+                };
+              }
+              {
+                "OpenVSCode Server" = {
+                  icon = "vscode";
+                  href = "https://code.${domain}";
+                };
+              }
+              {
+                "Cockpit" = {
+                  icon = "cockpit";
+                  href = "https://cockpit.${domain}";
                 };
               }
             ];

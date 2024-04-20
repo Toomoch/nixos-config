@@ -1,11 +1,12 @@
 { inputs, config, pkgs, lib, ... }:
-with import ../sway/functions.nix { inherit pkgs lib; }; 
+with import ../sway/functions.nix { inherit pkgs lib; };
 let
   DP_ultrawide = "LG Electronics LG ULTRAWIDE 0x0003BECD";
 in
 {
   imports = [
     ../default.nix
+    ../arnau.nix
     ../desktop.nix
     ../sway
     ../personal.nix
@@ -16,14 +17,14 @@ in
 
   home.packages = with pkgs; [
     discord-screenaudio
-  ];  
+  ];
   services.kanshi = {
     enable = true;
     profiles = {
       desk_flat = {
         exec = ''
           kanshi_assign_sway -m "${DP_ultrawide}" -b 1 -e 10
-        ''; 
+        '';
         outputs = [
           {
             criteria = DP_ultrawide;
@@ -31,7 +32,7 @@ in
             mode = "2560x1080@99.943Hz";
             adaptiveSync = true;
             status = "enable";
-          } 
+          }
         ];
       };
     };

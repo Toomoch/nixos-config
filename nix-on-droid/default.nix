@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, nixpkgs, ... }:
 {
   # Simply install just the packages
   environment.packages = with pkgs; [
@@ -37,12 +37,16 @@
   system.stateVersion = "23.11";
 
   # Set up nix for flakes
-  nix.extraOptions = ''
-    experimental-features = nix-command flakes
-  '';
+  nix = {
+    extraOptions = ''
+      experimental-features = nix-command flakes
+    '';
+    registry.nixpkgs.flake = nixpkgs;
+  };
+
 
   home-manager = {
-    config = ../home/arnau/machine/nix-on-droid.nix;
+    config = ../home/machine/nix-on-droid.nix;
     useGlobalPkgs = true;
     backupFileExtension = "hm-bak";
   };

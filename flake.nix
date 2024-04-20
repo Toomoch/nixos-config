@@ -67,6 +67,11 @@
     in
     {
       nixOnDroidConfigurations.default = nix-on-droid.lib.nixOnDroidConfiguration {
+        specialArgs =
+          let
+            nixpkgs = nixpkgs-stable;
+          in
+          { inherit inputs; inherit nixpkgs; };
         modules = [
           ./nix-on-droid
           {
@@ -84,7 +89,7 @@
         "arnau" = home-manager.lib.homeManagerConfiguration {
           pkgs = import nixpkgs { system = "x86_64-linux"; };
           modules = [
-            ./home/arnau
+            ./home
           ];
         };
       };
@@ -116,7 +121,11 @@
               in
               branch.nixpkgs.lib.nixosSystem {
                 system = arch;
-                specialArgs = { inherit pkgs-unstable; inherit inputs; };
+                specialArgs =
+                  let
+                    nixpkgs = branch.nixpkgs;
+                  in
+                  { inherit pkgs-unstable; inherit inputs; inherit nixpkgs; };
                 modules = defaultModules host-folder branch.disko ++ branch.nixpkgs.lib.optional (branch == stable) ./system/modules/stable-overlays.nix
                   ++ branch.nixpkgs.lib.optionals hm [
                   branch.home-manager.nixosModules.home-manager
@@ -125,13 +134,9 @@
                       useGlobalPkgs = true;
                       extraSpecialArgs = { inherit pkgs-unstable; inherit inputs; };
                       users.arnau.imports = [
-                        {
-                          home.username = "arnau";
-                          home.homeDirectory = "/home/arnau";
-                        }
-                        ./home/arnau/machine/${host-folder}.nix
+                        ./home/machine/${host-folder}.nix
                         sops-nix.homeManagerModules.sops
-                      ] ++ branch.nixpkgs.lib.optional (branch == unstable) ./home/arnau/unstable.nix;
+                      ] ++ branch.nixpkgs.lib.optional (branch == unstable) ./home/unstable.nix;
                     };
                   }
                 ];
