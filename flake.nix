@@ -67,7 +67,7 @@
     in
     {
       nixOnDroidConfigurations.default = nix-on-droid.lib.nixOnDroidConfiguration {
-        specialArgs =
+        extraSpecialArgs =
           let
             nixpkgs = nixpkgs-stable;
           in
