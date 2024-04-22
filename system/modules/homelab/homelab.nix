@@ -44,6 +44,7 @@ in
         #9090 cockpit
         #4444 code-server
         5900
+        24680 #ventoy
         80 #caddy
         443 #caddy
       ];

@@ -5,6 +5,9 @@ let
     DNSHACK_RESOLVER_CMD = "${dnshack}/bin/dnshackresolver";
     LD_PRELOAD = "${dnshack}/lib/libdnshackbridge.so";
   };
+  shellAliases = {
+    "mosh" = "mosh --experimental-remote-ip=remote";
+  };
 in
 {
   # Read the changelog before changing this value
@@ -16,5 +19,9 @@ in
 
   programs.bash.sessionVariables = variables;
   programs.zsh.sessionVariables = variables;
+
+
+  programs.bash.shellAliases = shellAliases;
+  programs.zsh.shellAliases = shellAliases;
   # insert home-manager config
 }
