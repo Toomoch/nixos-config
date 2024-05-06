@@ -7,7 +7,7 @@ let
 in
 {
   imports = [
-    ./waybar.nix
+    ./yambar.nix
   ];
 
   home.packages = with pkgs; [
@@ -78,6 +78,7 @@ in
       gaps.inner = 5;
       output = { };
       startup = [
+        { command = "killall yambar && yambar"; always = true; }
         { command = "nm-applet --indicator"; }
         { command = "blueman-applet"; }
         { command = "wpaperd"; }
@@ -154,7 +155,7 @@ in
 
         "1356:3302:Wireless_Controller_Touchpad" = { pointer_accel = "0.1"; };
       };
-      bars = [{ command = "waybar"; }];
+      bars = [{ command = "yambar"; }];
 
     };
 
