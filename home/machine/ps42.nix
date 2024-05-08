@@ -22,11 +22,11 @@ in
 
   ];
 
-  yambar = {
-    enable = true;
-    battery = "BAT0";
-    ethernet = "enp1s1";
-  };
+  #yambar = {
+  #  enable = true;
+  #  battery = "BAT0";
+  #  ethernet = "enp1s1";
+  #};
 
   wayland.windowManager.sway = {
     config.workspaceOutputAssign = [

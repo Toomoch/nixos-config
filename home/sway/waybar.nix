@@ -7,9 +7,9 @@
       mainBar = {
         layer = "top";
         height = 30;
-        spacing = 4;
+        spacing = 2;
         modules-left = [ "sway/workspaces" "sway/mode" "sway/window" ];
-        modules-center = [ "custom/media" ];
+        modules-center = [ ];
         modules-right = [
           "tray"
           "pulseaudio"
@@ -18,7 +18,6 @@
           "memory"
           "temperature"
           "backlight"
-          "keyboard-state"
           "battery"
           "clock"
           "custom/power"
@@ -45,20 +44,34 @@
         };
         "tray" = { "spacing" = 10; };
         "clock" = {
-          "tooltip-format" = ''
-            <big>{:%Y %B}</big>
-            <tt><small>{calendar}</small></tt>'';
-          "format-alt" = "{:%d-%m-%Y}";
+          "format" = "{:%d/%m/%y %H:%M}  ";
+          "format-alt" = "{:%A, %B %d, %Y (%R)}  ";
+          "tooltip-format" = "<tt><small>{calendar}</small></tt>";
           "calendar" = {
+            "mode" = "year";
+            "mode-mon-col" = 3;
+            "weeks-pos" = "right";
+            "on-scroll" = 1;
             "format" = {
+              "months" = "<span color='#ffead3'><b>{}</b></span>";
+              "days" = "<span color='#ecc6d9'><b>{}</b></span>";
+              "weeks" = "<span color='#99ffdd'><b>W{}</b></span>";
+              "weekdays" = "<span color='#ffcc66'><b>{}</b></span>";
               "today" = "<span color='#ff6699'><b><u>{}</u></b></span>";
             };
+          };
+          "actions" = {
+            "on-click-right" = "mode";
+            "on-click-forward" = "tz_up";
+            "on-click-backward" = "tz_down";
+            "on-scroll-up" = "shift_up";
+            "on-scroll-down" = "shift_down";
           };
         };
         "cpu" = {
           "format" = " {usage}% ";
         };
-        "memory" = { "format" = "{}% "; };
+        "memory" = { "format" = "{}% "; };
         "temperature" = {
           "critical-threshold" = 80;
           "format" = "{temperatureC}°C {icon}";
