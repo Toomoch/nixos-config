@@ -48,7 +48,13 @@
     let
       secrets = "${private}/secrets/";
       workhostname = "${builtins.readFile (secrets + "plain/hostname")}";
-      forAllSystems = nixpkgs.lib.genAttrs [ "aarch64-linux" "x86_64-linux" ];
+      forAllSystems = function:
+        nixpkgs.lib.genAttrs [
+          "x86_64-linux"
+          "aarch64-linux"
+        ]
+          (system: function nixpkgs.legacyPackages.${system});
+
       hostip = host: "${builtins.readFile (secrets + "plain/" + host + "_ip")}";
       stable = { nixpkgs = nixpkgs-stable; home-manager = home-manager-stable; disko = disko-stable; };
       unstable = { nixpkgs = nixpkgs; home-manager = home-manager; disko = disko; };
@@ -66,6 +72,9 @@
       ];
     in
     {
+      packages = forAllSystems (pkgs: {
+        default = import ./shell.nix { inherit pkgs; };
+      });
       nixOnDroidConfigurations.default = nix-on-droid.lib.nixOnDroidConfiguration {
         extraSpecialArgs =
           let

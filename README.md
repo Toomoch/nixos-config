@@ -1,13 +1,29 @@
 # nixos-config
-# Table of Contents
-- [Installation](#installation)
-   * [Installing NixOS in UEFI x86 manually](#installing-nixos-in-uefi-x86-manually)
-   * [Installing NixOS with nixos-anywhere](#installing-nixos-with-nixos-anywhere)
-   * [Building a NixOS sdimage for the Raspberry Pi](#building-a-nixos-sdimage-for-the-raspberry-pi)
-   * [Home Manager for **Non-NixOS** systems](#home-manager-for-non-nixos-systems)
-- [Deployment](#deployment)
-   * [Deploying NixOS locally](#deploying-nixos-locally)
-   * [Deploying NixOS over the network with deploy-rs](#deploying-nixos-over-the-network-with-deploy-rs)
+## Environment setup
+<!-- vim-markdown-toc GFM -->
+
+* [Setting up the environment](#setting-up-the-environment)
+    * [Flakes](#flakes)
+    * [No flakes](#no-flakes)
+* [Installation](#installation)
+    * [Installing NixOS in UEFI x86 manually](#installing-nixos-in-uefi-x86-manually)
+    * [Installing NixOS with nixos-anywhere](#installing-nixos-with-nixos-anywhere)
+    * [Building a NixOS sdimage for the Raspberry Pi](#building-a-nixos-sdimage-for-the-raspberry-pi)
+    * [Home Manager for **Non-NixOS** systems](#home-manager-for-non-nixos-systems)
+* [Deployment](#deployment)
+    * [Deploying NixOS locally](#deploying-nixos-locally)
+    * [Deploying NixOS over the network with deploy-rs](#deploying-nixos-over-the-network-with-deploy-rs)
+
+<!-- vim-markdown-toc -->
+## Setting up the environment
+### Flakes
+```bash
+nix develop
+```
+### No flakes
+```bash
+nix-shell
+```
 
 ## Installation
 ### Installing NixOS in UEFI x86 manually

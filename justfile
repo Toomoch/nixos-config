@@ -4,10 +4,10 @@ default:
   @just --list
 
 deploy HOSTNAME:
-  git add . && nix run github:serokell/deploy-rs .#{{HOSTNAME}} -- --skip-checks
+  git add . && deploy .#{{HOSTNAME}} --skip-checks
 
 deployremote HOSTNAME:
-  git add . && nix run github:serokell/deploy-rs .#{{HOSTNAME}} -- --skip-checks --remote-build
+  git add . && deploy .#{{HOSTNAME}} --skip-checks --remote-build
 
 build HOSTNAME="$(hostname)":
   git add . && nixos-rebuild build --flake .#{{HOSTNAME}}

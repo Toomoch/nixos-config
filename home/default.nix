@@ -30,6 +30,7 @@ in
   home.packages = with pkgs; [
     fzf
     tmux-sessionizer
+    deploy-rs
   ];
 
   sops.age.sshKeyPaths = [ "${sshpath}" ];
