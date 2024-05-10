@@ -48,6 +48,7 @@ in
 
       # Gnome Keyring
       services.gnome.gnome-keyring.enable = true;
+      security.pam.services.greetd.enableGnomeKeyring = true;
       programs.thunar = {
         enable = true;
         plugins = with pkgs.xfce; [
