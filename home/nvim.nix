@@ -5,7 +5,7 @@ let
   };
 in
 {
-  home.packages = with pkgs; [ ripgrep ];
+  home.packages = with pkgs; [ ripgrep bitbake-language-server ];
   # :autocmd BufNewFile,BufRead sw-description set ft=cfg
 
   programs.bash.shellAliases = shellaliases;
@@ -60,6 +60,19 @@ in
       mapleader = " ";
       maplocalleader = " ";
     };
+
+    extraConfigLuaPost = ''
+      vim.api.nvim_create_autocmd({ "BufEnter" }, {
+        pattern = { "*.bb", "*.bbappend", "*.bbclass", "*.inc", "conf/*.conf" },
+        callback = function()
+          vim.lsp.start({
+            name = "bitbake",
+            cmd = { "bitbake-language-server" }
+          })
+        end,
+      })
+    '';
+
     plugins = {
       nix.enable = true;
       treesitter.enable = true;
@@ -114,7 +127,6 @@ in
             enable = true;
             settings.options = {
               enable = true;
-              target.installable = ".#nixosConfigurations.ps42.options";
             };
           };
           dockerls.enable = true;

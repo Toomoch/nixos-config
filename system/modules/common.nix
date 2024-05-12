@@ -1,16 +1,17 @@
 { inputs, config, lib, pkgs, nixpkgs, ... }:
-with lib; let
+let
   cfg = config.common;
 in
 {
   options.common = {
-    enable = mkEnableOption ("Whether to enable common stuff");
-    x86.enable = mkEnableOption ("Whether to enable x86 bootloader");
+    enable = lib.mkEnableOption ("Whether to enable common stuff");
+    x86.enable = lib.mkEnableOption ("Whether to enable x86 bootloader");
   };
 
-  config = mkMerge [
-    (mkIf cfg.enable {
+  config = lib.mkMerge [
+    (lib.mkIf cfg.enable {
       nix = {
+        nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
         settings = {
           experimental-features = [ "nix-command" "flakes" ];
           auto-optimise-store = true;
@@ -124,7 +125,7 @@ in
       sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
 
     })
-    (mkIf cfg.x86.enable {
+    (lib.mkIf cfg.x86.enable {
       # Bootloader.
       boot.loader.systemd-boot.enable = true;
       boot.loader.efi.canTouchEfiVariables = true;
