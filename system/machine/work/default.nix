@@ -12,7 +12,7 @@
   desktop.regreet.enable = true;
   desktop.sway.enable = true;
   vm.podman.enable = true;
-  vm.docker.enable = true; 
+  vm.docker.enable = true;
   vm.libvirtd.enable = true;
 
   services.auto-cpufreq.enable = true;
@@ -37,11 +37,11 @@
     vscode.fhs
     openssl
   ];
-   boot.initrd = {
+  boot.initrd = {
     supportedFilesystems = [ "nfs" ];
     kernelModules = [ "nfs" ];
   };
-  
+
   services.fprintd = {
     enable = true;
     tod.enable = true;
@@ -49,12 +49,21 @@
   };
 
   virtualisation = {
-    docker = { 
+    docker = {
       #rootless = {
       #  enable = true;
       #  setSocketVariable = true;
       #};
     };
+  };
+
+  systemd.tmpfiles.rules = [
+    "d /external 0775 arnau users - -"
+  ];
+
+  fileSystems."/external" = {
+    device = "/dev/disk/by-uuid/6bf3dd62-361c-4aa8-937f-3f901e3adf27";
+    options = [ "nofail" "x-systemd.automount" ];
   };
 
   system.stateVersion = "23.05";
