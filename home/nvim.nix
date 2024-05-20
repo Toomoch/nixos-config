@@ -35,17 +35,29 @@ in
         key = "<leader>f";
       }
       {
-        action = "<cmd>wincmd l<cr>";
-        key = "<leader><Right>";
-      }
-      {
-        action = "<cmd>wincmd h<cr>";
-        key = "<leader><Left>";
-      }
-      {
         action = ''"+y'';
         key = "<leader>y";
       }
+      {
+        action = "<Nop>";
+        key = "<Down>";
+      }
+      {
+        action = "<Nop>";
+        key = "<Left>";
+      }
+      {
+        action = "<Nop>";
+        key = "<Right>";
+      }
+      {
+        action = "<Nop>";
+        key = "<Up>";
+      }
+
+
+
+
     ];
 
     colorschemes.gruvbox.enable = true;
