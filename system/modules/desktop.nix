@@ -1,5 +1,4 @@
 { inputs, config, lib, pkgs, ... }:
-with lib;
 let
   cfg = config.desktop;
   g29init = pkgs.writeShellScriptBin "g29init" ''
@@ -13,18 +12,18 @@ in
 {
   options.desktop = {
     enable =
-      mkEnableOption ("Whether to enable common stuff for desktop systems");
-    arctis9.enable = mkEnableOption ("Whether to enable Arctis9 support");
-    flatpak.enable = mkEnableOption ("Whether to enable Flatpak support");
-    gaming.enable = mkEnableOption ("Whether to enable gaming stuff");
-    gaming.g29.enable = mkEnableOption ("Whether to enable G29 wheel support");
-    matlab.enable = mkEnableOption ("Whether to enable MATLAB");
+      lib.mkEnableOption "Whether to enable common stuff for desktop systems";
+    arctis9.enable = lib.mkEnableOption "Whether to enable Arctis9 support";
+    flatpak.enable = lib.mkEnableOption "Whether to enable Flatpak support";
+    gaming.enable = lib.mkEnableOption "Whether to enable gaming stuff";
+    gaming.g29.enable = lib.mkEnableOption "Whether to enable G29 wheel support";
+    matlab.enable = lib.mkEnableOption "Whether to enable MATLAB";
     blacklistnvidia.enable =
-      mkEnableOption ("Whether to disable and hide all detected Nvidia GPUs");
+      lib.mkEnableOption "Whether to disable and hide all detected Nvidia GPUs";
   };
 
-  config = mkMerge [
-    (mkIf cfg.enable {
+  config = lib.mkMerge [
+    (lib.mkIf cfg.enable {
       # Arctis 9
       #environment.systemPackages = with pkgs; [
       #] ++ optional cfg.arctis9.enable "headsetcontrol";
@@ -113,7 +112,7 @@ in
       boot.plymouth.enable = true;
 
     })
-    (mkIf cfg.arctis9.enable {
+    (lib.mkIf cfg.arctis9.enable {
       # Arctis 9
       services.udev.extraRules = ''
         KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="1038", ATTRS{idProduct}=="12c2", TAG+="uaccess"
@@ -121,7 +120,7 @@ in
       environment.systemPackages = with pkgs; [ headsetcontrol ];
 
     })
-    (mkIf cfg.flatpak.enable {
+    (lib.mkIf cfg.flatpak.enable {
       services.flatpak.enable = true;
       # Ugly hack to add remote
       systemd.user.services."flatpak-remote-add" =
@@ -176,7 +175,7 @@ in
       };
 
     })
-    (mkIf cfg.gaming.enable {
+    (lib.mkIf cfg.gaming.enable {
       environment.systemPackages = with pkgs; [
         legendary-gl
         wineWowPackages.stable
@@ -198,8 +197,10 @@ in
       };
 
     })
-    (mkIf cfg.gaming.g29.enable {
-      environment.systemPackages = with pkgs; [ oversteer at g29init ];
+    (lib.mkIf cfg.gaming.g29.enable {
+      environment.systemPackages = builtins.attrValues {
+        inherit (pkgs) oversteer at g29init;
+      };
       services.atd.enable = true;
 
       hardware.new-lg4ff.enable = true;
@@ -210,16 +211,13 @@ in
       '';
 
     })
-    (mkIf cfg.matlab.enable {
-      environment.systemPackages = with pkgs; [
-        matlab-wrapped
-        matlab-mlint
-        matlab-mex
-      ];
-
+    (lib.mkIf cfg.matlab.enable {
+      environment.systemPackages = builtins.attrValues {
+        inherit (pkgs) matlab-wrapped matlab-mlint matlab-mex;
+      };
       nixpkgs.overlays = [ inputs.nix-matlab.overlay ];
     })
-    (mkIf cfg.blacklistnvidia.enable {
+    (lib.mkIf cfg.blacklistnvidia.enable {
       boot.extraModprobeConfig = ''
         blacklist nouveau
         options nouveau modeset=0
