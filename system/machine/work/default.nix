@@ -65,7 +65,9 @@
     device = "/dev/disk/by-uuid/6bf3dd62-361c-4aa8-937f-3f901e3adf27";
     options = [ "nofail" "x-systemd.automount" ];
   };
-
+  networking.firewall.allowedTCPPorts = [
+    5900
+  ];
   system.stateVersion = "23.05";
 }
 
