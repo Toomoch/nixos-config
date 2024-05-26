@@ -1,9 +1,9 @@
-{ inputs, config, pkgs, lib, ... }:
-with import ../sway/functions.nix { inherit pkgs lib; };
+{ inputs, pkgs, lib, ... }:
 let
   internal_name = "Chimei Innolux Corporation 0x14D5 Unknown";
   home_name = "Samsung Electric Company SyncMaster H1AK500000";
   ultrawide_hdmi_name = "LG Electronics LG ULTRAWIDE 0x0003BECD";
+  vars = import ../sway/functions.nix { inherit pkgs lib; };
 in
 {
   imports = [
@@ -108,7 +108,7 @@ in
       };
 
       home = {
-        exec = monitor_workspace 1 5 internal_name ++ monitor_workspace 6 10 home_name;
+        exec = vars.monitor_workspace 1 5 internal_name ++ vars.monitor_workspace 6 10 home_name;
         outputs = [
           {
             criteria = home_name;
@@ -118,6 +118,21 @@ in
           {
             criteria = internal_name;
             position = "0,768";
+            status = "enable";
+          }
+        ];
+      };
+      home2 = {
+        exec = vars.monitor_workspace 1 5 internal_name ++ vars.monitor_workspace 6 10 vars.lg_22inch_name;
+        outputs = [
+          {
+            criteria = vars.lg_22inch_name;
+            status = "enable";
+            position = "0,0";
+          }
+          {
+            criteria = internal_name;
+            position = "0,1080";
             status = "enable";
           }
         ];

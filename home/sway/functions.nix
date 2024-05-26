@@ -2,6 +2,7 @@
 
 {
     ultrawide_name = "LG Electronics LG ULTRAWIDE 0x0000BFCD";
+    lg_22inch_name = "LG Electronics 2D FHD LG TV 0x01010101";
     monitor_workspace = begin: end: monitor:
     let
       size = end - begin + 1;
