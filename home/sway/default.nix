@@ -131,7 +131,10 @@ in
 
       };
       input = {
-        "type:keyboard" = { xkb_layout = "es"; };
+        "type:keyboard" = { 
+          xkb_layout = "es"; 
+          xkb_options = "caps:escape";
+        };
 
         "type:touchpad" = {
           natural_scroll = "enabled";

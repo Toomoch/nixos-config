@@ -128,6 +128,9 @@ in
             gd = "definition";
             gi = "implementation";
             gt = "type_definition";
+            "<leader>ca" = {
+              action = "code_action";
+            };
           };
           diagnostic = {
             "<leader>j" = "goto_next";
@@ -141,6 +144,11 @@ in
               enable = true;
             };
           };
+          ltex = {
+            enable = true;
+            settings.language = "ca-ES";
+          };
+          texlab.enable = true;
           dockerls.enable = true;
           clangd = {
             enable = true;
