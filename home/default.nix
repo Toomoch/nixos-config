@@ -32,6 +32,8 @@ in
     tmux-sessionizer
     deploy-rs
   ];
+  programs.fzf.enableZshIntegration = true;
+  programs.fzf.enable = true;
 
   sops.age.sshKeyPaths = [ "${sshpath}" ];
 
