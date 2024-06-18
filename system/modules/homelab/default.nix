@@ -6,5 +6,6 @@
     ./homeassistant.nix
     ./immich.nix
     ./smb.nix
+    ./nextcloud.nix
   ];
 }

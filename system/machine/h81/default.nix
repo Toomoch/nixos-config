@@ -29,6 +29,7 @@
   homelab.homeassistant.enable = true;
   homelab.immich.enable = true;
   homelab.smb.enable = true;
+  homelab.nextcloud.enable = true;
   vm.podman.enable = true;
   vm.docker.enable  = true;
   vm.libvirtd.enable = true;

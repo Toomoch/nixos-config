@@ -1,6 +1,6 @@
 { inputs, config, pkgs, lib, ... }:
-with import ../sway/functions.nix { inherit pkgs lib; };
 let
+  vars = import ../sway/functions.nix { inherit pkgs lib; };
   DP_ultrawide = "LG Electronics LG ULTRAWIDE 0x0003BECD";
 in
 {

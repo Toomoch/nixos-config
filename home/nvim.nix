@@ -8,10 +8,12 @@ in
   home.packages = with pkgs; [ ripgrep bitbake-language-server ];
   # :autocmd BufNewFile,BufRead sw-description set ft=cfg
 
-  programs.bash.shellAliases = shellaliases;
-  programs.zsh.shellAliases = shellaliases;
+  #programs.bash.shellAliases = shellaliases;
+  #programs.zsh.shellAliases = shellaliases;
 
   programs.nixvim = {
+    defaultEditor = true;
+    #vimdiffAlias = true;
     extraPlugins = with pkgs; [
       vimPlugins.vim-just
       vimPlugins.vim-shellcheck
@@ -21,6 +23,7 @@ in
     ];
     enable = true;
     clipboard.providers.wl-copy.enable = true;
+    vimAlias = true;
     keymaps = [
       {
         action = "<cmd>NvimTreeToggle<cr>";
@@ -54,10 +57,6 @@ in
         action = "<Nop>";
         key = "<Up>";
       }
-
-
-
-
     ];
 
     colorschemes.gruvbox.enable = true;
@@ -140,9 +139,6 @@ in
         servers = {
           nixd = {
             enable = true;
-            settings.options = {
-              enable = true;
-            };
           };
           ltex = {
             enable = true;
@@ -150,11 +146,9 @@ in
           };
           texlab.enable = true;
           dockerls.enable = true;
-          clangd = {
-            enable = true;
-          };
+          clangd.enable = true;
           ruff-lsp.enable = true;
-          bashls.enable = true;
+          #bashls.enable = true; https://github.com/nix-community/nixvim/issues/1699 
           ansiblels.enable = true;
         };
       };

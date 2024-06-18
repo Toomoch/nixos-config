@@ -18,7 +18,7 @@ in
     #../hyprland
   ];
 
-  home.packages = with pkgs; [
+  home.packages = [
 
   ];
 

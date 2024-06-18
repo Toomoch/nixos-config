@@ -4,7 +4,7 @@
     #dev tools
     llvmPackages_15.libclang
     nixpkgs-fmt
-    nixfmt
+    nixfmt-classic
     nil
     shellcheck
     shfmt

@@ -27,6 +27,12 @@ in
 {
   programs.home-manager.enable = true;
 
+  nix.gc = {
+    automatic = true;
+    frequency = "weekly";
+    options = "--delete-older-than 15d";
+  };
+
   home.packages = with pkgs; [
     fzf
     tmux-sessionizer
@@ -58,7 +64,7 @@ in
     enable = true;
     mouse = true;
     clock24 = true;
-    extraConfig = builtins.readFile (./dotfiles/tmux.conf);
+    extraConfig = builtins.readFile ./dotfiles/tmux.conf;
   };
 
   programs.zellij = {
@@ -73,7 +79,7 @@ in
   programs.bash = {
     enable = true;
     bashrcExtra = ''
-      ${builtins.readFile(./dotfiles/osc7.sh)}
+      ${builtins.readFile ./dotfiles/osc7.sh}
       
       function set_win_title(){
         echo -ne "\033]0; $PWD \007"
@@ -89,7 +95,7 @@ in
   programs.zsh = {
     enable = true;
     enableCompletion = true;
-    enableAutosuggestions = true;
+    autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
     shellAliases = shellaliases;
     initExtraFirst = ''

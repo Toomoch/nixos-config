@@ -8,15 +8,15 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixpkgs-stable.url = "nixpkgs/nixos-23.11";
+    nixpkgs-stable.url = "nixpkgs/nixos-24.05";
     home-manager-stable = {
-      url = "github:nix-community/home-manager/release-23.11";
+      url = "github:nix-community/home-manager/release-24.05";
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
     nixvim = {
-      url = "github:nix-community/nixvim";
-      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:nix-community/nixvim/nixos-24.05";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
     sops-nix.url = "github:Mic92/sops-nix";
@@ -61,7 +61,7 @@
 
       hosts = [
         { host = "oracle1"; arch = "x86_64-linux"; branch = stable; hm = false; }
-        { host = "ps42"; arch = "x86_64-linux"; branch = unstable; hm = true; }
+        { host = "ps42"; arch = "x86_64-linux"; branch = stable; hm = true; }
         { host = "h81"; arch = "x86_64-linux"; branch = stable; hm = true; }
         { host = "b450"; arch = "x86_64-linux"; branch = unstable; hm = true; }
         { host = "rpi3"; arch = "aarch64-linux"; branch = stable; hm = false; }

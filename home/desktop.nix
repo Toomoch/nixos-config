@@ -13,7 +13,6 @@
     gnome-network-displays
     gitg
     thunderbird
-    zapzap
     meld
     imhex
     ungoogled-chromium
@@ -21,7 +20,8 @@
     krita
     vesktop
     localsend
-    (pkgs.nerdfonts.override { fonts = [ "Noto" ]; })
+    (nerdfonts.override { fonts = [ "Noto" ]; })
+    masterpdfeditor4
   ];
 
   fonts.fontconfig.enable = true;

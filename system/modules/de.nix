@@ -1,5 +1,5 @@
 { config, lib, pkgs, ... }:
-with lib; let
+let
   cfg = config.desktop;
   discover-wrapped = pkgs.symlinkJoin
     {
@@ -13,26 +13,26 @@ with lib; let
 in
 {
   options.desktop = {
-    gnome.enable = mkEnableOption ("Whether to enable Gnome with GDM");
-    kde.enable = mkEnableOption ("Whether to enable KDE with SDDM");
+    gnome.enable = lib.mkEnableOption "Whether to enable Gnome with GDM";
+    kde.enable = lib.mkEnableOption "Whether to enable KDE with SDDM";
   };
 
-  config = mkMerge [
-    (mkIf cfg.gnome.enable {
+  config = lib.mkMerge [
+    (lib.mkIf cfg.gnome.enable {
       # Enable GNOME
       services.xserver.enable = true;
       services.xserver.displayManager.gdm.enable = true;
       services.xserver.desktopManager.gnome.enable = true;
     })
-    (mkIf cfg.kde.enable {
+    (lib.mkIf cfg.kde.enable {
       # Enable KDE Plasma
       services.xserver.enable = true;
-      services.xserver.displayManager.sddm.enable = true;
-      services.xserver.desktopManager.plasma5.enable = true;
-      services.xserver.displayManager.defaultSession = "plasmawayland";
+      services.displayManager.sddm.enable = true;
+      services.desktopManager.plasma6.enable = true;
+      services.displayManager.defaultSession = "plasma";
       programs.dconf.enable = true;
 
-      environment.systemPackages = with pkgs; [
+      environment.systemPackages = [
         discover-wrapped
       ];
     })

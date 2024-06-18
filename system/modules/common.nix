@@ -50,8 +50,8 @@ in
 
       # Configure keymap in X11
       services.xserver = {
-        layout = "es";
-        xkbVariant = "cat";
+        xkb.layout = "es";
+        xkb.variant = "cat";
       };
 
       # Configure console keymap

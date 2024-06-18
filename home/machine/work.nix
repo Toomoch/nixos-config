@@ -1,6 +1,6 @@
 { inputs, config, pkgs, lib, ... }:
-with import ../sway/functions.nix { inherit pkgs lib; };
 let
+  vars = import ../sway/functions.nix { inherit pkgs lib; };
   ftdi_id = "/dev/serial/by-id/usb-FTDI_TTL232R-3V3_FTA5I86L-if00-port0";
   imx6_id = "/dev/serial/by-id/usb-Silicon_Labs_CP2102_USB_to_UART_Bridge_Controller_0001-if00-port0";
   internal_name = "AU Optronics 0x408D Unknown";
@@ -31,7 +31,7 @@ in
     enable = true;
     profiles = {
       laptop = {
-        exec = monitor_workspace 1 10 internal_name;
+        exec = vars.monitor_workspace 1 10 internal_name;
         outputs = [
           {
             criteria = internal_name;
@@ -42,7 +42,7 @@ in
       };
 
       workplace = {
-        exec = monitor_workspace 1 5 internal_name ++ monitor_workspace 6 10 workplace_name;
+        exec = vars.monitor_workspace 1 5 internal_name ++ vars.monitor_workspace 6 10 workplace_name;
         outputs = [
           {
             criteria = workplace_name;
