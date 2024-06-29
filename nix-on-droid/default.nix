@@ -7,7 +7,7 @@
     openssh
     mosh
     git
-    neofetch
+    fastfetch
     zsh
     procps
     # Some common stuff that people expect to have

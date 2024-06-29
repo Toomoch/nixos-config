@@ -4,8 +4,8 @@ let
 in
 {
   options.common = {
-    enable = lib.mkEnableOption ("Whether to enable common stuff");
-    x86.enable = lib.mkEnableOption ("Whether to enable x86 bootloader");
+    enable = lib.mkEnableOption "Whether to enable common stuff";
+    x86.enable = lib.mkEnableOption "Whether to enable x86 bootloader";
   };
 
   config = lib.mkMerge [
@@ -56,8 +56,8 @@ in
 
       # Configure console keymap
       console.keyMap = "es";
-      console.packages = [ pkgs.terminus_font ];
       console.font = "Lat2-Terminus16";
+      console.earlySetup = true;
 
       # Allow unfree packages
       nixpkgs.config.allowUnfree = true;
@@ -68,7 +68,7 @@ in
         vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
         wget
         pciutils
-        neofetch
+        fastfetch
         xdg-utils
         usbutils
         lm_sensors

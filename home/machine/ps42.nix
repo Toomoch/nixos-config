@@ -19,7 +19,7 @@ in
   ];
 
   home.packages = [
-
+    pkgs.blender
   ];
 
   #yambar = {
