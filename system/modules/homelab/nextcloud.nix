@@ -24,6 +24,7 @@ in
       package = pkgs.nextcloud29;
       # Let NixOS install and configure the database automatically.
       database.createLocally = true;
+      home = "${vars.serviceData}/nextcloud";
       # Let NixOS install and configure Redis caching automatically.
       configureRedis = true;
       # Increase the maximum file upload size to avoid problems uploading videos.

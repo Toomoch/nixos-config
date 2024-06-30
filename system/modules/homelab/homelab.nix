@@ -66,17 +66,17 @@ in
       #Dashy
       virtualisation.oci-containers.backend = "docker";
       virtualisation.oci-containers.containers = {
-        dashy = {
-          image = "docker.io/lissy93/dashy:latest";
-          ports = [
-            "8080:80"
-          ];
-          volumes = [
-            "${dashy_config}:/app/public/conf.yml:ro"
-          ];
-          extraOptions = commonextraOptions;
+        #dashy = {
+        #  image = "docker.io/lissy93/dashy:latest";
+        #  ports = [
+        #    "8080:80"
+        #  ];
+        #  volumes = [
+        #    "${dashy_config}:/app/public/conf.yml:ro"
+        #  ];
+        #  extraOptions = commonextraOptions;
 
-        };
+        #};
 
       };
 
