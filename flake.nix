@@ -66,7 +66,7 @@
         { host = "b450"; arch = "x86_64-linux"; branch = unstable; hm = true; }
         { host = "rpi3"; arch = "aarch64-linux"; branch = stable; hm = false; }
         { host = "oracle2"; arch = "aarch64-linux"; branch = unstable; hm = false; }
-        { host = workhostname; arch = "x86_64-linux"; branch = unstable; hm = true; }
+        { host = workhostname; arch = "x86_64-linux"; branch = stable; hm = true; }
         { host = "vm"; arch = "x86_64-linux"; branch = stable; hm = true; }
 
       ];

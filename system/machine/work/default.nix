@@ -62,11 +62,12 @@
   ];
 
   fileSystems."/external" = {
-    device = "/dev/disk/by-uuid/6bf3dd62-361c-4aa8-937f-3f901e3adf27";
-    options = [ "nofail" "x-systemd.automount" ];
+    device = "/dev/disk/by-uuid/4f3d6384-e04d-4ece-9470-891d31a4f316";
+    options = [ "nofail" "compress=zstd" ];
   };
   networking.firewall.allowedTCPPorts = [
     5900
+    8000
   ];
   system.stateVersion = "23.05";
 }
