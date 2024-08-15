@@ -1,16 +1,16 @@
 { config, pkgs, lib, ... }:
-with lib; let
+let
   cfg = config.vm;
 in
 {
   options.vm = {
-    podman.enable = mkEnableOption ("Wheter to enable podman");
-    docker.enable = mkEnableOption ("Wheter to enable Docker");
-    libvirtd.enable = mkEnableOption ("Whether to enable libvirtd");
+    podman.enable = lib.mkEnableOption "Wheter to enable podman";
+    docker.enable = lib.mkEnableOption "Wheter to enable Docker";
+    libvirtd.enable = lib.mkEnableOption "Whether to enable libvirtd";
   };
 
-  config = mkMerge [
-    (mkIf cfg.podman.enable {
+  config = lib.mkMerge [
+    (lib.mkIf cfg.podman.enable {
       environment.systemPackages = with pkgs; [
         podman-compose
         distrobox
@@ -25,7 +25,7 @@ in
         };
       };
     })
-    (mkIf cfg.docker.enable {
+    (lib.mkIf cfg.docker.enable {
       environment.systemPackages = with pkgs; [
         docker-compose
       ];
@@ -33,7 +33,7 @@ in
         docker.enable = true;
       };
     })
-    (mkIf cfg.libvirtd.enable {
+    (lib.mkIf cfg.libvirtd.enable {
       environment.systemPackages = with pkgs; [
         win-virtio
       ];

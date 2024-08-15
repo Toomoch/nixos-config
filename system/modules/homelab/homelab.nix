@@ -1,32 +1,31 @@
 { inputs, config, lib, pkgs, pkgs-unstable, ... }:
-with import ./variables.nix { inherit config inputs pkgs lib; };
-with lib;
 let
-  jmusicbot = "${serviceData}/jmusicbot";
-  dashy_config = "${inputs.private}/configfiles/dashy.yml";
-  tgtg_volume = "${serviceData}/tgtg";
+  vars = import ./variables.nix { inherit config inputs pkgs lib; };
+  jmusicbot = "${vars.serviceData}/jmusicbot";
+  tgtg_volume = "${vars.serviceData}/tgtg";
 
   cockpit-machines = pkgs.callPackage ../packages/cockpit-machines.nix { };
 in
 {
   options.homelab = {
-    enable = mkEnableOption ("Whether to enable homelab stuff");
-    enablevps = mkEnableOption ("Whether to enable VPS homelab stuff");
+    enable = lib.mkEnableOption "Whether to enable homelab stuff";
+    enablevps = lib.mkEnableOption "Whether to enable VPS homelab stuff";
   };
 
-  config = mkMerge [
-    (mkIf cfg.enable {
+  config = lib.mkMerge [
+    (lib.mkIf vars.cfg.enable {
+      virtualisation.oci-containers.backend = "docker";
       services.cockpit = {
-        enable = true;
+        enable = false;
         openFirewall = true;
         settings = {
           WebService = {
-            Origins = "https://cockpit.${domain} wss://cockpit.${domain}";
+            Origins = "https://cockpit.${vars.domain} wss://cockpit.${vars.domain}";
             ProtocolHeader = "X-Forwarded-Proto";
           };
         };
       };
-      environment.systemPackages = with pkgs; [
+      environment.systemPackages = [
       ];
       systemd.tmpfiles.rules = [
         "d ${jmusicbot} 0755 root root"
@@ -53,7 +52,7 @@ in
       services.caddy = {
         enable = true;
         package = pkgs.callPackage ../../packages/caddy-plugins.nix { };
-        extraConfig = builtins.readFile ("${inputs.private}/configfiles/Caddyfile");
+        extraConfig = builtins.readFile "${inputs.private}/configfiles/Caddyfile";
       };
 
       sops.secrets."duckdns/token".sopsFile = "${inputs.private}/secrets/sops/duckdns.env";
@@ -62,27 +61,8 @@ in
       systemd.services.caddy.serviceConfig = {
         EnvironmentFile = "${config.sops.secrets."duckdns/token".path}";
       };
-
-      #Dashy
-      virtualisation.oci-containers.backend = "docker";
-      virtualisation.oci-containers.containers = {
-        #dashy = {
-        #  image = "docker.io/lissy93/dashy:latest";
-        #  ports = [
-        #    "8080:80"
-        #  ];
-        #  volumes = [
-        #    "${dashy_config}:/app/public/conf.yml:ro"
-        #  ];
-        #  extraOptions = commonextraOptions;
-
-        #};
-
-      };
-
-
     })
-    (mkIf cfg.enablevps {
+    (lib.mkIf vars.cfg.enablevps {
       sops.secrets."tgtg/env" = {
         sopsFile = "${inputs.private}/secrets/sops/tgtg.env";
         format = "dotenv";
@@ -99,16 +79,12 @@ in
             TELEGRAM = "true";
           };
           environmentFiles = [ "${config.sops.secrets."tgtg/env".path}" ];
-          extraOptions = commonextraOptions;
+          extraOptions = vars.commonextraOptions;
           volumes = [
             "${tgtg_volume}:/tokens"
           ];
         };
       };
-
-
     })
-
-
   ];
 }

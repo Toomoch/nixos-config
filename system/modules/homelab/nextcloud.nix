@@ -1,6 +1,7 @@
 { inputs, pkgs, lib, config, ... }:
 let
   vars = import ./variables.nix { inherit config inputs pkgs lib; };
+  dataBase = "${vars.serviceData}/postgresql/${config.services.postgresql.package.psqlSchema}";
 in
 {
 
@@ -9,13 +10,17 @@ in
   };
 
   config = lib.mkIf vars.cfg.nextcloud.enable {
+    systemd.tmpfiles.rules = [
+      "d ${dataBase} 0750 postgres postgres - -"
+    ];
+    services.postgresql.dataDir = "${dataBase}";
     sops.secrets."nextcloud" = {
       sopsFile = "${inputs.private}/secrets/sops/nextcloud";
       format = "binary";
       owner = "nextcloud";
       group = "nextcloud";
     };
-    environment.systemPackages = [ pkgs.ffmpeg-headless ]; 
+    environment.systemPackages = [ pkgs.ffmpeg-headless ];
 
     services.nextcloud = {
       enable = true;
@@ -41,9 +46,10 @@ in
         # Allow access when hitting either of these hosts or IPs
         trusted_proxies = [ "127.0.0.1" ];
         maintenance_window_start = 4; # Run jobs at 4am UTC
-        "memories.exiftool" = "${pkgs.exiftool}/bin/exiftool";
-        "memories.vod.ffmpeg" = "${lib.getExe pkgs.ffmpeg-headless}";
-        "memories.vod.ffprobe" = "${pkgs.ffmpeg-headless}/bin/ffprobe";
+        memories.exiftool = "${lib.getExe pkgs.exiftool}";
+        memories.vod.ffmpeg = "${lib.getExe pkgs.ffmpeg-headless}";
+        memories.vod.ffprobe = "${pkgs.ffmpeg-headless}/bin/ffprobe";
+        preview_ffmpeg_path = "${pkgs.ffmpeg-headless}/bin/ffmpeg";
       };
       config = {
         adminpassFile = "${config.sops.secrets."nextcloud".path}";
@@ -54,9 +60,18 @@ in
         "output_buffering" = "0";
       };
     };
+    systemd.services.nextcloud-cron = {
+      path = [ pkgs.perl ];
+    };
 
     services.nginx = {
       enable = lib.mkForce false;
+    };
+
+    systemd.services.phpfpm-nextcloud.serviceConfig = {
+      DeviceAllow = [ "/dev/dri/renderD128" ];
+      SupplementaryGroups = [ "render" "video" ];
+      PrivateDevices = lib.mkForce false;
     };
 
     services.phpfpm.pools.nextcloud.settings = {

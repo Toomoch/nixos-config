@@ -27,9 +27,10 @@
   homelab.enable = true;
   homelab.homepage-dashboard.enable = true;
   homelab.homeassistant.enable = true;
-  homelab.immich.enable = true;
+  homelab.immich.enable = false;
   homelab.smb.enable = true;
   homelab.nextcloud.enable = true;
+  homelab.grafana.enable = true;
   vm.podman.enable = true;
   vm.docker.enable  = true;
   vm.libvirtd.enable = true;

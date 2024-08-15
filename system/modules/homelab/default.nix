@@ -7,5 +7,6 @@
     ./immich.nix
     ./smb.nix
     ./nextcloud.nix
+    ./grafana.nix
   ];
 }

@@ -1,17 +1,16 @@
 { inputs, pkgs, lib, config, ... }:
-with import ./variables.nix { inherit config inputs pkgs lib; };
-with lib;
 let
-  hass_config = "${serviceData}/hass";
+  hass_config = "${vars.serviceData}/hass";
+  vars = import ./variables.nix { inherit config inputs pkgs lib; };
 in
 {
 
   options.homelab = {
-    homeassistant.enable = mkEnableOption ("Whether to enable homelab stuff");
+    homeassistant.enable = lib.mkEnableOption "Whether to enable homelab stuff";
   };
 
-  config = mkMerge [
-    (mkIf cfg.homeassistant.enable {
+  config = lib.mkMerge [
+    (lib.mkIf vars.cfg.homeassistant.enable {
       virtualisation.oci-containers.containers.homeassistant = {
         image = "ghcr.io/home-assistant/home-assistant:stable";
         ports = [
@@ -22,9 +21,9 @@ in
           "${./homeassistant-configuration.yaml}:/config/configuration.yaml:ro"
         ];
         environment = {
-          TZ = timezone;
+          TZ = vars.timezone;
         };
-        extraOptions = commonextraOptions ++ [
+        extraOptions = vars.commonextraOptions ++ [
           "--network=host"
           "--device=/dev/serial/by-id/usb-1a86_USB_Serial-if00-port0:/dev/ttyUSB0:rw"
         ];
