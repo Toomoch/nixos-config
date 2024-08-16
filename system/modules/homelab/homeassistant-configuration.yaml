@@ -16,7 +16,6 @@ http:
     - 127.0.0.1
 
 logger:
-  default: debug
   logs:
     custom_components.huawei_solar: debug
     huawei_solar: debug

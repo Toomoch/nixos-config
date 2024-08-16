@@ -39,7 +39,7 @@ in
       extraApps = with config.services.nextcloud.package.packages.apps; {
         # List of apps we want to install and are already packaged in
         # https://github.com/NixOS/nixpkgs/blob/master/pkgs/servers/nextcloud/packages/nextcloud-apps.json
-        inherit calendar contacts mail notes tasks memories previewgenerator;
+        inherit calendar contacts mail notes tasks memories previewgenerator onlyoffice;
       };
       settings = {
         default_phone_region = "ES";
@@ -131,6 +131,21 @@ in
             file_server
           '';
         };
+        virtualHosts."office.${vars.domain}".extraConfig = ''
+          reverse_proxy http://127.0.0.1:8000 {
+            # Required to circumvent bug of Onlyoffice loading mixed non-https content
+            header_up X-Forwarded-Proto https
+          }
+        '';
       };
+    users.users.nginx = {
+      group = "nginx";
+      isSystemUser = true;
+    };
+    users.groups.nginx = { };
+    services.onlyoffice = {
+      enable = true;
+      hostname = "office.${vars.domain}";
+    };
   };
 }
