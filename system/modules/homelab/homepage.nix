@@ -17,7 +17,7 @@ in
       sops.secrets."homepage-dashboard".sopsFile = "${ inputs. private}/secrets/sops/homepage-dashboard.env";
       sops.secrets."homepage-dashboard".format = "dotenv";
 
-      services. homepage-dashboard = {
+      services.homepage-dashboard = {
         enable = true;
         openFirewall = true;
         environmentFile = "${config.sops.secrets."homepage-dashboard".path}";
@@ -25,15 +25,16 @@ in
           {
             "Services" = [
               {
-                "Immich" = {
-                  description = "Immich";
-                  icon = "immich"; # https://github.com/walkxcode/dashboard-icons
-                  href = "https://immich.${vars.domain}";
-                  widget = {
-                    type = "immich";
-                    url = "https://immich.${vars.domain}";
-                    key = "{{HOMEPAGE_VAR_IMMICH_API}}";
-                  };
+                "Nextcloud" = {
+                  description = "Nextcloud Instance";
+                  icon = "nextcloud"; # https://github.com/walkxcode/dashboard-icons
+                  href = "https://cloud.${vars.domain}";
+                  #widget = {
+                  #  type = "nextcloud";
+                  #  url = "https://cloud.${vars.domain}";
+                  #  username = "root";
+                  #  password = "{{HOMEPAGE_VAR_NC_PASS}}";
+                  #};
                 };
               }
               {
@@ -52,12 +53,6 @@ in
                 "OpenVSCode Server" = {
                   icon = "vscode";
                   href = "https://code.${vars.domain}";
-                };
-              }
-              {
-                "NextCloud" = {
-                  icon = "nextcloud";
-                  href = "https://cloud.${vars.domain}";
                 };
               }
               {

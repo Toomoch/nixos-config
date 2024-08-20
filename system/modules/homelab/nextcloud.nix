@@ -146,6 +146,14 @@ in
     services.onlyoffice = {
       enable = true;
       hostname = "office.${vars.domain}";
+      jwtSecretFile = "${config.sops.secrets."onlyoffice".path}";
+    };
+
+    sops.secrets."onlyoffice" = {
+      sopsFile = "${inputs.private}/secrets/sops/onlyoffice";
+      format = "binary";
+      owner = "onlyoffice";
+      group = "onlyoffice";
     };
   };
 }
