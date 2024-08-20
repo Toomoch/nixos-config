@@ -31,7 +31,10 @@ in
       #services.udev.extraRules = optionalString cfg.arctis9.enable ''
       #  KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="1038", ATTRS{idProduct}=="12c2", TAG+="uaccess"'';
 
-      programs.appimage.enable = true;
+      programs.appimage = {
+        enable = true;
+        binfmt = true;
+      };
       nixpkgs.config.permittedInsecurePackages = [ "electron-24.8.6" ];
 
       programs.nix-ld.enable = true;
