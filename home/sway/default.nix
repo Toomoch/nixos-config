@@ -4,6 +4,7 @@ let
   font = "Rubik";
   kanshi_assign_sway = pkgs.writeShellScriptBin "kanshi_assign_sway" (builtins.readFile (../dotfiles/kanshi_assign_sway.sh));
   filemanager = "thunar";
+  browser = "floorp";
 in
 {
   imports = [
@@ -85,7 +86,7 @@ in
         { command = "autotiling-rs"; }
         { command = "rfkill block bluetooth"; }
         { command = "swaync"; }
-        { command = "firefox"; }
+        { command = browser; }
         {
           command =
             "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";

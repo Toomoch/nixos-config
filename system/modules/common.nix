@@ -57,7 +57,6 @@ in
       # Configure console keymap
       console.keyMap = "es";
       console.font = lib.mkDefault "${pkgs.terminus_font}/share/consolefonts/ter-u28n.psf.gz";
-      console.earlySetup = true;
 
       # Allow unfree packages
       nixpkgs.config.allowUnfree = true;

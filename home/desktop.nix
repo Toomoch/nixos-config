@@ -22,6 +22,7 @@
     localsend
     (nerdfonts.override { fonts = [ "Noto" ]; })
     masterpdfeditor4
+    floorp
   ];
 
   fonts.fontconfig.enable = true;
@@ -47,21 +48,20 @@
     '';
     mimeApps = {
       enable = true;
-      defaultApplications =
-        #"inode/directory" = "org.gnome.Nautilus.desktop";
-        #"application/zip" = "org.gnome.FileRoller.desktop";
-        config.lib.xdg.mimeAssociations [
-          pkgs.gnome.nautilus
-          pkgs.gnome.file-roller
-          pkgs.mpv
-          pkgs.firefox
-        ];
-      #"video/x-matroska" = "mpv.desktop";
-      #"image/png" = "firefox.desktop";
-
-      associations.added = {
-        "application/pdf" = "firefox.desktop";
+      defaultApplications = {
+        "inode/directory" = "thunar.desktop";
+        "application/zip" = "org.gnome.FileRoller.desktop";
+        "text/html" = [ "floorp.desktop" ];
+        "x-scheme-handler/http" = [ "floorp.desktop" ];
+        "x-scheme-handler/https" = [ "floorp.desktop" ];
+        "x-scheme-handler/about" = [ "floorp.desktop" ];
+        "x-scheme-handler/unknown" = [ "floorp.desktop" ];
+        "video/x-matroska" = "mpv.desktop";
         "image/png" = "firefox.desktop";
+      };
+      associations.added = {
+        "application/pdf" = "floorp.desktop";
+        "image/png" = "floorp.desktop";
         "video/x-matroska" = "mpv.desktop";
       };
     };
