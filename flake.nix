@@ -139,10 +139,17 @@
                   ++ branch.nixpkgs.lib.optionals hm [
                   branch.home-manager.nixosModules.home-manager
                   {
-                    home-manager = {
+                    home-manager = 
+                      let
+                        user = 
+                          if host == workhostname then
+                            "avalls"
+                          else
+                            "arnau";
+                    {
                       useGlobalPkgs = true;
                       extraSpecialArgs = { inherit pkgs-unstable; inherit inputs; };
-                      users.arnau.imports = [
+                      users.${user}.imports = [
                         ./home/machine/${host-folder}.nix
                         sops-nix.homeManagerModules.sops
                       ] ++ branch.nixpkgs.lib.optional (branch == unstable) ./home/unstable.nix;

@@ -9,7 +9,6 @@ in
   imports = [
     "${inputs.private}/home/arnau/"
     ../default.nix
-    ../arnau.nix
     ../desktop.nix
     ../sway
     ../nvim.nix
