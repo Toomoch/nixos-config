@@ -77,17 +77,30 @@ in
         HandlePowerKey=ignore
       '';
 
+      # Stolen from https://github.com/sjcobb2022/nixos-config/blob/aa74d65ebb9ec49316b1f3a693176ae37381712e/hosts/common/optional/greetd.nix
       services.greetd = {
         enable = true;
         settings = {
           default_session = {
-            command = "sway --unsupported-gpu --config ${greetdSwayConfig}";
+            command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --remember --cmd sway";
+            user = "greeter";
           };
         };
       };
 
+      systemd.services.greetd.serviceConfig = {
+        Type = "idle";
+        StandardInput = "tty";
+        StandardOutput = "tty";
+        StandardError = "journal"; # Without this errors will spam on screen
+        # Without these bootlogs will spam on screen
+        TTYReset = true;
+        TTYVHangup = true;
+        TTYVTDisallocate = true;
+      };
+
       programs.regreet = {
-        enable = true;
+        enable = false;
         settings = {
           background = {
             fit = "Cover";
