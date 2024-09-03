@@ -56,7 +56,7 @@ in
 
       # Configure console keymap
       console.keyMap = "es";
-      console.font = "Lat2-Terminus16";
+      console.font = lib.mkDefault "${pkgs.terminus_font}/share/consolefonts/ter-u28n.psf.gz";
       console.earlySetup = true;
 
       # Allow unfree packages
