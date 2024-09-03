@@ -66,8 +66,7 @@ in
         outputs = [
           {
             criteria = workplace_name;
-            position = "1920,0";
-            mode = "1920x1080@75Hz";
+            position = "2880,0";
             status = "enable";
           }
           {
