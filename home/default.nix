@@ -133,6 +133,12 @@ in
         extraOptions = { AddKeysToAgent = "yes"; };
         forwardAgent = true;
       };
+
+      "rpi3" = {
+        hostname = "rpi3.casa.lan";
+        extraOptions = { AddKeysToAgent = "yes"; };
+        forwardAgent = true;
+      };
     };
     includes = [
       "config.d/*"

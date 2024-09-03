@@ -113,6 +113,8 @@ in
       # Enable the IOMMU
       boot.kernelParams = [ "intel_iommu=on" ];
 
+      virtualisation.waydroid.enable = true;
+
       # LTS Kernel
       # boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_1;
 

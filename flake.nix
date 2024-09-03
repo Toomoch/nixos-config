@@ -188,7 +188,7 @@
         in
         {
           h81 = mkDeployConfig "h81" self.nixosConfigurations.h81 false true;
-          rpi3 = mkDeployConfig "rpi3.casa.lan" self.nixosConfigurations.rpi3 true false;
+          rpi3 = mkDeployConfig "rpi3" self.nixosConfigurations.rpi3 false false;
           l50 = mkDeployConfig "l50.casa.lan" self.nixosConfigurations.l50 true false;
           oracle1 = mkDeployConfig "oracle1" self.nixosConfigurations.oracle1 false false;
           oracle2 = mkDeployConfig "oracle2" self.nixosConfigurations.oracle2 false true;

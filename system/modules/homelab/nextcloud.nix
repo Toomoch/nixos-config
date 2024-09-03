@@ -2,6 +2,7 @@
 let
   vars = import ./variables.nix { inherit config inputs pkgs lib; };
   dataBase = "${vars.serviceData}/postgresql/${config.services.postgresql.package.psqlSchema}";
+  pgBackups = "${vars.serviceData}/backups/postgresql";
 in
 {
 
@@ -12,8 +13,17 @@ in
   config = lib.mkIf vars.cfg.nextcloud.enable {
     systemd.tmpfiles.rules = [
       "d ${dataBase} 0750 postgres postgres - -"
+      "d ${pgBackups} 0750 postgres postgres - -"
     ];
     services.postgresql.dataDir = "${dataBase}";
+
+    services.postgresqlBackup = {
+      enable = true;
+      databases = [ "nextcloud" "onlyoffice" ];
+      compression = "zstd";
+      location = pgBackups;
+    };
+
     sops.secrets."nextcloud" = {
       sopsFile = "${inputs.private}/secrets/sops/nextcloud";
       format = "binary";

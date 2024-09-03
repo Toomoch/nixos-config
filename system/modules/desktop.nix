@@ -35,6 +35,26 @@ in
         enable = true;
         binfmt = true;
       };
+      services.fwupd.enable = true;
+      fonts = {
+        fontconfig.defaultFonts = {
+          emoji = [ "Noto Color Emoji" ];
+          sansSerif = [ "Noto Sans" ];
+          serif = [ "Noto Serif" ];
+          monospace = [ "Noto Sans Mono" ];
+        };
+
+        packages = with pkgs; [
+          rubik
+          fira-code
+          fira-code-symbols
+          font-awesome
+          noto-fonts
+          noto-fonts-extra
+          noto-fonts-cjk
+          noto-fonts-emoji
+        ];
+      };
       nixpkgs.config.permittedInsecurePackages = [ "electron-24.8.6" ];
 
       programs.nix-ld.enable = true;

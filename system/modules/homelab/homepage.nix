@@ -29,12 +29,11 @@ in
                   description = "Nextcloud Instance";
                   icon = "nextcloud"; # https://github.com/walkxcode/dashboard-icons
                   href = "https://cloud.${vars.domain}";
-                  #widget = {
-                  #  type = "nextcloud";
-                  #  url = "https://cloud.${vars.domain}";
-                  #  username = "root";
-                  #  password = "{{HOMEPAGE_VAR_NC_PASS}}";
-                  #};
+                  widget = {
+                    type = "nextcloud";
+                    url = "https://cloud.${vars.domain}";
+                    key = "{{HOMEPAGE_VAR_NC_KEY}}";
+                  };
                 };
               }
               {
