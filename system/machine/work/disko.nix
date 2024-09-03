@@ -19,11 +19,19 @@
             };
             root = {
               name = "nixos";
-              size = "100%";
+              size = "-8G";
               content = {
                 type = "filesystem";
                 format = "btrfs";
                 mountpoint = "/";
+              };
+            };
+	    plainSwap = {
+              size = "100%";
+              content = {
+                type = "swap";
+                discardPolicy = "both";
+                resumeDevice = true; # resume from hiberation from this device
               };
             };
           };
