@@ -1,8 +1,6 @@
 { inputs, config, pkgs, lib, ... }:
 let
   vars = import ../sway/functions.nix { inherit pkgs lib; };
-  ftdi_id = "/dev/serial/by-id/usb-FTDI_TTL232R-3V3_FTA5I86L-if00-port0";
-  imx6_id = "/dev/serial/by-id/usb-Silicon_Labs_CP2102_USB_to_UART_Bridge_Controller_0001-if00-port0";
   internal_name = "AU Optronics 0x408D Unknown";
   workplace_name = "Philips Consumer Electronics Company PHL 243V7 0x000033E1";
   ultrawide_hdmi_name = "LG Electronics LG ULTRAWIDE 0x0003BECD";
@@ -20,7 +18,6 @@ in
   ];
 
   home.packages = with pkgs; [
-    teams-for-linux
     glab
     uuu
     python311Packages.python-gitlab
@@ -29,12 +26,10 @@ in
     pandoc
   ];
 
-  programs.git.lfs.enable = true;
+  home.username = lib.mkForce "avalls";
+  home.homeDirectory = lib.mkForce "/home/avalls";
 
-  programs.bash.shellAliases = {
-    tioftdi = "tio -b 115200 ${ftdi_id}";
-    tioimx6 = "tio -b 115200 ${imx6_id}";
-  };
+  programs.git.lfs.enable = true;
 
   services.kanshi = {
     enable = true;

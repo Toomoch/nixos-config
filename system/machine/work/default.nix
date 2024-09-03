@@ -2,8 +2,8 @@
 {
   imports = [
     ./hardware-configuration.nix
-    "${inputs.private}/system/machine/work.nix"
-    ../../users/arnau.nix
+    "${inputs.private}/system/user.nix"
+    ./disko.nix
   ];
 
   common.enable = true;
@@ -37,38 +37,15 @@
     vscode.fhs
     openssl
   ];
+
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
   boot.initrd = {
     supportedFilesystems = [ "nfs" ];
     kernelModules = [ "nfs" ];
   };
 
-  services.fprintd = {
-    enable = true;
-    tod.enable = true;
-    tod.driver = pkgs.libfprint-2-tod1-goodix-550a;
-  };
 
-  virtualisation = {
-    docker = {
-      #rootless = {
-      #  enable = true;
-      #  setSocketVariable = true;
-      #};
-    };
-  };
-
-  systemd.tmpfiles.rules = [
-    "d /external 0775 arnau users - -"
-  ];
-
-  fileSystems."/external" = {
-    device = "/dev/disk/by-uuid/4f3d6384-e04d-4ece-9470-891d31a4f316";
-    options = [ "nofail" "compress=zstd" ];
-  };
-  networking.firewall.allowedTCPPorts = [
-    5900
-    8000
-  ];
-  system.stateVersion = "23.05";
+  system.stateVersion = "24.05";
 }
 
