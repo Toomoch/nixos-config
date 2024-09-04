@@ -65,7 +65,7 @@ in
       expandtab = true;
       #clipboard = "unnamedplus";
       number = true;
-      wrap = false;
+      wrap = true;
     };
     globals = {
       mapleader = " ";

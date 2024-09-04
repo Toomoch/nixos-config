@@ -28,6 +28,8 @@ in
   home.username = lib.mkForce "avalls";
   home.homeDirectory = lib.mkForce "/home/avalls";
 
+  programs.nixvim.plugins.lsp.servers.ltex.settings.language = lib.mkForce "en-US";
+
   programs.git.lfs.enable = true;
 
   services.kanshi = {
