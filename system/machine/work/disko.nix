@@ -2,7 +2,7 @@
   # checkout the example folder for how to configure different disko layouts
   disko.devices = {
     disk.sda = {
-      device = "/dev/sda";
+      device = "/dev/disk/by-id/nvme-INTEL_SSDPEKNW010T8_PHNH211502W31P0B";
       type = "disk";
       content = {
         type = "gpt";
