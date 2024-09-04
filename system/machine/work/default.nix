@@ -1,4 +1,7 @@
 { inputs, config, pkgs, lib, ... }:
+let
+  secrets = "${inputs.private}/secrets/";
+in
 {
   imports = [
     ./hardware-configuration.nix
@@ -6,6 +9,7 @@
     ./disko.nix
   ];
 
+  networking.hostName = "${builtins.readFile (secrets + "plain/hostname")}";
   common.enable = true;
   common.x86.enable = true;
   desktop.enable = true;

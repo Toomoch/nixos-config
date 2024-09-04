@@ -1,8 +1,8 @@
 { inputs, config, pkgs, lib, ... }:
 let
   vars = import ../sway/functions.nix { inherit pkgs lib; };
-  internal_name = "AU Optronics 0x408D Unknown";
-  workplace_name = "Philips Consumer Electronics Company PHL 243V7 0x000033E1";
+  internal_name = "Samsung Display Corp. 0x417B Unknown";
+  workplace_name = "LG Electronics LG ULTRAWIDE 0x00065E5A";
   ultrawide_hdmi_name = "LG Electronics LG ULTRAWIDE 0x0003BECD";
 in
 {
@@ -66,7 +66,7 @@ in
         outputs = [
           {
             criteria = workplace_name;
-            position = "2880,0";
+            position = "1440,0";
             status = "enable";
           }
           {
