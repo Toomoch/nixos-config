@@ -19,6 +19,13 @@ in
   vm.docker.enable = true;
   vm.libvirtd.enable = true;
 
+  programs.singularity = {
+    enable = true;
+    package = pkgs.apptainer;
+    enableSuid = true;
+    enableFakeroot = true;
+  };
+
   services.auto-cpufreq.enable = true;
 
   # Enable VAAPI hardware acceleration

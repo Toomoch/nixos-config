@@ -65,6 +65,7 @@ in
         glxinfo
         libva-utils
         localsend
+        firefoxpwa
       ];
       networking.firewall.allowedTCPPorts = [
         53317
@@ -125,6 +126,8 @@ in
         {
           enable = true;
           package = firefox-package;
+          nativeMessagingHosts.packages = [ pkgs.firefoxpwa ];
+
           preferences =
             {
               "browser.fullscreen.autohide" = false;

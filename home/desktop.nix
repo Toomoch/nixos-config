@@ -51,17 +51,17 @@
       defaultApplications = {
         "inode/directory" = "thunar.desktop";
         "application/zip" = "org.gnome.FileRoller.desktop";
-        "text/html" = [ "floorp.desktop" ];
-        "x-scheme-handler/http" = [ "floorp.desktop" ];
-        "x-scheme-handler/https" = [ "floorp.desktop" ];
-        "x-scheme-handler/about" = [ "floorp.desktop" ];
-        "x-scheme-handler/unknown" = [ "floorp.desktop" ];
+        "text/html" = [ "firefox.desktop" ];
+        "x-scheme-handler/http" = [ "firefox.desktop" ];
+        "x-scheme-handler/https" = [ "firefox.desktop" ];
+        "x-scheme-handler/about" = [ "firefox.desktop" ];
+        "x-scheme-handler/unknown" = [ "firefox.desktop" ];
         "video/x-matroska" = "mpv.desktop";
         "image/png" = "firefox.desktop";
       };
       associations.added = {
-        "application/pdf" = "floorp.desktop";
-        "image/png" = "floorp.desktop";
+        "application/pdf" = "firefox.desktop";
+        "image/png" = "firefox.desktop";
         "video/x-matroska" = "mpv.desktop";
       };
     };
