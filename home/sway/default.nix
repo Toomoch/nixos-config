@@ -4,7 +4,7 @@ let
   font = "Rubik";
   kanshi_assign_sway = pkgs.writeShellScriptBin "kanshi_assign_sway" (builtins.readFile (../dotfiles/kanshi_assign_sway.sh));
   filemanager = "thunar";
-  browser = "floorp";
+  browser = "firefox";
 in
 {
   imports = [

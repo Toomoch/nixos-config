@@ -225,9 +225,11 @@ in
 
     })
     (lib.mkIf cfg.gaming.g29.enable {
-      environment.systemPackages = builtins.attrValues {
-        inherit (pkgs) oversteer at g29init;
-      };
+      environment.systemPackages = [
+        pkgs.oversteer
+        pkgs.at
+        g29init
+      ];
       services.atd.enable = true;
 
       hardware.new-lg4ff.enable = true;
@@ -239,9 +241,11 @@ in
 
     })
     (lib.mkIf cfg.matlab.enable {
-      environment.systemPackages = builtins.attrValues {
-        inherit (pkgs) matlab-wrapped matlab-mlint matlab-mex;
-      };
+      environment.systemPackages = [
+        matlab-wrapped
+        pkgs.matlab-mlint
+        pkgs.matlab-mex
+      ];
       nixpkgs.overlays = [ inputs.nix-matlab.overlay ];
     })
     (lib.mkIf cfg.blacklistnvidia.enable {
