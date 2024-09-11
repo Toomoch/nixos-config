@@ -1,5 +1,5 @@
 { config, lib, pkgs, ... }:
-with lib; let
+let
   cfg = config.desktop;
 
   greetdSwayConfig = pkgs.writeText "greetd-sway-config" ''
@@ -14,13 +14,13 @@ with lib; let
 in
 {
   options.desktop = {
-    sway.enable = mkEnableOption ("Whether to enable Sway with GTKgreet");
-    hyprland.enable = mkEnableOption ("Whether to enable Hyprland");
-    regreet.enable = mkEnableOption ("Whether to enable regreet");
+    sway.enable = lib.mkEnableOption ("Whether to enable Sway with GTKgreet");
+    hyprland.enable = lib.mkEnableOption ("Whether to enable Hyprland");
+    regreet.enable = lib.mkEnableOption ("Whether to enable regreet");
   };
 
-  config = mkMerge [
-    (mkIf cfg.regreet.enable {
+  config = lib.mkMerge [
+    (lib.mkIf cfg.regreet.enable {
       xdg.portal = {
         enable = cfg.sway.enable;
         # gtk portal needed to make gtk apps happy
