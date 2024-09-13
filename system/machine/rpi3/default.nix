@@ -1,4 +1,4 @@
-{ config, inputs, nixpkgs, pkgs, lib, ... }:
+{ config, inputs, nixpkgs, pkgs, lib, secrets, ... }:
 {
   imports = [
     #./hardware-configuration.nix
@@ -6,7 +6,7 @@
     "${nixpkgs}/nixos/modules/installer/sd-card/sd-image-aarch64.nix"
   ];
 
-  networking.hostName = "rpi3"; # Define your hostname.
+  networking.hostName = secrets.teststr; # Define your hostname.
 
   environment.systemPackages = [
     pkgs.libraspberrypi
@@ -26,7 +26,7 @@
 
 
   users.users.arnau.openssh.authorizedKeys.keyFiles = [
-    "${inputs.private}/secrets/sops/backup_borg_nextcloud/id_ed25519.pub"
+    "${inputs.private}/secrets/sops/backup_borg_nextcloud/id_ed25519.pub" 
   ];
 
   # NixOS bruh moment https://github.com/NixOS/nixpkgs/issues/180175, afaik fixed in 24.05

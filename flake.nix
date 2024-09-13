@@ -114,8 +114,11 @@
             ./system/machine/${host}
           ];
 
-          specialArgs = { inherit inputs; };
-          extraSpecialArgs = { inherit inputs; };
+          secrets = import "${private}/secrets/secrets.nix";
+          #secrets = { rpi3 = "teststr"; }; 
+
+          specialArgs = { inherit inputs; inherit secrets; };
+          extraSpecialArgs = { inherit inputs; inherit secrets; };
 
           mkHostConfig = { host, arch, branch, hm, ... }: {
             name = host;
@@ -134,7 +137,7 @@
                   let
                     nixpkgs = branch.nixpkgs;
                   in
-                  { inherit pkgs-unstable; inherit inputs; inherit nixpkgs; };
+                  { inherit pkgs-unstable; inherit inputs; inherit nixpkgs; inherit secrets; };
                 modules = defaultModules host-folder branch.disko ++ branch.nixpkgs.lib.optional (branch == stable) ./system/modules/stable-overlays.nix
                   ++ branch.nixpkgs.lib.optionals hm [
                   branch.home-manager.nixosModules.home-manager
