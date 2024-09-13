@@ -1,4 +1,4 @@
-{ config, nixpkgs, pkgs, lib, ... }:
+{ config, inputs, nixpkgs, pkgs, lib, ... }:
 {
   imports = [
     #./hardware-configuration.nix
@@ -10,6 +10,7 @@
 
   environment.systemPackages = [
     pkgs.libraspberrypi
+    pkgs.borgbackup
   ];
 
   common.enable = true;
@@ -23,9 +24,18 @@
   nixpkgs.hostPlatform = lib.mkDefault "aarch64-linux";
   boot.initrd.availableKernelModules = [ "usb_storage" ];
 
+
+  users.users.arnau.openssh.authorizedKeys.keyFiles = [
+    "${inputs.private}/secrets/sops/backup_borg_nextcloud/id_ed25519.pub"
+  ];
+
   # NixOS bruh moment https://github.com/NixOS/nixpkgs/issues/180175, afaik fixed in 24.05
   systemd.services.NetworkManager-wait-online.enable = false;
-
+  fileSystems."/external" = {
+    device = "/dev/disk/by-id/usb-WD_Elements_10B8_575833314539343830434630-0:0-part1";
+    fsType = "ext4";
+    options = [ "nofail" ];
+  };
   networking.firewall = {
     allowedUDPPorts = [ 51820 ];
   };

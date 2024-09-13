@@ -3,6 +3,7 @@ let
   vars = import ./variables.nix { inherit config inputs pkgs lib; };
   dataBase = "${vars.serviceData}/postgresql/${config.services.postgresql.package.psqlSchema}";
   pgBackups = "${vars.serviceData}/backups/postgresql";
+  ncHome = "${vars.serviceData}/nextcloud";
 in
 {
 
@@ -17,11 +18,69 @@ in
     ];
     services.postgresql.dataDir = "${dataBase}";
 
+    systemd.timers.postgresqlBackup-nextcloud.wantedBy = lib.mkForce [ ];
+    systemd.timers.postgresqlBackup-onlyoffice.wantedBy = lib.mkForce [ ];
     services.postgresqlBackup = {
       enable = true;
       databases = [ "nextcloud" "onlyoffice" ];
       compression = "zstd";
       location = pgBackups;
+    };
+
+    services.borgbackup.jobs =
+      let
+        cfg = config.services.nextcloud;
+      in
+      {
+        nextcloud = {
+          paths = [ "${ncHome}" ];
+          encryption.mode = "none";
+          environment.BORG_RSH = "ssh -i ${config.sops.secrets."borgnextcloud".path}";
+          repo = "arnau@rpi3.casa.lan:/external/nextcloud";
+          compression = "auto,zstd";
+          readWritePaths = [ config.services.nextcloud.datadir ];
+          startAt = "Mon *-*-* 04:00:00";
+          preHook = ''
+            echo "Enabling maintenance mode..."
+            ${cfg.occ}/bin/nextcloud-occ maintenance:mode --on
+          '';
+          postHook = ''
+            echo "Disabling maintenance mode..."
+            ${cfg.occ}/bin/nextcloud-occ maintenance:mode --off
+          '';
+        };
+        nextcloud_database = {
+          group = "nextcloud";
+          user = "nextcloud";
+          dumpCommand = pkgs.writeShellScript "builder.sh" ''
+            ${config.services.postgresql.package}/bin/pg_dump nextcloud -U nextcloud --no-password
+          '';
+          encryption.mode = "none";
+          environment.BORG_RSH = "ssh -i ${config.sops.secrets."borgnextcloud".path}";
+          repo = "arnau@rpi3.casa.lan:/external/nextcloud_database";
+          compression = "auto,zstd";
+          readWritePaths = [ config.services.nextcloud.datadir ];
+          startAt = "Mon *-*-* 06:00:00";
+          preHook = ''
+            echo "Enabling maintenance mode..."
+            ${cfg.occ}/bin/nextcloud-occ maintenance:mode --on
+          '';
+          postHook = ''
+            echo "Disabling maintenance mode..."
+            ${cfg.occ}/bin/nextcloud-occ maintenance:mode --off
+          '';
+        };
+      };
+
+    programs.ssh.knownHosts = {
+      "rpi3.casa.lan".publicKey = builtins.readFile "${inputs.private}/secrets/plain/rpi3.pub";
+    };
+
+    sops.secrets."borgnextcloud" = {
+      sopsFile = "${inputs.private}/secrets/sops/backup_borg_nextcloud/id_ed25519";
+      format = "binary";
+      owner = "nextcloud";
+      group = "nextcloud";
     };
 
     sops.secrets."nextcloud" = {
@@ -148,11 +207,13 @@ in
           }
         '';
       };
+    # Workaround because the nextcloud module requires nginx
     users.users.nginx = {
       group = "nginx";
       isSystemUser = true;
     };
     users.groups.nginx = { };
+
     services.onlyoffice = {
       enable = true;
       hostname = "office.${vars.domain}";
