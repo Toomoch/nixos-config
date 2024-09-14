@@ -24,7 +24,7 @@ in
       xdg.portal = {
         enable = cfg.sway.enable;
         # gtk portal needed to make gtk apps happy
-        extraPortals = with pkgs; [ xdg-desktop-portal-gtk ] ++ optional cfg.sway.enable xdg-desktop-portal-gtk;
+        extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
       };
 
       programs.hyprland.enable = cfg.hyprland.enable;

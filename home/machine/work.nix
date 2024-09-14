@@ -1,9 +1,10 @@
-{ inputs, config, pkgs, lib, ... }:
+{ inputs, config, pkgs, lib, secrets, osConfig, ... }:
 let
   vars = import ../sway/functions.nix { inherit pkgs lib; };
   internal_name = "Samsung Display Corp. 0x417B Unknown";
   workplace_name = "LG Electronics LG ULTRAWIDE 0x00065E5A";
   ultrawide_hdmi_name = "LG Electronics LG ULTRAWIDE 0x0003BECD";
+  hostname = osConfig.networking.hostName;
 in
 {
   imports = [
@@ -25,8 +26,8 @@ in
     pandoc
   ];
 
-  home.username = lib.mkForce "avalls";
-  home.homeDirectory = lib.mkForce "/home/avalls";
+  home.username = lib.mkForce secrets.hosts.work.user;
+  home.homeDirectory = lib.mkForce "/home/${secrets.hosts.work.user}";
 
   programs.nixvim.plugins.lsp.servers.ltex.settings.language = lib.mkForce "en-US";
 

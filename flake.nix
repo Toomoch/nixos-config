@@ -46,8 +46,6 @@
 
   outputs = inputs@{ self, nixpkgs, home-manager, nixpkgs-stable, home-manager-stable, sops-nix, deploy-rs, nix-matlab, private, nixvim, disko-stable, disko, nix-on-droid, ... }:
     let
-      secrets = "${private}/secrets/";
-      workhostname = "${builtins.readFile (secrets + "plain/hostname")}";
       forAllSystems = function:
         nixpkgs.lib.genAttrs [
           "x86_64-linux"
@@ -55,7 +53,8 @@
         ]
           (system: function nixpkgs.legacyPackages.${system});
 
-      hostip = host: "${builtins.readFile (secrets + "plain/" + host + "_ip")}";
+      secrets = import "${private}/secrets/secrets.nix";
+
       stable = { nixpkgs = nixpkgs-stable; home-manager = home-manager-stable; disko = disko-stable; };
       unstable = { nixpkgs = nixpkgs; home-manager = home-manager; disko = disko; };
 
@@ -66,7 +65,7 @@
         { host = "b450"; arch = "x86_64-linux"; branch = stable; hm = true; }
         { host = "rpi3"; arch = "aarch64-linux"; branch = stable; hm = false; }
         { host = "oracle2"; arch = "aarch64-linux"; branch = unstable; hm = false; }
-        { host = workhostname; arch = "x86_64-linux"; branch = stable; hm = true; }
+        { host = secrets.hosts.work.realhostname; arch = "x86_64-linux"; branch = stable; hm = true; }
         { host = "vm"; arch = "x86_64-linux"; branch = stable; hm = true; }
 
       ];
@@ -114,50 +113,33 @@
             ./system/machine/${host}
           ];
 
-          secrets = import "${private}/secrets/secrets.nix";
-          #secrets = { rpi3 = "teststr"; }; 
-
-          specialArgs = { inherit inputs; inherit secrets; };
-          extraSpecialArgs = { inherit inputs; inherit secrets; };
-
           mkHostConfig = { host, arch, branch, hm, ... }: {
             name = host;
             value =
               let # surely theres a better way of doing this
-                host-folder =
-                  if host == workhostname then
-                    "work"
-                  else
-                    host;
+                host-folder = secrets.hosts.${host}.realhostname;
                 pkgs-unstable = import nixpkgs { system = arch; };
+                specialArgs = { inherit pkgs-unstable inputs secrets; nixpkgs = branch.nixpkgs; };
               in
               branch.nixpkgs.lib.nixosSystem {
                 system = arch;
-                specialArgs =
-                  let
-                    nixpkgs = branch.nixpkgs;
-                  in
-                  { inherit pkgs-unstable; inherit inputs; inherit nixpkgs; inherit secrets; };
+                inherit specialArgs;
                 modules = defaultModules host-folder branch.disko ++ branch.nixpkgs.lib.optional (branch == stable) ./system/modules/stable-overlays.nix
                   ++ branch.nixpkgs.lib.optionals hm [
                   branch.home-manager.nixosModules.home-manager
                   {
-                    home-manager = 
+                    home-manager =
                       let
-                        user = 
-                          if host == workhostname then
-                            "avalls"
-                          else
-                            "arnau";
-			in
-                    {
-                      useGlobalPkgs = true;
-                      extraSpecialArgs = { inherit pkgs-unstable; inherit inputs; };
-                      users.${user}.imports = [
-                        ./home/machine/${host-folder}.nix
-                        sops-nix.homeManagerModules.sops
-                      ] ++ branch.nixpkgs.lib.optional (branch == unstable) ./home/unstable.nix;
-                    };
+                        user = secrets.hosts.${host-folder}.user;
+                      in
+                      {
+                        useGlobalPkgs = true;
+                        extraSpecialArgs = specialArgs;
+                        users.${user}.imports = [
+                          ./home/machine/${host-folder}.nix
+                          sops-nix.homeManagerModules.sops
+                        ] ++ branch.nixpkgs.lib.optional (branch == unstable) ./home/unstable.nix;
+                      };
                   }
                 ];
               };
