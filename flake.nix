@@ -65,7 +65,7 @@
         { host = "b450"; arch = "x86_64-linux"; branch = stable; hm = true; }
         { host = "rpi3"; arch = "aarch64-linux"; branch = stable; hm = false; }
         { host = "oracle2"; arch = "aarch64-linux"; branch = unstable; hm = false; }
-        { host = secrets.hosts.work.realhostname; arch = "x86_64-linux"; branch = stable; hm = true; }
+        { host = secrets.workHostName; arch = "x86_64-linux"; branch = stable; hm = true; }
         { host = "vm"; arch = "x86_64-linux"; branch = stable; hm = true; }
 
       ];
@@ -117,7 +117,7 @@
             name = host;
             value =
               let # surely theres a better way of doing this
-                host-folder = secrets.hosts.${host}.realhostname;
+                host-folder = secrets.hosts.${host}.hostFolder;
                 pkgs-unstable = import nixpkgs { system = arch; };
                 specialArgs = { inherit pkgs-unstable inputs secrets; nixpkgs = branch.nixpkgs; };
               in
@@ -130,7 +130,7 @@
                   {
                     home-manager =
                       let
-                        user = secrets.hosts.${host-folder}.user;
+                        user = secrets.hosts.${host}.user;
                       in
                       {
                         useGlobalPkgs = true;
@@ -174,7 +174,7 @@
         {
           h81 = mkDeployConfig "h81" self.nixosConfigurations.h81 false true;
           rpi3 = mkDeployConfig "rpi3" self.nixosConfigurations.rpi3 false false;
-          l50 = mkDeployConfig "l50.casa.lan" self.nixosConfigurations.l50 true false;
+          l50 = mkDeployConfig "" self.nixosConfigurations.l50 true false;
           oracle1 = mkDeployConfig "oracle1" self.nixosConfigurations.oracle1 false false;
           oracle2 = mkDeployConfig "oracle2" self.nixosConfigurations.oracle2 false true;
         };

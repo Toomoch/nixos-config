@@ -1,4 +1,4 @@
-{ inputs, config, lib, pkgs, pkgs-unstable, ... }:
+{ inputs, config, lib, pkgs, pkgs-unstable, secrets, ... }:
 let
   vars = import ./variables.nix { inherit config inputs pkgs lib; };
   jmusicbot = "${vars.serviceData}/jmusicbot";
@@ -20,7 +20,7 @@ in
         openFirewall = true;
         settings = {
           WebService = {
-            Origins = "https://cockpit.${vars.domain} wss://cockpit.${vars.domain}";
+            Origins = "https://cockpit.${secrets.domain} wss://cockpit.${secrets.domain}";
             ProtocolHeader = "X-Forwarded-Proto";
           };
         };

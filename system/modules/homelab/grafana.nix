@@ -1,4 +1,4 @@
-{ inputs, pkgs, config, lib, ... }:
+{ inputs, pkgs, config, lib, secrets, ... }:
 let
   vars = import ./variables.nix { inherit config inputs pkgs lib; };
 in
@@ -10,7 +10,7 @@ in
   config = lib.mkIf vars.cfg.grafana.enable {
     services.grafana = {
       enable = true;
-      settings.server.domain = "grafana.${vars.domain}";
+      settings.server.domain = "grafana.${secrets.domain}";
     };
     services.prometheus = {
       enable = true;

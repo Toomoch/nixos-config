@@ -1,6 +1,6 @@
-{ inputs, pkgs, lib, config, ... }:
+{ inputs, pkgs, lib, config, secrets, ... }:
 let
-  vars = import ./variables.nix { inherit config inputs pkgs lib; };
+  vars = import ./variables.nix { inherit config inputs pkgs lib secrets; };
   dataBase = "${vars.serviceData}/postgresql/${config.services.postgresql.package.psqlSchema}";
   pgBackups = "${vars.serviceData}/backups/postgresql";
   ncHome = "${vars.serviceData}/nextcloud";
@@ -36,7 +36,7 @@ in
           paths = [ "${ncHome}" ];
           encryption.mode = "none";
           environment.BORG_RSH = "ssh -i ${config.sops.secrets."borgnextcloud".path}";
-          repo = "arnau@rpi3.casa.lan:/external/nextcloud";
+          repo = "${secrets.hosts.rpi3.user}@${secrets.hosts.rpi3.dns}:/external/nextcloud";
           compression = "auto,zstd";
           readWritePaths = [ config.services.nextcloud.datadir ];
           startAt = "Mon *-*-* 04:00:00";
@@ -57,7 +57,7 @@ in
           '';
           encryption.mode = "none";
           environment.BORG_RSH = "ssh -i ${config.sops.secrets."borgnextcloud".path}";
-          repo = "arnau@rpi3.casa.lan:/external/nextcloud_database";
+          repo = "${secrets.hosts.rpi3.user}@${secrets.hosts.rpi3.dns}:/external/nextcloud_database";
           compression = "auto,zstd";
           readWritePaths = [ config.services.nextcloud.datadir ];
           startAt = "Mon *-*-* 06:00:00";
@@ -73,7 +73,7 @@ in
       };
 
     programs.ssh.knownHosts = {
-      "rpi3.casa.lan".publicKey = builtins.readFile "${inputs.private}/secrets/plain/rpi3.pub";
+      ${secrets.hosts.rpi3.dns}.publicKey = secrets.hosts.rpi3.pubkey;
     };
 
     sops.secrets."borgnextcloud" = {
@@ -93,7 +93,7 @@ in
 
     services.nextcloud = {
       enable = true;
-      hostName = "cloud.${vars.domain}";
+      hostName = "cloud.${secrets.domain}";
       # Need to manually increment with every major upgrade.
       package = pkgs.nextcloud29;
       # Let NixOS install and configure the database automatically.
@@ -200,7 +200,7 @@ in
             file_server
           '';
         };
-        virtualHosts."office.${vars.domain}".extraConfig = ''
+        virtualHosts."office.${secrets.domain}".extraConfig = ''
           reverse_proxy http://127.0.0.1:8000 {
             # Required to circumvent bug of Onlyoffice loading mixed non-https content
             header_up X-Forwarded-Proto https
@@ -216,7 +216,7 @@ in
 
     services.onlyoffice = {
       enable = true;
-      hostname = "office.${vars.domain}";
+      hostname = "office.${secrets.domain}";
       jwtSecretFile = "${config.sops.secrets."onlyoffice".path}";
     };
 

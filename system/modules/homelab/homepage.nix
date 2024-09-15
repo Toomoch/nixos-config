@@ -1,4 +1,4 @@
-{ config, inputs, pkgs-unstable, lib, pkgs, ... }:
+{ config, inputs, pkgs-unstable, lib, pkgs, secrets, ... }:
 let
   vars = import ./variables.nix { inherit config inputs pkgs lib; };
 in
@@ -9,12 +9,12 @@ in
 
   imports = [
     (import "${inputs.private}/modules/homepage.nix" {
-      inherit vars;
+      inherit secrets;
     })
   ];
   config = lib.mkMerge [
     (lib.mkIf vars.cfg.homepage-dashboard.enable {
-      sops.secrets."homepage-dashboard".sopsFile = "${ inputs. private}/secrets/sops/homepage-dashboard.env";
+      sops.secrets."homepage-dashboard".sopsFile = "${inputs.private}/secrets/sops/homepage-dashboard.env";
       sops.secrets."homepage-dashboard".format = "dotenv";
 
       services.homepage-dashboard = {
@@ -28,10 +28,10 @@ in
                 "Nextcloud" = {
                   description = "Nextcloud Instance";
                   icon = "nextcloud"; # https://github.com/walkxcode/dashboard-icons
-                  href = "https://cloud.${vars.domain}";
+                  href = "https://cloud.${secrets.domain}";
                   widget = {
                     type = "nextcloud";
-                    url = "https://cloud.${vars.domain}";
+                    url = "https://cloud.${secrets.domain}";
                     key = "{{HOMEPAGE_VAR_NC_KEY}}";
                   };
                 };
@@ -40,10 +40,10 @@ in
                 "Home Assistant" = {
                   description = "Home Assistant Instance";
                   icon = "home-assistant";
-                  href = "https://homeassistant.${vars.domain}";
+                  href = "https://homeassistant.${secrets.domain}";
                   widget = {
                     type = "homeassistant";
-                    url = "https://homeassistant.${vars.domain}";
+                    url = "https://homeassistant.${secrets.domain}";
                     key = "{{HOMEPAGE_VAR_HASS_API}}";
                   };
                 };
@@ -51,13 +51,13 @@ in
               {
                 "OpenVSCode Server" = {
                   icon = "vscode";
-                  href = "https://code.${vars.domain}";
+                  href = "https://code.${secrets.domain}";
                 };
               }
               {
                 "Cockpit" = {
                   icon = "cockpit";
-                  href = "https://cockpit.${vars.domain}";
+                  href = "https://cockpit.${secrets.domain}";
                 };
               }
             ];

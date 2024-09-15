@@ -1,12 +1,10 @@
-{ config, pkgs, lib, inputs, ... }:
+{ config, pkgs, lib, inputs, secrets, ... }:
 let
   nixos-config = "~/projects/nixos-config";
   sshpath = "${config.home.homeDirectory}/.ssh/id_ed25519";
   sshfix = "NIX_SSHOPTS=-i ${sshpath}";
-  ip_path = "${inputs.private}/secrets/plain";
   tmux-sessionizer = pkgs.writeShellScriptBin "sessionizer" (builtins.readFile (./dotfiles/tmux-sessionizer.sh));
-  domain = "${builtins.readFile "${inputs.private}/secrets/plain/domain"}";
-  shellaliases = {
+  shellAliases = {
     ls = "ls --human-readable --color=auto -la";
     ip = "ip -c";
     ".." = "cd ..";
@@ -89,7 +87,7 @@ in
     profileExtra = ''
     '';
     sessionVariables = { };
-    shellAliases = shellaliases;
+    inherit shellAliases;
   };
 
   programs.zsh = {
@@ -97,7 +95,7 @@ in
     enableCompletion = true;
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
-    shellAliases = shellaliases;
+    inherit shellAliases;
     initExtraFirst = ''
       zstyle ':completion:*' menu select
       zstyle ':completion::*' menu yes select
@@ -118,24 +116,24 @@ in
       };
 
       "oracle1" = {
-        hostname = "${builtins.readFile (ip_path + "/oracle1_ip")}";
+        hostname = secrets.hosts.oracle1.dns;
         extraOptions = { AddKeysToAgent = "yes"; };
         forwardAgent = true;
       };
       "oracle2" = {
-        hostname = "${builtins.readFile (ip_path + "/oracle2_ip")}";
+        hostname = secrets.hosts.oracle2.dns;
         extraOptions = { AddKeysToAgent = "yes"; };
         forwardAgent = true;
       };
 
       "h81" = {
-        hostname = "h81.casa.lan";
+        hostname = secrets.hosts.h81.dns;
         extraOptions = { AddKeysToAgent = "yes"; };
         forwardAgent = true;
       };
 
       "rpi3" = {
-        hostname = "rpi3.casa.lan";
+        hostname = secrets.hosts.rpi3.dns;
         extraOptions = { AddKeysToAgent = "yes"; };
         forwardAgent = true;
       };
