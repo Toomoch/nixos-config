@@ -158,7 +158,8 @@ in
           dockerls.enable = true;
           clangd.enable = true;
           ruff-lsp.enable = true;
-          #bashls.enable = true; https://github.com/nix-community/nixvim/issues/1699 
+          jsonls.enable = true;
+          bashls.enable = true;
           ansiblels.enable = true;
         };
       };
