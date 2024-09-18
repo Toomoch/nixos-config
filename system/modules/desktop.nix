@@ -91,6 +91,11 @@ in
         openFirewall = true;
       };
 
+      # Tailscale
+      services.tailscale = {
+        enable = true;
+      };
+
       # OpenGL    
       hardware.opengl.enable = true;
       hardware.opengl.driSupport = true;

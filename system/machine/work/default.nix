@@ -1,4 +1,8 @@
 { inputs, config, pkgs, lib, secrets, ... }:
+let
+  homeDir = "${config.users.users.${user}.home}";
+  user = "${secrets.hosts.${config.networking.hostName}.user}";
+in
 {
   imports = [
     ./hardware-configuration.nix
@@ -52,6 +56,20 @@
     supportedFilesystems = [ "nfs" ];
     kernelModules = [ "nfs" ];
   };
+  programs.ssh.knownHosts.${secrets.work.sshFs}.publicKey = secrets.work.knownHost;
+
+  fileSystems."/home/${user}/workspace" = { # infinite recursion if homeDir is used???
+    device = "${user}@${secrets.work.sshFs}:";
+    fsType = "sshfs";
+    options = [
+      "nodev"
+      "noatime"
+      "allow_other"
+      "nofail"
+      "IdentityFile=${homeDir}/.ssh/id_ed25519"
+    ];
+  };
+
 
 
   system.stateVersion = "24.05";
