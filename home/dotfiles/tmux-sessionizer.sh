@@ -1,12 +1,21 @@
 #!/usr/bin/env bash
 
-selected="$(find "$HOME"/projects -mindepth 1 -maxdepth 1 -type d -printf "%f\n" | fzf --header="Pick a project")"
+directories=( "$HOME/projects" "$HOME/workspace/projects" "$HOME/assig" )
+final_directories=()
+
+for dir in "${directories[@]}"; do
+    if [ -d "$dir" ]; then
+        final_directories+=("$dir")
+    fi
+done 
+
+selected="$(find "${final_directories[@]}" -mindepth 1 -maxdepth 1 -type d | fzf --header="Pick a project")"
 
 if [[ -z $selected ]]; then
     exit 0
 fi
 
-selected="$HOME/projects/$selected"
+#selected="$HOME/$selected"
 selected_name=$(basename "$selected" | tr . _)
 tmux_running=$(pgrep tmux)
 
