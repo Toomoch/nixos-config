@@ -1,4 +1,4 @@
-{ inputs, config, lib, pkgs, nixpkgs, ... }:
+{ inputs, config, lib, pkgs, nixpkgs, secrets, ... }:
 let
   cfg = config.common;
 in
@@ -17,6 +17,7 @@ in
           auto-optimise-store = true;
           substituters = [ "https://deploy-rs.cachix.org" ];
           trusted-public-keys = [ "deploy-rs.cachix.org-1:xfNobmiwF/vzvK1gpfediPwpdIP0rpDV2rYqx40zdSI=" ];
+          builders-use-substitutes = true;
         };
         registry.nixpkgs.flake = nixpkgs;
         gc = {
@@ -24,6 +25,21 @@ in
           dates = "weekly";
           options = "--delete-older-than 15d";
         };
+        distributedBuilds = false;
+        buildMachines = [{
+          hostName = "h81";
+          sshUser = secrets.hosts.h81.user;
+          publicHostKey = secrets.hosts.h81.pubKeyBase64;
+          sshKey = "${config.users.users.${secrets.hosts.${config.networking.hostName}.user}.home}/.ssh/id_ed25519";
+          system = "x86_64-linux";
+          protocol = "ssh-ng";
+          # default is 1 but may keep the builder idle in between builds
+          maxJobs = 3;
+          # how fast is the builder compared to your local machine
+          speedFactor = 2;
+          supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
+          mandatoryFeatures = [ ];
+        }];
       };
 
       # Enable networking
