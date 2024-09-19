@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-directories=( "$HOME/projects" "$HOME/workspace/projects" "$HOME/assig" )
+directories=( "$HOME/projects" "/workspace/projects" "$HOME/assig" )
 final_directories=()
 
 for dir in "${directories[@]}"; do

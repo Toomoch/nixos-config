@@ -58,7 +58,7 @@ in
   };
   programs.ssh.knownHosts.${secrets.work.sshFs}.publicKey = secrets.work.knownHost;
 
-  fileSystems."/home/${user}/workspace" = { # infinite recursion if homeDir is used???
+  fileSystems."/workspace" = { # infinite recursion if homeDir is used???
     device = "${user}@${secrets.work.sshFs}:";
     fsType = "sshfs";
     options = [
@@ -66,6 +66,8 @@ in
       "noatime"
       "allow_other"
       "nofail"
+      "ServerAliveInterval=5"
+      "reconnect"
       "IdentityFile=${homeDir}/.ssh/id_ed25519"
     ];
   };
