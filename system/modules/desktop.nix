@@ -95,6 +95,7 @@ in
       services.tailscale = {
         enable = true;
       };
+      systemd.services."tailscaled".wantedBy = lib.mkForce [];
 
       # OpenGL    
       hardware.opengl.enable = true;
