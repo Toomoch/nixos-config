@@ -38,13 +38,18 @@
       url = "github:nix-community/nix-on-droid/release-23.11";
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
+
+    agenix-rekey-stable = {
+      url = "github:oddlama/agenix-rekey";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
+    };
     #ags.url = "github:Aylur/ags";
     #matugen.url = "github:InioX/matugen";
 
     private.url = "git+ssh://git@github.com/Toomoch/nixos-config-private.git";
   };
 
-  outputs = inputs@{ self, nixpkgs, home-manager, nixpkgs-stable, home-manager-stable, sops-nix, deploy-rs, nix-matlab, private, nixvim, disko-stable, disko, nix-on-droid, ... }:
+  outputs = inputs@{ self, nixpkgs, home-manager, nixpkgs-stable, home-manager-stable, sops-nix, deploy-rs, nix-matlab, private, nixvim, disko-stable, disko, nix-on-droid, agenix-rekey-stable, ... }:
     let
       forAllSystems = function:
         nixpkgs.lib.genAttrs [
@@ -151,6 +156,11 @@
         in
         builtins.listToAttrs machineConfigs;
 
+
+      agenix-rekey = agenix-rekey-stable.configure {
+        userFlake = inputs.private;
+        nodes = self.nixosConfigurations;
+      };
 
       # deploy-rs node configuration stolen from https://github.com/LongerHV/nixos-configuration
       deploy.nodes =

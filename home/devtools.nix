@@ -13,6 +13,8 @@
     graphviz
     openfortivpn
     sops
+    rage
+    age-plugin-fido2-hmac
     ansible
     ansible-lint
     just
