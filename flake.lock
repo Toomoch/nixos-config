@@ -819,11 +819,11 @@
     },
     "private": {
       "locked": {
-        "lastModified": 1727001838,
-        "narHash": "sha256-oMqudzoxs7j8xhTc8iGxtOo9fVah0IWWHzgmW2C0t0E=",
+        "lastModified": 1727025205,
+        "narHash": "sha256-nuSLFHLgbwvIsoJ/8KJr8ISv2K108+JJwhKwiJ69Y/I=",
         "ref": "refs/heads/master",
-        "rev": "a4531223af057c16015d2b0df7ca16ae95084f13",
-        "revCount": 121,
+        "rev": "47c3d756911a6d89dd38bef016240c16af264e4a",
+        "revCount": 125,
         "type": "git",
         "url": "file:///home/arnau/projects/nixos-config-private"
       },

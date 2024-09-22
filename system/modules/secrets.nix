@@ -16,10 +16,16 @@ in
     # Generated with `sudo ssh-keygen -A`
     hostPubkey = secrets.hosts.${hostname}.pubkey;
     # NOTE: Yubikeys associated to identities specified in masterIdentities have to be present when editing or creating new secrets with `agenix edit`. However, those files also contain the recipient information for the Yubikey, which is all that's required for encryption. We put the recipient info in the separate file `recipients.pub` and use those as extraEncryptionKeys, which doesn't require the Yubikey to be present for encryption, but still allows for decryption via `age -d -i ${identityfile} secret.age`.
-    masterIdentities = [ (private + "/secrets/masterident/age-yubikey-identity-fort.pub") ];
-    storageMode = "local";
-    localStorageDir = flake-root + "/secrets/rekeyed/${hostname}";
-    generatedSecretsDir = flake-root + "/secrets/generated";
+    masterIdentities = [  (private + "/secrets/masterident/age-yubikey-identity-key.pub") ];
+    extraEncryptionPubkeys = [(private + "/secrets/masterident/recipients.pub" )] ;
+    cacheDir = "/var/tmp/agenix-rekey/\"$UID\"";
+    storageMode = "derivation";
+    #storageMode = "local";
+    #localStorageDir = flake-root + "/secrets/rekeyed/${hostname}";
+    #generatedSecretsDir = flake-root + "/secrets/generated";
     agePlugins = [ pkgs.age-plugin-fido2-hmac ];
   };
+  nix.settings.extra-sandbox-paths = [ "/var/tmp/agenix-rekey" ];
+  systemd.tmpfiles.rules = [ "d /var/tmp/agenix-rekey 1777 root root" ];
+  environment.systemPackages = [ pkgs.agenix-rekey ];
 }

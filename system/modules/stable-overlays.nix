@@ -16,4 +16,5 @@
   #    homepage-dashboard = pkgs-unstable.homepage-dashboard;
   #  })
   #];
+  nixpkgs.overlays = [inputs.agenix-rekey-stable.overlays.default];
 }

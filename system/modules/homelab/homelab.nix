@@ -1,4 +1,4 @@
-{ inputs, config, lib, pkgs, pkgs-unstable, secrets, ... }:
+{ inputs, config, lib, pkgs, pkgs-unstable, secrets, private, ... }:
 let
   vars = import ./variables.nix { inherit config inputs pkgs lib; };
   jmusicbot = "${vars.serviceData}/jmusicbot";
@@ -57,6 +57,8 @@ in
 
       sops.secrets."duckdns/token".sopsFile = "${inputs.private}/secrets/sops/duckdns.env";
       sops.secrets."duckdns/token".format = "dotenv";
+
+      age.secrets."duckdns".rekeyFile = private + "/secrets/age/duckdns.age";
 
       systemd.services.caddy.serviceConfig = {
         EnvironmentFile = "${config.sops.secrets."duckdns/token".path}";

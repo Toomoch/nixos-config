@@ -167,7 +167,7 @@
 
 
       agenix-rekey = agenix-rekey-stable.configure {
-        userFlake = self;
+        userFlake = private;
         nodes = self.nixosConfigurations;
       };
 
