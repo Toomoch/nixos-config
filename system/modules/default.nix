@@ -7,5 +7,6 @@ inputs: { sops-nix, ...}:
     ./virtualisation.nix
     ./common.nix
     ./homelab
+    ./secrets.nix
   ];
 }

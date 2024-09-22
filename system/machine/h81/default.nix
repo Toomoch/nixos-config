@@ -1,4 +1,4 @@
-{ config, pkgs, lib, pkgs-unstable, ... }:
+{ config, pkgs, lib, pkgs-unstable, flake-root, private, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -21,6 +21,8 @@
   boot.supportedFilesystems = [ "zfs" ];
   boot.zfs.forceImportRoot = false;
   networking.hostId = "e0684fdb";
+
+  age.secrets.secret1.rekeyFile = private + "/secrets/other/test.age";
 
   common.enable = true;
   common.x86.enable = true;

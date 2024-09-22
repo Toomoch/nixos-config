@@ -10,7 +10,7 @@ in
     ./disko.nix
   ];
 
-  networking.hostName = secrets.workHostName;
+  networking.hostName = secrets.work.hostName;
   common.enable = true;
   common.x86.enable = true;
   desktop.enable = true;

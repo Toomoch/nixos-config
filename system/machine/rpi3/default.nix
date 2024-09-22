@@ -6,7 +6,7 @@
     "${nixpkgs}/nixos/modules/installer/sd-card/sd-image-aarch64.nix"
   ];
 
-  networking.hostName = secrets.teststr; # Define your hostname.
+  networking.hostName = "rpi3"; # Define your hostname.
 
   environment.systemPackages = [
     pkgs.libraspberrypi

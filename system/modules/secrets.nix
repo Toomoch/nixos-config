@@ -1,6 +1,6 @@
-{ config, secrets, lib, inputs, pkgs,  ... }:
+{ config, secrets, lib, inputs, pkgs, flake-root, private, ... }:
 let
-    
+  hostname = config.networking.hostName;
 in
 {
   ## How to use agenix-rekey
@@ -14,12 +14,12 @@ in
   age.rekey = {
     # Hostkey from /etc/ssh/ssh_host_...
     # Generated with `sudo ssh-keygen -A`
-    hostPubkey = secrets.hosts.${config.networking.hostName}.pubkey;
+    hostPubkey = secrets.hosts.${hostname}.pubkey;
     # NOTE: Yubikeys associated to identities specified in masterIdentities have to be present when editing or creating new secrets with `agenix edit`. However, those files also contain the recipient information for the Yubikey, which is all that's required for encryption. We put the recipient info in the separate file `recipients.pub` and use those as extraEncryptionKeys, which doesn't require the Yubikey to be present for encryption, but still allows for decryption via `age -d -i ${identityfile} secret.age`.
-    masterIdentities = [ (inputs.private + "/secrets/masterident/age-yubikey-identity-mba.pub") ];
+    masterIdentities = [ (private + "/secrets/masterident/age-yubikey-identity-fort.pub") ];
     storageMode = "local";
-    localStorageDir = inputs.private + "/secrets/rekeyed/${hostname}";
-    generatedSecretsDir = inputs.private + "/secrets/generated";
+    localStorageDir = flake-root + "/secrets/rekeyed/${hostname}";
+    generatedSecretsDir = flake-root + "/secrets/generated";
     agePlugins = [ pkgs.age-plugin-fido2-hmac ];
   };
 }

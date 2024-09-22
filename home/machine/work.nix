@@ -26,8 +26,8 @@ in
     pandoc
   ];
 
-  home.username = lib.mkForce secrets.hosts.${secrets.workHostName}.user;
-  home.homeDirectory = lib.mkForce "/home/${secrets.hosts.${secrets.workHostName}.user}";
+  home.username = lib.mkForce secrets.hosts.${secrets.work.hostName}.user;
+  home.homeDirectory = lib.mkForce "/home/${secrets.hosts.${secrets.work.hostName}.user}";
 
   programs.nixvim.plugins.lsp.servers.ltex.settings.language = lib.mkForce "en-US";
 

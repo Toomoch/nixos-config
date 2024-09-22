@@ -39,6 +39,11 @@
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
+    agenix = {
+      url = "github:ryantm/agenix";
+      #inputs.nixpkgs.follows = "nixpkgs-stable";
+    };
+
     agenix-rekey-stable = {
       url = "github:oddlama/agenix-rekey";
       inputs.nixpkgs.follows = "nixpkgs-stable";
@@ -46,11 +51,12 @@
     #ags.url = "github:Aylur/ags";
     #matugen.url = "github:InioX/matugen";
 
-    private.url = "git+ssh://git@github.com/Toomoch/nixos-config-private.git";
+    private.url = "git+file:///home/arnau/projects/nixos-config-private";
   };
 
-  outputs = inputs@{ self, nixpkgs, home-manager, nixpkgs-stable, home-manager-stable, sops-nix, deploy-rs, nix-matlab, private, nixvim, disko-stable, disko, nix-on-droid, agenix-rekey-stable, ... }:
+  outputs = inputs@{ self, nixpkgs, home-manager, nixpkgs-stable, home-manager-stable, sops-nix, deploy-rs, nix-matlab, private, nixvim, disko-stable, disko, nix-on-droid, agenix, agenix-rekey-stable, ... }:
     let
+      flake-root = ./.;
       forAllSystems = function:
         nixpkgs.lib.genAttrs [
           "x86_64-linux"
@@ -70,7 +76,7 @@
         { host = "b450"; arch = "x86_64-linux"; branch = stable; hm = true; }
         { host = "rpi3"; arch = "aarch64-linux"; branch = stable; hm = false; }
         { host = "oracle2"; arch = "aarch64-linux"; branch = unstable; hm = false; }
-        { host = secrets.workHostName; arch = "x86_64-linux"; branch = stable; hm = true; }
+        { host = secrets.work.hostName; arch = "x86_64-linux"; branch = stable; hm = true; }
         { host = "vm"; arch = "x86_64-linux"; branch = stable; hm = true; }
 
       ];
@@ -115,6 +121,9 @@
             self.nixosModules.common
             sops-nix.nixosModules.sops
             disko.nixosModules.disko
+            agenix.nixosModules.default
+            agenix-rekey-stable.nixosModules.default
+            #agenix-rekey-stable.overlays.default
             ./system/machine/${host}
           ];
 
@@ -124,7 +133,7 @@
               let # surely theres a better way of doing this
                 host-folder = secrets.hosts.${host}.hostFolder;
                 pkgs-unstable = import nixpkgs { system = arch; };
-                specialArgs = { inherit pkgs-unstable inputs secrets; nixpkgs = branch.nixpkgs; };
+                specialArgs = { inherit pkgs-unstable inputs secrets flake-root private; nixpkgs = branch.nixpkgs; };
               in
               branch.nixpkgs.lib.nixosSystem {
                 system = arch;
@@ -158,7 +167,7 @@
 
 
       agenix-rekey = agenix-rekey-stable.configure {
-        userFlake = inputs.private;
+        userFlake = self;
         nodes = self.nixosConfigurations;
       };
 
