@@ -52,10 +52,10 @@ in
       services.caddy = {
         enable = true;
         package = pkgs.callPackage ../../packages/caddy-plugins.nix { };
-        extraConfig = builtins.readFile "${inputs.private}/configfiles/Caddyfile";
+        extraConfig = builtins.readFile "${private}/configfiles/Caddyfile";
       };
 
-      sops.secrets."duckdns/token".sopsFile = "${inputs.private}/secrets/sops/duckdns.env";
+      sops.secrets."duckdns/token".sopsFile = "${private}/secrets/sops/duckdns.env";
       sops.secrets."duckdns/token".format = "dotenv";
 
       age.secrets."duckdns".rekeyFile = private + "/secrets/age/duckdns.age";
@@ -66,7 +66,7 @@ in
     })
     (lib.mkIf vars.cfg.enablevps {
       sops.secrets."tgtg/env" = {
-        sopsFile = "${inputs.private}/secrets/sops/tgtg.env";
+        sopsFile = "${private}/secrets/sops/tgtg.env";
         format = "dotenv";
       };
       virtualisation.oci-containers.backend = "docker";

@@ -22,7 +22,7 @@
   boot.zfs.forceImportRoot = false;
   networking.hostId = "e0684fdb";
 
-  #age.secrets.secret1.rekeyFile = private + "/secrets/other/test.age";
+  age.secrets.secret1.rekeyFile = flake-root + "/private/secrets/age/test.age";
 
   common.enable = true;
   common.x86.enable = true;

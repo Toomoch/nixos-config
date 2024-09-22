@@ -1,4 +1,4 @@
-{ inputs, config, pkgs, lib, secrets, osConfig, ... }:
+{ inputs, config, pkgs, lib, secrets, osConfig, private, ... }:
 let
   vars = import ../sway/functions.nix { inherit pkgs lib; };
   internal_name = "Samsung Display Corp. 0x417B Unknown";
@@ -8,7 +8,7 @@ let
 in
 {
   imports = [
-    "${inputs.private}/home/arnau/"
+    "${private}/home/arnau/"
     ../default.nix
     ../desktop.nix
     ../sway

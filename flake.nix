@@ -45,18 +45,18 @@
     };
 
     agenix-rekey-stable = {
-      url = "github:oddlama/agenix-rekey";
+      url = "github:Toomoch/agenix-rekey/patch-1";
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
     #ags.url = "github:Aylur/ags";
     #matugen.url = "github:InioX/matugen";
 
-    private.url = "git+file:///home/arnau/projects/nixos-config-private";
   };
 
-  outputs = inputs@{ self, nixpkgs, home-manager, nixpkgs-stable, home-manager-stable, sops-nix, deploy-rs, nix-matlab, private, nixvim, disko-stable, disko, nix-on-droid, agenix, agenix-rekey-stable, ... }:
+  outputs = inputs@{ self, nixpkgs, home-manager, nixpkgs-stable, home-manager-stable, sops-nix, deploy-rs, nix-matlab, nixvim, disko-stable, disko, nix-on-droid, agenix, agenix-rekey-stable, ... }:
     let
       flake-root = ./.;
+      private = flake-root + "/private";
       forAllSystems = function:
         nixpkgs.lib.genAttrs [
           "x86_64-linux"
@@ -167,7 +167,7 @@
 
 
       agenix-rekey = agenix-rekey-stable.configure {
-        userFlake = private;
+        userFlake = self;
         nodes = self.nixosConfigurations;
       };
 

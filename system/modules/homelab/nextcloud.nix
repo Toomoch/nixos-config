@@ -1,4 +1,4 @@
-{ inputs, pkgs, lib, config, secrets, ... }:
+{ inputs, pkgs, lib, config, secrets, private, ... }:
 let
   vars = import ./variables.nix { inherit config inputs pkgs lib secrets; };
   dataBase = "${vars.serviceData}/postgresql/${config.services.postgresql.package.psqlSchema}";
@@ -77,14 +77,14 @@ in
     };
 
     sops.secrets."borgnextcloud" = {
-      sopsFile = "${inputs.private}/secrets/sops/backup_borg_nextcloud/id_ed25519";
+      sopsFile = "${private}/secrets/sops/backup_borg_nextcloud/id_ed25519";
       format = "binary";
       owner = "nextcloud";
       group = "nextcloud";
     };
 
     sops.secrets."nextcloud" = {
-      sopsFile = "${inputs.private}/secrets/sops/nextcloud";
+      sopsFile = "${private}/secrets/sops/nextcloud";
       format = "binary";
       owner = "nextcloud";
       group = "nextcloud";
@@ -221,7 +221,7 @@ in
     };
 
     sops.secrets."onlyoffice" = {
-      sopsFile = "${inputs.private}/secrets/sops/onlyoffice";
+      sopsFile = "${private}/secrets/sops/onlyoffice";
       format = "binary";
       owner = "onlyoffice";
       group = "onlyoffice";

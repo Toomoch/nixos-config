@@ -1,4 +1,4 @@
-{ config, inputs, pkgs-unstable, lib, pkgs, secrets, ... }:
+{ config, inputs, pkgs-unstable, lib, pkgs, secrets, private, ... }:
 let
   vars = import ./variables.nix { inherit config inputs pkgs lib; };
 in
@@ -8,13 +8,13 @@ in
   };
 
   imports = [
-    (import "${inputs.private}/modules/homepage.nix" {
+    (import "${private}/modules/homepage.nix" {
       inherit secrets;
     })
   ];
   config = lib.mkMerge [
     (lib.mkIf vars.cfg.homepage-dashboard.enable {
-      sops.secrets."homepage-dashboard".sopsFile = "${inputs.private}/secrets/sops/homepage-dashboard.env";
+      sops.secrets."homepage-dashboard".sopsFile = "${private}/secrets/sops/homepage-dashboard.env";
       sops.secrets."homepage-dashboard".format = "dotenv";
 
       services.homepage-dashboard = {

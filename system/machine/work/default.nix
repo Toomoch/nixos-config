@@ -1,4 +1,4 @@
-{ inputs, config, pkgs, lib, secrets, ... }:
+{ inputs, config, pkgs, lib, secrets, private, ... }:
 let
   homeDir = "${config.users.users.${user}.home}";
   user = "${secrets.hosts.${config.networking.hostName}.user}";
@@ -6,7 +6,7 @@ in
 {
   imports = [
     ./hardware-configuration.nix
-    "${inputs.private}/system/user.nix"
+    "${private}/system/user.nix"
     ./disko.nix
   ];
 

@@ -1,4 +1,4 @@
-{ config, inputs, nixpkgs, pkgs, lib, secrets, ... }:
+{ config, inputs, nixpkgs, pkgs, lib, secrets, private, ... }:
 {
   imports = [
     #./hardware-configuration.nix
@@ -24,9 +24,8 @@
   nixpkgs.hostPlatform = lib.mkDefault "aarch64-linux";
   boot.initrd.availableKernelModules = [ "usb_storage" ];
 
-
   users.users.arnau.openssh.authorizedKeys.keyFiles = [
-    "${inputs.private}/secrets/sops/backup_borg_nextcloud/id_ed25519.pub" 
+    "${private}/secrets/sops/backup_borg_nextcloud/id_ed25519.pub" 
   ];
 
   # NixOS bruh moment https://github.com/NixOS/nixpkgs/issues/180175, afaik fixed in 24.05

@@ -31,15 +31,16 @@
         "pre-commit-hooks": "pre-commit-hooks"
       },
       "locked": {
-        "lastModified": 1726670740,
-        "narHash": "sha256-nzTOpnmUHzlqmuX7e2en10q8k88L1tkdYksRsN0Ty3M=",
-        "owner": "oddlama",
+        "lastModified": 1727034614,
+        "narHash": "sha256-W30hgyWhB4po6l4G7WVy2cGwBdbrukqrccPnzuE3Sfc=",
+        "owner": "Toomoch",
         "repo": "agenix-rekey",
-        "rev": "565374f5dd2e0919698fdceaae927305dcf32b87",
+        "rev": "fda8f5a0cb453854f6e9c6cbda9cc19badbca620",
         "type": "github"
       },
       "original": {
-        "owner": "oddlama",
+        "owner": "Toomoch",
+        "ref": "patch-1",
         "repo": "agenix-rekey",
         "type": "github"
       }
@@ -817,21 +818,6 @@
         "type": "github"
       }
     },
-    "private": {
-      "locked": {
-        "lastModified": 1727025205,
-        "narHash": "sha256-nuSLFHLgbwvIsoJ/8KJr8ISv2K108+JJwhKwiJ69Y/I=",
-        "ref": "refs/heads/master",
-        "rev": "47c3d756911a6d89dd38bef016240c16af264e4a",
-        "revCount": 125,
-        "type": "git",
-        "url": "file:///home/arnau/projects/nixos-config-private"
-      },
-      "original": {
-        "type": "git",
-        "url": "file:///home/arnau/projects/nixos-config-private"
-      }
-    },
     "root": {
       "inputs": {
         "agenix": "agenix",
@@ -846,7 +832,6 @@
         "nixpkgs": "nixpkgs_4",
         "nixpkgs-stable": "nixpkgs-stable_2",
         "nixvim": "nixvim",
-        "private": "private",
         "sops-nix": "sops-nix"
       }
     },
