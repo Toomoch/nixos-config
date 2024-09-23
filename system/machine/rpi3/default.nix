@@ -25,7 +25,7 @@
   boot.initrd.availableKernelModules = [ "usb_storage" ];
 
   users.users.arnau.openssh.authorizedKeys.keyFiles = [
-    "${private}/secrets/sops/backup_borg_nextcloud/id_ed25519.pub" 
+    "${private}/secrets/ssh/id_ed25519.borgnextcloud.pub" 
   ];
 
   # NixOS bruh moment https://github.com/NixOS/nixpkgs/issues/180175, afaik fixed in 24.05

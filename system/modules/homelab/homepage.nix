@@ -14,13 +14,12 @@ in
   ];
   config = lib.mkMerge [
     (lib.mkIf vars.cfg.homepage-dashboard.enable {
-      sops.secrets."homepage-dashboard".sopsFile = "${private}/secrets/sops/homepage-dashboard.env";
-      sops.secrets."homepage-dashboard".format = "dotenv";
+      age.secrets.homepage.rekeyFile = "${private}/secrets/age/homepage.age";
 
       services.homepage-dashboard = {
         enable = true;
         openFirewall = true;
-        environmentFile = "${config.sops.secrets."homepage-dashboard".path}";
+        environmentFile = "${config.age.secrets.homepage.path}";
         services = [
           {
             "Services" = [

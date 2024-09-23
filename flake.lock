@@ -31,16 +31,15 @@
         "pre-commit-hooks": "pre-commit-hooks"
       },
       "locked": {
-        "lastModified": 1727034614,
-        "narHash": "sha256-W30hgyWhB4po6l4G7WVy2cGwBdbrukqrccPnzuE3Sfc=",
-        "owner": "Toomoch",
+        "lastModified": 1727102360,
+        "narHash": "sha256-ZDqf33OAsr46TlP7TXbxmEf48xenYA3iSLs9441fYbQ=",
+        "owner": "oddlama",
         "repo": "agenix-rekey",
-        "rev": "fda8f5a0cb453854f6e9c6cbda9cc19badbca620",
+        "rev": "62da71e7eadf6b9b52e831d2e516937c30a5f712",
         "type": "github"
       },
       "original": {
-        "owner": "Toomoch",
-        "ref": "patch-1",
+        "owner": "oddlama",
         "repo": "agenix-rekey",
         "type": "github"
       }

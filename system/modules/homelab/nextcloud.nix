@@ -35,7 +35,7 @@ in
         nextcloud = {
           paths = [ "${ncHome}" ];
           encryption.mode = "none";
-          environment.BORG_RSH = "ssh -i ${config.sops.secrets."borgnextcloud".path}";
+          environment.BORG_RSH = "ssh -i ${config.age.secrets.borgnextcloud.path}";
           repo = "${secrets.hosts.rpi3.user}@${secrets.hosts.rpi3.dns}:/external/nextcloud";
           compression = "auto,zstd";
           readWritePaths = [ config.services.nextcloud.datadir ];
@@ -56,7 +56,7 @@ in
             ${config.services.postgresql.package}/bin/pg_dump nextcloud -U nextcloud --no-password
           '';
           encryption.mode = "none";
-          environment.BORG_RSH = "ssh -i ${config.sops.secrets."borgnextcloud".path}";
+          environment.BORG_RSH = "ssh -i ${config.age.secrets.borgnextcloud.path}";
           repo = "${secrets.hosts.rpi3.user}@${secrets.hosts.rpi3.dns}:/external/nextcloud_database";
           compression = "auto,zstd";
           readWritePaths = [ config.services.nextcloud.datadir ];
@@ -76,16 +76,14 @@ in
       ${secrets.hosts.rpi3.dns}.publicKey = secrets.hosts.rpi3.pubkey;
     };
 
-    sops.secrets."borgnextcloud" = {
-      sopsFile = "${private}/secrets/sops/backup_borg_nextcloud/id_ed25519";
-      format = "binary";
+    age.secrets.borgnextcloud = {
+      rekeyFile = "${private}/secrets/age/borgnextcloud.age";
       owner = "nextcloud";
       group = "nextcloud";
     };
 
-    sops.secrets."nextcloud" = {
-      sopsFile = "${private}/secrets/sops/nextcloud";
-      format = "binary";
+    age.secrets.nextcloud = {
+      rekeyFile = "${private}/secrets/age/nextcloud.age";
       owner = "nextcloud";
       group = "nextcloud";
     };
@@ -121,7 +119,7 @@ in
         preview_ffmpeg_path = "${pkgs.ffmpeg-headless}/bin/ffmpeg";
       };
       config = {
-        adminpassFile = "${config.sops.secrets."nextcloud".path}";
+        adminpassFile = "${config.age.secrets.nextcloud.path}";
         dbtype = "pgsql";
       };
       phpOptions = {
@@ -217,12 +215,11 @@ in
     services.onlyoffice = {
       enable = true;
       hostname = "office.${secrets.domain}";
-      jwtSecretFile = "${config.sops.secrets."onlyoffice".path}";
+      jwtSecretFile = "${config.age.secrets.onlyoffice.path}";
     };
 
-    sops.secrets."onlyoffice" = {
-      sopsFile = "${private}/secrets/sops/onlyoffice";
-      format = "binary";
+    age.secrets.onlyoffice = {
+      rekeyFile = "${private}/secrets/age/onlyoffice.age";
       owner = "onlyoffice";
       group = "onlyoffice";
     };

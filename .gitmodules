@@ -1,3 +1,4 @@
 [submodule "private"]
 	path = private
 	url = ../nixos-config-private
+        branch = master

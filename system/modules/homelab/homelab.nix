@@ -54,21 +54,14 @@ in
         package = pkgs.callPackage ../../packages/caddy-plugins.nix { };
         extraConfig = builtins.readFile "${private}/configfiles/Caddyfile";
       };
-
-      sops.secrets."duckdns/token".sopsFile = "${private}/secrets/sops/duckdns.env";
-      sops.secrets."duckdns/token".format = "dotenv";
-
-      age.secrets."duckdns".rekeyFile = private + "/secrets/age/duckdns.age";
+      age.secrets.duckdns.rekeyFile = private + "/secrets/age/duckdns.age";
 
       systemd.services.caddy.serviceConfig = {
-        EnvironmentFile = "${config.sops.secrets."duckdns/token".path}";
+        EnvironmentFile = "${config.age.secrets.duckdns.path}";
       };
     })
     (lib.mkIf vars.cfg.enablevps {
-      sops.secrets."tgtg/env" = {
-        sopsFile = "${private}/secrets/sops/tgtg.env";
-        format = "dotenv";
-      };
+      age.secrets.tgtg.rekeyFile = "${private}/secrets/age/tgtg.age";
       virtualisation.oci-containers.backend = "docker";
       virtualisation.oci-containers.containers = {
         tgtg = {
@@ -80,7 +73,7 @@ in
             SLEEP_TIME = "60";
             TELEGRAM = "true";
           };
-          environmentFiles = [ "${config.sops.secrets."tgtg/env".path}" ];
+          environmentFiles = [ "${config.age.secrets.tgtg.path}" ];
           extraOptions = vars.commonextraOptions;
           volumes = [
             "${tgtg_volume}:/tokens"

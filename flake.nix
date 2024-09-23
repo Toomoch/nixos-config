@@ -45,7 +45,7 @@
     };
 
     agenix-rekey-stable = {
-      url = "github:Toomoch/agenix-rekey/patch-1";
+      url = "github:oddlama/agenix-rekey";
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
     #ags.url = "github:Aylur/ags";
@@ -119,7 +119,7 @@
         let
           defaultModules = host: disko: [
             self.nixosModules.common
-            sops-nix.nixosModules.sops
+            #sops-nix.nixosModules.sops
             disko.nixosModules.disko
             agenix.nixosModules.default
             agenix-rekey-stable.nixosModules.default
@@ -151,7 +151,7 @@
                         extraSpecialArgs = specialArgs;
                         users.${user}.imports = [
                           ./home/machine/${host-folder}.nix
-                          sops-nix.homeManagerModules.sops
+                          #sops-nix.homeManagerModules.sops
                         ] ++ branch.nixpkgs.lib.optional (branch == unstable) ./home/unstable.nix;
                       };
                   }

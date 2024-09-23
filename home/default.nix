@@ -20,6 +20,7 @@ let
     nu = "cd ${nixos-config} && git add . && nix flake update && cd -";
     sshgen = "ssh-keygen -t ed25519 -C $USER@$(hostname)";
     tiomenu = ''tio -b 115200 $(FZF_DEFAULT_COMMAND='find /dev/serial/by-id | tail -n +2 ' fzf --header="Pick a serial port")'';
+    agenix = "agenix --extra-flake-params \\?submodules=1";
   };
 in
 {
@@ -39,7 +40,7 @@ in
   programs.fzf.enableZshIntegration = true;
   programs.fzf.enable = true;
 
-  sops.age.sshKeyPaths = [ "${sshpath}" ];
+  #sops.age.sshKeyPaths = [ "${sshpath}" ];
 
   xdg.enable = true;
 
