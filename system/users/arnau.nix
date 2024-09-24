@@ -1,4 +1,4 @@
-{ config, pkgs, lib, inputs, private, ... }:
+{ config, pkgs, lib, inputs, private, secrets, ... }:
 {
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.arnau = {
@@ -7,10 +7,8 @@
     extraGroups = [ "networkmanager" "wheel" "adbusers" "libvirtd" "docker" "dialout" ];
     packages = with pkgs; [ ];
 
-    passwordFile = config.age.secrets.passwordfile-arnau.path;
-    openssh.authorizedKeys.keyFiles = [
-      "${private}/secrets/keys.pub"
-    ];
+    hashedPasswordFile = config.age.secrets.passwordfile-arnau.path;
+    openssh.authorizedKeys.keys = secrets.authlist config.networking.hostName;
     shell = pkgs.zsh;
   };
   programs.zsh.enable = true;
