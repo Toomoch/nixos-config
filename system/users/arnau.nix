@@ -6,7 +6,8 @@
     description = "Arnau";
     extraGroups = [ "networkmanager" "wheel" "adbusers" "libvirtd" "docker" "dialout" ];
     packages = with pkgs; [ ];
-    initialHashedPassword = "$y$j9T$B3GNXEDtu.tLypNHqtugL1$0TLc8R/9W0PRyTz9XCS43gbj/Fig9r2GoWyxoVdNdZ.";
+
+    passwordFile = config.age.secrets.passwordfile-arnau.path;
     openssh.authorizedKeys.keyFiles = [
       "${private}/secrets/keys.pub"
     ];
@@ -26,6 +27,7 @@
   };
 
 
+  age.secrets.passwordfile-arnau.rekeyFile = "${private}/secrets/age/password.age";
   #security.pam.services.arnau.sshAgentAuth = true;
   # for unstable: (check https://github.com/NixOS/nixpkgs/issues/31611)
   # security.pam.sshAgentAuth.authorizedKeysFiles = lib.mkForce [ "/etc/ssh/authorized_keys.d/%u" ];
