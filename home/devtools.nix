@@ -20,7 +20,7 @@
     just
     tio
     tldr
-    python3
+    (python3.withPackages(ps: [ ps.ansible ps.pip ps.requests ps.python-gitlab ps.pygments ]))
     kubectl
     nixd
     file

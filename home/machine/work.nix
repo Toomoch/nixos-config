@@ -20,7 +20,6 @@ in
   home.packages = with pkgs; [
     glab
     uuu
-    python311Packages.python-gitlab
     freerdp3
     cmake
     pandoc
