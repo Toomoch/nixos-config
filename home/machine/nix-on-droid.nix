@@ -15,12 +15,18 @@ in
   imports = [
     ../default.nix
     ../personal.nix
-    ../arnau.nix
   ];
 
   programs.bash.sessionVariables = variables;
   programs.zsh.sessionVariables = variables;
 
+  programs.ssh = {
+    matchBlocks = {
+      "*" = {
+        user = "arnau";
+      };
+    };
+  };
 
   programs.bash.shellAliases = shellAliases;
   programs.zsh.shellAliases = shellAliases;
