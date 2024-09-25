@@ -36,6 +36,7 @@ in
     fzf
     tmux-sessionizer
     deploy-rs
+    iperf3
   ];
   programs.fzf.enableZshIntegration = true;
   programs.fzf.enable = true;

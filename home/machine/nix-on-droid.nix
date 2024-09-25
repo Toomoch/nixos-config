@@ -11,10 +11,11 @@ let
 in
 {
   # Read the changelog before changing this value
-  home.stateVersion = "23.11";
+  home.stateVersion = "24.05";
   imports = [
     ../default.nix
     ../personal.nix
+    ../arnau.nix
   ];
 
   programs.bash.sessionVariables = variables;

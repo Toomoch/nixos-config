@@ -6,7 +6,6 @@ in
 {
   imports = [
     ../default.nix
-    ../arnau.nix
     ../desktop.nix
     ../sway
     ../personal.nix

@@ -2,7 +2,6 @@
 {
   imports = [
     ../default.nix
-    ../arnau.nix
     ../personal.nix
   ];
 
