@@ -24,3 +24,6 @@ droid: gitadd
 update:
   nix flake update
 
+cleangen:
+  sudo nix-collect-garbage -d && nix-collect-garbage -d
+

@@ -1,4 +1,4 @@
-{ inputs, config, pkgs-unstable, ... }:
+{ inputs, config, pkgs-unstable, agenix-rekey,  ... }:
 {
   # homepage-dashboard from unstable
   #disabledModules = [
@@ -11,8 +11,6 @@
 
   # openvscode-server from unstable
   nixpkgs.overlays = [
-    (self: super: {
-      firefoxpwa = pkgs-unstable.firefoxpwa;
-    })
+    agenix-rekey.overlays.default
   ];
 }

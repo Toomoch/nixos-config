@@ -3,12 +3,13 @@
 
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "nixpkgs/nixos-24.05";
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixpkgs-stable.url = "nixpkgs/nixos-24.05";
     home-manager-stable = {
       url = "github:nix-community/home-manager/release-24.05";
       inputs.nixpkgs.follows = "nixpkgs-stable";
@@ -19,41 +20,46 @@
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
-    sops-nix.url = "github:Mic92/sops-nix";
-    deploy-rs.url = "github:serokell/deploy-rs";
-    #hyprland.url = "github:hyprwm/Hyprland";
-
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     disko-stable = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
-    nix-matlab.url = "gitlab:doronbehar/nix-matlab";
-
-    nix-on-droid = {
-      url = "github:nix-community/nix-on-droid/release-23.11";
+    agenix-stable = {
+      url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
     agenix = {
       url = "github:ryantm/agenix";
-      #inputs.nixpkgs.follows = "nixpkgs-stable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    agenix-rekey-stable = {
-      url = "github:oddlama/agenix-rekey";
+    nix-on-droid = {
+      url = "github:nix-community/nix-on-droid/release-24.05";
       inputs.nixpkgs.follows = "nixpkgs-stable";
+    };
+
+
+    nix-matlab.url = "gitlab:doronbehar/nix-matlab";
+
+    deploy-rs.url = "github:serokell/deploy-rs";
+    #hyprland.url = "github:hyprwm/Hyprland";
+
+    agenix-rekey = {
+      url = "github:oddlama/agenix-rekey";
     };
     #ags.url = "github:Aylur/ags";
     #matugen.url = "github:InioX/matugen";
 
   };
 
-  outputs = inputs@{ self, nixpkgs, home-manager, nixpkgs-stable, home-manager-stable, sops-nix, deploy-rs, nix-matlab, nixvim, disko-stable, disko, nix-on-droid, agenix, agenix-rekey-stable, ... }:
+  outputs = inputs@{ self, nixpkgs, home-manager, nixpkgs-stable, home-manager-stable, deploy-rs, nixvim, disko-stable, disko, nix-on-droid, agenix, agenix-rekey, agenix-stable, ... }:
     let
       flake-root = ./.;
       private = flake-root + "/private";
@@ -66,8 +72,8 @@
 
       secrets = import "${private}/secrets/secrets.nix";
 
-      stable = { nixpkgs = nixpkgs-stable; home-manager = home-manager-stable; disko = disko-stable; };
-      unstable = { nixpkgs = nixpkgs; home-manager = home-manager; disko = disko; };
+      stable = { nixpkgs = nixpkgs-stable; home-manager = home-manager-stable; disko = disko-stable; agenix = agenix-stable; };
+      unstable = { nixpkgs = nixpkgs; home-manager = home-manager; disko = disko; agenix = agenix; };
 
       hosts = [
         { host = "oracle1"; arch = "x86_64-linux"; branch = stable; hm = false; }
@@ -95,7 +101,7 @@
           ./nix-on-droid
           {
             home-manager = {
-              config.imports = [ sops-nix.homeManagerModules.sops ];
+              config.imports = [ ];
               extraSpecialArgs = { inherit inputs; };
             };
           }
@@ -117,13 +123,11 @@
 
       nixosConfigurations =
         let
-          defaultModules = host: disko: [
+          defaultModules = host: branch: [
             self.nixosModules.common
-            #sops-nix.nixosModules.sops
-            disko.nixosModules.disko
-            agenix.nixosModules.default
-            agenix-rekey-stable.nixosModules.default
-            #agenix-rekey-stable.overlays.default
+            branch.disko.nixosModules.disko
+            branch.agenix.nixosModules.default
+            agenix-rekey.nixosModules.default
             ./system/machine/${host}
           ];
 
@@ -133,12 +137,12 @@
               let # surely theres a better way of doing this
                 host-folder = secrets.hosts.${host}.hostFolder;
                 pkgs-unstable = import nixpkgs { system = arch; };
-                specialArgs = { inherit pkgs-unstable inputs secrets flake-root private; nixpkgs = branch.nixpkgs; };
+                specialArgs = { inherit pkgs-unstable inputs secrets flake-root private agenix-rekey; nixpkgs = branch.nixpkgs; };
               in
               branch.nixpkgs.lib.nixosSystem {
                 system = arch;
                 inherit specialArgs;
-                modules = defaultModules host-folder branch.disko ++ branch.nixpkgs.lib.optional (branch == stable) ./system/modules/stable-overlays.nix
+                modules = defaultModules host-folder branch ++ branch.nixpkgs.lib.optional (branch == stable) ./system/modules/stable-overlays.nix
                   ++ branch.nixpkgs.lib.optionals hm [
                   branch.home-manager.nixosModules.home-manager
                   {
@@ -151,7 +155,6 @@
                         extraSpecialArgs = specialArgs;
                         users.${user}.imports = [
                           ./home/machine/${host-folder}.nix
-                          #sops-nix.homeManagerModules.sops
                         ] ++ branch.nixpkgs.lib.optional (branch == unstable) ./home/unstable.nix;
                       };
                   }
@@ -166,7 +169,7 @@
         builtins.listToAttrs machineConfigs;
 
 
-      agenix-rekey = agenix-rekey-stable.configure {
+      agenix-rekey = agenix-rekey.configure {
         userFlake = self;
         nodes = self.nixosConfigurations;
       };
