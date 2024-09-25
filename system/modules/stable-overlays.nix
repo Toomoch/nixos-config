@@ -10,11 +10,10 @@
   #];
 
   # openvscode-server from unstable
-  #nixpkgs.overlays = [
-  #  (self: super: {
-  #    openvscode-server = pkgs-unstable.openvscode-server;
-  #    homepage-dashboard = pkgs-unstable.homepage-dashboard;
-  #  })
-  #];
-  nixpkgs.overlays = [inputs.agenix-rekey-stable.overlays.default];
+  nixpkgs.overlays = [
+    (self: super: {
+      firefoxpwa = pkgs-unstable.firefoxpwa;
+    })
+    inputs.agenix-rekey-stable.overlays.default
+  ];
 }

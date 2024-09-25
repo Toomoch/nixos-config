@@ -26,6 +26,10 @@ in
     enableSuid = true;
     enableFakeroot = true;
   };
+  programs.winbox = {
+    enable = true;
+    openFirewall = true;
+  };
 
   services.auto-cpufreq.enable = true;
 
