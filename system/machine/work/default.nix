@@ -6,7 +6,7 @@ in
 {
   imports = [
     ./hardware-configuration.nix
-    "${private}/system/user.nix"
+    ../../users/arnau.nix
     ./disko.nix
   ];
 

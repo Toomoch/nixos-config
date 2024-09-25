@@ -1,7 +1,10 @@
 { config, pkgs, lib, inputs, private, secrets, ... }:
+let
+  user = "${secrets.hosts.${config.networking.hostName}.user}";
+in
 {
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.arnau = {
+  users.users.${user} = {
     isNormalUser = true;
     description = "Arnau";
     extraGroups = [ "networkmanager" "wheel" "adbusers" "libvirtd" "docker" "dialout" ];
@@ -29,5 +32,5 @@
   #security.pam.services.arnau.sshAgentAuth = true;
   # for unstable: (check https://github.com/NixOS/nixpkgs/issues/31611)
   # security.pam.sshAgentAuth.authorizedKeysFiles = lib.mkForce [ "/etc/ssh/authorized_keys.d/%u" ];
-  nix.settings.trusted-users = [ "arnau" ];
+  nix.settings.trusted-users = [ "${user}" ];
 }
