@@ -25,7 +25,6 @@
     nixd
     file
     texliveFull
-    python311Packages.pygments
     zathura
   ];
 }
