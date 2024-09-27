@@ -16,9 +16,7 @@ in
   };
   programs.zsh.enable = true;
 
-  # sudo sshAgentAuth
-  security.pam.sshAgentAuth.enable = true;
-  security.pam.services.sudo = { sshAgentAuth = true; u2fAuth = true; };
+  security.pam.services.sudo.u2fAuth = true;
   security.pam.services.login.u2fAuth = true;
   security.pam.services.greetd.u2fAuth = true;
   security.pam.u2f = {
@@ -28,9 +26,16 @@ in
     authFile = "${private}/secrets/plain/u2f_keys";
   };
 
-  age.secrets.passwordfile-arnau.rekeyFile = "${private}/secrets/age/password.age";
-  #security.pam.services.arnau.sshAgentAuth = true;
+  # pam_rssh
+  security.pam.services.sudo.text = lib.mkDefault (lib.mkBefore ''
+    auth sufficient ${pkgs.pam_rssh}/lib/libpam_rssh.so auth_key_file=/etc/ssh/authorized_keys.d/%u
+  '');
+  security.sudo.extraConfig = ''
+    Defaults env_keep+=SSH_AUTH_SOCK
+  '';
   # for unstable: (check https://github.com/NixOS/nixpkgs/issues/31611)
   # security.pam.sshAgentAuth.authorizedKeysFiles = lib.mkForce [ "/etc/ssh/authorized_keys.d/%u" ];
+
+  age.secrets.passwordfile-arnau.rekeyFile = "${private}/secrets/age/password.age";
   nix.settings.trusted-users = [ "${user}" ];
 }
