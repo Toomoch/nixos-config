@@ -96,13 +96,14 @@
           let
             nixpkgs = nixpkgs-stable;
           in
-          { inherit inputs; inherit nixpkgs; };
+          { inherit inputs nixpkgs secrets; };
+        pkgs = import nixpkgs-stable { system = "aarch64-linux"; };
         modules = [
           ./nix-on-droid
           {
             home-manager = {
               config.imports = [ ];
-              extraSpecialArgs = { inherit inputs; };
+              extraSpecialArgs = { inherit inputs secrets; };
             };
           }
         ];

@@ -25,6 +25,8 @@ pkgs.mkShell {
     tmux
     vim
     deploy-rs
+    openssh
+    just
   ];
 
   shellHook = ''

@@ -19,7 +19,7 @@ rebuild HOSTNAME="$(hostname)": gitadd
   sudo nixos-rebuild switch --flake .\?submodules=1#{{HOSTNAME}}
 
 droid: gitadd
-  nix-on-droid switch --flake .
+  nix-on-droid switch --flake .\?submodules=1
 
 update:
   nix flake update
