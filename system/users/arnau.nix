@@ -25,8 +25,8 @@ in
     enable = true;
     cue = true;
     origin = "pam://arnau";
+    authFile = "${private}/secrets/plain/u2f_keys";
   };
-
 
   age.secrets.passwordfile-arnau.rekeyFile = "${private}/secrets/age/password.age";
   #security.pam.services.arnau.sshAgentAuth = true;

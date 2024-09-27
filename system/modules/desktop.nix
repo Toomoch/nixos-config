@@ -71,7 +71,7 @@ in
         53317
       ];
       # Printing
-      services.printing.enable = true;
+      services.printing.enable = false;
 
       #hardware.printers = {
       #  ensureDefaultPrinter = "brother";
