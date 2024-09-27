@@ -20,18 +20,18 @@ in
       networking.hostName = "ps42"; # Define your hostname.
 
       specialisation = {
-        kde = {
-          configuration = {
-            desktop.blacklistnvidia.enable = true;
-            desktop.kde.enable = true;
-            desktop.flatpak.enable = true;
-            environment.systemPackages = with pkgs; [
-              libsForQt5.kpat
-              libsForQt5.kio-gdrive
-            ];
-            i18n.defaultLocale = lib.mkDefault "ca_ES.UTF-8";
-          };
-        };
+        #kde = {
+        #  configuration = {
+        #    desktop.blacklistnvidia.enable = true;
+        #    desktop.kde.enable = true;
+        #    desktop.flatpak.enable = true;
+        #    environment.systemPackages = with pkgs; [
+        #      libsForQt5.kpat
+        #      libsForQt5.kio-gdrive
+        #    ];
+        #    i18n.defaultLocale = lib.mkDefault "ca_ES.UTF-8";
+        #  };
+        #};
         nvidia = {
           configuration = {
             desktop.regreet.enable = true;

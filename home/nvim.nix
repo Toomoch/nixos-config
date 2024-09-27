@@ -67,6 +67,36 @@ in
         action = "<Nop>";
         key = "<Up>";
       }
+      {
+        action = ":Ge:<CR>";
+        key = "<leader>gs";
+        options.desc = "Git status";
+      }
+      {
+        action = ":set nosplitright<CR>:execute 'Gvdiff ' .. g:git_base<CR>:set splitright<CR>";
+        key = "<leader>gd";
+        options.desc = "Git diff";
+      }
+      {
+        action = ":Git blame<CR>";
+        key = "<leader>gb";
+        options.desc = "Git blame";
+      }
+      {
+        action = ":0Gclog<CR>";
+        key = "<leader>gc";
+        options.desc = "Git log-pick";
+      }
+      {
+        action = ":Git push<CR>";
+        key = "<leader>gp";
+        options.desc = "Git push";
+      }
+      {
+        action = ":Git pull<CR>";
+        key = "<leader>gP";
+        options.desc = "Git pull";
+      }
     ];
 
     colorschemes.gruvbox.enable = true;
@@ -136,7 +166,7 @@ in
             gD = "references";
             gd = "definition";
             gi = "implementation";
-            gt = "type_definition";
+            #gt = "type_definition";
             "<leader>ca" = {
               action = "code_action";
             };
