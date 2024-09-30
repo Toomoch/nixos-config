@@ -70,6 +70,12 @@ in
       networking.firewall.allowedTCPPorts = [
         53317
       ];
+
+      # Enable networking
+      systemd.network.enable = lib.mkForce false;
+      networking.useNetworkd = lib.mkForce false;
+      networking.networkmanager.enable = true;
+
       # Printing
       services.printing.enable = false;
 
@@ -95,7 +101,7 @@ in
       services.tailscale = {
         enable = true;
       };
-      systemd.services."tailscaled".wantedBy = lib.mkForce [];
+      systemd.services."tailscaled".wantedBy = lib.mkForce [ ];
 
       # OpenGL    
       hardware.opengl.enable = true;

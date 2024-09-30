@@ -42,8 +42,8 @@ in
         }];
       };
 
-      # Enable networking
-      networking.networkmanager.enable = true;
+      systemd.network.enable = true;
+      networking.useNetworkd = true;
 
       # Set your time zone.
       time.timeZone = "Europe/Madrid";
@@ -95,6 +95,7 @@ in
         htop
         just
         dig
+        iperf3
       ];
 
       # Some programs need SUID wrappers, can be configured further or are
