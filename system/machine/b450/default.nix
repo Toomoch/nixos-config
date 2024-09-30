@@ -31,6 +31,12 @@
   vm.docker.enable = true;
   virtualisation.waydroid.enable = true;
 
+  programs.singularity = {
+    enable = true;
+    package = pkgs.apptainer;
+    enableSuid = true;
+    enableFakeroot = true;
+  };
   nixpkgs.config.permittedInsecurePackages = [
     "electron-24.8.6"
   ];

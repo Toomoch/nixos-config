@@ -13,6 +13,7 @@
   nixpkgs.overlays = [
     (self: super: {
       firefoxpwa = pkgs-unstable.firefoxpwa;
+      pam_rssh = pkgs-unstable.pam_rssh;
     })
   ];
 }

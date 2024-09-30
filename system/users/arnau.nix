@@ -28,13 +28,11 @@ in
 
   # pam_rssh
   security.pam.services.sudo.text = lib.mkDefault (lib.mkBefore ''
-    auth sufficient ${pkgs.pam_rssh}/lib/libpam_rssh.so auth_key_file=/etc/ssh/authorized_keys.d/%u
+    auth sufficient ${pkgs.pam_rssh}/lib/libpam_rssh.so auth_key_file=/etc/ssh/authorized_keys.d/''${user}
   '');
   security.sudo.extraConfig = ''
     Defaults env_keep+=SSH_AUTH_SOCK
   '';
-  # for unstable: (check https://github.com/NixOS/nixpkgs/issues/31611)
-  # security.pam.sshAgentAuth.authorizedKeysFiles = lib.mkForce [ "/etc/ssh/authorized_keys.d/%u" ];
 
   age.secrets.passwordfile-arnau.rekeyFile = "${private}/secrets/age/password.age";
   nix.settings.trusted-users = [ "${user}" ];
