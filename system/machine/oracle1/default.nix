@@ -9,6 +9,8 @@
 
   networking.hostName = "oracle1";
 
+
+  services.openssh.settings.PasswordAuthentication = false;
   common.enable = true;
   common.x86.enable = true;
   vm.podman.enable = true;
