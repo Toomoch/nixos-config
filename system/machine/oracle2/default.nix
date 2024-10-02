@@ -1,8 +1,9 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, private, ... }:
 {
   imports = [
     ./hardware-configuration.nix
     ../../users/arnau.nix
+    "${private}/system/headscale-oracle2.nix"
   ];
 
   nixpkgs.config.allowUnfree = true;

@@ -15,6 +15,10 @@
     };
   };
 
+
+  services.tailscale = {
+    enable = true;
+  };
   common.enable = true;
   common.x86.enable = true;
   desktop.enable = true;
