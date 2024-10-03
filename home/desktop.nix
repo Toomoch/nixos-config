@@ -23,6 +23,7 @@
     (nerdfonts.override { fonts = [ "Noto" ]; })
     masterpdfeditor4
     floorp
+    unityhub
   ];
 
   fonts.fontconfig.enable = true;
