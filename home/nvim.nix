@@ -39,14 +39,14 @@ in
         action = "<cmd>NvimTreeToggle<cr>";
         key = "<leader>e";
       }
-      {
-        action = "<cmd>Telescope find_files<cr>";
-        key = "<leader>d";
-      }
-      {
-        action = "<cmd>Telescope live_grep<cr>";
-        key = "<leader>f";
-      }
+      #{
+      #  action = "<cmd>Telescope find_files<cr>";
+      #  key = "<leader>d";
+      #}
+      #{
+      #  action = "<cmd>Telescope live_grep<cr>";
+      #  key = "<leader>f";
+      #}
       {
         action = ''"+y'';
         key = "<leader>y";
@@ -97,6 +97,26 @@ in
         key = "<leader>gP";
         options.desc = "Git pull";
       }
+      {
+        action = "<cmd>TmuxNavigateLeft<cr>";
+        key = "<M-h>";
+      }
+      {
+        action = "<cmd>TmuxNavigateDown<cr>";
+        key = "<M-j>";
+      }
+      {
+        action = "<cmd>TmuxNavigateUp<cr>";
+        key = "<M-k>";
+      }
+      {
+        action = "<cmd>TmuxNavigateRight<cr>";
+        key = "<M-l>";
+      }
+      {
+        action = "<cmd>TmuxNavigatePrevious<cr>";
+        key = "<M-\\>";
+      }
     ];
 
     colorschemes.gruvbox.enable = true;
@@ -131,7 +151,7 @@ in
       luasnip.enable = true;
       fugitive.enable = true;
       nvim-tree.enable = true;
-      telescope.enable = true;
+      #telescope.enable = true;
       cmp_luasnip.enable = true;
       cmp = {
         enable = true;
@@ -156,6 +176,16 @@ in
 
       cmp-nvim-lsp.enable = true;
       lualine.enable = true;
+      fzf-lua = {
+        enable = true;
+        keymaps = {
+          "<leader>f" = "live_grep";
+          "<leader>d" = "files";
+        };
+      };
+      tmux-navigator = {
+        enable = true;
+      };
 
       lsp = {
         enable = true;
