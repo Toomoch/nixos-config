@@ -25,6 +25,8 @@
 
   age.secrets.secret1.rekeyFile = flake-root + "/private/secrets/age/test.age";
 
+  systemd.services.phpfpm-nextcloud.wantedBy = lib.mkForce [ ];
+  systemd.services.postgresql.wantedBy = lib.mkForce [ ];
   common.enable = true;
   common.x86.enable = true;
   homelab.enable = true;

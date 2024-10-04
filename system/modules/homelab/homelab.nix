@@ -28,9 +28,7 @@ in
       environment.systemPackages = [
       ];
       systemd.tmpfiles.rules = [
-        "d ${jmusicbot} 0755 root root"
       ];
-      services.jmusicbot.enable = true;
 
       services.openvscode-server.enable = true;
       services.openvscode-server.user = "arnau";
