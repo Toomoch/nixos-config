@@ -74,11 +74,11 @@
         datasets = {
           data = {
             type = "zfs_fs";
-            mountpoint = "/zstorage/data";
+            options.mountpoint = "/zstorage/data";
           };
           share = {
             type = "zfs_fs";
-            mountpoint = "/zstorage/share";
+            options.mountpoint = "/zstorage/share";
           };
         };
       };
