@@ -12,7 +12,7 @@ in
 
   networking.hostName = secrets.work.hostName;
   common.enable = true;
-  common.x86.enable = true;
+  common.systemd-boot.enable = true;
   desktop.enable = true;
   desktop.regreet.enable = true;
   desktop.sway.enable = true;

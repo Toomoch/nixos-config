@@ -20,7 +20,7 @@
     enable = true;
   };
   common.enable = true;
-  common.x86.enable = true;
+  common.systemd-boot.enable = true;
   desktop.enable = true;
   desktop.arctis9.enable = true;
   desktop.regreet.enable = true;

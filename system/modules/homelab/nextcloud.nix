@@ -34,7 +34,7 @@ in
 
     systemd.services.borgmatic = {
       path = [ config.services.postgresql.package ];
-      serviceConfig.CapabilityBoundingSet = "~";
+      serviceConfig.CapabilityBoundingSet = "CAP_SETUID CAP_SETGID";
     };
 
     services.borgmatic = {

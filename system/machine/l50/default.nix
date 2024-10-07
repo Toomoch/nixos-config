@@ -17,7 +17,7 @@
   ];
 
   common.enable = true;
-  common.x86.enable = true;
+  common.systemd-boot.enable = true;
   desktop.enable = true;
   desktop.kde.enable = true;
   desktop.flatpak.enable = true;

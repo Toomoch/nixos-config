@@ -5,7 +5,8 @@ in
 {
   options.common = {
     enable = lib.mkEnableOption "Whether to enable common stuff";
-    x86.enable = lib.mkEnableOption "Whether to enable x86 bootloader";
+    systemd-boot.enable = lib.mkEnableOption "Whether to enable x86 bootloader";
+    cloud.enable = lib.mkEnableOption "Whether to enable cloud specific settings";
   };
 
   config = lib.mkMerge [
@@ -24,6 +25,7 @@ in
           automatic = true;
           dates = "weekly";
           options = "--delete-older-than 15d";
+          persistent = true;
         };
         distributedBuilds = false;
         buildMachines = [{
@@ -98,16 +100,6 @@ in
         iperf3
       ];
 
-      # Some programs need SUID wrappers, can be configured further or are
-      # started in user sessions.
-      # programs.mtr.enable = true;
-      # programs.gnupg.agent = {
-      #   enable = true;
-      #   enableSSHSupport = true;
-      # };
-
-      #List of services that you want to enable:
-
       # Enable the OpenSSH daemon.
       services.openssh.enable = true;
       programs.ssh = { startAgent = true; enableAskPassword = true; askPassword = "${pkgs.gnome.seahorse}/libexec/seahorse/ssh-askpass"; };
@@ -118,20 +110,17 @@ in
       #Allow all VPN traffic routing
       networking.firewall.checkReversePath = "loose";
 
-      # Open ports in the firewall.
-      # networking.firewall.allowedTCPPorts = [ ... ];
-      # networking.firewall.allowedUDPPorts = [ ... ];
-      # Or disable the firewall altogether.
-      # networking.firewall.enable = false;
-      #sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-
     })
-    (lib.mkIf cfg.x86.enable {
+    (lib.mkIf cfg.systemd-boot.enable {
       # Bootloader.
       boot.loader.systemd-boot.enable = true;
       boot.loader.efi.canTouchEfiVariables = true;
       boot.loader.systemd-boot.configurationLimit = 20;
 
+    })
+    (lib.mkIf cfg.cloud.enable {
+      services.fail2ban.enable = true;
+      services.openssh.settings.PasswordAuthentication = false;
     })
 
   ];

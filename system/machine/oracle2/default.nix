@@ -10,9 +10,9 @@
 
   networking.hostName = "oracle2";
 
-  services.openssh.settings.PasswordAuthentication = false;
   common.enable = true;
-  common.x86.enable = true;
+  common.systemd-boot.enable = true;
+  common.cloud.enable = true;
   vm.podman.enable = true;
   vm.docker.enable  = true;
   security.polkit.enable = true;

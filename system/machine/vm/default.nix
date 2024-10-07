@@ -16,7 +16,7 @@
   };
 
   common.enable = true;
-  common.x86.enable = true;
+  common.systemd-boot.enable = true;
   vm.podman.enable = true;
 
   # This value determines the NixOS release from which the default

@@ -29,7 +29,7 @@
   #systemd.services.postgresql.wantedBy = lib.mkForce [ ];
   #systemd.services.docker-homeassistant.wantedBy = lib.mkForce [ ];
   common.enable = true;
-  common.x86.enable = true;
+  common.systemd-boot.enable = true;
   homelab.enable = true;
   homelab.homepage-dashboard.enable = true;
   homelab.homeassistant.enable = true;
