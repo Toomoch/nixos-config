@@ -25,8 +25,9 @@
 
   age.secrets.secret1.rekeyFile = flake-root + "/private/secrets/age/test.age";
 
-  systemd.services.phpfpm-nextcloud.wantedBy = lib.mkForce [ ];
-  systemd.services.postgresql.wantedBy = lib.mkForce [ ];
+  #systemd.services.phpfpm-nextcloud.wantedBy = lib.mkForce [ ];
+  #systemd.services.postgresql.wantedBy = lib.mkForce [ ];
+  #systemd.services.docker-homeassistant.wantedBy = lib.mkForce [ ];
   common.enable = true;
   common.x86.enable = true;
   homelab.enable = true;
@@ -37,14 +38,15 @@
   homelab.nextcloud.enable = true;
   homelab.grafana.enable = true;
   vm.podman.enable = true;
-  vm.docker.enable  = true;
+  vm.docker.enable = true;
   vm.libvirtd.enable = true;
   security.polkit.enable = true;
 
   nixpkgs.config.packageOverrides = pkgs: {
     intel-vaapi-driver = pkgs.intel-vaapi-driver.override { enableHybridCodec = true; };
   };
-  hardware.opengl = { # hardware.graphics on unstable
+  hardware.opengl = {
+    # hardware.graphics on unstable
     enable = true;
     extraPackages = with pkgs; [
       intel-vaapi-driver # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)

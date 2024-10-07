@@ -37,6 +37,7 @@ in
     tmux-sessionizer
     deploy-rs
     iperf3
+    borgbackup
   ];
   programs.fzf.enableZshIntegration = true;
   programs.fzf.enable = true;

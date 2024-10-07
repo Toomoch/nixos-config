@@ -16,61 +16,63 @@ in
       "d ${dataBase} 0750 postgres postgres - -"
       "d ${pgBackups} 0750 postgres postgres - -"
     ];
-    services.postgresql.dataDir = "${dataBase}";
-
-    systemd.timers.postgresqlBackup-nextcloud.wantedBy = lib.mkForce [ ];
-    systemd.timers.postgresqlBackup-onlyoffice.wantedBy = lib.mkForce [ ];
-    services.postgresqlBackup = {
-      enable = true;
-      databases = [ "nextcloud" "onlyoffice" ];
-      compression = "zstd";
-      location = pgBackups;
+    services.postgresql = {
+      dataDir = "${dataBase}";
+      identMap = ''
+        # ArbitraryMapName systemUser DBUser
+        superuser_map      root      postgres
+        superuser_map      postgres  postgres
+        nextcloud_map      root      nextcloud
+        nextcloud_map      nextcloud  nextcloud
+      '';
+      authentication = ''
+        #type database  DBuser  auth-method optional_ident_map
+        local all  postgres     peer        map=superuser_map
+        local all  nextcloud    peer        map=nextcloud_map
+      '';
     };
 
-    services.borgbackup.jobs =
-      let
-        cfg = config.services.nextcloud;
-      in
-      {
-        nextcloud = {
-          paths = [ "${ncHome}" ];
-          encryption.mode = "none";
-          environment.BORG_RSH = "ssh -i ${config.age.secrets.borgnextcloud.path}";
-          repo = "${secrets.hosts.rpi3.user}@${secrets.hosts.rpi3.dns}:/external/nextcloud";
-          compression = "auto,zstd";
-          readWritePaths = [ config.services.nextcloud.datadir ];
-          startAt = "Mon *-*-* 04:00:00";
-          preHook = ''
-            echo "Enabling maintenance mode..."
-            ${cfg.occ}/bin/nextcloud-occ maintenance:mode --on
-          '';
-          postHook = ''
-            echo "Disabling maintenance mode..."
-            ${cfg.occ}/bin/nextcloud-occ maintenance:mode --off
-          '';
-        };
-        nextcloud_database = {
-          group = "nextcloud";
-          user = "nextcloud";
-          dumpCommand = pkgs.writeShellScript "builder.sh" ''
-            ${config.services.postgresql.package}/bin/pg_dump nextcloud -U nextcloud --no-password
-          '';
-          encryption.mode = "none";
-          environment.BORG_RSH = "ssh -i ${config.age.secrets.borgnextcloud.path}";
-          repo = "${secrets.hosts.rpi3.user}@${secrets.hosts.rpi3.dns}:/external/nextcloud_database";
-          compression = "auto,zstd";
-          readWritePaths = [ config.services.nextcloud.datadir ];
-          startAt = "Mon *-*-* 06:00:00";
-          preHook = ''
-            echo "Enabling maintenance mode..."
-            ${cfg.occ}/bin/nextcloud-occ maintenance:mode --on
-          '';
-          postHook = ''
-            echo "Disabling maintenance mode..."
-            ${cfg.occ}/bin/nextcloud-occ maintenance:mode --off
-          '';
-        };
+    systemd.services.borgmatic = {
+      path = [ config.services.postgresql.package ];
+      serviceConfig.CapabilityBoundingSet = "~";
+    };
+
+    services.borgmatic = {
+      enable = true;
+      configurations.nextcloud = {
+        archive_name_format = "nextcloud-{hostname}-{now}";
+        source_directories = [ "${ncHome}" ];
+        repositories = [
+          {
+            path = "/zstorage/backup";
+            label = "local";
+          }
+        ];
+        postgresql_databases = [
+          {
+            name = "nextcloud";
+            format = "custom";
+            username = "postgres";
+          }
+          {
+            name = "onlyoffice";
+            format = "custom";
+            username = "postgres";
+          }
+        ];
+        before_backup = [
+          ''echo "Enabling maintenance mode..."''
+          "${config.services.nextcloud.occ}/bin/nextcloud-occ maintenance:mode --on"
+        ];
+        after_backup = [
+          ''echo "Disabling maintenance mode..."''
+          "${config.services.nextcloud.occ}/bin/nextcloud-occ maintenance:mode --off"
+        ];
+        ssh_command = "${pkgs.openssh}/bin/ssh -i ${config.age.secrets.borgnextcloud.path}";
+        keep_daily = 7;
+        keep_weekly = 4;
       };
+    };
 
     programs.ssh.knownHosts = {
       ${secrets.hosts.rpi3.dns}.publicKey = secrets.hosts.rpi3.pubkey;
