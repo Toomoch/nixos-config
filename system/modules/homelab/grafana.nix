@@ -14,7 +14,7 @@ in
     };
     services.prometheus = {
       enable = true;
-      globalConfig.scrape_interval = "10s"; # "1m"
+      globalConfig.scrape_interval = "1m"; # "1m"
       scrapeConfigs = [
         {
           job_name = "node";
