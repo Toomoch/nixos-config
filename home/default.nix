@@ -40,6 +40,7 @@ in
     borgbackup
   ];
   programs.fzf.enableZshIntegration = true;
+  programs.fzf.enableBashIntegration = true;
   programs.fzf.enable = true;
 
   #sops.age.sshKeyPaths = [ "${sshpath}" ];

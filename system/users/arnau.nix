@@ -12,7 +12,7 @@ in
 
     hashedPasswordFile = config.age.secrets.passwordfile-arnau.path;
     openssh.authorizedKeys.keys = secrets.authlist config.networking.hostName;
-    shell = pkgs.zsh;
+    shell = pkgs.bash;
   };
   programs.zsh.enable = true;
 

@@ -7,23 +7,16 @@
     kooha
     gnome.gnome-calculator
     onlyoffice-bin
-    tdesktop
     scrcpy
     virt-manager
     gnome-network-displays
-    gitg
-    thunderbird
-    meld
     imhex
     ungoogled-chromium
     resources
     krita
-    vesktop
     localsend
     (nerdfonts.override { fonts = [ "Noto" ]; })
     masterpdfeditor4
-    floorp
-    unityhub
   ];
 
   fonts.fontconfig.enable = true;
@@ -50,6 +43,7 @@
     mimeApps = {
       enable = true;
       defaultApplications = {
+        "application/pdf" = "firefox.desktop";
         "inode/directory" = "thunar.desktop";
         "application/zip" = "org.gnome.FileRoller.desktop";
         "text/html" = [ "firefox.desktop" ];
@@ -61,9 +55,9 @@
         "image/png" = "firefox.desktop";
       };
       associations.added = {
-        "application/pdf" = "firefox.desktop";
         "image/png" = "firefox.desktop";
         "video/x-matroska" = "mpv.desktop";
+        "application/pdf" = "firefox.desktop";
       };
     };
 
