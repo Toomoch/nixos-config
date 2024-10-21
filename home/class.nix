@@ -7,6 +7,8 @@
     unityhub
     texliveFull
     zathura
+    minizinc
+    or-tools
   ];
 
 }

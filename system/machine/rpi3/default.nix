@@ -1,11 +1,21 @@
 { config, inputs, nixpkgs, pkgs, lib, secrets, private, ... }:
+let
+  dt_ao_overlay = _final: prev: {
+    deviceTree = prev.deviceTree // {
+      applyOverlays = _final.callPackage ./apply-overlays-dtmerge.nix { };
+    };
+  };
+in
 {
   imports = [
     #./hardware-configuration.nix
     ../../users/arnau.nix
     "${private}/system/rpi3-wg.nix"
     "${nixpkgs}/nixos/modules/installer/sd-card/sd-image-aarch64.nix"
+
+    (nixpkgs.outPath + "/nixos/modules/profiles/minimal.nix")
   ];
+  environment.noXlibs = lib.mkForce false;
 
   networking.hostName = "rpi3"; # Define your hostname.
 
@@ -26,7 +36,7 @@
   boot.initrd.availableKernelModules = [ "usb_storage" ];
 
   users.users.arnau.openssh.authorizedKeys.keyFiles = [
-    "${private}/secrets/ssh/id_ed25519.borgnextcloud.pub" 
+    "${private}/secrets/ssh/id_ed25519.borgnextcloud.pub"
   ];
 
   fileSystems."/external" = {
@@ -35,7 +45,27 @@
     options = [ "nofail" ];
   };
 
-  boot.kernelParams = [ "cma=32M" ];
+  boot.kernelParams = [ "cma=4M" ];
+  networking.useDHCP = lib.mkDefault true;
+
+  boot = {
+    kernelPackages = pkgs.linuxPackages_rpi3;
+  };
+
+  hardware.deviceTree = {
+    filter = "*2837-rpi-3-b*";
+    overlays = [
+      { name = "sdoverclock"; dtsFile = ./sdhost-overclock.dts; }
+    ];
+  };
+  nixpkgs.overlays = [
+    #dt_ao_overlay
+    (final: super: {
+      makeModulesClosure = x:
+        super.makeModulesClosure (x // { allowMissing = true; });
+    })
+  ];
+  zramSwap.enable = true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

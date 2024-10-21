@@ -18,6 +18,10 @@ in
   config = lib.mkMerge [
     ({
       networking.hostName = "ps42"; # Define your hostname.
+      programs.nix-ld = {
+        enable = true;
+        libraries = [ pkgs.gmp ] ++ pkgs.steam-run.fhsenv.args.multiPkgs pkgs;
+      };
 
       specialisation = {
         kde = {

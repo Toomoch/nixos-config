@@ -1,0 +1,16 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+        compatible = "brcm,bcm2837";
+        fragment@0 {
+                target = <&sdhost>;
+                __overlay__ {
+                        brcm,overclock-50 = <100>;
+                        brcm,pio-limit = <1>;
+                        status = "okay";
+                };
+        };
+
+
+};
