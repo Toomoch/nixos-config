@@ -39,14 +39,6 @@ in
         action = "<cmd>NvimTreeToggle<cr>";
         key = "<leader>e";
       }
-      #{
-      #  action = "<cmd>Telescope find_files<cr>";
-      #  key = "<leader>d";
-      #}
-      #{
-      #  action = "<cmd>Telescope live_grep<cr>";
-      #  key = "<leader>f";
-      #}
       {
         action = ''"+y'';
         key = "<leader>y";
@@ -117,6 +109,18 @@ in
         action = "<cmd>TmuxNavigatePrevious<cr>";
         key = "<M-\\>";
       }
+      {
+        action = "<C-d>zz";
+        key = "<C-d>";
+      }
+      {
+        action = "<C-u>zz";
+        key = "<C-u>";
+      }
+      {
+        action = ":E<cr>";
+        key = "-";
+      }
     ];
 
     colorschemes.gruvbox.enable = true;
@@ -179,8 +183,9 @@ in
       fzf-lua = {
         enable = true;
         keymaps = {
-          "<leader>f" = "live_grep";
-          "<leader>d" = "files";
+          "<leader>fg" = "grep_project";
+          "<leader>ff" = "files";
+          "<leader>fd" = "grep_curbuf";
         };
       };
       tmux-navigator = {

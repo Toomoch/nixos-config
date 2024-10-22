@@ -10,7 +10,7 @@ in
     extraGroups = [ "networkmanager" "wheel" "adbusers" "libvirtd" "docker" "dialout" ];
     packages = with pkgs; [ ];
 
-    initialHashedPassword = builtins.readFile "${private}/secrets/plain/inithashpass";
+    initialHashedPassword = builtins.readFile /${private}/secrets/plain/inithashpass;
     openssh.authorizedKeys.keys = secrets.authlist config.networking.hostName;
     shell = pkgs.bash;
   };
