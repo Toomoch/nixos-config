@@ -16,8 +16,6 @@ in
         settings = {
           experimental-features = [ "nix-command" "flakes" ];
           auto-optimise-store = true;
-          substituters = [ "https://deploy-rs.cachix.org" ];
-          trusted-public-keys = [ "deploy-rs.cachix.org-1:xfNobmiwF/vzvK1gpfediPwpdIP0rpDV2rYqx40zdSI=" ];
           builders-use-substitutes = true;
         };
         registry.nixpkgs.flake = nixpkgs;
