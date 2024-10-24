@@ -30,14 +30,11 @@
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
-    agenix-stable = {
-      url = "github:ryantm/agenix";
-      inputs.nixpkgs.follows = "nixpkgs-stable";
-    };
 
     agenix = {
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.darwin.follows = "";
     };
 
     nix-on-droid = {
@@ -45,14 +42,20 @@
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
+    nix-matlab = {
+      url = "gitlab:doronbehar/nix-matlab";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
-    nix-matlab.url = "gitlab:doronbehar/nix-matlab";
-
-    deploy-rs.url = "github:serokell/deploy-rs";
+    deploy-rs = {
+      url = "github:serokell/deploy-rs";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     #hyprland.url = "github:hyprwm/Hyprland";
 
     agenix-rekey = {
       url = "github:oddlama/agenix-rekey";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     #ags.url = "github:Aylur/ags";
@@ -60,10 +63,10 @@
 
   };
 
-  outputs = inputs@{ self, nixpkgs, home-manager, nixpkgs-stable, home-manager-stable, deploy-rs, nixvim, disko-stable, disko, nix-on-droid, agenix, agenix-rekey, agenix-stable, ... }:
+  outputs = inputs@{ self, nixpkgs, home-manager, nixpkgs-stable, home-manager-stable, deploy-rs, nixvim, disko-stable, disko, nix-on-droid, agenix, agenix-rekey, ... }:
     let
       flake-root = ./.;
-      private = flake-root + "/private";
+      private = /${flake-root}/private;
       forAllSystems = function:
         nixpkgs.lib.genAttrs [
           "x86_64-linux"
@@ -71,9 +74,9 @@
         ]
           (system: function nixpkgs.legacyPackages.${system});
 
-      secrets = import "${private}/secrets/secrets.nix";
+      secrets = import /${private}/secrets/secrets.nix;
 
-      stable = { nixpkgs = nixpkgs-stable; home-manager = home-manager-stable; disko = disko-stable; agenix = agenix-stable; };
+      stable = { nixpkgs = nixpkgs-stable; home-manager = home-manager-stable; disko = disko-stable; agenix = agenix; };
       unstable = { nixpkgs = nixpkgs; home-manager = home-manager; disko = disko; agenix = agenix; };
 
       hosts = [
@@ -140,7 +143,7 @@
               let # surely theres a better way of doing this
                 host-folder = secrets.hosts.${host}.hostFolder;
                 pkgs-unstable = import nixpkgs { system = arch; };
-                specialArgs = { inherit pkgs-unstable inputs secrets flake-root private agenix-rekey; nixpkgs = branch.nixpkgs; };
+                specialArgs = { inherit pkgs-unstable inputs secrets flake-root private agenix-rekey; nixpkgs = branch.nixpkgs; nixpkgs-unstable = nixpkgs; };
               in
               branch.nixpkgs.lib.nixosSystem {
                 system = arch;

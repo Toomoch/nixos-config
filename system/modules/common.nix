@@ -1,4 +1,4 @@
-{ inputs, config, lib, pkgs, nixpkgs, secrets, ... }:
+{ inputs, config, lib, pkgs, nixpkgs, secrets, nixpkgs-unstable, ... }:
 let
   cfg = config.common;
 in
@@ -12,13 +12,14 @@ in
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
       nix = {
-        nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
+        nixPath = [ "nixpkgs=${nixpkgs}" ];
         settings = {
           experimental-features = [ "nix-command" "flakes" ];
           auto-optimise-store = true;
           builders-use-substitutes = true;
         };
         registry.nixpkgs.flake = nixpkgs;
+        registry.nixpkgs-unstable.flake = nixpkgs-unstable;
         gc = {
           automatic = true;
           dates = "weekly";
