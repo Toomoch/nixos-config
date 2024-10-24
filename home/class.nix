@@ -1,10 +1,10 @@
-{ pkgs, ... }:
+{ pkgs, pkgs-unstable, nixpkgs-unstable, ... }:
 {
   home.packages = with pkgs; [
     graphviz
     kubectl
     openfortivpn
-    unityhub
+    pkgs-unstable.unityhub
     texliveFull
     zathura
     minizinc

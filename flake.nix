@@ -142,7 +142,7 @@
             value =
               let # surely theres a better way of doing this
                 host-folder = secrets.hosts.${host}.hostFolder;
-                pkgs-unstable = import nixpkgs { system = arch; };
+                pkgs-unstable = import nixpkgs { system = arch; config.allowUnfree = true; };
                 specialArgs = { inherit pkgs-unstable inputs secrets flake-root private agenix-rekey; nixpkgs = branch.nixpkgs; nixpkgs-unstable = nixpkgs; };
               in
               branch.nixpkgs.lib.nixosSystem {
