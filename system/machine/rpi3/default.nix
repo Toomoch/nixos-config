@@ -29,29 +29,29 @@ in
   boot.supportedFilesystems.zfs = lib.mkForce false;
   # Use the extlinux boot loader. (NixOS wants to enable GRUB by default)
   boot.loader.grub.enable = false;
-  # Enables the generation of /boot/extlinux/extlinux.conf
   boot.loader.generic-extlinux-compatible.enable = true;
 
   nixpkgs.hostPlatform = lib.mkDefault "aarch64-linux";
-  boot.initrd.availableKernelModules = [ "usb_storage" ];
 
   users.users.arnau.openssh.authorizedKeys.keyFiles = [
     "${private}/secrets/ssh/id_ed25519.borgnextcloud.pub"
   ];
 
+  # USB storage
+  boot.initrd.availableKernelModules = [ "usb_storage" ];
   fileSystems."/external" = {
     device = "/dev/disk/by-id/usb-WD_Elements_10B8_575833314539343830434630-0:0-part1";
     fsType = "ext4";
     options = [ "nofail" ];
   };
 
-  boot.kernelParams = [ "cma=4M" ];
   networking.useDHCP = lib.mkDefault true;
 
+  # Pi specific stuff
   boot = {
+    kernelParams = [ "cma=4M" ];
     kernelPackages = pkgs.linuxPackages_rpi3;
   };
-
   hardware.deviceTree = {
     filter = "*2837-rpi-3-b*";
     overlays = [
