@@ -15,6 +15,12 @@ deployremote HOSTNAME: gitadd
 build HOSTNAME="$(hostname)": gitadd
   nixos-rebuild build --flake .\?submodules=1#{{HOSTNAME}}
 
+rebuildremote HOSTNAME="$(hostname)": gitadd
+  ssh-add && \
+  user=$(ssh -G h81 | grep -w ^user | cut -d " " -f2) && \
+  host=$(ssh -G h81 | grep -w ^hostname | cut -d " " -f2) && \
+  sudo NIX_SSHOPTS="-o ForwardAgent=yes" nixos-rebuild switch --flake .\?submodules=1#{{HOSTNAME}} --build-host ${user}@${host}
+
 rebuild HOSTNAME="$(hostname)": gitadd
   sudo nixos-rebuild switch --flake .\?submodules=1#{{HOSTNAME}}
 

@@ -116,28 +116,25 @@ in
         setEnv = {
           TERM = "xterm-256color";
         };
+        extraOptions = { AddKeysToAgent = "yes"; };
       };
 
       "oracle1" = {
         hostname = secrets.hosts.oracle1.dns;
-        extraOptions = { AddKeysToAgent = "yes"; };
         forwardAgent = true;
       };
       "oracle2" = {
         hostname = secrets.hosts.oracle2.dns;
-        extraOptions = { AddKeysToAgent = "yes"; };
         forwardAgent = true;
       };
 
       "h81" = {
         hostname = secrets.hosts.h81.dns;
-        extraOptions = { AddKeysToAgent = "yes"; };
         forwardAgent = true;
       };
 
       "rpi3" = {
         hostname = secrets.hosts.rpi3.dns;
-        extraOptions = { AddKeysToAgent = "yes"; };
         forwardAgent = true;
       };
     };
