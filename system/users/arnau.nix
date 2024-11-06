@@ -34,6 +34,7 @@ in
     Defaults env_keep+=SSH_AUTH_SOCK
   '';
 
-  age.secrets.passwordfile-arnau.rekeyFile = "${private}/secrets/age/password.age";
+  # Disabled because for new deployments we can't decrypt the passowrd, for example pi3 sdcard
+  # age.secrets.passwordfile-arnau.rekeyFile = "${private}/secrets/age/password.age";
   nix.settings.trusted-users = [ "${user}" ];
 }

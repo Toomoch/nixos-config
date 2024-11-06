@@ -8,7 +8,7 @@ in
   };
 
   imports = [
-    (import "${private}/modules/homepage.nix" {
+    (import /${private}/system/homepage.nix {
       inherit secrets;
     })
   ];

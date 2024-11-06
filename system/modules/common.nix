@@ -122,6 +122,28 @@ in
     (lib.mkIf cfg.cloud.enable {
       services.fail2ban.enable = true;
       services.openssh.settings.PasswordAuthentication = false;
+      environment.noXlibs = lib.mkForce false;
+      boot.initrd = {
+        availableKernelModules = [
+          "virtio_net"
+          "virtio_pci"
+          "virtio_mmio"
+          "virtio_blk"
+          "virtio_scsi"
+        ];
+        kernelModules = [
+          "virtio_balloon"
+          "virtio_console"
+          "virtio_rng"
+        ];
+      };
+      boot.kernelParams = [
+        # Disable auditing
+        "audit=0"
+        # Do not generate NIC names based on PCIe addresses (e.g. enp1s0, useless for VPS)
+        # Generate names based on orders (e.g. eth0)
+        "net.ifnames=0"
+      ];
     })
 
   ];

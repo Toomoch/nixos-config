@@ -1,11 +1,11 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, nixpkgs, ... }:
 {
   imports = [
     ./hardware-configuration.nix
     ../../users/arnau.nix
+    # Minimal stuff
+    (nixpkgs.outPath + "/nixos/modules/profiles/minimal.nix")
   ];
-
-  nixpkgs.config.allowUnfree = true;
 
   networking.hostName = "oracle1";
 
@@ -16,26 +16,6 @@
   vm.docker.enable  = true;
   security.polkit.enable = true;
   homelab.enablevps = true;
-  boot.initrd.availableKernelModules = [
-    "virtio_net"
-    "virtio_pci"
-    "virtio_mmio"
-    "virtio_blk"
-    "virtio_scsi"
-  ];
-  boot.initrd.kernelModules = [
-    "virtio_balloon"
-    "virtio_console"
-    "virtio_rng"
-  ];
-
-  boot.kernelParams = [
-    # Disable auditing
-    "audit=0"
-    # Do not generate NIC names based on PCIe addresses (e.g. enp1s0, useless for VPS)
-    # Generate names based on orders (e.g. eth0)
-    "net.ifnames=0"
-  ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
