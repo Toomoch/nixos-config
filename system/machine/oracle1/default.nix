@@ -1,4 +1,4 @@
-{ config, pkgs, lib, nixpkgs, ... }:
+{ config, pkgs, lib, nixpkgs, secrets, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -9,11 +9,13 @@
 
   networking.hostName = "oracle1";
 
+  services.openssh.ports = [ secrets.hosts.oracle1.sshPort ];
+
   common.enable = true;
   common.systemd-boot.enable = true;
   common.cloud.enable = true;
   vm.podman.enable = true;
-  vm.docker.enable  = true;
+  vm.docker.enable = true;
   security.polkit.enable = true;
   homelab.enablevps = true;
 

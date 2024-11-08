@@ -122,10 +122,12 @@ in
       "oracle1" = {
         hostname = secrets.hosts.oracle1.dns;
         forwardAgent = true;
+        port = secrets.hosts.oracle1.sshPort; 
       };
       "oracle2" = {
         hostname = secrets.hosts.oracle2.dns;
         forwardAgent = true;
+        port = secrets.hosts.oracle2.sshPort; 
       };
 
       "h81" = {

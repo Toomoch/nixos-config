@@ -120,8 +120,28 @@ in
 
     })
     (lib.mkIf cfg.cloud.enable {
-      services.fail2ban.enable = true;
-      services.openssh.settings.PasswordAuthentication = false;
+      services.fail2ban = {
+        enable = true;
+        maxretry = 5;
+        bantime-increment.enable = true;
+      };
+      # Harden SSH
+      services.openssh = {
+        settings = {
+          X11Forwarding = false;
+          PasswordAuthentication = false;
+          KbdInteractiveAuthentication = false;
+          PermitRootLogin = "no";
+          MaxSessions = 2;
+          MaxAuthTries = 3;
+          ClientAliveCountMax = 2;
+          AllowTcpForwarding = "no";
+          AllowAgentForwarding = "yes";
+          AllowStreamLocalForwarding = "no";
+          AuthenticationMethods = "publickey";
+          TCPKeepAlive = "no";
+        };
+      };
       environment.noXlibs = lib.mkForce false;
       boot.initrd = {
         availableKernelModules = [

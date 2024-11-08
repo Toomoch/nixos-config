@@ -14,16 +14,22 @@ in
     openssh.authorizedKeys.keys = secrets.authlist config.networking.hostName;
     shell = pkgs.bash;
   };
-  programs.zsh.enable = true;
+  programs.starship.enable = true;
+  programs.fzf.fuzzyCompletion = true;
+  programs.fzf.keybindings = true;
 
-  security.pam.services.sudo.u2fAuth = true;
-  security.pam.services.login.u2fAuth = true;
-  security.pam.services.greetd.u2fAuth = true;
-  security.pam.u2f = {
-    enable = true;
-    cue = true;
-    origin = "pam://arnau";
-    authFile = "${private}/secrets/plain/u2f_keys";
+  security.pam = {
+    services = {
+      sudo.u2fAuth = true;
+      login.u2fAuth = true;
+      greetd.u2fAuth = true;
+    };
+    u2f = {
+      enable = true;
+      cue = true;
+      origin = "pam://arnau";
+      authFile = "${private}/secrets/plain/u2f_keys";
+    };
   };
 
   # pam_rssh

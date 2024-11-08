@@ -1,4 +1,4 @@
-{ config, pkgs, lib, private, nixpkgs, ... }:
+{ config, pkgs, lib, private, nixpkgs, secrets, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -9,6 +9,8 @@
   ];
 
   networking.hostName = "oracle2";
+
+  services.openssh.ports = [ secrets.hosts.oracle2.sshPort ];
 
   common.enable = true;
   common.systemd-boot.enable = true;
