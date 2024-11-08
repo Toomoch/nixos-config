@@ -33,3 +33,5 @@ update:
 cleangen:
   sudo nix-collect-garbage -d && nix-collect-garbage -d
 
+repl:
+  nix repl --expr 'builtins.getFlake (toString ./.)'
