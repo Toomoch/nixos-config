@@ -17,6 +17,7 @@ in
   ];
 
   networking.hostName = "rpi3"; # Define your hostname.
+  nixpkgs.hostPlatform = lib.mkDefault "aarch64-linux";
 
   environment.systemPackages = [
     pkgs.libraspberrypi
@@ -26,11 +27,15 @@ in
   common.enable = true;
   hardware.enableRedistributableFirmware = true;
   boot.supportedFilesystems.zfs = lib.mkForce false;
+  services.tailscale = {
+    enable = true;
+    useRoutingFeatures = "both";
+  };
+
   # Use the extlinux boot loader. (NixOS wants to enable GRUB by default)
   boot.loader.grub.enable = false;
   boot.loader.generic-extlinux-compatible.enable = true;
-
-  nixpkgs.hostPlatform = lib.mkDefault "aarch64-linux";
+  zramSwap.enable = true;
 
   users.users.arnau.openssh.authorizedKeys.keyFiles = [
     "${private}/secrets/ssh/id_ed25519.borgnextcloud.pub"
@@ -64,7 +69,6 @@ in
         super.makeModulesClosure (x // { allowMissing = true; });
     })
   ];
-  zramSwap.enable = true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
