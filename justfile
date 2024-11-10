@@ -12,6 +12,7 @@ deploy HOSTNAME: gitadd
 deployremote HOSTNAME: gitadd
   deploy .\?submodules=1#{{HOSTNAME}} --skip-checks --remote-build
 
+
 build HOSTNAME="$(hostname)": gitadd
   nixos-rebuild build --flake .\?submodules=1#{{HOSTNAME}}
 
@@ -23,6 +24,9 @@ rebuildremote HOSTNAME="$(hostname)": gitadd
 
 rebuild HOSTNAME="$(hostname)": gitadd
   sudo nixos-rebuild switch --flake .\?submodules=1#{{HOSTNAME}}
+
+rebuildtarget HOSTNAME: gitadd
+  nixos-rebuild switch --flake .\?submodules=1#{{HOSTNAME}} --target-host {{HOSTNAME}} --use-remote-sudo
 
 droid: gitadd
   nix-on-droid switch --flake .\?submodules=1
