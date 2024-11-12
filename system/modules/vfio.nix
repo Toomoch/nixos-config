@@ -32,7 +32,7 @@ in
       hardware.opengl.enable = true;
       virtualisation.spiceUSBRedirection.enable = true;
       systemd.tmpfiles.rules = [
-        "f /dev/shm/looking-glass 0660 arnau libvirtd -"
+        "f /dev/shm/looking-glass 0661 arnau libvirtd -"
       ];
 
       environment.systemPackages = with pkgs; [

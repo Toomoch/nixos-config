@@ -4,7 +4,6 @@
     graphviz
     kubectl
     openfortivpn
-    pkgs-unstable.unityhub
     texliveFull
     zathura
     minizinc

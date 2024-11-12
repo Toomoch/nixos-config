@@ -59,7 +59,7 @@
     };
 
     nixvim-flake = {
-      url = "path:./nixvim";
+      url = "git+file:.?dir=nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
 
     };

@@ -886,14 +886,18 @@
         "nixvim": "nixvim_2"
       },
       "locked": {
-        "lastModified": 1,
-        "narHash": "sha256-huY7ynMMHBHc96hGydCCJ3CFXK7k0ATRMedwoKbfbxQ=",
-        "path": "./nixvim",
-        "type": "path"
+        "dir": "nixvim",
+        "dirtyRev": "3d2c578552c01ff8557aa593408cd0fc7c5efb1b-dirty",
+        "dirtyShortRev": "3d2c578-dirty",
+        "lastModified": 1731421430,
+        "narHash": "sha256-OCBfEvRl2FisPpmVK4xPdAsmtjPW0IgzQ10x0Y5qEyE=",
+        "type": "git",
+        "url": "file:.?dir=nixvim"
       },
       "original": {
-        "path": "./nixvim",
-        "type": "path"
+        "dir": "nixvim",
+        "type": "git",
+        "url": "file:.?dir=nixvim"
       }
     },
     "nixvim_2": {
