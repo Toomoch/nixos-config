@@ -58,6 +58,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nixvim-flake = {
+      url = "path:./nixvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+
+    };
     #ags.url = "github:Aylur/ags";
     #matugen.url = "github:InioX/matugen";
 

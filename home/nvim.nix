@@ -1,4 +1,4 @@
-{ lib, pkgs, config, ... }:
+{ lib, pkgs, config, inputs, ... }:
 let
   shellaliases = {
     vim = "nvim";
@@ -14,7 +14,7 @@ let
   };
 in
 {
-  home.packages = with pkgs; [ ripgrep bitbake-language-server ];
+  home.packages = with pkgs; [ ripgrep bitbake-language-server inputs.nixvim-flake.packages.${system}.default ];
   # :autocmd BufNewFile,BufRead sw-description set ft=cfg
 
   #programs.bash.shellAliases = shellaliases;
@@ -31,7 +31,7 @@ in
       vimPlugins.vim-markdown-toc
       vim-minizinc
     ];
-    enable = true;
+    enable = false;
     clipboard.providers.wl-copy.enable = true;
     vimAlias = true;
     keymaps = [
