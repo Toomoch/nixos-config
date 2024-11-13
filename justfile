@@ -14,7 +14,7 @@ deployremote HOSTNAME: gitadd
 
 
 build HOSTNAME="$(hostname)": gitadd
-  nixos-rebuild build --flake .\?submodules=1#{{HOSTNAME}}
+  nixos-rebuild build --flake .\?submodules=1#{{HOSTNAME}} --show-trace
 
 rebuildremote HOSTNAME="$(hostname)": gitadd
   ssh-add && \

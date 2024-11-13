@@ -17,7 +17,7 @@ in {
   home.packages = with pkgs; [
     ripgrep
     bitbake-language-server
-    inputs.nixvim-flake.packages.${system}.default
+    inputs.self.outputs.packages.${system}.nvim
   ];
 
   programs.bash.shellAliases = shellaliases;

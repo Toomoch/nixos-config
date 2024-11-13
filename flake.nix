@@ -15,10 +15,10 @@
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
-    nixvim = {
-      url = "github:nix-community/nixvim/nixos-24.05";
-      inputs.nixpkgs.follows = "nixpkgs-stable";
-    };
+    #nixvim = {
+    #  url = "github:nix-community/nixvim/nixos-24.05";
+    #  inputs.nixpkgs.follows = "nixpkgs-stable";
+    #};
 
     disko = {
       url = "github:nix-community/disko";
@@ -30,6 +30,15 @@
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
+    nixvim = { url = "github:nix-community/nixvim"; 
+      inputs.nixpkgs.follows = "nixpkgs"; 
+      inputs.devshell.follows = "";
+      inputs.flake-compat.follows = "";
+      inputs.git-hooks.follows = "";
+      inputs.home-manager.follows = "";
+      inputs.nix-darwin.follows = "";
+      inputs.treefmt-nix.follows = "";
+  };
 
     agenix = {
       url = "github:ryantm/agenix";
@@ -58,11 +67,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixvim-flake = {
-      url = "github:Toomoch/nixos-config?dir=nixvim";
-      inputs.nixpkgs.follows = "nixpkgs";
-
-    };
     #ags.url = "github:Aylur/ags";
     #matugen.url = "github:InioX/matugen";
 
@@ -72,12 +76,25 @@
     let
       flake-root = ./.;
       private = /${flake-root}/private;
-      forAllSystems = function:
-        nixpkgs.lib.genAttrs [
-          "x86_64-linux"
-          "aarch64-linux"
-        ]
-          (system: function nixpkgs.legacyPackages.${system});
+      forAllSystems = {
+      pkgs ? nixpkgs,
+      function,
+    }:
+      nixpkgs.lib.genAttrs [
+        "x86_64-linux"
+        "aarch64-linux"
+      ]
+      (system:
+        function {
+          pkgs = import pkgs {
+            inherit system;
+            config.allowUnfree = true;
+            overlays = [
+              #inputs.something.overlays.default
+            ];
+          };
+          inherit system;
+        });
 
       secrets = import /${private}/secrets/secrets.nix;
 
@@ -95,11 +112,30 @@
         { host = "vm"; arch = "x86_64-linux"; branch = stable; hm = true; }
 
       ];
+
+      buildVimModule = {
+      system,
+      module,
+    }: let
+      nixvimPkgs = nixvim.legacyPackages.${system};
+      nixVimModule = {
+        inherit module;
+      };
+    in
+      nixvimPkgs.makeNixvimWithModule nixVimModule;
+
     in
     {
-      packages = forAllSystems (pkgs: {
-        default = import ./shell.nix { inherit pkgs; };
-      });
+      packages = forAllSystems {
+        pkgs = nixpkgs;
+        function = {system, ...}: {
+          default = import ./shell.nix { pkgs = import nixpkgs { inherit system; }; };
+          nvim = buildVimModule {
+            inherit system;
+            module = ./nixvim;
+          };
+        };
+      };
       nixOnDroidConfigurations.default = nix-on-droid.lib.nixOnDroidConfiguration {
         extraSpecialArgs =
           let
