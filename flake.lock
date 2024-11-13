@@ -887,17 +887,18 @@
       },
       "locked": {
         "dir": "nixvim",
-        "dirtyRev": "3d2c578552c01ff8557aa593408cd0fc7c5efb1b-dirty",
-        "dirtyShortRev": "3d2c578-dirty",
-        "lastModified": 1731421430,
-        "narHash": "sha256-OCBfEvRl2FisPpmVK4xPdAsmtjPW0IgzQ10x0Y5qEyE=",
-        "type": "git",
-        "url": "file:.?dir=nixvim"
+        "lastModified": 1731487087,
+        "narHash": "sha256-UJvS7muDi3pcKhd1nqOraqfUEHw0d+axYp+8e5VQf3E=",
+        "owner": "Toomoch",
+        "repo": "nixos-config",
+        "rev": "ef244970321795b8fbfed3eed9177d4b8f2ff725",
+        "type": "github"
       },
       "original": {
         "dir": "nixvim",
-        "type": "git",
-        "url": "file:.?dir=nixvim"
+        "owner": "Toomoch",
+        "repo": "nixos-config",
+        "type": "github"
       }
     },
     "nixvim_2": {

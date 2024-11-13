@@ -59,7 +59,7 @@
     };
 
     nixvim-flake = {
-      url = "git+file:.?dir=nixvim";
+      url = "github:Toomoch/nixos-config?dir=nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
 
     };
