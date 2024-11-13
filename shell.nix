@@ -20,7 +20,7 @@ pkgs.mkShell {
     home-manager
     git
     git-crypt
-    nixFlakes
+    nixVersions.stable
     gnumake
     tmux
     vim
