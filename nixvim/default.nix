@@ -10,7 +10,10 @@
 
   clipboard.providers.wl-copy.enable = true;
 
-  colorschemes.vscode.enable = true;
+  colorschemes.kanagawa = {
+    enable = true;
+    settings.background.dark = "dragon";
+  };
 
   keymaps = [
     {
