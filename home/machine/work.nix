@@ -2,7 +2,7 @@
 let
   vars = import ../sway/functions.nix { inherit pkgs lib; };
   internal_name = "Samsung Display Corp. 0x417B Unknown";
-  workplace_name = "LG Electronics LG ULTRAWIDE 0x00065E5A";
+  workplace_name = "ASUSTek COMPUTER INC VG34VQEL1A S4LMDW002954";
   ultrawide_hdmi_name = "LG Electronics LG ULTRAWIDE 0x0003BECD";
   hostname = osConfig.networking.hostName;
 in
@@ -68,12 +68,13 @@ in
         outputs = [
           {
             criteria = workplace_name;
+            mode = "3440x1440@75Hz";
             position = "1440,0";
             status = "enable";
           }
           {
             criteria = internal_name;
-            position = "0,0";
+            position = "0,540";
             status = "enable";
           }
         ];
