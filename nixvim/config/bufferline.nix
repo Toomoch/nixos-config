@@ -192,7 +192,7 @@
         texlab.enable = true;
         dockerls.enable = true;
         clangd.enable = true;
-        ruff_lsp.enable = true;
+        ruff.enable = true;
         jsonls.enable = true;
         bashls.enable = true;
         ansiblels = {
