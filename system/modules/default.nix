@@ -9,5 +9,6 @@ inputs: { sops-nix, ...}:
     ./homelab
     ./secrets.nix
     ./overlays.nix
+    ./vfio.nix
   ];
 }

@@ -16,7 +16,6 @@ in
           "vfio_pci"
           "vfio"
           "vfio_iommu_type1"
-          "vfio_virqfd"
 
           "nouveau"
         ];

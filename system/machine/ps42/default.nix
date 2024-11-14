@@ -7,13 +7,9 @@ let
     export __VK_LAYER_NV_optimus=NVIDIA_only
     exec "$@"
   '';
-in
-{
-  imports = [
-    ./hardware-configuration.nix
-    ../../users/arnau.nix
-    ../../users/aina.nix
-  ];
+in {
+  imports =
+    [ ./hardware-configuration.nix ../../users/arnau.nix ../../users/aina.nix ];
 
   config = lib.mkMerge [
     ({
@@ -40,9 +36,7 @@ in
           configuration = {
             desktop.regreet.enable = true;
             desktop.sway.enable = true;
-            environment.systemPackages = [
-              nvidia-offload
-            ];
+            environment.systemPackages = [ nvidia-offload ];
             desktop.hyprland.enable = false;
             # Power management
             services.tlp = {
@@ -57,7 +51,8 @@ in
             };
             services.xserver.videoDrivers = [ "nvidia" ];
             environment.sessionVariables.WLR_DRM_DEVICES = "/dev/dri/card0";
-            hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable;
+            hardware.nvidia.package =
+              config.boot.kernelPackages.nvidiaPackages.stable;
             hardware.nvidia = {
               # Modesetting is required.
               modesetting.enable = true;
@@ -76,9 +71,7 @@ in
         };
       };
 
-      environment.systemPackages = with pkgs; [
-        powertop
-      ];
+      environment.systemPackages = with pkgs; [ powertop ];
 
       common.enable = true;
       common.systemd-boot.enable = true;
@@ -86,21 +79,16 @@ in
       desktop.arctis9.enable = false;
       desktop.matlab.enable = false;
       vm.podman.enable = true;
-      vm.libvirtd.enable = false;
-
+      #vm.libvirtd.enable = false;
 
       # Enable VAAPI hardware acceleration
       hardware.opengl = {
         enable = true;
-        extraPackages = with pkgs; [
-          intel-media-driver
-        ];
+        extraPackages = with pkgs; [ intel-media-driver ];
       };
       programs.firefox = {
         enable = true;
-        preferences = {
-          "media.ffmpeg.vaapi.enabled" = true;
-        };
+        preferences = { "media.ffmpeg.vaapi.enabled" = true; };
       };
 
       boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
@@ -131,10 +119,12 @@ in
       system.stateVersion = "22.11"; # Did you read the comment?
     })
     (lib.mkIf (config.specialisation != { }) {
-      desktop.blacklistnvidia.enable = true;
+#      desktop.blacklistnvidia.enable = true;
       desktop.sway.enable = true;
       desktop.regreet.enable = true;
       desktop.hyprland.enable = false;
+      vm.libvirtd.enable = true;
+      vfio.enable = true;
       services.tlp = {
         enable = true;
         settings = {
@@ -147,7 +137,5 @@ in
       };
     })
   ];
-
-
 
 }
