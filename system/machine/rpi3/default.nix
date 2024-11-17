@@ -34,14 +34,22 @@ in
     useRoutingFeatures = "both";
   };
 
+  # Borg repos
+  services.borgbackup.repos = {
+    nextcloud = {
+      path = "/external/nextcloud";
+      authorizedKeys = [ "${builtins.readFile /${private}/secrets/ssh/id_ed25519.borgnextcloud.pub}" ];
+    };
+  };
+
   # Use the extlinux boot loader. (NixOS wants to enable GRUB by default)
   boot.loader.grub.enable = false;
   boot.loader.generic-extlinux-compatible.enable = true;
   zramSwap.enable = true;
 
-  users.users.arnau.openssh.authorizedKeys.keyFiles = [
-    "${private}/secrets/ssh/id_ed25519.borgnextcloud.pub"
-  ];
+  #users.users.arnau.openssh.authorizedKeys.keyFiles = [
+  #  "${private}/secrets/ssh/id_ed25519.borgnextcloud.pub"
+  #];
 
   # USB storage
   boot.initrd.availableKernelModules = [ "usb_storage" ];

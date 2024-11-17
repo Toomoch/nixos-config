@@ -1,11 +1,11 @@
 { inputs, pkgs, lib, config, secrets, private, ... }:
 let
   vars = import ./variables.nix { inherit config inputs pkgs lib secrets; };
-  dataBase = "${vars.serviceData}/postgresql/${config.services.postgresql.package.psqlSchema}";
+  dataBase =
+    "${vars.serviceData}/postgresql/${config.services.postgresql.package.psqlSchema}";
   pgBackups = "${vars.serviceData}/backups/postgresql";
   ncHome = "${vars.serviceData}/nextcloud";
-in
-{
+in {
 
   options.homelab = {
     nextcloud.enable = lib.mkEnableOption "Whether to enable Nextcloud";
@@ -47,6 +47,10 @@ in
             path = "/zstorage/backup";
             label = "local";
           }
+          {
+            label = "rpi3";
+            path = "ssh://borg@${secrets.hosts.rpi3.dns}/./";
+          }
         ];
         postgresql_databases = [
           {
@@ -68,9 +72,11 @@ in
           ''echo "Disabling maintenance mode..."''
           "${config.services.nextcloud.occ}/bin/nextcloud-occ maintenance:mode --off"
         ];
-        ssh_command = "${pkgs.openssh}/bin/ssh -i ${config.age.secrets.borgnextcloud.path}";
+        ssh_command =
+          "${pkgs.openssh}/bin/ssh -i ${config.age.secrets.borgnextcloud.path}";
         keep_daily = 7;
         keep_weekly = 4;
+        encryption_passcommand = "cat ${config.age.secrets.borgnextcloud_repokey.path}";
       };
     };
 
@@ -82,6 +88,12 @@ in
       rekeyFile = "${private}/secrets/age/borgnextcloud.age";
       owner = "nextcloud";
       group = "nextcloud";
+    };
+
+    age.secrets.borgnextcloud_repokey = {
+      rekeyFile = "${private}/secrets/age/borgnextcloud_repokey.age";
+      owner = "root";
+      group = "root";
     };
 
     age.secrets.nextcloud = {
@@ -108,7 +120,8 @@ in
       extraApps = with config.services.nextcloud.package.packages.apps; {
         # List of apps we want to install and are already packaged in
         # https://github.com/NixOS/nixpkgs/blob/master/pkgs/servers/nextcloud/packages/nextcloud-apps.json
-        inherit calendar contacts mail notes tasks memories previewgenerator onlyoffice;
+        inherit calendar contacts mail notes tasks memories previewgenerator
+          onlyoffice;
       };
       settings = {
         default_phone_region = "ES";
@@ -129,13 +142,9 @@ in
         "output_buffering" = "0";
       };
     };
-    systemd.services.nextcloud-cron = {
-      path = [ pkgs.perl ];
-    };
+    systemd.services.nextcloud-cron = { path = [ pkgs.perl ]; };
 
-    services.nginx = {
-      enable = lib.mkForce false;
-    };
+    services.nginx = { enable = lib.mkForce false; };
 
     systemd.services.phpfpm-nextcloud.serviceConfig = {
       DeviceAllow = [ "/dev/dri/renderD128" ];
@@ -149,64 +158,62 @@ in
     };
     users.users.caddy.extraGroups = [ "nextcloud" ];
 
-    services.caddy =
-      let
-        cfg = config.services.nextcloud;
-        fpm = config.services.phpfpm.pools.nextcloud;
-      in
-      {
-        virtualHosts."https://${cfg.hostName}" = {
-          extraConfig = ''
-            encode zstd gzip
-            root * ${config.services.nginx.virtualHosts.${cfg.hostName}.root}
-            redir /.well-known/carddav /remote.php/dav/ 301
-            redir /.well-known/caldav /remote.php/dav/ 301
-            redir /.well-known/* /index.php{uri} 301
-            redir /remote/* /remote.php{uri} 301
-            header {
-              Strict-Transport-Security max-age=31536000
-              Permissions-Policy interest-cohort=()
-              X-Content-Type-Options nosniff
-              X-Frame-Options SAMEORIGIN
-              Referrer-Policy no-referrer
-              X-XSS-Protection "1; mode=block"
-              X-Permitted-Cross-Domain-Policies none
-              X-Robots-Tag "noindex, nofollow"
-              -X-Powered-By
-            }
-            php_fastcgi unix/${fpm.socket} {
-              root ${config.services.nginx.virtualHosts.${cfg.hostName}.root}
-              env front_controller_active true
-              env modHeadersAvailable true
-            }
-            @forbidden {
-              path /build/* /tests/* /config/* /lib/* /3rdparty/* /templates/* /data/*
-              path /.* /autotest* /occ* /issue* /indie* /db_* /console*
-              not path /.well-known/*
-            }
-            error @forbidden 404
-            @immutable {
-              path *.css *.js *.mjs *.svg *.gif *.png *.jpg *.ico *.wasm *.tflite
-              query v=*
-            }
-            header @immutable Cache-Control "max-age=15778463, immutable"
-            @static {
-              path *.css *.js *.mjs *.svg *.gif *.png *.jpg *.ico *.wasm *.tflite
-              not query v=*
-            }
-            header @static Cache-Control "max-age=15778463"
-            @woff2 path *.woff2
-            header @woff2 Cache-Control "max-age=604800"
-            file_server
-          '';
-        };
-        virtualHosts."office.${secrets.domain}".extraConfig = ''
-          reverse_proxy http://127.0.0.1:8000 {
-            # Required to circumvent bug of Onlyoffice loading mixed non-https content
-            header_up X-Forwarded-Proto https
+    services.caddy = let
+      cfg = config.services.nextcloud;
+      fpm = config.services.phpfpm.pools.nextcloud;
+    in {
+      virtualHosts."https://${cfg.hostName}" = {
+        extraConfig = ''
+          encode zstd gzip
+          root * ${config.services.nginx.virtualHosts.${cfg.hostName}.root}
+          redir /.well-known/carddav /remote.php/dav/ 301
+          redir /.well-known/caldav /remote.php/dav/ 301
+          redir /.well-known/* /index.php{uri} 301
+          redir /remote/* /remote.php{uri} 301
+          header {
+            Strict-Transport-Security max-age=31536000
+            Permissions-Policy interest-cohort=()
+            X-Content-Type-Options nosniff
+            X-Frame-Options SAMEORIGIN
+            Referrer-Policy no-referrer
+            X-XSS-Protection "1; mode=block"
+            X-Permitted-Cross-Domain-Policies none
+            X-Robots-Tag "noindex, nofollow"
+            -X-Powered-By
           }
+          php_fastcgi unix/${fpm.socket} {
+            root ${config.services.nginx.virtualHosts.${cfg.hostName}.root}
+            env front_controller_active true
+            env modHeadersAvailable true
+          }
+          @forbidden {
+            path /build/* /tests/* /config/* /lib/* /3rdparty/* /templates/* /data/*
+            path /.* /autotest* /occ* /issue* /indie* /db_* /console*
+            not path /.well-known/*
+          }
+          error @forbidden 404
+          @immutable {
+            path *.css *.js *.mjs *.svg *.gif *.png *.jpg *.ico *.wasm *.tflite
+            query v=*
+          }
+          header @immutable Cache-Control "max-age=15778463, immutable"
+          @static {
+            path *.css *.js *.mjs *.svg *.gif *.png *.jpg *.ico *.wasm *.tflite
+            not query v=*
+          }
+          header @static Cache-Control "max-age=15778463"
+          @woff2 path *.woff2
+          header @woff2 Cache-Control "max-age=604800"
+          file_server
         '';
       };
+      virtualHosts."office.${secrets.domain}".extraConfig = ''
+        reverse_proxy http://127.0.0.1:8000 {
+          # Required to circumvent bug of Onlyoffice loading mixed non-https content
+          header_up X-Forwarded-Proto https
+        }
+      '';
+    };
     # Workaround because the nextcloud module requires nginx
     users.users.nginx = {
       group = "nginx";
