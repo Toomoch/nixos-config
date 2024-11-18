@@ -1,10 +1,6 @@
 { config, inputs, nixpkgs, pkgs, lib, secrets, private, ... }:
 let
-  dt_ao_overlay = _final: prev: {
-    deviceTree = prev.deviceTree // {
-      applyOverlays = _final.callPackage ./apply-overlays-dtmerge.nix { };
-    };
-  };
+
 in
 {
   imports = [
@@ -37,7 +33,7 @@ in
   # Borg repos
   services.borgbackup.repos = {
     nextcloud = {
-      path = "/external/nextcloud";
+      path = "/external/borg/nextcloud";
       authorizedKeys = [ "${builtins.readFile /${private}/secrets/ssh/id_ed25519.borgnextcloud.pub}" ];
     };
   };
@@ -62,23 +58,23 @@ in
   networking.useDHCP = lib.mkDefault true;
 
   # Pi specific stuff
-  boot = {
-    kernelParams = [ "cma=4M" ];
-    kernelPackages = pkgs.linuxPackages_rpi3;
-  };
-  hardware.deviceTree = {
-    filter = "*2837-rpi-3-b*";
-    overlays = [
-      { name = "sdoverclock"; dtsFile = ./sdhost-overclock.dts; }
-    ];
-  };
-  nixpkgs.overlays = [
-    #dt_ao_overlay
-    (final: super: {
-      makeModulesClosure = x:
-        super.makeModulesClosure (x // { allowMissing = true; });
-    })
-  ];
+  #boot = {
+  #  kernelParams = [ "cma=4M" ];
+  #  kernelPackages = pkgs.linuxPackages_rpi3;
+  #};
+  #hardware.deviceTree = {
+  #  filter = "*2837-rpi-3-b*";
+  #  overlays = [
+  #    { name = "sdoverclock"; dtsFile = ./sdhost-overclock.dts; }
+  #  ];
+  #};
+  #nixpkgs.overlays = [
+  #  #dt_ao_overlay
+  #  (final: super: {
+  #    makeModulesClosure = x:
+  #      super.makeModulesClosure (x // { allowMissing = true; });
+  #  })
+  #];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
