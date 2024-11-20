@@ -3,7 +3,8 @@ let
   nixos-config = "~/projects/nixos-config";
   sshpath = "${config.home.homeDirectory}/.ssh/id_ed25519";
   sshfix = "NIX_SSHOPTS=-i ${sshpath}";
-  tmux-sessionizer = pkgs.writeShellScriptBin "sessionizer" (builtins.readFile (./dotfiles/tmux-sessionizer.sh));
+  tmux-sessionizer = pkgs.writeShellScriptBin "sessionizer"
+    (builtins.readFile (./dotfiles/tmux-sessionizer.sh));
   shellAliases = {
     ls = "ls --human-readable --color=auto -la";
     ip = "ip -c";
@@ -13,17 +14,21 @@ let
     upcup = "rclone copy ~/assig/ upc:/assig/ --drive-acknowledge-abuse -P";
     upcsync = "upcdown && upcup";
     upclink = "${config.home.homeDirectory}/scripts/upclink.sh";
-    nrswitch = "cd ${nixos-config} && git add . && nix flake archive && sudo '${sshfix}' nixos-rebuild switch --flake . && cd -";
-    nrboot = "cd ${nixos-config} && git add . && nix flake archive && sudo '${sshfix}' nixos-rebuild boot --flake . && cd -";
-    nrtest = "cd ${nixos-config} && git add . && nix flake archive && sudo '${sshfix}' nixos-rebuild test --flake . && cd -";
-    nrbuild = "cd ${nixos-config} && git add . && nix flake archive && nixos-rebuild build --flake . && cd -";
+    nrswitch =
+      "cd ${nixos-config} && git add . && nix flake archive && sudo '${sshfix}' nixos-rebuild switch --flake . && cd -";
+    nrboot =
+      "cd ${nixos-config} && git add . && nix flake archive && sudo '${sshfix}' nixos-rebuild boot --flake . && cd -";
+    nrtest =
+      "cd ${nixos-config} && git add . && nix flake archive && sudo '${sshfix}' nixos-rebuild test --flake . && cd -";
+    nrbuild =
+      "cd ${nixos-config} && git add . && nix flake archive && nixos-rebuild build --flake . && cd -";
     nu = "cd ${nixos-config} && git add . && nix flake update && cd -";
     sshgen = "ssh-keygen -t ed25519 -C $USER@$(hostname)";
-    tiomenu = ''tio -b 115200 $(FZF_DEFAULT_COMMAND='find /dev/serial/by-id | tail -n +2 ' fzf --header="Pick a serial port")'';
+    tiomenu = ''
+      tio -b 115200 $(FZF_DEFAULT_COMMAND='find /dev/serial/by-id | tail -n +2 ' fzf --header="Pick a serial port")'';
     agenix = "agenix --extra-flake-params \\?submodules=1";
   };
-in
-{
+in {
   programs.home-manager.enable = true;
 
   nix.gc = {
@@ -69,9 +74,7 @@ in
     extraConfig = builtins.readFile ./dotfiles/tmux.conf;
   };
 
-  programs.zellij = {
-    enable = true;
-  };
+  programs.zellij = { enable = true; };
 
   programs.direnv.enable = true;
   programs.direnv.nix-direnv.enable = true;
@@ -82,16 +85,26 @@ in
     enable = true;
     bashrcExtra = ''
       ${builtins.readFile ./dotfiles/osc7.sh}
-      
+
       function set_win_title(){
         echo -ne "\033]0; $PWD \007"
       }
       starship_precmd_user_func="set_win_title"
     '';
-    profileExtra = ''
-    '';
+    profileExtra = "";
     sessionVariables = { };
     inherit shellAliases;
+  };
+
+  programs.readline = {
+    enable = true;
+    variables = {
+      editing-mode = "vi";
+      show-mode-in-prompt = "on";
+      vi-cmd-mode-string = "\\1\\e[2 q\\2";
+      vi-ins-mode-string = "\\1\\e[6 q\\2";
+      keyseq-timeout = "50";
+    };
   };
 
   programs.zsh = {
@@ -113,21 +126,19 @@ in
     enable = true;
     matchBlocks = {
       "*" = {
-        setEnv = {
-          TERM = "xterm-256color";
-        };
+        setEnv = { TERM = "xterm-256color"; };
         extraOptions = { AddKeysToAgent = "yes"; };
       };
 
       "oracle1" = {
         hostname = secrets.hosts.oracle1.dns;
         forwardAgent = true;
-        port = secrets.hosts.oracle1.sshPort; 
+        port = secrets.hosts.oracle1.sshPort;
       };
       "oracle2" = {
         hostname = secrets.hosts.oracle2.dns;
         forwardAgent = true;
-        port = secrets.hosts.oracle2.sshPort; 
+        port = secrets.hosts.oracle2.sshPort;
       };
 
       "h81" = {
@@ -140,15 +151,14 @@ in
         forwardAgent = true;
       };
     };
-    includes = [
-      "config.d/*"
-    ];
+    includes = [ "config.d/*" ];
   };
 
   # Workaround for NixOS bruh moment https://github.com/nix-community/home-manager/issues/322
   home.file.".ssh/config" = {
     target = ".ssh/config_source";
-    onChange = ''cat ~/.ssh/config_source > ~/.ssh/config && chmod 600 ~/.ssh/config'';
+    onChange =
+      "cat ~/.ssh/config_source > ~/.ssh/config && chmod 600 ~/.ssh/config";
   };
 
 }
