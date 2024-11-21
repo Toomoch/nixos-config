@@ -15,6 +15,15 @@
     settings.background.dark = "dragon";
   };
 
+  extraConfigLuaPost = ''
+    vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+      pattern = "*.gitlab-ci*.{yml,yaml}",
+      callback = function()
+        vim.bo.filetype = "yaml.gitlab"
+      end,
+    })
+    '';
+
   keymaps = [
     {
       action = "<cmd>NvimTreeToggle<cr>";
@@ -190,6 +199,14 @@
         ruff.enable = true;
         jsonls.enable = true;
         bashls.enable = true;
+        gitlab_ci_ls = {
+          enable = true;
+          package = pkgs.gitlab-ci-ls;
+        };
+        yamlls = {
+          enable = true;
+          filetypes = [ "yaml" ];
+        };
         ansiblels = {
           enable = true;
           autostart = true;
