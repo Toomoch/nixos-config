@@ -32,43 +32,64 @@ in {
             i18n.defaultLocale = lib.mkDefault "ca_ES.UTF-8";
           };
         };
-        nvidia = {
-          configuration = {
-            desktop.regreet.enable = true;
-            desktop.sway.enable = true;
-            environment.systemPackages = [ nvidia-offload ];
-            desktop.hyprland.enable = false;
-            # Power management
-            services.tlp = {
-              enable = true;
-              settings = {
-                SOUND_POWER_SAVE_ON_AC = 1;
-                SOUND_POWER_SAVE_ON_BAT = 1;
-                RUNTIME_PM_ON_AC = "auto";
-                PCIE_ASPM_ON_AC = "powersave";
-                PCIE_ASPM_ON_BAT = "powersupersave";
-              };
-            };
-            services.xserver.videoDrivers = [ "nvidia" ];
-            environment.sessionVariables.WLR_DRM_DEVICES = "/dev/dri/card0";
-            hardware.nvidia.package =
-              config.boot.kernelPackages.nvidiaPackages.stable;
-            hardware.nvidia = {
-              # Modesetting is required.
-              modesetting.enable = true;
-              powerManagement.enable = true;
-              nvidiaSettings = true;
-              prime = {
-                intelBusId = "PCI:0:2:0";
-                nvidiaBusId = "PCI:3:0:0";
-                offload = {
-                  enable = true;
-                  enableOffloadCmd = true;
-                };
-              };
+        vfio.configuration = {
+          desktop.sway.enable = true;
+          desktop.regreet.enable = true;
+          desktop.hyprland.enable = false;
+          vm.libvirtd.enable = true;
+          services.tlp = {
+            enable = true;
+            settings = {
+              SOUND_POWER_SAVE_ON_AC = 1;
+              SOUND_POWER_SAVE_ON_BAT = 1;
+              RUNTIME_PM_ON_AC = "auto";
+              PCIE_ASPM_ON_AC = "powersave";
+              PCIE_ASPM_ON_BAT = "powersupersave";
             };
           };
+          vfio = {
+            enable = true;
+            devices = [ "10de:1d10" ];
+          };
         };
+        # disabled
+        # nvidia = {
+        #   configuration = {
+        #     desktop.regreet.enable = true;
+        #     desktop.sway.enable = true;
+        #     environment.systemPackages = [ nvidia-offload ];
+        #     desktop.hyprland.enable = false;
+        #     # Power management
+        #     services.tlp = {
+        #       enable = true;
+        #       settings = {
+        #         SOUND_POWER_SAVE_ON_AC = 1;
+        #         SOUND_POWER_SAVE_ON_BAT = 1;
+        #         RUNTIME_PM_ON_AC = "auto";
+        #         PCIE_ASPM_ON_AC = "powersave";
+        #         PCIE_ASPM_ON_BAT = "powersupersave";
+        #       };
+        #     };
+        #     services.xserver.videoDrivers = [ "nvidia" ];
+        #     environment.sessionVariables.WLR_DRM_DEVICES = "/dev/dri/card0";
+        #     hardware.nvidia.package =
+        #       config.boot.kernelPackages.nvidiaPackages.stable;
+        #     hardware.nvidia = {
+        #       # Modesetting is required.
+        #       modesetting.enable = true;
+        #       powerManagement.enable = true;
+        #       nvidiaSettings = true;
+        #       prime = {
+        #         intelBusId = "PCI:0:2:0";
+        #         nvidiaBusId = "PCI:3:0:0";
+        #         offload = {
+        #           enable = true;
+        #          enableOffloadCmd = true;
+        #        };
+        #      };
+        #    };
+        #  };
+        #};
       };
 
       environment.systemPackages = with pkgs; [ powertop ];
@@ -108,7 +129,7 @@ in {
       virtualisation.waydroid.enable = false;
 
       # LTS Kernel
-      # boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_1;
+      boot.kernelPackages = pkgs.linuxPackages_latest;
 
       # This value determines the NixOS release from which the default
       # settings for stateful data, like file locations and database versions
@@ -119,12 +140,11 @@ in {
       system.stateVersion = "22.11"; # Did you read the comment?
     })
     (lib.mkIf (config.specialisation != { }) {
-#      desktop.blacklistnvidia.enable = true;
+      #      desktop.blacklistnvidia.enable = true;
       desktop.sway.enable = true;
       desktop.regreet.enable = true;
       desktop.hyprland.enable = false;
       vm.libvirtd.enable = true;
-      vfio.enable = true;
       services.tlp = {
         enable = true;
         settings = {
