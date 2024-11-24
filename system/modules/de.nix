@@ -33,7 +33,7 @@ in
       programs.dconf.enable = true;
 
       environment.systemPackages = [
-        discover-wrapped
+        pkgs.kdePackages.discover
       ];
     })
   ];
