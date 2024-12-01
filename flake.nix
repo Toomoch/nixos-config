@@ -3,7 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:Toomoch/nixpkgs/huawei-solar";
-    nixpkgs-stable.url = "nixpkgs/nixos-24.11";
+    nixpkgs-stable.url = "github:Toomoch/nixpkgs/huawei-solar-nixos-24.11";
 
     home-manager = {
       url = "github:nix-community/home-manager";

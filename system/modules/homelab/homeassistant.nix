@@ -28,7 +28,7 @@ in {
         environment = { TZ = vars.timezone; };
         extraOptions = vars.commonextraOptions ++ [
           "--network=host"
-          "--device=/dev/serial/by-id/usb-1a86_USB_Serial-if00-port0:/dev/ttyUSB0:rw"
+          #"--device=/dev/serial/by-id/usb-1a86_USB_Serial-if00-port0:/dev/ttyUSB0:rw"
         ];
 
       };
@@ -39,15 +39,15 @@ in {
       };
 
       systemd.services.home-assistant = {
-        serviceConfig.DeviceAllow = "/dev/ttyUSB1 rw";
+        serviceConfig.DeviceAllow =
+          "/dev/serial/by-id/usb-1a86_USB_Serial-if00-port0 rw";
       };
 
       services.home-assistant = {
         enable = true;
         openFirewall = true;
-#        customComponents = with pkgs.home-assistant-custom-components; [
-#  huawei_solar
-#]; 
+        customComponents = with pkgs.home-assistant-custom-components;
+          [ huawei_solar ];
         extraComponents = [
           # Components required to complete the onboarding
           "analytics"

@@ -504,17 +504,18 @@
     },
     "nixpkgs-stable_2": {
       "locked": {
-        "lastModified": 1732981179,
-        "narHash": "sha256-F7thesZPvAMSwjRu0K8uFshTk3ZZSNAsXTIFvXBT+34=",
-        "owner": "NixOS",
+        "lastModified": 1733076224,
+        "narHash": "sha256-FNwTxmNRolA61q5zfgvtk9nEL0YyBjfgmRU8NwcT2BE=",
+        "owner": "Toomoch",
         "repo": "nixpkgs",
-        "rev": "62c435d93bf046a5396f3016472e8f7c8e2aed65",
+        "rev": "7a069240d333737416e16f0dc6febbb384ab1901",
         "type": "github"
       },
       "original": {
-        "id": "nixpkgs",
-        "ref": "nixos-24.11",
-        "type": "indirect"
+        "owner": "Toomoch",
+        "ref": "huawei-solar-nixos-24.11",
+        "repo": "nixpkgs",
+        "type": "github"
       }
     },
     "nixvim": {
