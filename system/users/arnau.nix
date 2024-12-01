@@ -23,22 +23,18 @@ in
       sudo.u2fAuth = true;
       login.u2fAuth = true;
       greetd.u2fAuth = true;
+      sudo.rssh = true;
     };
-    u2f = {
+    u2f.settings = {
       enable = true;
       cue = true;
       origin = "pam://arnau";
-      authFile = "${private}/secrets/plain/u2f_keys";
+      authfile = /${private}/secrets/plain/u2f_keys;
     };
   };
 
   # pam_rssh
-  security.pam.services.sudo.text = lib.mkDefault (lib.mkBefore ''
-    auth sufficient ${pkgs.pam_rssh}/lib/libpam_rssh.so auth_key_file=/etc/ssh/authorized_keys.d/''${user}
-  '');
-  security.sudo.extraConfig = ''
-    Defaults env_keep+=SSH_AUTH_SOCK
-  '';
+  security.pam.rssh.enable = true;
 
   # Disabled because for new deployments we can't decrypt the passowrd, for example pi3 sdcard
   # age.secrets.passwordfile-arnau.rekeyFile = "${private}/secrets/age/password.age";
