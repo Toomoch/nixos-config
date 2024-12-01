@@ -221,10 +221,19 @@ in {
     };
     users.groups.nginx = { };
 
+    # Broken https://github.com/NixOS/nixpkgs/issues/352443
     services.onlyoffice = {
-      enable = true;
+      enable = false;
       hostname = "office.${secrets.domain}";
       jwtSecretFile = "${config.age.secrets.onlyoffice.path}";
+    };
+
+    virtualisation.oci-containers.containers.onlyoffice =  {
+      image = "onlyoffice/documentserver:latest";
+      ports = ["8000:80"];
+      environmentFiles = [
+        config.age.secrets.onlyoffice.path
+      ];
     };
 
     age.secrets.onlyoffice = {
