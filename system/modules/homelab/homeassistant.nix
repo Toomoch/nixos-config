@@ -44,7 +44,6 @@ in {
 
       services.home-assistant = {
         enable = true;
-        port = 8124;
         openFirewall = true;
 #        customComponents = with pkgs.home-assistant-custom-components; [
 #  huawei_solar
@@ -58,9 +57,10 @@ in {
           "shopping_list"
           # Recommended for fast zlib compression
           # https://www.home-assistant.io/integrations/isal
-          #"isal"
+          "isal"
         ];
         config = {
+          http.server_port = 8124;
           # Includes dependencies for a basic setup
           # https://www.home-assistant.io/integrations/default_config/
           default_config = { };

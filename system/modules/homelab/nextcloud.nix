@@ -107,7 +107,7 @@ in {
       enable = true;
       hostName = "cloud.${secrets.domain}";
       # Need to manually increment with every major upgrade.
-      package = pkgs.nextcloud29;
+      package = pkgs.nextcloud30;
       # Let NixOS install and configure the database automatically.
       database.createLocally = true;
       home = "${vars.serviceData}/nextcloud";
@@ -238,8 +238,8 @@ in {
 
     age.secrets.onlyoffice = {
       rekeyFile = "${private}/secrets/age/onlyoffice.age";
-      owner = "onlyoffice";
-      group = "onlyoffice";
+      owner = "root";
+      group = "root";
     };
   };
 }

@@ -20,9 +20,6 @@
 
   age.secrets.secret1.rekeyFile = flake-root + "/private/secrets/age/test.age";
 
-  #systemd.services.phpfpm-nextcloud.wantedBy = lib.mkForce [ ];
-  #systemd.services.postgresql.wantedBy = lib.mkForce [ ];
-  #systemd.services.docker-homeassistant.wantedBy = lib.mkForce [ ];
   common.enable = true;
   common.systemd-boot.enable = true;
   homelab.enable = true;
@@ -41,8 +38,7 @@
     intel-vaapi-driver =
       pkgs.intel-vaapi-driver.override { enableHybridCodec = true; };
   };
-  hardware.opengl = {
-    # hardware.graphics on unstable
+  hardware.graphics = {
     enable = true;
     extraPackages = with pkgs;
       [
