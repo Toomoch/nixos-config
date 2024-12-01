@@ -1,24 +1,15 @@
-{ config, pkgs, lib, sops-nix, inputs, ... }:
-{
+{ config, pkgs, lib, sops-nix, inputs, ... }: {
   networking.hostName = "b450"; # Define your hostname.
 
-  imports = [
-    ./hardware-configuration.nix
-    ../../users/arnau.nix
-  ];
+  imports = [ ./hardware-configuration.nix ../../users/arnau.nix ];
 
   # Enable VAAPI hardware acceleration
   programs.firefox = {
     enable = true;
-    preferences = {
-      "media.ffmpeg.vaapi.enabled" = true;
-    };
+    preferences = { "media.ffmpeg.vaapi.enabled" = true; };
   };
 
-
-  services.tailscale = {
-    enable = true;
-  };
+  services.tailscale = { enable = true; };
   common.enable = true;
   common.systemd-boot.enable = true;
   desktop.enable = true;
@@ -41,10 +32,6 @@
     enableSuid = true;
     enableFakeroot = true;
   };
-  nixpkgs.config.permittedInsecurePackages = [
-    "electron-24.8.6"
-  ];
-
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   # OpenRGB

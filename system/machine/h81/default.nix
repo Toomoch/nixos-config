@@ -1,10 +1,5 @@
-{ config, pkgs, lib, pkgs-unstable, flake-root, private, ... }:
-{
-  imports = [
-    ./hardware-configuration.nix
-    ../../users/arnau.nix
-    ./disko.nix
-  ];
+{ config, pkgs, lib, pkgs-unstable, flake-root, private, ... }: {
+  imports = [ ./hardware-configuration.nix ../../users/arnau.nix ./disko.nix ];
 
   nixpkgs.config.allowUnfree = true;
 
@@ -43,14 +38,16 @@
   security.polkit.enable = true;
 
   nixpkgs.config.packageOverrides = pkgs: {
-    intel-vaapi-driver = pkgs.intel-vaapi-driver.override { enableHybridCodec = true; };
+    intel-vaapi-driver =
+      pkgs.intel-vaapi-driver.override { enableHybridCodec = true; };
   };
   hardware.opengl = {
     # hardware.graphics on unstable
     enable = true;
-    extraPackages = with pkgs; [
-      intel-vaapi-driver # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
-    ];
+    extraPackages = with pkgs;
+      [
+        intel-vaapi-driver # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
+      ];
   };
 
   # This value determines the NixOS release from which the default

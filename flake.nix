@@ -2,8 +2,8 @@
   description = "Arnau NixOS configs";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-unstable";
-    nixpkgs-stable.url = "nixpkgs/nixos-24.05";
+    nixpkgs.url = "github:Toomoch/nixpkgs/huawei-solar";
+    nixpkgs-stable.url = "nixpkgs/nixos-24.11";
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -11,7 +11,7 @@
     };
 
     home-manager-stable = {
-      url = "github:nix-community/home-manager/release-24.05";
+      url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
@@ -275,6 +275,7 @@
                 user = "root";
                 #interactiveSudo = true;
                 #sshOpts = ["-A"];
+                sshOpts = [ "-o"  "ProxyCommand=none" ];
                 magicRollback = true;
               };
           };

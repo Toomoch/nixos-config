@@ -103,7 +103,7 @@ in
 
       # Enable the OpenSSH daemon.
       services.openssh.enable = true;
-      programs.ssh = { startAgent = true; enableAskPassword = true; askPassword = "${pkgs.gnome.seahorse}/libexec/seahorse/ssh-askpass"; };
+      programs.ssh = { startAgent = true; enableAskPassword = true; askPassword = "${pkgs.seahorse}/libexec/seahorse/ssh-askpass"; };
 
       # Enable mosh
       programs.mosh.enable = true;
