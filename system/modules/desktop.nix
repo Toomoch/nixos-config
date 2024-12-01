@@ -51,7 +51,7 @@ in
           font-awesome
           noto-fonts
           noto-fonts-extra
-          noto-fonts-cjk
+          noto-fonts-cjk-sans
           noto-fonts-emoji
         ];
       };
@@ -104,9 +104,7 @@ in
       systemd.services."tailscaled".wantedBy = lib.mkForce [ ];
 
       # OpenGL    
-      hardware.opengl.enable = true;
-      hardware.opengl.driSupport = true;
-      hardware.opengl.driSupport32Bit = true;
+      hardware.graphics.enable = true;
 
       # PipeWire
       security.rtkit.enable = true;
@@ -179,39 +177,6 @@ in
               "/run/current-system/sw/bin/flatpak remote-add --user --if-not-exists ${name} ${location}";
           };
         };
-
-      # Flatpak workarounds
-
-      system.fsPackages = [ pkgs.bindfs ];
-      fileSystems =
-        let
-          mkRoSymBind = path: {
-            device = path;
-            fsType = "fuse.bindfs";
-            options = [ "ro" "resolve-symlinks" "x-gvfs-hide" ];
-          };
-          aggregatedIcons = pkgs.buildEnv {
-            name = "system-icons";
-            paths = with pkgs; [
-              libsForQt5.breeze-qt5 # for plasma
-              gnome.gnome-themes-extra
-            ];
-            pathsToLink = [ "/share/icons" ];
-          };
-          aggregatedFonts = pkgs.buildEnv {
-            name = "system-fonts";
-            paths = config.fonts.packages;
-            pathsToLink = [ "/share/fonts" ];
-          };
-        in
-        {
-          "/usr/share/icons" = mkRoSymBind "${aggregatedIcons}/share/icons";
-          "/usr/local/share/fonts" = mkRoSymBind "${aggregatedFonts}/share/fonts";
-        };
-
-      fonts = {
-        fontDir.enable = true;
-      };
 
     })
     (lib.mkIf cfg.gaming.enable {

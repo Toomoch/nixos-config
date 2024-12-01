@@ -13,7 +13,7 @@ rustPlatform.buildRustPackage rec {
 
   nativeBuildInputs = [ cmake ];
 
-  cargoSha256 = "sha256-EQIBeZwF9peiwpgZNfMmjvLv8NyhvVGUjVXgkf12Wig=";
+  cargoHash = "sha256-EQIBeZwF9peiwpgZNfMmjvLv8NyhvVGUjVXgkf12Wig";
 
   postInstall = ''
     mkdir -p $out/lib/mozilla/native-messaging-hosts

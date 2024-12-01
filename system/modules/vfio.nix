@@ -36,7 +36,7 @@ in {
         ("vfio-pci.ids=" + builtins.concatStringsSep "," cfg.devices);
     };
 
-    hardware.opengl.enable = true;
+    hardware.graphics.enable = true;
     virtualisation.spiceUSBRedirection.enable = true;
     systemd.tmpfiles.rules =
       [ "f /dev/shm/looking-glass 0660 ${user} libvirtd -" ];

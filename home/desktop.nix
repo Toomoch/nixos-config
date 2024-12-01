@@ -2,10 +2,10 @@
 {
   home.packages = with pkgs; [
     #desktop apps
-    gnome.gnome-disk-utility
+    gnome-disk-utility
     pavucontrol
     kooha
-    gnome.gnome-calculator
+    gnome-calculator
     onlyoffice-bin
     scrcpy
     virt-manager
@@ -169,7 +169,7 @@
 
   home.pointerCursor = {
     name = "Adwaita";
-    package = pkgs.gnome.adwaita-icon-theme;
+    package = pkgs.adwaita-icon-theme;
     size = 24;
     x11 = {
       enable = true;
@@ -190,7 +190,7 @@
     };
     cursorTheme = {
       name = "Adwaita";
-      package = pkgs.gnome.adwaita-icon-theme;
+      package = pkgs.adwaita-icon-theme;
     };
     font = {
       name = "Rubik";
@@ -209,7 +209,7 @@
     platformTheme.name = "gtk";
     style = {
       name = "gtk2";
-      package = pkgs.libsForQt5.breeze-qt5;
+      package = pkgs.kdePackages.breeze;
     };
   };
 
