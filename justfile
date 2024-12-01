@@ -28,6 +28,10 @@ rebuild HOSTNAME="$(hostname)": gitadd
 rebuildtarget HOSTNAME: gitadd
   nixos-rebuild switch --flake .\?submodules=1#{{HOSTNAME}} --target-host {{HOSTNAME}} --use-remote-sudo
 
+rebuildtargetremote HOSTNAME: gitadd
+  nixos-rebuild switch --flake .\?submodules=1#{{HOSTNAME}} --target-host {{HOSTNAME}} --use-remote-sudo --build-host {{HOSTNAME}}
+
+
 droid: gitadd
   nix-on-droid switch --flake .\?submodules=1
 

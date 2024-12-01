@@ -142,7 +142,6 @@ in
           TCPKeepAlive = "no";
         };
       };
-      environment.noXlibs = lib.mkForce false;
       boot.initrd = {
         availableKernelModules = [
           "virtio_net"
