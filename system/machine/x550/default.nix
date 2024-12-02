@@ -41,7 +41,7 @@
   vm.libvirtd.enable = true;
 
   # Enable VAAPI hardware acceleration
-  hardware.opengl = {
+  hardware.graphics = {
     enable = true;
     extraPackages = with pkgs; [
       intel-vaapi-driver
