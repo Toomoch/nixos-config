@@ -17,6 +17,7 @@
   desktop.regreet.enable = true;
   desktop.sway.enable = true;
   desktop.hyprland.enable = false;
+  desktop.river.enable = true;
   desktop.flatpak.enable = true;
   desktop.gaming.enable = true;
   desktop.gaming.g29.enable = true;

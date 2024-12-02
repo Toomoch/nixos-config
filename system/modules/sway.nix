@@ -3,6 +3,7 @@ let cfg = config.desktop;
 in {
   options.desktop = {
     sway.enable = lib.mkEnableOption "Whether to enable Sway with GTKgreet";
+    river.enable = lib.mkEnableOption "Whether to enable riverwm";
     hyprland.enable = lib.mkEnableOption "Whether to enable Hyprland";
     regreet.enable = lib.mkEnableOption "Whether to enable regreet";
     tuigreet.enable = lib.mkEnableOption "Whether to enable tuigreet";
@@ -17,6 +18,7 @@ in {
       };
 
       programs.hyprland.enable = cfg.hyprland.enable;
+      programs.river.enable = cfg.river.enable;
 
       # Sway
       programs.sway.enable = true;

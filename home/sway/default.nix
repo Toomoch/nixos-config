@@ -1,15 +1,17 @@
 { config, pkgs, lib, ... }:
 let
-  screenshot = pkgs.writeShellScriptBin "screenshot" (builtins.readFile (./swayscreenshot.sh));
+  screenshot = pkgs.writeShellScriptBin "screenshot"
+    (builtins.readFile ./swayscreenshot.sh);
   font = "Rubik";
-  kanshi_assign_sway = pkgs.writeShellScriptBin "kanshi_assign_sway" (builtins.readFile (../dotfiles/kanshi_assign_sway.sh));
+  kanshi_assign_sway = pkgs.writeShellScriptBin "kanshi_assign_sway"
+    (builtins.readFile ../dotfiles/kanshi_assign_sway.sh);
+
+  fuzzelpoweroffmenu = pkgs.writeShellScriptBin "fuzzelpoweroffmenu"
+    (builtins.readFile ../dotfiles/powermenu.sh);
   filemanager = "thunar";
   browser = "firefox";
-in
-{
-  imports = [
-    ./waybar.nix
-  ];
+in {
+  imports = [ ./waybar.nix ];
 
   home.packages = with pkgs; [
     jq
@@ -35,8 +37,81 @@ in
     nwg-displays
     kanshi_assign_sway
     kanshi
-  ]; 
+    fuzzelpoweroffmenu
+  ];
 
+  wayland.windowManager.river = {
+
+    enable = true;
+    package = null;
+    settings = {
+      keyboard-layout = "-model pc105 -variant '' -options caps:escape es";
+      default-layout = "rivertile";
+      map.normal = {
+        "Super Return" = "spawn 'alacritty'";
+        "Super Up" = "focus-view up";
+        "Super Down" = "focus-view down";
+        "Super Left" = "focus-view left";
+        "Super Right" = "focus-view right";
+        "Super K" = "focus-view up";
+        "Super J" = "focus-view down";
+        "Super H" = "focus-view left";
+        "Super L" = "focus-view right";
+        "Super F" = "toggle-fullscreen";
+        "Super+Shift Q" = "close";
+        "None XF86MonBrightnessDown" =
+          "spawn 'swayosd-client --brightness lower'";
+        "None XF86MonBrightnessUp" =
+          "spawn 'swayosd-client --brightness raise'";
+        "None XF86AudioRaiseVolume" =
+          "spawn 'swayosd-client --output-volume raise'";
+        "None XF86AudioLowerVolume" =
+          "spawn 'swayosd-client --output-volume lower'";
+        "None XF86AudioMute" =
+          "spawn 'swayosd-client --output-volume mute-toggle'";
+        "None XF86AudioMicMute" =
+          "spawn 'wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle'";
+        "None XF86AudioPlay" = "spawn 'playerctl play-pause'";
+        "None XF86AudioNext" = "spawn 'playerctl next'";
+        "None XF86AudioPrev" = "spawn 'playerctl previous'";
+        "Super E" = "spawn '${filemanager}'";
+        "Super D" = "spawn 'fuzzel'";
+
+        # Screenshots
+        "Print" = "spawn 'screenshot area'";
+        "Super Print" = "spawn 'screenshot output'";
+        "Shift Print" = "spawn 'screenshot window'";
+      };
+      spawn = [
+        "rivertile"
+        "wpaperd"
+        "nm-applet --indicator"
+        "swaync"
+        browser
+        "swayosd-server"
+        "waybar"
+      ];
+      extraConfig = ''
+
+        for i in $(seq 1 9)
+        do
+            tags=$((1 << ($i - 1)))
+
+            # Super+[1-9] to focus tag [0-8]
+            riverctl map normal Super $i set-focused-tags $tags
+
+            # Super+Shift+[1-9] to tag focused view with tag [0-8]
+            riverctl map normal Super+Shift $i set-view-tags $tags
+
+            # Super+Control+[1-9] to toggle focus of tag [0-8]
+            riverctl map normal Super+Control $i toggle-focused-tags $tags
+
+            # Super+Shift+Control+[1-9] to toggle tag [0-8] of focused view
+            riverctl map normal Super+Shift+Control $i toggle-view-tags $tags
+        done
+      '';
+    };
+  };
 
   wayland.windowManager.sway = {
     enable = true;
@@ -108,10 +183,8 @@ in
         # Media
         "XF86MonBrightnessDown" = "exec swayosd-client --brightness lower";
         "XF86MonBrightnessUp" = "exec swayosd-client --brightness raise";
-        "XF86AudioRaiseVolume" =
-          "exec swayosd-client --output-volume raise";
-        "XF86AudioLowerVolume" =
-          "exec swayosd-client --output-volume lower";
+        "XF86AudioRaiseVolume" = "exec swayosd-client --output-volume raise";
+        "XF86AudioLowerVolume" = "exec swayosd-client --output-volume lower";
         "XF86AudioMute" = "exec swayosd-client --output-volume mute-toggle";
         "XF86AudioMicMute" =
           "exec wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle";
@@ -132,8 +205,8 @@ in
 
       };
       input = {
-        "type:keyboard" = { 
-          xkb_layout = "es"; 
+        "type:keyboard" = {
+          xkb_layout = "es";
           xkb_options = "caps:escape";
         };
 
@@ -153,9 +226,10 @@ in
           pointer_accel = "0.2";
         };
 
-        "1356:3302:Sony_Interactive_Entertainment_Wireless_Controller_Touchpad" = {
-          pointer_accel = "0.1";
-        };
+        "1356:3302:Sony_Interactive_Entertainment_Wireless_Controller_Touchpad" =
+          {
+            pointer_accel = "0.1";
+          };
 
         "1356:3302:Wireless_Controller_Touchpad" = { pointer_accel = "0.1"; };
       };
@@ -170,18 +244,12 @@ in
 
     swaynag = {
       enable = true;
-      settings = {
-        "<config>" = {
-          font = "${font} 12";
-        };
-      };
+      settings = { "<config>" = { font = "${font} 12"; }; };
     };
   };
 
   dconf.settings = {
-    "org/gnome/desktop/wm/preferences" = {
-      button-layout = "appmenu";
-    };
+    "org/gnome/desktop/wm/preferences" = { button-layout = "appmenu"; };
   };
 
   xdg.configFile."wpaperd/wallpaper.toml".text = ''
@@ -209,6 +277,5 @@ in
     selection-text=000000ff
     border=00fffaff
   '';
-
 
 }

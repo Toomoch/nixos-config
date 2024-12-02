@@ -20,14 +20,11 @@ in {
     settings = [{
       profile = {
         name = "desk_flat";
-        exec = ''
-          kanshi_assign_sway -m "${DP_ultrawide}" -b 1 -e 10
-        '';
         outputs = [{
           criteria = DP_ultrawide;
           position = "0,0";
           mode = "2560x1080@99.943Hz";
-          adaptiveSync = true;
+          adaptiveSync = false;
           status = "enable";
         }];
       };
