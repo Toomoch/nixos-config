@@ -14,10 +14,6 @@ in {
   config = lib.mkMerge [
     ({
       networking.hostName = "ps42"; # Define your hostname.
-      programs.nix-ld = {
-        enable = true;
-        libraries = [ pkgs.gmp ] ++ pkgs.steam-run.fhsenv.args.multiPkgs pkgs;
-      };
 
       specialisation = {
         kde = {
@@ -33,6 +29,7 @@ in {
           };
         };
         vfio.configuration = {
+          desktop.blacklistnvidia.enable = true;
           desktop.sway.enable = true;
           desktop.regreet.enable = true;
           desktop.hyprland.enable = false;
@@ -71,7 +68,7 @@ in {
         #       };
         #     };
         #     services.xserver.videoDrivers = [ "nvidia" ];
-        #     environment.sessionVariables.WLR_DRM_DEVICES = "/dev/dri/card0";
+        #     environment.sessionVariables.WLR_DRM_DEVICES = "/dev/dri/card1";
         #     hardware.nvidia.package =
         #       config.boot.kernelPackages.nvidiaPackages.stable;
         #     hardware.nvidia = {
@@ -140,9 +137,10 @@ in {
       system.stateVersion = "22.11"; # Did you read the comment?
     })
     (lib.mkIf (config.specialisation != { }) {
-      #      desktop.blacklistnvidia.enable = true;
+      desktop.blacklistnvidia.enable = true;
       desktop.sway.enable = true;
       desktop.regreet.enable = true;
+      desktop.river.enable = true;
       desktop.hyprland.enable = false;
       vm.libvirtd.enable = true;
       services.tlp = {

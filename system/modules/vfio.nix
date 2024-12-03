@@ -27,7 +27,6 @@ in {
         "vfio"
         "vfio_iommu_type1"
 
-        "nouveau"
       ];
 
       kernelParams = [
