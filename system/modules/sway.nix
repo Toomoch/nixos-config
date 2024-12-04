@@ -1,5 +1,22 @@
 { config, lib, pkgs, ... }:
-let cfg = config.desktop;
+let
+  cfg = config.desktop;
+  river-wrapped = pkgs.stdenvNoCC.mkDerivation {
+    name = "qtile-wayland-session";
+    src = pkgs.writeTextDir "entry" ''
+      [Desktop Entry]
+      Name=River-Wrapped
+      Comment=River
+      Exec=env XDG_SESSION_TYPE=wayland XDG_CURRENT_DESKTOP=river XDG_SESSION_DESKTOP=river ${pkgs.river}/bin/river
+      Type=Application
+    '';
+    dontBuild = true;
+    installPhase = ''
+      mkdir -p $out/share/wayland-sessions
+      cp entry $out/share/wayland-sessions/river.desktop
+    '';
+    passthru.providedSessions = [ "river" ];
+  };
 in {
   options.desktop = {
     sway.enable = lib.mkEnableOption "Whether to enable Sway with GTKgreet";
@@ -14,11 +31,15 @@ in {
       xdg.portal = {
         enable = cfg.sway.enable;
         # gtk portal needed to make gtk apps happy
-        extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
+        extraPortals = with pkgs; [
+          xdg-desktop-portal-gtk
+          xdg-desktop-portal-wlr
+        ];
       };
 
       programs.hyprland.enable = cfg.hyprland.enable;
       programs.river.enable = cfg.river.enable;
+      services.displayManager.sessionPackages = [ river-wrapped ];
 
       # Sway
       programs.sway.enable = true;

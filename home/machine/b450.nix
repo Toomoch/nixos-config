@@ -11,10 +11,11 @@ in {
     ../devtools.nix
     ../nvim.nix
     ../class.nix
+    ../river.nix
     inputs.nixvim.homeManagerModules.nixvim
   ];
 
-  home.packages = with pkgs; [ discord-screenaudio ];
+  home.packages = with pkgs; [ vesktop ];
   services.kanshi = {
     enable = true;
     settings = [{
