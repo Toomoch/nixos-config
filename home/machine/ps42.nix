@@ -14,6 +14,7 @@ in
     ../devtools.nix
     ../nvim.nix
     ../class.nix
+    ../river.nix
     inputs.nixvim.homeManagerModules.nixvim
     #../hyprland
   ];

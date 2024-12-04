@@ -126,7 +126,6 @@
   };
 
   plugins = {
-    bufferline.enable = true;
     web-devicons.enable = true;
     nix.enable = true;
     treesitter.enable = true;
