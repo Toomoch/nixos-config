@@ -7,8 +7,8 @@
       mainBar = {
         layer = "top";
         height = 30;
-        spacing = 2;
-        modules-left = [ "sway/workspaces" "sway/mode" "sway/window" "river/mode" "river/tags" "river/window" "river/layout" ];
+        spacing = 1;
+        modules-left = [ "sway/workspaces" "sway/mode" "sway/window" "river/tags" "river/window" "river/layout" ];
         modules-center = [ ];
         modules-right = [
           "tray"

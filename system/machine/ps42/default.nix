@@ -29,9 +29,9 @@ in {
           };
         };
         vfio.configuration = {
-          desktop.blacklistnvidia.enable = true;
           desktop.sway.enable = true;
           desktop.regreet.enable = true;
+          desktop.river.enable = true;
           desktop.hyprland.enable = false;
           vm.libvirtd.enable = true;
           services.tlp = {

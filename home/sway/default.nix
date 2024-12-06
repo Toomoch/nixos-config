@@ -96,7 +96,6 @@ in {
         }
         { command = "swayidle -w before-sleep 'gtklock -d'"; }
         { command = "swayosd-server"; }
-
       ];
       menu = "fuzzel";
       keybindings = lib.mkOptionDefault {

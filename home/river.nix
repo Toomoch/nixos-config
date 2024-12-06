@@ -1,19 +1,36 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 let
   filemanager = "thunar";
   browser = "firefox";
+  extraCss = ''
+    /* No (default) title bar on wayland */
+    headerbar.default-decoration {
+      /* You may need to tweak these values depending on your GTK theme */
+      margin-bottom: 50px;
+      margin-top: -100px;
+    }
+
+    /* rm -rf window shadows */
+    window.csd,             /* gtk4? */
+    window.cgd decoration { /* gtk3 */
+      box-shadow: none;
+    }
+  '';
+  riverspawn = pkgs.writeShellScriptBin "riverspawn"
+    (builtins.readFile ./dotfiles/riverspawn.sh);
 in {
   wayland.windowManager.river = {
     enable = true;
     package = null;
     extraConfig = builtins.readFile ./dotfiles/riverinit.sh;
-    extraSessionVariables = {
-    };
+    systemd.extraCommands = [
+      "systemctl --user stop river-session.target"
+      "systemctl --user start river-session.target"
+      "${lib.getExe riverspawn}"
+    ];
   };
-  home.sessionVariables = {
-    XDG_SESSION_TYPE = "wayland";
-    XDG_CURRENT_DESKTOP = "river";
-    XDG_SESSION_DESKTOP = "river";
-  };
+  services.kanshi.systemdTarget = "river-session.target";
+  gtk.gtk4.extraCss = extraCss;
+  gtk.gtk3.extraCss = extraCss;
 
 }

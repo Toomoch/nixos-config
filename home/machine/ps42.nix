@@ -4,8 +4,7 @@ let
   home_name = "Samsung Electric Company SyncMaster H1AK500000";
   ultrawide_hdmi_name = "LG Electronics LG ULTRAWIDE 0x0003BECD";
   vars = import ../sway/functions.nix { inherit pkgs lib; };
-in
-{
+in {
   imports = [
     ../default.nix
     ../desktop.nix
@@ -15,18 +14,9 @@ in
     ../nvim.nix
     ../class.nix
     ../river.nix
-    inputs.nixvim.homeManagerModules.nixvim
-    #../hyprland
   ];
 
-  home.packages = [
-  ];
-
-  #yambar = {
-  #  enable = true;
-  #  battery = "BAT0";
-  #  ethernet = "enp1s1";
-  #};
+  home.packages = [ ];
 
   wayland.windowManager.sway = {
     config.workspaceOutputAssign = [
@@ -75,24 +65,17 @@ in
   };
   services.kanshi = {
     enable = true;
-    profiles = {
-      laptop = {
-        exec = ''
-          kanshi_assign_sway -m "${internal_name}" -b 1 -e 10
-        '';
-        outputs = [
-          {
-            criteria = internal_name;
-            status = "enable";
-          }
-        ];
-      };
-
-      desk_lid_down = {
-        exec = ''
-          kanshi_assign_sway -m "${ultrawide_hdmi_name}" -b 1 -e 10
-        '';
-        outputs = [
+    settings = [
+      {
+        profile.name = "laptop";
+        profile.outputs = [{
+          criteria = internal_name;
+          status = "enable";
+        }];
+      }
+      {
+        profile.name = "desk_lid_down";
+        profile.outputs = [
           {
             criteria = ultrawide_hdmi_name;
             position = "0,0";
@@ -105,11 +88,11 @@ in
             status = "disable";
           }
         ];
-      };
+      }
 
-      home = {
-        exec = vars.monitor_workspace 1 5 internal_name ++ vars.monitor_workspace 6 10 home_name;
-        outputs = [
+      {
+        profile.name = "home";
+        profile.outputs = [
           {
             criteria = home_name;
             status = "enable";
@@ -121,10 +104,10 @@ in
             status = "enable";
           }
         ];
-      };
-      home2 = {
-        exec = vars.monitor_workspace 1 5 internal_name ++ vars.monitor_workspace 6 10 vars.lg_22inch_name;
-        outputs = [
+      }
+      {
+        profile.name = "home2";
+        profile.outputs = [
           {
             criteria = vars.lg_22inch_name;
             status = "enable";
@@ -136,10 +119,9 @@ in
             status = "enable";
           }
         ];
-      };
-    };
+      }
+    ];
   };
-
 
   home.stateVersion = "22.11";
 }

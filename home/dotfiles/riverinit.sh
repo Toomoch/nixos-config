@@ -21,6 +21,8 @@ riverctl map normal Super+Shift Q close
 # Super+Shift+E to exit river
 riverctl map normal Super+Shift E exit
 
+riverctl map normal Super+Shift N spawn 'swaync-client -t -sw'
+
 # Super+J and Super+K to focus the next/previous view in the layout stack
 riverctl map normal Super J focus-view next
 riverctl map normal Super K focus-view previous
@@ -146,11 +148,12 @@ done
 
 # Set background and border color
 riverctl background-color 0x002b36
-riverctl border-color-focused 0x93a1a1
-riverctl border-color-unfocused 0x586e75
+riverctl border-color-focused 0x00fffaff
+riverctl border-color-unfocused 0x333333
 
 # Set keyboard repeat rate
 ###riverctl set-repeat 50 300
+riverctl focus-follows-cursor normal
 
 # Make all views with an app-id that starts with "float" and title "foo" start floating.
 riverctl rule-add -app-id 'float*' -title 'foo' float
@@ -158,15 +161,28 @@ riverctl rule-add -app-id 'float*' -title 'foo' float
 # Make all views with app-id "bar" and any title use client-side decorations
 riverctl rule-add -app-id "bar" csd
 
-apps=("waybar" "swayosd-server" "swaync" "nm-applet --indicator" "wpaperd")
+# Make firefox use ssd
+riverctl rule-add -app-id firefox ssd
 
-for app in "${apps[@]}"
-do
-        pkill -f "$app"
-        riverctl spawn "$app" 
-done
 
 riverctl keyboard-layout -model pc105 -variant '' -options caps:escape es
+
+
+for mouse in $(riverctl list-inputs | grep -i pointer )
+do
+  riverctl input "$mouse" accel-profile flat
+  riverctl input "$mouse" pointer-accel 0.0
+done
+
+for touchpad in $(riverctl list-inputs | grep -i touchpad )
+do
+        riverctl input "$touchpad" natural-scroll enabled
+        riverctl input "$touchpad" tap enabled
+        riverctl input "$touchpad" pointer-accel 0.2
+        riverctl input "$touchpad" accel-profile adaptive
+        riverctl input "$touchpad" tap-button-map left-right-middle
+done
+
 
 # Set the default layout generator to be rivertile and start it.
 # River will send the process group of the init executable SIGTERM on exit.

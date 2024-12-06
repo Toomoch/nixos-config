@@ -12,7 +12,6 @@ in {
     ../nvim.nix
     ../class.nix
     ../river.nix
-    inputs.nixvim.homeManagerModules.nixvim
   ];
 
   home.packages = with pkgs; [ vesktop ];
