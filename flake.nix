@@ -83,18 +83,18 @@
       private = /${flake-root}/private;
 
       # From https://github.com/ElrohirGT/ConfigurationFiles/blob/master/flake.nix
-      forAllSystems = { pkgs ? nixpkgs, function, }:
-        nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-linux" ] (system:
-          function {
-            pkgs = import pkgs {
-              inherit system;
-              config.allowUnfree = true;
-              overlays = [
-                #inputs.something.overlays.default
-              ];
-            };
-            inherit system;
-          });
+      #forAllSystems = { pkgs ? nixpkgs, function, }:
+      #  nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-linux" ] (system:
+      #    function {
+      #      pkgs = import pkgs {
+      #        inherit system;
+      #        config.allowUnfree = true;
+      #        overlays = [
+      #          #inputs.something.overlays.default
+      #        ];
+      #      };
+      #      inherit system;
+      #    });
 
       stable = {
         nixpkgs = nixpkgs-stable;
@@ -161,36 +161,37 @@
         }
       ];
 
-      buildVimModule = { system, module, }:
+      forAllSystems = let systems = [ "x86_64-linux" "aarch64-linux" ];
+      in function: pkgs:
+      nixpkgs.lib.genAttrs systems (system:
         let
-          nixvimPkgs = nixvim.legacyPackages.${system};
-          nixVimModule = { inherit module; };
-        in nixvimPkgs.makeNixvimWithModule nixVimModule;
+          syspkgs = import pkgs {
+            inherit system;
+            config.allowUnfree = true;
+          };
+        in function syspkgs system);
 
     in {
-      packages = forAllSystems {
-        pkgs = nixpkgs;
-        function = { system, ... }: {
-          default =
-            import ./shell.nix { pkgs = import nixpkgs { inherit system; }; };
-          nvim = buildVimModule {
-            inherit system;
+      # Create nivxim package & also import every package found in the attr pkgs from ./pkgs/default.nix
+      packages = forAllSystems (pkgs: system:
+        {
+          nvim = nixvim.legacyPackages.${system}.makeNixvimWithModule {
             module = ./nixvim;
           };
-        };
-      };
+        } // nixpkgs.lib.mapAttrs (name: value: value) (import ./pkgs pkgs))
+        nixpkgs-stable;
 
       nixOnDroidConfigurations.default =
         nix-on-droid.lib.nixOnDroidConfiguration {
           extraSpecialArgs = let nixpkgs = nixpkgs-stable;
-          in { inherit inputs nixpkgs secrets; };
+          in { inherit inputs nixpkgs secrets self; };
           pkgs = import nixpkgs-stable { system = "aarch64-linux"; };
           modules = [
             ./nix-on-droid
             {
               home-manager = {
                 config.imports = [ ];
-                extraSpecialArgs = { inherit inputs secrets; };
+                extraSpecialArgs = { inherit inputs secrets self; };
               };
             }
           ];
@@ -225,7 +226,7 @@
             };
             specialArgs = {
               inherit pkgs-unstable inputs secrets flake-root private
-                agenix-rekey;
+                agenix-rekey self;
               nixpkgs = branch.nixpkgs;
               nixpkgs-unstable = nixpkgs;
             };

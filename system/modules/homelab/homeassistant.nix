@@ -1,4 +1,4 @@
-{ inputs, pkgs, lib, config, pkgs-unstable, ... }:
+{ inputs, pkgs, lib, config, pkgs-unstable, self, ... }:
 let
   hass_config = "${vars.serviceData}/hass";
   vars = import ./variables.nix { inherit config inputs pkgs lib; };
@@ -46,8 +46,8 @@ in {
       services.home-assistant = {
         enable = true;
         openFirewall = true;
-        customComponents = with pkgs.home-assistant-custom-components;
-          [ huawei_solar ];
+        customComponents = 
+          [ self.packages.${pkgs.system}.huawei_solar ];
         extraComponents = [
           # Components required to complete the onboarding
           "analytics"

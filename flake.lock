@@ -504,11 +504,11 @@
     },
     "nixpkgs-stable_2": {
       "locked": {
-        "lastModified": 1733094360,
-        "narHash": "sha256-v72O9TftCH1N4TGz4pHK2yNmGN4qaMMS42vXdrV2OzA=",
+        "lastModified": 1733655058,
+        "narHash": "sha256-AIWrjfvfWpmZp7BSV8dJXVK2pTBrLPAP+hw1bQlEwC4=",
         "owner": "Toomoch",
         "repo": "nixpkgs",
-        "rev": "acbee7a8d6da7698b7457589be5f132196a8691a",
+        "rev": "4470574cd56be32612042b4e0d9688729ed43b33",
         "type": "github"
       },
       "original": {

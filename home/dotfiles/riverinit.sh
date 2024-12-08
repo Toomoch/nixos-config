@@ -23,6 +23,8 @@ riverctl map normal Super+Shift E exit
 
 riverctl map normal Super+Shift N spawn 'swaync-client -t -sw'
 
+riverctl map normal None Print spawn 'screenshot area'
+
 # Super+J and Super+K to focus the next/previous view in the layout stack
 riverctl map normal Super J focus-view next
 riverctl map normal Super K focus-view previous
