@@ -16,7 +16,7 @@ in {
     ../river.nix
   ];
 
-  home.packages = [ ];
+  home.packages = [ pkgs.vesktop ];
 
   wayland.windowManager.sway = {
     config.workspaceOutputAssign = [

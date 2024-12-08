@@ -275,7 +275,7 @@
                 user = "root";
                 #interactiveSudo = true;
                 #sshOpts = ["-A"];
-                sshOpts = [ "-o"  "ProxyCommand=none" ];
+                sshOpts = [ "-o" "ProxyCommand=none" ];
                 magicRollback = true;
               };
           };

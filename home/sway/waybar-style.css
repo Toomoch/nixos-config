@@ -8,8 +8,8 @@
 }
 
 window#waybar {
-    background-color: rgba(0, 0, 0, 0.20);
-    border-bottom: 3px rgba(0, 0, 0, 0.20);
+    background-color: rgba(0, 0, 0, 0.2);
+    border-bottom: 3px rgba(0, 0, 0, 0.2);
     color: #ffffff;
     transition-property: background-color;
     transition-duration: .5s;
@@ -84,6 +84,10 @@ button:hover {
 
 #tags button.urgent {
     background-color: #eb4d4b;
+}
+
+#tags button.occupied {
+    color: #32CD32;
 }
 
 #mode {
