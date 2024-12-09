@@ -172,14 +172,8 @@
         in function syspkgs system);
 
     in {
-      # Create nivxim package & also import every package found in the attr pkgs from ./pkgs/default.nix
-      packages = forAllSystems (pkgs: system:
-        {
-          nvim = nixvim.legacyPackages.${system}.makeNixvimWithModule {
-            module = ./nixvim;
-          };
-        } // nixpkgs.lib.mapAttrs (name: value: value) (import ./pkgs pkgs))
-        nixpkgs-stable;
+      # Import every package found in the attr pkgs from ./pkgs/default.nix
+      packages = forAllSystems (pkgs: system: import ./pkgs pkgs nixvim system) nixpkgs-stable;
 
       nixOnDroidConfigurations.default =
         nix-on-droid.lib.nixOnDroidConfiguration {

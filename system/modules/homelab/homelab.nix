@@ -1,10 +1,9 @@
-{ inputs, config, lib, pkgs, pkgs-unstable, secrets, private, ... }:
+{ inputs, config, lib, pkgs, pkgs-unstable, secrets, private, self, ... }:
 let
   vars = import ./variables.nix { inherit config inputs pkgs lib; };
   jmusicbot = "${vars.serviceData}/jmusicbot";
   tgtg_volume = "${vars.serviceData}/tgtg";
 
-  cockpit-machines = pkgs.callPackage ../packages/cockpit-machines.nix { };
 in
 {
   options.homelab = {
@@ -49,7 +48,7 @@ in
       #Caddy reverse proxy
       services.caddy = {
         enable = true;
-        package = pkgs.callPackage ../../packages/caddy-plugins.nix { };
+        package = self.packages.${pkgs.system}.caddy-plugins;
         extraConfig = builtins.readFile "${private}/configfiles/Caddyfile";
       };
       age.secrets.duckdns.rekeyFile = private + "/secrets/age/duckdns.age";

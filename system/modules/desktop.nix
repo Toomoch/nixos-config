@@ -1,4 +1,4 @@
-{ inputs, config, lib, pkgs, ... }:
+{ inputs, config, lib, pkgs, self, ... }:
 let
   cfg = config.desktop;
   g29init = pkgs.writeShellScriptBin "g29init" ''
@@ -128,7 +128,7 @@ in
         let
           firefox-package = pkgs.wrapFirefox pkgs.firefox-unwrapped {
             nativeMessagingHosts =
-              [ (pkgs.callPackage ../packages/firefox-profile-switcher-connector.nix { }) ];
+              [ self.packages.${pkgs.system}.firefox-profile-switcher-connector ];
             extraPolicies = { ExtensionSettings = { }; };
           };
 

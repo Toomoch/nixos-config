@@ -1,9 +1,4 @@
-{
-  lib,
-  buildHomeAssistantComponent,
-  fetchFromGitHub,
-  huawei-solar,
-}:
+{ lib, buildHomeAssistantComponent, fetchFromGitHub, huawei-solar }:
 
 buildHomeAssistantComponent rec {
   owner = "wlcrs";
