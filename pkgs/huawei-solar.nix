@@ -1,20 +1,19 @@
-{ lib, python3, fetchFromGitHub, fetchFromGitLab }:
-let
-  python = python3.override {
-    self = python;
-    packageOverrides = (self: super: {
-      pymodbus = super.pymodbus.overridePythonAttrs (oldAttrs: rec {
-        version = "3.6.9";
-        src = fetchFromGitHub {
-          inherit (oldAttrs.src) owner repo;
-          rev = "refs/tags/v${version}";
-          hash = "sha256-ScqxDO0hif8p3C6+vvm7FgSEQjCXBwUPOc7Y/3OfkoI=";
-        };
-      });
-    });
-  };
+{
+  backoff,
+  buildPythonPackage,
+  fetchFromGitLab,
+  lib,
+  hatchling,
+  hatch-vcs,
+  pytz,
+  pymodbus,
+  pyserial-asyncio,
+  typing-extensions,
+  pytest-asyncio,
+  pytestCheckHook,
+}:
 
-in python.pkgs.buildPythonPackage rec {
+buildPythonPackage rec {
   pname = "huawei-solar";
   version = "2.3.0";
   pyproject = true;
@@ -26,13 +25,22 @@ in python.pkgs.buildPythonPackage rec {
     hash = "sha256-PcpyyEH3Ad9oyr4aPlUgxU5S/NPoIDUZj+Ncs7FXhVA=";
   };
 
-  build-system = with python.pkgs; [ hatchling hatch-vcs ];
-  dependencies = with python.pkgs; [
+  build-system = [
+    hatchling
+    hatch-vcs
+  ];
+
+  dependencies = [
     backoff
     pytz
     pymodbus
     typing-extensions
     pyserial-asyncio
+  ];
+
+  nativeCheckInputs = [
+    pytest-asyncio
+    pytestCheckHook
   ];
 
   meta = with lib; {
@@ -41,6 +49,7 @@ in python.pkgs.buildPythonPackage rec {
     changelog = "https://gitlab.com/Emilv2/huawei-solar/-/tags/${version}";
     maintainers = with maintainers; [ Toomoch ];
     license = licenses.agpl3Only;
+    broken = lib.versionAtLeast pymodbus.version "3.7.0";
   };
 
 }
