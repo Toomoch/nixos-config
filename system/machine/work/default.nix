@@ -16,6 +16,7 @@ in
   desktop.enable = true;
   desktop.regreet.enable = true;
   desktop.sway.enable = true;
+  desktop.river.enable = true;
   vm.podman.enable = true;
   vm.docker.enable = true;
   vm.libvirtd.enable = true;
