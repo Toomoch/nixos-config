@@ -11,12 +11,13 @@
     sops
     rage
     age-plugin-fido2-hmac
-    ansible
+    ansible_2_16
     ansible-lint
+    sshpass
     just
     tio
     tldr
-    (python3.withPackages(ps: [ ps.ansible ps.pip ps.requests ps.python-gitlab ps.pygments ]))
+    (python3.withPackages(ps: [ ps.pip ps.requests ps.python-gitlab ps.pygments ]))
     nixd
     file
   ];
