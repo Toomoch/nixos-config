@@ -2,8 +2,8 @@
   description = "Arnau NixOS configs";
 
   inputs = {
-    nixpkgs.url = "github:Toomoch/nixpkgs/huawei-solar";
-    nixpkgs-stable.url = "github:Toomoch/nixpkgs/huawei-solar-nixos-24.11";
+    nixpkgs.url = "nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "nixpkgs/nixos-24.11";
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -174,6 +174,7 @@
     in {
       # Import every package found in the attr pkgs from ./pkgs/default.nix
       packages = forAllSystems (pkgs: system: import ./pkgs pkgs nixvim system) nixpkgs-stable;
+ 
 
       nixOnDroidConfigurations.default =
         nix-on-droid.lib.nixOnDroidConfiguration {

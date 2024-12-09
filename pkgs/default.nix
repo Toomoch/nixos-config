@@ -9,6 +9,7 @@ pkgs: nixvim: system: rec {
     module = ../nixvim;
   };
   caddy-plugins = pkgs.callPackage ./caddy-plugins.nix { };
-  firefox-profile-switcher-connector = pkgs.callPackage ./firefox-profile-switcher-connector.nix {};
+  firefox-profile-switcher-connector =
+    pkgs.callPackage ./firefox-profile-switcher-connector.nix { };
 
 }
