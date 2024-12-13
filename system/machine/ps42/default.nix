@@ -12,7 +12,7 @@ in {
     [ ./hardware-configuration.nix ../../users/arnau.nix ../../users/aina.nix ];
 
   config = lib.mkMerge [
-    ({
+    {
       networking.hostName = "ps42"; # Define your hostname.
 
       specialisation = {
@@ -26,27 +26,6 @@ in {
               libsForQt5.kio-gdrive
             ];
             i18n.defaultLocale = lib.mkDefault "ca_ES.UTF-8";
-          };
-        };
-        vfio.configuration = {
-          desktop.sway.enable = true;
-          desktop.regreet.enable = true;
-          desktop.river.enable = true;
-          desktop.hyprland.enable = false;
-          vm.libvirtd.enable = true;
-          services.tlp = {
-            enable = true;
-            settings = {
-              SOUND_POWER_SAVE_ON_AC = 1;
-              SOUND_POWER_SAVE_ON_BAT = 1;
-              RUNTIME_PM_ON_AC = "auto";
-              PCIE_ASPM_ON_AC = "powersave";
-              PCIE_ASPM_ON_BAT = "powersupersave";
-            };
-          };
-          vfio = {
-            enable = true;
-            devices = [ "10de:1d10" ];
           };
         };
         # disabled
@@ -135,7 +114,7 @@ in {
       # Before changing this value read the documentation for this option
       # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
       system.stateVersion = "22.11"; # Did you read the comment?
-    })
+    }
     (lib.mkIf (config.specialisation != { }) {
       desktop.blacklistnvidia.enable = true;
       desktop.sway.enable = true;
@@ -143,6 +122,10 @@ in {
       desktop.river.enable = true;
       desktop.hyprland.enable = false;
       vm.libvirtd.enable = true;
+      vfio = {
+        enable = true;
+        devices = [ "10de:1d10" ];
+      };
       services.tlp = {
         enable = true;
         settings = {
