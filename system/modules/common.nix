@@ -99,6 +99,7 @@ in
         just
         dig
         iperf3
+        tree
       ];
 
       # Enable the OpenSSH daemon.

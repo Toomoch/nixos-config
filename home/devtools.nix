@@ -13,6 +13,7 @@
     age-plugin-fido2-hmac
     ansible_2_16
     ansible-lint
+    uv
     sshpass
     just
     tio
