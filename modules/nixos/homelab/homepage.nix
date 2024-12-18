@@ -1,4 +1,4 @@
-{ config, inputs, pkgs-unstable, lib, pkgs, secrets, private, ... }:
+{ config, inputs, lib, pkgs, secrets, private, ... }:
 let
   vars = import ./variables.nix { inherit config inputs pkgs lib; };
 in

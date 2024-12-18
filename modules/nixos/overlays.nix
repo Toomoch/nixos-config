@@ -1,4 +1,4 @@
-{ inputs, config, pkgs, pkgs-unstable, agenix-rekey,  ... }:
+{ inputs, config, pkgs, agenix-rekey,  ... }:
 let
   river-overlay = self: super: {
     # override derivation attributes
@@ -27,6 +27,6 @@ in
 
   # openvscode-server from unstable
   nixpkgs.overlays = [
-    agenix-rekey.overlays.default
+    
   ];
 }

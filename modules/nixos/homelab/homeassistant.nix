@@ -1,4 +1,4 @@
-{ inputs, pkgs, lib, config, pkgs-unstable, self, ... }:
+{ inputs, pkgs, lib, config, self, ... }:
 let
   hass_config = "${vars.serviceData}/hass";
   vars = import ./variables.nix { inherit config inputs pkgs lib; };

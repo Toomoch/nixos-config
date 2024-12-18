@@ -1,4 +1,4 @@
-{ pkgs, pkgs-unstable, nixpkgs-unstable, ... }:
+{ pkgs, ... }:
 {
   home.packages = with pkgs; [
     graphviz

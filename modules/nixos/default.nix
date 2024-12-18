@@ -7,7 +7,6 @@ inputs: { sops-nix, ...}:
     ./common.nix
     ./homelab
     ./secrets.nix
-    ./overlays.nix
     ./vfio.nix
     ./waylandWindowManagers.nix
   ];

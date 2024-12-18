@@ -1,4 +1,4 @@
-{ config, pkgs, lib, pkgs-unstable, flake-root, private, ... }: {
+{ config, pkgs, lib, flake-root, private, ... }: {
   imports = [ ./hardware-configuration.nix ../../users/arnau.nix ./disko.nix ];
 
   nixpkgs.config.allowUnfree = true;

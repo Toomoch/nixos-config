@@ -1,27 +1,25 @@
-{ inputs, config, lib, pkgs, nixpkgs, secrets, nixpkgs-unstable, ... }:
-let
-  cfg = config.common;
-in
-{
+{ inputs, config, lib, pkgs, nixpkgs, secrets, nixpkgs-unstable, outputs, ... }:
+let cfg = config.common;
+in {
   options.common = {
     enable = lib.mkEnableOption "Whether to enable common stuff";
     systemd-boot.enable = lib.mkEnableOption "Whether to enable x86 bootloader";
-    cloud.enable = lib.mkEnableOption "Whether to enable cloud specific settings";
+    cloud.enable =
+      lib.mkEnableOption "Whether to enable cloud specific settings";
   };
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
       nix = {
-        nixPath = [ "nixpkgs=${nixpkgs}" ];
         settings = {
           experimental-features = [ "nix-command" "flakes" ];
           auto-optimise-store = true;
           builders-use-substitutes = true;
           substituters = [ "https://deploy-rs.cachix.org" ];
-          trusted-public-keys = [ "deploy-rs.cachix.org-1:xfNobmiwF/vzvK1gpfediPwpdIP0rpDV2rYqx40zdSI=" ];
+          trusted-public-keys = [
+            "deploy-rs.cachix.org-1:xfNobmiwF/vzvK1gpfediPwpdIP0rpDV2rYqx40zdSI="
+          ];
         };
-        registry.nixpkgs.flake = nixpkgs;
-        registry.nixpkgs-unstable.flake = nixpkgs-unstable;
         gc = {
           automatic = true;
           dates = "weekly";
@@ -33,7 +31,11 @@ in
           hostName = "h81";
           sshUser = secrets.hosts.h81.user;
           publicHostKey = secrets.hosts.h81.pubKeyBase64;
-          sshKey = "${config.users.users.${secrets.hosts.${config.networking.hostName}.user}.home}/.ssh/id_ed25519";
+          sshKey = "${
+              config.users.users.${
+                secrets.hosts.${config.networking.hostName}.user
+              }.home
+            }/.ssh/id_ed25519";
           system = "x86_64-linux";
           protocol = "ssh-ng";
           # default is 1 but may keep the builder idle in between builds
@@ -44,6 +46,10 @@ in
           mandatoryFeatures = [ ];
         }];
       };
+      nixpkgs.overlays =
+        [ outputs.overlays.additions outputs.overlays.modifications outputs.overlays.unstable-packages inputs.agenix-rekey.overlays.default ];
+      nixpkgs.flake.setNixPath = true;
+      nixpkgs.flake.setFlakeRegistry = true;
 
       systemd.network.enable = true;
       networking.useNetworkd = true;
@@ -53,7 +59,8 @@ in
 
       # Select internationalisation properties.
       i18n = {
-        supportedLocales = [ "en_GB.UTF-8/UTF-8" "ca_ES.UTF-8/UTF-8" "en_US.UTF-8/UTF-8" ];
+        supportedLocales =
+          [ "en_GB.UTF-8/UTF-8" "ca_ES.UTF-8/UTF-8" "en_US.UTF-8/UTF-8" ];
         defaultLocale = "en_US.UTF-8";
         extraLocaleSettings = {
           LC_NUMERIC = "ca_ES.UTF-8";
@@ -77,9 +84,7 @@ in
       console = {
         font = "ter-124b";
         keyMap = "es";
-        packages = with pkgs; [
-          terminus_font
-        ];
+        packages = with pkgs; [ terminus_font ];
       };
 
       # Allow unfree packages
@@ -104,7 +109,11 @@ in
 
       # Enable the OpenSSH daemon.
       services.openssh.enable = true;
-      programs.ssh = { startAgent = true; enableAskPassword = true; askPassword = "${pkgs.seahorse}/libexec/seahorse/ssh-askpass"; };
+      programs.ssh = {
+        startAgent = true;
+        enableAskPassword = true;
+        askPassword = "${pkgs.seahorse}/libexec/seahorse/ssh-askpass";
+      };
 
       # Enable mosh
       programs.mosh.enable = true;
@@ -151,11 +160,7 @@ in
           "virtio_blk"
           "virtio_scsi"
         ];
-        kernelModules = [
-          "virtio_balloon"
-          "virtio_console"
-          "virtio_rng"
-        ];
+        kernelModules = [ "virtio_balloon" "virtio_console" "virtio_rng" ];
       };
       boot.kernelParams = [
         # Disable auditing

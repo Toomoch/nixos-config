@@ -1,4 +1,4 @@
-{ inputs, config, lib, pkgs, pkgs-unstable, secrets, private, self, ... }:
+{ inputs, config, lib, pkgs, secrets, private, self, ... }:
 let
   vars = import ./variables.nix { inherit config inputs pkgs lib; };
   jmusicbot = "${vars.serviceData}/jmusicbot";

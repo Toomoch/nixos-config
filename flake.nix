@@ -56,40 +56,22 @@
       url = "github:serokell/deploy-rs";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    #hyprland.url = "github:hyprwm/Hyprland";
 
     agenix-rekey = {
       url = "github:oddlama/agenix-rekey";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    #ags.url = "github:Aylur/ags";
-    #matugen.url = "github:InioX/matugen";
-
   };
 
-  outputs = inputs@{ self, nixpkgs, home-manager, nixpkgs-stable
+  outputs = { self, nixpkgs, home-manager, nixpkgs-stable
     , home-manager-stable, deploy-rs, nixvim, disko-stable, disko, nix-on-droid
-    , agenix, agenix-rekey, ... }:
+    , agenix, agenix-rekey, ... }@inputs:
     let
+      inherit (self) outputs;
       # specialArgs
       secrets = import /${private}/secrets/secrets.nix;
       flake-root = ./.;
       private = /${flake-root}/private;
-
-      # From https://github.com/ElrohirGT/ConfigurationFiles/blob/master/flake.nix
-      #forAllSystems = { pkgs ? nixpkgs, function, }:
-      #  nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-linux" ] (system:
-      #    function {
-      #      pkgs = import pkgs {
-      #        inherit system;
-      #        config.allowUnfree = true;
-      #        overlays = [
-      #          #inputs.something.overlays.default
-      #        ];
-      #      };
-      #      inherit system;
-      #    });
 
       stable = {
         nixpkgs = nixpkgs-stable;
@@ -168,8 +150,10 @@
 
     in {
       # Import every package found in the attr pkgs from ./pkgs/default.nix
-      packages = forAllSystems (pkgs: system: import ./pkgs pkgs nixvim system) nixpkgs-stable;
- 
+      packages = forAllSystems (pkgs: system: import ./pkgs pkgs nixvim system)
+        nixpkgs-stable;
+      nixosModules.common = import ./modules/nixos { inherit inputs; };
+      overlays = import ./overlays { inherit inputs nixvim; };
 
       nixOnDroidConfigurations.default =
         nix-on-droid.lib.nixOnDroidConfiguration {
@@ -195,8 +179,6 @@
         };
       };
 
-      nixosModules.common = import ./system/modules { inherit inputs; };
-
       nixosConfigurations = let
         defaultModules = host: branch: [
           self.nixosModules.common
@@ -204,19 +186,18 @@
           branch.agenix.nixosModules.default
           agenix-rekey.nixosModules.default
           ./system/machine/${host}
+          {
+            nix.registry.nixpkgs-unstable.flake = nixpkgs; # Add nixpkgs-unstable to registry
+          }
         ];
 
         mkHostConfig = { host, arch, branch, hm, ... }: {
           name = host;
           value = let # surely theres a better way of doing this
             host-folder = secrets.hosts.${host}.hostFolder;
-            pkgs-unstable = import nixpkgs {
-              system = arch;
-              config.allowUnfree = true;
-            };
             specialArgs = {
-              inherit pkgs-unstable inputs secrets flake-root private
-                agenix-rekey self;
+              inherit inputs secrets flake-root private
+                agenix-rekey self outputs;
               nixpkgs = branch.nixpkgs;
               nixpkgs-unstable = nixpkgs;
             };
