@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, flake-root, ... }:
 let
   cfg = config.desktop;
   custom-session = import ./functions/custom-session.nix;
@@ -89,7 +89,7 @@ in {
         settings = {
           background = {
             fit = "Cover";
-            path = ../assets/lockscreen.png;
+            path = /${flake-root}/assets/lockscreen.png;
 
           };
           GTK = { application_prefer_dark_theme = true; };

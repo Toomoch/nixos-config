@@ -224,8 +224,6 @@
             system = arch;
             inherit specialArgs;
             modules = defaultModules host-folder branch
-              ++ branch.nixpkgs.lib.optional (branch == stable)
-              ./system/modules/stable-overlays.nix
               ++ branch.nixpkgs.lib.optionals hm [
                 branch.home-manager.nixosModules.home-manager
                 {
