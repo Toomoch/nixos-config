@@ -15,11 +15,6 @@
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
-    #nixvim = {
-    #  url = "github:nix-community/nixvim/nixos-24.05";
-    #  inputs.nixpkgs.follows = "nixpkgs-stable";
-    #};
-
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";

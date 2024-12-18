@@ -40,6 +40,7 @@
 
   # Enable the IOMMU
   boot.kernelParams = [ "amd_iommu=on" ];
+  boot.loader.systemd-boot.windows = { "10".efiDeviceHandle = "HD1b65535a1"; };
 
   # LTS Kernel
   #boot.kernelPackages = pkgs.linuxPackages_latest;
