@@ -21,5 +21,6 @@
     (python3.withPackages(ps: [ ps.pip ps.requests ps.python-gitlab ps.pygments ]))
     nixd
     file
+    git-agecrypt
   ];
 }

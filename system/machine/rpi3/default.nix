@@ -12,8 +12,6 @@ in
     (nixpkgs.outPath + "/nixos/modules/profiles/minimal.nix")
   ];
 
-  environment.noXlibs = lib.mkForce false;
-
   networking.hostName = "rpi3"; # Define your hostname.
   nixpkgs.hostPlatform = lib.mkDefault "aarch64-linux";
 
