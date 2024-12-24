@@ -105,7 +105,7 @@ in {
       virtualisation.waydroid.enable = false;
 
       # LTS Kernel
-      boot.kernelPackages = pkgs.linuxPackages_latest;
+      #boot.kernelPackages = pkgs.linuxPackages_latest;
 
       # This value determines the NixOS release from which the default
       # settings for stateful data, like file locations and database versions
