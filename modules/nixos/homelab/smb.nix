@@ -1,45 +1,78 @@
 { inputs, pkgs, lib, config, ... }:
-let cfg = config.custom.smb;
-in {
+let
+  cfg = config.custom.smb;
+  mkUserShares = baseDir: users:
+    builtins.listToAttrs (builtins.map (userName: {
+      name = userName;
+      value = {
+        browseable = "yes";
+        "read only" = "no";
+        "guest ok" = "no";
+        path = "${baseDir}/${userName}";
+      };
+    }) users);
 
-  options.custom.smb.enable =
-    lib.mkEnableOption "Whether to enable homelab stuff";
+  mkUserSharesFolders = baseDir: users:
+    map (userName: "d ${baseDir}/${userName} 0700 ${userName} users - -") users;
+
+  mkUsers = users:
+    builtins.listToAttrs (builtins.map (userName: {
+      name = userName;
+      value = { isNormalUser = true; };
+    }) users);
+
+in {
+  options.custom.smb = {
+    enable = lib.mkEnableOption "Whether to enable homelab stuff";
+    userShares = {
+      enable = lib.mkEnableOption "Whether to enable homelab stuff";
+      baseDir = lib.mkOption {
+        type = lib.types.path;
+        default = null;
+        description = "Base directory for all the user shares";
+      };
+      users = lib.mkOption {
+        type = lib.types.listOf lib.types.str;
+        default = null;
+        description = "User to create shares for";
+      };
+    };
+  };
+
+  # manually add the passwords with smbpasswd -a my_user
 
   config = lib.mkIf cfg.enable {
     networking = { firewall.enable = true; };
 
-    systemd.tmpfiles.rules = [ "d /zstorage/share 0775 arnau users - -" ];
+    systemd.tmpfiles.rules =
+      lib.optionals cfg.userShares.enable mkUserSharesFolders
+      cfg.userShares.baseDir cfg.userShares.users;
+
+    users.users =
+      lib.optionalAttrs cfg.userShares.enable mkUsers cfg.userShares.users;
+
     services = {
       # Network shares
       samba = {
         package = pkgs.samba4Full;
-        # ^^ `samba4Full` is compiled with avahi, ldap, AD etc support (compared to the default package, `samba`
-        # Required for samba to register mDNS records for auto discovery 
-        # See https://github.com/NixOS/nixpkgs/blob/592047fc9e4f7b74a4dc85d1b9f5243dfe4899e3/pkgs/top-level/all-packages.nix#L27268
         enable = true;
         openFirewall = true;
-        shares.testshare = {
-          path = "/zstorage/share";
-          writable = "true";
-          comment = "Hello World!";
+        settings = lib.optionalAttrs cfg.userShares.enable {
+          personal = {
+            browseable = "yes";
+            path = cfg.userShares.baseDir;
+            writable = "true";
+          };
         };
-        #extraConfig = ''
-        #  server smb encrypt = required
-        #  # ^^ Note: Breaks `smbclient -L <ip/host> -U%` by default, might require the client to set `client min protocol`?
-        #  server min protocol = SMB3_00
-        #'';
       };
       avahi = {
         publish.enable = true;
         publish.userServices = true;
-        # ^^ Needed to allow samba to automatically register mDNS records (without the need for an `extraServiceFile`
         nssmdns4 = true;
-        # ^^ Not one hundred percent sure if this is needed- if it aint broke, don't fix it
         enable = true;
         openFirewall = true;
       };
       samba-wsdd = {
-        # This enables autodiscovery on windows since SMB1 (and thus netbios) support was discontinued
         enable = true;
         openFirewall = true;
       };

@@ -1,4 +1,4 @@
-{ config, pkgs, lib, flake-root, private, ... }: {
+{ config, pkgs, lib, flake-root, private, secrets, ... }: {
   imports = [ ./hardware-configuration.nix ../../users/arnau.nix ./disko.nix ];
 
   nixpkgs.config.allowUnfree = true;
@@ -23,8 +23,15 @@
   custom.homepage-dashboard.enable = true;
   custom.homeassistant.enable = true;
   custom.immich.enable = true;
-  custom.smb.enable = true;
   custom.nextcloud.enable = true;
+  custom.smb = {
+    enable = true;
+    userShares = {
+      enable = true;
+      baseDir = "/zstorage/share/personal";
+      users = secrets.smbUsers;
+    };
+  };
   custom.grafana.enable = true;
   custom.vm.podman.enable = true;
   custom.vm.docker.enable = true;
