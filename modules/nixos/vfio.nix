@@ -5,15 +5,14 @@ let
     "10de:1d10" # Graphics
   ];
   user = "${secrets.hosts.${config.networking.hostName}.user}";
-  cfg = config.vfio;
+  cfg = config.custom.vfio;
 in {
-  options = {
-    vfio.enable = with lib; mkEnableOption "Configure the machine for VFIO";
-
-    vfio.gpuIDs =
-      lib.mkOption { type = with lib.types; types.listOf types.str; };
-    vfio.devices = lib.mkOption {
-      type = with lib; types.listOf (types.strMatching "[0-9a-f]{4}:[0-9a-f]{4}");
+  options.custom.vfio = {
+    enable = with lib; mkEnableOption "Configure the machine for VFIO";
+    gpuIDs = lib.mkOption { type = with lib.types; types.listOf types.str; };
+    devices = lib.mkOption {
+      type = with lib;
+        types.listOf (types.strMatching "[0-9a-f]{4}:[0-9a-f]{4}");
       default = [ ];
       example = [ "10de:1b80" "10de:10f0" ];
       description = "PCI IDs of devices to bind to vfio-pci";
@@ -29,8 +28,7 @@ in {
 
       ];
 
-      kernelParams = [
-      ] ++ lib.optional cfg.enable
+      kernelParams = [ ] ++ lib.optional cfg.enable
         # isolate the GPU
         ("vfio-pci.ids=" + builtins.concatStringsSep "," cfg.devices);
     };

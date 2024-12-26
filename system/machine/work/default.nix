@@ -11,15 +11,15 @@ in
   ];
 
   networking.hostName = secrets.work.hostName;
-  common.enable = true;
-  common.systemd-boot.enable = true;
-  desktop.enable = true;
-  desktop.regreet.enable = true;
-  desktop.sway.enable = true;
-  desktop.river.enable = true;
-  vm.podman.enable = true;
-  vm.docker.enable = true;
-  vm.libvirtd.enable = true;
+  custom.common.enable = true;
+  custom.common.systemd-boot.enable = true;
+  custom.desktop.enable = true;
+  custom.desktop.regreet.enable = true;
+  custom.desktop.sway.enable = true;
+  custom.desktop.river.enable = true;
+  custom.vm.podman.enable = true;
+  custom.vm.docker.enable = true;
+  custom.vm.libvirtd.enable = true;
 
   programs.singularity = {
     enable = true;

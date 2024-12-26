@@ -18,9 +18,9 @@ in {
       specialisation = {
         kde = {
           configuration = {
-            desktop.blacklistnvidia.enable = true;
-            desktop.kde.enable = true;
-            desktop.flatpak.enable = true;
+            custom.desktop.blacklistnvidia.enable = true;
+            custom.desktop.kde.enable = true;
+            custom.desktop.flatpak.enable = true;
             environment.systemPackages = with pkgs; [
               libsForQt5.kpat
               libsForQt5.kio-gdrive
@@ -70,12 +70,12 @@ in {
 
       environment.systemPackages = with pkgs; [ powertop ];
 
-      common.enable = true;
-      common.systemd-boot.enable = true;
-      desktop.enable = true;
-      desktop.arctis9.enable = false;
-      desktop.matlab.enable = false;
-      vm.podman.enable = true;
+      custom.common.enable = true;
+      custom.common.systemd-boot.enable = true;
+      custom.desktop.enable = true;
+      custom.desktop.arctis9.enable = false;
+      custom.desktop.matlab.enable = false;
+      custom.vm.podman.enable = true;
       #vm.libvirtd.enable = false;
 
       # Enable VAAPI hardware acceleration
@@ -116,13 +116,13 @@ in {
       system.stateVersion = "22.11"; # Did you read the comment?
     }
     (lib.mkIf (config.specialisation != { }) {
-      desktop.blacklistnvidia.enable = true;
-      desktop.sway.enable = true;
-      desktop.regreet.enable = true;
-      desktop.river.enable = true;
-      desktop.hyprland.enable = false;
-      vm.libvirtd.enable = true;
-      vfio = {
+      custom.desktop.blacklistnvidia.enable = true;
+      custom.desktop.sway.enable = true;
+      custom.desktop.regreet.enable = true;
+      custom.desktop.river.enable = true;
+      custom.desktop.hyprland.enable = false;
+      custom.vm.libvirtd.enable = true;
+      custom.vfio = {
         enable = true;
         devices = [ "10de:1d10" ];
       };

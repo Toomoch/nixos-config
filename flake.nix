@@ -152,7 +152,7 @@
       # Import every package found in the attr pkgs from ./pkgs/default.nix
       packages = forAllSystems (pkgs: system: import ./pkgs pkgs nixvim system)
         nixpkgs-stable;
-      nixosModules.common = import ./modules/nixos { inherit inputs; };
+      nixosModules.common = import ./modules/nixos;
       overlays = import ./overlays { inherit inputs nixvim; };
 
       nixOnDroidConfigurations.default =
@@ -229,7 +229,7 @@
 
       agenix-rekey = agenix-rekey.configure {
         userFlake = self;
-        nodes = self.nixosConfigurations;
+        nixosConfigurations = self.nixosConfigurations;
       };
 
       # deploy-rs node configuration stolen from https://github.com/LongerHV/nixos-configuration

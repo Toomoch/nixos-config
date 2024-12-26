@@ -4,15 +4,16 @@ let
   jmusicbot = "${vars.serviceData}/jmusicbot";
   tgtg_volume = "${vars.serviceData}/tgtg";
 
+  cfg = config.custom.homelab;
 in
 {
-  options.homelab = {
+  options.custom.homelab = {
     enable = lib.mkEnableOption "Whether to enable homelab stuff";
     enablevps = lib.mkEnableOption "Whether to enable VPS homelab stuff";
   };
 
   config = lib.mkMerge [
-    (lib.mkIf vars.cfg.enable {
+    (lib.mkIf cfg.enable {
       virtualisation.oci-containers.backend = "docker";
       services.cockpit = {
         enable = false;
@@ -48,7 +49,7 @@ in
       #Caddy reverse proxy
       services.caddy = {
         enable = true;
-        package = self.packages.${pkgs.system}.caddy-plugins;
+        package = pkgs.caddy-plugins;
         extraConfig = builtins.readFile "${private}/configfiles/Caddyfile";
       };
       age.secrets.duckdns.rekeyFile = private + "/secrets/age/duckdns.age";
@@ -57,7 +58,7 @@ in
         EnvironmentFile = "${config.age.secrets.duckdns.path}";
       };
     })
-    (lib.mkIf vars.cfg.enablevps {
+    (lib.mkIf cfg.enablevps {
       age.secrets.tgtg.rekeyFile = "${private}/secrets/age/tgtg.age";
       virtualisation.oci-containers.backend = "docker";
       virtualisation.oci-containers.containers = {

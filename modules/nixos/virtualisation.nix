@@ -1,9 +1,9 @@
 { config, pkgs, lib, ... }:
 let
-  cfg = config.vm;
+  cfg = config.custom.vm;
 in
 {
-  options.vm = {
+  options.custom.vm = {
     podman.enable = lib.mkEnableOption "Wheter to enable podman";
     docker.enable = lib.mkEnableOption "Wheter to enable Docker";
     libvirtd.enable = lib.mkEnableOption "Whether to enable libvirtd";

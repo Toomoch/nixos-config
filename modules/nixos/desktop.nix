@@ -1,6 +1,6 @@
 { inputs, config, lib, pkgs, self, ... }:
 let
-  cfg = config.desktop;
+  cfg = config.custom.desktop;
   g29init = pkgs.writeShellScriptBin "g29init" ''
     ${pkgs.coreutils-full}/bin/sleep 8
     ${pkgs.oversteer}/bin/oversteer --range 300
@@ -8,15 +8,15 @@ let
   matlab-wrapped = pkgs.writeShellScriptBin "matlab" ''
     exec env MESA_GL_VERSION_OVERRIDE=3.0 ${pkgs.matlab}/bin/matlab
   '';
-in
-{
-  options.desktop = {
+in {
+  options.custom.desktop = {
     enable =
       lib.mkEnableOption "Whether to enable common stuff for desktop systems";
     arctis9.enable = lib.mkEnableOption "Whether to enable Arctis9 support";
     flatpak.enable = lib.mkEnableOption "Whether to enable Flatpak support";
     gaming.enable = lib.mkEnableOption "Whether to enable gaming stuff";
-    gaming.g29.enable = lib.mkEnableOption "Whether to enable G29 wheel support";
+    gaming.g29.enable =
+      lib.mkEnableOption "Whether to enable G29 wheel support";
     matlab.enable = lib.mkEnableOption "Whether to enable MATLAB";
     blacklistnvidia.enable =
       lib.mkEnableOption "Whether to disable and hide all detected Nvidia GPUs";
@@ -24,13 +24,6 @@ in
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
-      # Arctis 9
-      #environment.systemPackages = with pkgs; [
-      #] ++ optional cfg.arctis9.enable "headsetcontrol";
-      #
-      #services.udev.extraRules = optionalString cfg.arctis9.enable ''
-      #  KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="1038", ATTRS{idProduct}=="12c2", TAG+="uaccess"'';
-
       programs.appimage = {
         enable = true;
         binfmt = true;
@@ -55,7 +48,6 @@ in
           noto-fonts-emoji
         ];
       };
-      nixpkgs.config.permittedInsecurePackages = [ "electron-24.8.6" ];
 
       programs.nix-ld.enable = true;
       services.envfs.enable = true;
@@ -64,12 +56,10 @@ in
         vulkan-tools
         glxinfo
         libva-utils
-        localsend
         firefoxpwa
       ];
-      networking.firewall.allowedTCPPorts = [
-        53317
-      ];
+
+      programs.localsend.enable = true;
 
       # Enable networking
       systemd.network.enable = lib.mkForce false;
@@ -78,19 +68,6 @@ in
 
       # Printing
       services.printing.enable = false;
-
-      #hardware.printers = {
-      #  ensureDefaultPrinter = "brother";
-      #  ensurePrinters = [
-      #    {
-      #      name = "brother";
-      #      deviceUri = "ipp://BRWD46A6A756DB9/ipp";
-      #      model = "drv:///cupsfilters.drv/pwgrast.ppd ";
-      #      description = "Brother DCP-L2530DW Series";
-      #      location = "Casa";
-      #    }
-      #  ];
-      #};
       services.avahi = {
         enable = true;
         nssmdns4 = true;
@@ -98,9 +75,7 @@ in
       };
 
       # Tailscale
-      services.tailscale = {
-        enable = true;
-      };
+      services.tailscale = { enable = true; };
       systemd.services."tailscaled".wantedBy = lib.mkForce [ ];
 
       # OpenGL    
@@ -124,26 +99,22 @@ in
       programs.adb.enable = true;
 
       # Firefox
-      programs.firefox =
-        let
-          firefox-package = pkgs.wrapFirefox pkgs.firefox-unwrapped {
-            nativeMessagingHosts =
-              [ self.packages.${pkgs.system}.firefox-profile-switcher-connector ];
-            extraPolicies = { ExtensionSettings = { }; };
-          };
-
-        in
-        {
-          enable = true;
-          package = firefox-package;
-          nativeMessagingHosts.packages = [ pkgs.firefoxpwa ];
-
-          preferences =
-            {
-              "browser.fullscreen.autohide" = false;
-              "pdfjs.defaultZoomValue" = "page-fit";
-            };
+      programs.firefox = let
+        firefox-package = pkgs.wrapFirefox pkgs.firefox-unwrapped {
+          nativeMessagingHosts = [ pkgs.firefox-profile-switcher-connector ];
+          extraPolicies = { ExtensionSettings = { }; };
         };
+
+      in {
+        enable = true;
+        package = firefox-package;
+        nativeMessagingHosts.packages = [ pkgs.firefoxpwa ];
+
+        preferences = {
+          "browser.fullscreen.autohide" = false;
+          "pdfjs.defaultZoomValue" = "page-fit";
+        };
+      };
 
       # Enable plymouth bootanimation
       boot.plymouth.enable = true;
@@ -160,23 +131,21 @@ in
     (lib.mkIf cfg.flatpak.enable {
       services.flatpak.enable = true;
       # Ugly hack to add remote
-      systemd.user.services."flatpak-remote-add" =
-        let
-          name = "flathub";
-          location = builtins.fetchurl {
-            url = "https://dl.flathub.org/repo/flathub.flatpakrepo";
-            sha256 =
-              "sha256:0fm0zvlf4fipqfhazx3jdx1d8g0mvbpky1rh6riy3nb11qjxsw9k";
-          };
-        in
-        {
-          wantedBy = [ "default.target" ];
-          serviceConfig = {
-            Type = "oneshot";
-            ExecStart =
-              "/run/current-system/sw/bin/flatpak remote-add --user --if-not-exists ${name} ${location}";
-          };
+      systemd.user.services."flatpak-remote-add" = let
+        name = "flathub";
+        location = builtins.fetchurl {
+          url = "https://dl.flathub.org/repo/flathub.flatpakrepo";
+          sha256 =
+            "sha256:0fm0zvlf4fipqfhazx3jdx1d8g0mvbpky1rh6riy3nb11qjxsw9k";
         };
+      in {
+        wantedBy = [ "default.target" ];
+        serviceConfig = {
+          Type = "oneshot";
+          ExecStart =
+            "/run/current-system/sw/bin/flatpak remote-add --user --if-not-exists ${name} ${location}";
+        };
+      };
 
     })
     (lib.mkIf cfg.gaming.enable {
@@ -203,11 +172,7 @@ in
 
     })
     (lib.mkIf cfg.gaming.g29.enable {
-      environment.systemPackages = [
-        pkgs.oversteer
-        pkgs.at
-        g29init
-      ];
+      environment.systemPackages = [ pkgs.oversteer pkgs.at g29init ];
       services.atd.enable = true;
 
       hardware.new-lg4ff.enable = true;
@@ -219,11 +184,8 @@ in
 
     })
     (lib.mkIf cfg.matlab.enable {
-      environment.systemPackages = [
-        matlab-wrapped
-        pkgs.matlab-mlint
-        pkgs.matlab-mex
-      ];
+      environment.systemPackages =
+        [ matlab-wrapped pkgs.matlab-mlint pkgs.matlab-mex ];
       nixpkgs.overlays = [ inputs.nix-matlab.overlay ];
     })
     (lib.mkIf cfg.blacklistnvidia.enable {

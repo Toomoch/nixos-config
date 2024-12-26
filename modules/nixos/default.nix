@@ -1,5 +1,6 @@
-inputs: { sops-nix, ...}:
-{
+{ config, lib, ... }:
+let
+in {
   imports = [
     ./desktop.nix
     ./de.nix
@@ -10,4 +11,6 @@ inputs: { sops-nix, ...}:
     ./vfio.nix
     ./waylandWindowManagers.nix
   ];
+  custom.common.enable = lib.mkDefault true;
+  custom.secrets.enable = lib.mkDefault true;
 }

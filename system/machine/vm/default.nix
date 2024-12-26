@@ -15,9 +15,9 @@
     };
   };
 
-  common.enable = true;
-  common.systemd-boot.enable = true;
-  vm.podman.enable = true;
+  custom.common.enable = true;
+  custom.common.systemd-boot.enable = true;
+  custom.vm.podman.enable = true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

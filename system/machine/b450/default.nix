@@ -10,21 +10,21 @@
   };
 
   services.tailscale = { enable = true; };
-  common.enable = true;
-  common.systemd-boot.enable = true;
-  desktop.enable = true;
-  desktop.arctis9.enable = true;
-  desktop.regreet.enable = true;
-  desktop.sway.enable = true;
-  desktop.hyprland.enable = false;
-  desktop.river.enable = true;
-  desktop.flatpak.enable = true;
-  desktop.gaming.enable = true;
-  desktop.gaming.g29.enable = true;
-  desktop.matlab.enable = false;
-  vm.podman.enable = true;
-  vm.libvirtd.enable = true;
-  vm.docker.enable = true;
+  custom.common.enable = true;
+  custom.common.systemd-boot.enable = true;
+  custom.desktop.enable = true;
+  custom.desktop.arctis9.enable = true;
+  custom.desktop.regreet.enable = true;
+  custom.desktop.sway.enable = true;
+  custom.desktop.hyprland.enable = false;
+  custom.desktop.river.enable = true;
+  custom.desktop.flatpak.enable = true;
+  custom.desktop.gaming.enable = true;
+  custom.desktop.gaming.g29.enable = true;
+  custom.desktop.matlab.enable = false;
+  custom.vm.podman.enable = true;
+  custom.vm.libvirtd.enable = true;
+  custom.vm.docker.enable = true;
   virtualisation.waydroid.enable = true;
 
   programs.singularity = {

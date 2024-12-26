@@ -11,13 +11,13 @@
 
   services.openssh.ports = [ secrets.hosts.oracle1.sshPort ];
 
-  common.enable = true;
-  common.systemd-boot.enable = true;
-  common.cloud.enable = true;
-  vm.podman.enable = true;
-  vm.docker.enable = true;
+  custom.common.enable = true;
+  custom.common.systemd-boot.enable = true;
+  custom.common.cloud.enable = true;
+  custom.vm.podman.enable = true;
+  custom.vm.docker.enable = true;
   security.polkit.enable = true;
-  homelab.enablevps = true;
+  custom.homelab.enablevps = true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

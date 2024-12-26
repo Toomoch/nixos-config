@@ -5,13 +5,12 @@ let
     "${vars.serviceData}/postgresql/${config.services.postgresql.package.psqlSchema}";
   pgBackups = "${vars.serviceData}/backups/postgresql";
   ncHome = "${vars.serviceData}/nextcloud";
+  cfg = config.custom.nextcloud;
 in {
 
-  options.homelab = {
-    nextcloud.enable = lib.mkEnableOption "Whether to enable Nextcloud";
-  };
+  options.custom.nextcloud.enable = lib.mkEnableOption "Whether to enable Nextcloud";
 
-  config = lib.mkIf vars.cfg.nextcloud.enable {
+  config = lib.mkIf cfg.enable {
     systemd.tmpfiles.rules = [
       "d ${dataBase} 0750 postgres postgres - -"
       "d ${pgBackups} 0750 postgres postgres - -"

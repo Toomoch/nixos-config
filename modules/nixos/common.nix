@@ -1,9 +1,11 @@
-{ inputs, config, lib, pkgs, nixpkgs, secrets, nixpkgs-unstable, outputs, ... }:
-let cfg = config.common;
+{ inputs, config, lib, pkgs, secrets, outputs, ... }:
+let
+  cfg = config.custom.common;
 in {
-  options.common = {
+  options.custom.common = {
     enable = lib.mkEnableOption "Whether to enable common stuff";
-    systemd-boot.enable = lib.mkEnableOption "Whether to enable x86 bootloader";
+    systemd-boot.enable =
+      lib.mkEnableOption "Whether to enable systemd-boot bootloader";
     cloud.enable =
       lib.mkEnableOption "Whether to enable cloud specific settings";
   };
@@ -42,8 +44,12 @@ in {
           mandatoryFeatures = [ ];
         }];
       };
-      nixpkgs.overlays =
-        [ outputs.overlays.additions outputs.overlays.modifications outputs.overlays.unstable-packages inputs.agenix-rekey.overlays.default ];
+      nixpkgs.overlays = [
+        outputs.overlays.additions
+        outputs.overlays.modifications
+        outputs.overlays.unstable-packages
+        inputs.agenix-rekey.overlays.default
+      ];
       nixpkgs.flake.setNixPath = true;
       nixpkgs.flake.setFlakeRegistry = true;
 

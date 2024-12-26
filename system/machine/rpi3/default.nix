@@ -20,7 +20,7 @@ in
     pkgs.borgbackup
   ];
 
-  common.enable = true;
+  custom.common.enable = true;
   hardware.enableRedistributableFirmware = true;
   boot.supportedFilesystems.zfs = lib.mkForce false;
   services.tailscale = {

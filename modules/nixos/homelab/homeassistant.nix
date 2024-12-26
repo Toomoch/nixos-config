@@ -1,4 +1,4 @@
-{ inputs, pkgs, lib, config, self, ... }:
+{ inputs, pkgs, lib, config, ... }:
 let
   hass_config = "${vars.serviceData}/hass";
   vars = import ./variables.nix { inherit config inputs pkgs lib; };
@@ -10,14 +10,14 @@ let
   #huawei_solar = pkgs.callPackage ../../packages/huawei_solar.nix {
   #  inherit huawei-solar;
   #};
+  cfg = config.custom.homeassistant;
 in {
 
-  options.homelab = {
-    homeassistant.enable = lib.mkEnableOption "Whether to enable homelab stuff";
-  };
+  options.custom.homeassistant.enable =
+    lib.mkEnableOption "Whether to enable homelab stuff";
 
-  config = lib.mkMerge [
-    (lib.mkIf vars.cfg.homeassistant.enable {
+  config = 
+    lib.mkIf cfg.enable {
       virtualisation.oci-containers.containers.homeassistant = {
         image = "ghcr.io/home-assistant/home-assistant:stable";
         ports = [ "8123:8123" ];
@@ -46,8 +46,7 @@ in {
       services.home-assistant = {
         enable = true;
         openFirewall = true;
-        customComponents = 
-          [ self.packages.${pkgs.system}.huawei_solar ];
+        customComponents = [ pkgs.huawei_solar ];
         extraComponents = [
           # Components required to complete the onboarding
           "analytics"
@@ -66,6 +65,5 @@ in {
           default_config = { };
         };
       };
-    })
-  ];
+    };
 }

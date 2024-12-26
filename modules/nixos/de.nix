@@ -1,18 +1,9 @@
 { config, lib, pkgs, ... }:
 let
-  cfg = config.desktop;
-  discover-wrapped = pkgs.symlinkJoin
-    {
-      name = "discover-flatpak-backend";
-      paths = [ pkgs.libsForQt5.discover ];
-      buildInputs = [ pkgs.makeWrapper ];
-      postBuild = ''
-        wrapProgram $out/bin/plasma-discover --add-flags "--backends flatpak"
-      '';
-    };
+  cfg = config.custom.desktop;
 in
 {
-  options.desktop = {
+  options.custom.desktop = {
     gnome.enable = lib.mkEnableOption "Whether to enable Gnome with GDM";
     kde.enable = lib.mkEnableOption "Whether to enable KDE with SDDM";
   };

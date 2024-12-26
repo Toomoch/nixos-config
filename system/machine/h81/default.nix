@@ -18,20 +18,18 @@
   boot.zfs.forceImportRoot = false;
   networking.hostId = "e0684fdb";
 
-  age.secrets.secret1.rekeyFile = flake-root + "/private/secrets/age/test.age";
+  custom.common.systemd-boot.enable = true;
+  custom.homelab.enable = true;
+  custom.homepage-dashboard.enable = true;
+  custom.homeassistant.enable = true;
+  custom.immich.enable = true;
+  custom.smb.enable = true;
+  custom.nextcloud.enable = true;
+  custom.grafana.enable = true;
+  custom.vm.podman.enable = true;
+  custom.vm.docker.enable = true;
+  custom.vm.libvirtd.enable = true;
 
-  common.enable = true;
-  common.systemd-boot.enable = true;
-  homelab.enable = true;
-  homelab.homepage-dashboard.enable = true;
-  homelab.homeassistant.enable = true;
-  homelab.immich.enable = false;
-  homelab.smb.enable = true;
-  homelab.nextcloud.enable = true;
-  homelab.grafana.enable = true;
-  vm.podman.enable = true;
-  vm.docker.enable = true;
-  vm.libvirtd.enable = true;
   security.polkit.enable = true;
 
   nixpkgs.config.packageOverrides = pkgs: {

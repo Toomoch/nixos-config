@@ -1,13 +1,12 @@
 { inputs, pkgs, config, lib, secrets, ... }:
 let
   vars = import ./variables.nix { inherit config inputs pkgs lib; };
+  cfg = config.custom.grafana;
 in
 {
-  options.homelab = {
-    grafana.enable = lib.mkEnableOption "Whether to enable Grafana";
-  };
+  options.custom.grafana.enable = lib.mkEnableOption "Whether to enable Grafana";
 
-  config = lib.mkIf vars.cfg.grafana.enable {
+  config = lib.mkIf cfg.enable {
     services.grafana = {
       enable = true;
       settings.server.domain = "grafana.${secrets.domain}";

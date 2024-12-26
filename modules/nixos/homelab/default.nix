@@ -1,4 +1,4 @@
-{ sops-nix, ...}:
+{ ...}:
 {
   imports = [
     ./homepage.nix

@@ -1,10 +1,10 @@
 { config, lib, pkgs, flake-root, ... }:
 let
-  cfg = config.desktop;
+  cfg = config.custom.desktop;
   custom-session = import ./functions/custom-session.nix;
   river-custom = custom-session { inherit pkgs lib; name = "river"; exec = "${lib.getExe pkgs.river}"; };
 in {
-  options.desktop = {
+  options.custom.desktop = {
     sway.enable = lib.mkEnableOption "Whether to enable Sway with GTKgreet";
     river.enable = lib.mkEnableOption "Whether to enable riverwm";
     hyprland.enable = lib.mkEnableOption "Whether to enable Hyprland";
