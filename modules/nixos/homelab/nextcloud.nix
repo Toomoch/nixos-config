@@ -1,19 +1,17 @@
 { inputs, pkgs, lib, config, secrets, private, ... }:
 let
-  vars = import ./variables.nix { inherit config inputs pkgs lib secrets; };
   dataBase =
-    "${vars.serviceData}/postgresql/${config.services.postgresql.package.psqlSchema}";
-  pgBackups = "${vars.serviceData}/backups/postgresql";
-  ncHome = "${vars.serviceData}/nextcloud";
+    "${config.custom.homelab.serviceDataDir}/postgresql/${config.services.postgresql.package.psqlSchema}";
+  ncHome = "${config.custom.homelab.serviceDataDir}/nextcloud";
   cfg = config.custom.nextcloud;
 in {
 
-  options.custom.nextcloud.enable = lib.mkEnableOption "Whether to enable Nextcloud";
+  options.custom.nextcloud.enable =
+    lib.mkEnableOption "Whether to enable Nextcloud";
 
   config = lib.mkIf cfg.enable {
     systemd.tmpfiles.rules = [
       "d ${dataBase} 0750 postgres postgres - -"
-      "d ${pgBackups} 0750 postgres postgres - -"
     ];
     services.postgresql = {
       dataDir = "${dataBase}";
@@ -75,7 +73,8 @@ in {
           "${pkgs.openssh}/bin/ssh -i ${config.age.secrets.borgnextcloud.path}";
         keep_daily = 7;
         keep_weekly = 4;
-        encryption_passcommand = "cat ${config.age.secrets.borgnextcloud_repokey.path}";
+        encryption_passcommand =
+          "cat ${config.age.secrets.borgnextcloud_repokey.path}";
       };
     };
 
@@ -109,7 +108,7 @@ in {
       package = pkgs.nextcloud30;
       # Let NixOS install and configure the database automatically.
       database.createLocally = true;
-      home = "${vars.serviceData}/nextcloud";
+      home = ncHome;
       # Let NixOS install and configure Redis caching automatically.
       configureRedis = true;
       # Increase the maximum file upload size to avoid problems uploading videos.
@@ -227,12 +226,10 @@ in {
       jwtSecretFile = "${config.age.secrets.onlyoffice.path}";
     };
 
-    virtualisation.oci-containers.containers.onlyoffice =  {
+    virtualisation.oci-containers.containers.onlyoffice = {
       image = "onlyoffice/documentserver:latest";
-      ports = ["8000:80"];
-      environmentFiles = [
-        config.age.secrets.onlyoffice.path
-      ];
+      ports = [ "8000:80" ];
+      environmentFiles = [ config.age.secrets.onlyoffice.path ];
     };
 
     age.secrets.onlyoffice = {

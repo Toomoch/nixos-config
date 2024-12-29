@@ -1,58 +1,38 @@
 { inputs, config, lib, pkgs, secrets, private, self, ... }:
 let
-  vars = import ./variables.nix { inherit config inputs pkgs lib; };
-  jmusicbot = "${vars.serviceData}/jmusicbot";
-  tgtg_volume = "${vars.serviceData}/tgtg";
+  jmusicbot = "${config.custom.homelab.serviceDataDir}/jmusicbot";
+  tgtg_volume = "${config.custom.homelab.serviceDataDir}/tgtg";
 
   cfg = config.custom.homelab;
-in
-{
+in {
   options.custom.homelab = {
     enable = lib.mkEnableOption "Whether to enable homelab stuff";
     enablevps = lib.mkEnableOption "Whether to enable VPS homelab stuff";
+    serviceDataDir = lib.mkOption {
+      type = lib.types.path;
+      default = "/var/lib";
+      description = "Base directory for service data";
+    };
   };
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
       virtualisation.oci-containers.backend = "docker";
-      services.cockpit = {
-        enable = false;
-        openFirewall = true;
-        settings = {
-          WebService = {
-            Origins = "https://cockpit.${secrets.domain} wss://cockpit.${secrets.domain}";
-            ProtocolHeader = "X-Forwarded-Proto";
-          };
-        };
-      };
-      environment.systemPackages = [
-      ];
-      systemd.tmpfiles.rules = [
-      ];
-
-      services.openvscode-server.enable = true;
-      services.openvscode-server.user = "arnau";
-      services.openvscode-server.port = 4444;
-      services.openvscode-server.host = "0.0.0.0";
+      environment.systemPackages = [ ];
+      systemd.tmpfiles.rules = [ ];
 
       networking.firewall.allowedTCPPorts = [
-        #8123 HomeAssistant
-        #8080 dashy
-        #9090 cockpit
-        #4444 code-server
-        5900
-        24680 #ventoy
-        80 #caddy
-        443 #caddy
+        80 # caddy
+        443 # caddy
       ];
 
       #Caddy reverse proxy
       services.caddy = {
         enable = true;
         package = pkgs.caddy-plugins;
-        extraConfig = builtins.readFile "${private}/configfiles/Caddyfile";
+        extraConfig = builtins.readFile /${private}/configfiles/Caddyfile;
       };
-      age.secrets.duckdns.rekeyFile = private + "/secrets/age/duckdns.age";
+      age.secrets.duckdns.rekeyFile = /${private}/secrets/age/duckdns.age;
 
       systemd.services.caddy.serviceConfig = {
         EnvironmentFile = "${config.age.secrets.duckdns.path}";
@@ -72,10 +52,8 @@ in
             TELEGRAM = "true";
           };
           environmentFiles = [ "${config.age.secrets.tgtg.path}" ];
-          extraOptions = vars.commonextraOptions;
-          volumes = [
-            "${tgtg_volume}:/tokens"
-          ];
+          extraOptions = [ "--pull=always" ];
+          volumes = [ "${tgtg_volume}:/tokens" ];
         };
       };
     })

@@ -19,11 +19,14 @@
   networking.hostId = "e0684fdb";
 
   custom.common.systemd-boot.enable = true;
-  custom.homelab.enable = true;
+  custom.homelab = {
+    enable = true;
+    serviceDataDir = "/zstorage/data";
+  };
   custom.homepage-dashboard.enable = true;
   custom.homeassistant.enable = true;
   custom.immich.enable = true;
-  custom.nextcloud.enable = true;
+  custom.nextcloud.enable = false;
   custom.smb = {
     enable = true;
     userShares = {

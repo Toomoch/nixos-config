@@ -1,6 +1,5 @@
 { inputs, pkgs, config, lib, secrets, ... }:
 let
-  vars = import ./variables.nix { inherit config inputs pkgs lib; };
   cfg = config.custom.grafana;
 in
 {
