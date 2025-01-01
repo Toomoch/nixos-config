@@ -13,6 +13,11 @@ in {
       default = "/var/lib";
       description = "Base directory for service data";
     };
+    primaryDomain = lib.mkOption {
+      type = lib.types.str;
+      default = secrets.hosts.${config.networking.hostName}.primaryDomain;
+      description = "Domain that points to this host. Used to expose web services.";
+    };
   };
 
   config = lib.mkMerge [

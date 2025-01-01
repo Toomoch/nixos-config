@@ -1,24 +1,22 @@
-{ config, pkgs, lib, private, nixpkgs, secrets, ... }:
+{ config, pkgs, lib, nixpkgs, secrets, ... }:
 {
   imports = [
     ./hardware-configuration.nix
-    ../../users/arnau.nix
-    "${private}/system/headscale-oracle2.nix"
     # Minimal stuff
     (nixpkgs.outPath + "/nixos/modules/profiles/minimal.nix")
   ];
 
-  networking.hostName = "oracle2";
+  networking.hostName = "oracle1";
 
-  services.openssh.ports = [ secrets.hosts.oracle2.sshPort ];
+  services.openssh.ports = [ secrets.hosts.oracle1.sshPort ];
 
   custom.common.enable = true;
   custom.common.systemd-boot.enable = true;
   custom.common.cloud.enable = true;
   custom.vm.podman.enable = true;
-  custom.vm.docker.enable  = true;
+  custom.vm.docker.enable = true;
   security.polkit.enable = true;
-  services.boinc.enable = true;
+  custom.homelab.enablevps = true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

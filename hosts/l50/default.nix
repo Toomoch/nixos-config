@@ -3,7 +3,6 @@
   imports = [
     ./hardware-configuration.nix
     ../../users/g.nix
-    ../../users/arnau.nix
   ];
 
   networking.hostName = "l50"; 

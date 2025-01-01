@@ -2,39 +2,59 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ../../users/j.nix
-    ../../users/arnau.nix
   ];
 
-  networking.hostName = "cp6230"; 
+  networking.hostName = "x550"; 
 
   environment.systemPackages = with pkgs; [
-    qucs-s
+    telegram-desktop
     onlyoffice-bin
+    vlc
+    tenacity
+    kdePackages.ark
+    gnome.gnome-boxes
+    kdePackages.skanlite
+    kdePackages.kamoso
+    kdePackages.krfb
+    kdePackages.kpat
+    libreoffice-qt
+    hunspell
+    hunspellDicts.es-es
+    lmms
+    chromium
+    kdePackages.okular
+    mpv
+    kdePackages.spectacle
+    kdePackages.elisa
   ];
 
+  # aliza ms
+  # dragon player
+  # elisa
+
   common.enable = true;
-  common.systemd-boot.enable = true;
+  common.x86.enable = true;
   desktop.enable = true;
   desktop.kde.enable = true;
   desktop.flatpak.enable = true;
+  vm.libvirtd.enable = true;
 
   # Enable VAAPI hardware acceleration
   hardware.graphics = {
     enable = true;
     extraPackages = with pkgs; [
-      vaapiIntel
+      intel-vaapi-driver
     ];
   };
 
   # Undervolt
-  #services.undervolt = {
-  #  enable = true;
-  #  coreOffset = -70;
-  #  uncoreOffset = -20;
-  #  gpuOffset = -30;
-  #  analogioOffset = -20;
-  #};
+  services.undervolt = {
+    enable = true;
+    coreOffset = -50;
+    gpuOffset = -10;
+    uncoreOffset = 0;
+    analogioOffset = 0;
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
@@ -42,5 +62,6 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "23.05"; # Did you read the comment?
+  system.stateVersion = "24.11"; # Did you read the comment?
 }
+

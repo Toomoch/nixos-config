@@ -2,7 +2,6 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ../../users/arnau.nix
   ];
 
   networking.hostName = "vm"; # Define your hostname.

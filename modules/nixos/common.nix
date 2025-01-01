@@ -1,6 +1,9 @@
-{ inputs, config, lib, pkgs, secrets, outputs, ... }:
+{ inputs, config, lib, pkgs, secrets, outputs, private, ... }:
 let
   cfg = config.custom.common;
+  user = "${secrets.hosts.${config.networking.hostName}.user}";
+  ifTheyExist = groups:
+    builtins.filter (group: builtins.hasAttr group config.users.groups) groups;
 in {
   options.custom.common = {
     enable = lib.mkEnableOption "Whether to enable common stuff";
@@ -8,6 +11,8 @@ in {
       lib.mkEnableOption "Whether to enable systemd-boot bootloader";
     cloud.enable =
       lib.mkEnableOption "Whether to enable cloud specific settings";
+    defaultUser.enable = lib.mkEnableOption
+      "Whether to enable the default user with a configurable name";
   };
 
   config = lib.mkMerge [
@@ -107,6 +112,7 @@ in {
         dig
         iperf3
         tree
+        unzip
       ];
 
       # Enable the OpenSSH daemon.
@@ -130,6 +136,60 @@ in {
       boot.loader.efi.canTouchEfiVariables = true;
       boot.loader.systemd-boot.configurationLimit = 10;
 
+    })
+    (lib.mkIf cfg.defaultUser.enable {
+
+      # Define a user account. Don't forget to set a password with ‘passwd’.
+      users.users.${user} = {
+        isNormalUser = true;
+        description = "Arnau";
+        extraGroups = ifTheyExist [
+          "networkmanager"
+          "wheel"
+          "adbusers"
+          "libvirtd"
+          "docker"
+          "dialout"
+        ];
+        packages = with pkgs; [ ];
+
+        initialHashedPassword =
+          builtins.readFile /${private}/secrets/plain/inithashpass;
+        openssh.authorizedKeys.keys =
+          secrets.authlist config.networking.hostName;
+        shell = pkgs.bash;
+      };
+      programs.starship.enable = true;
+      programs.fzf.fuzzyCompletion = true;
+      programs.fzf.keybindings = true;
+
+      security.pam = {
+        services = {
+          sudo.u2fAuth = true;
+          login.u2fAuth = true;
+          greetd.u2fAuth = true;
+          sudo.rssh = true;
+        };
+        u2f.settings = {
+          enable = true;
+          cue = true;
+          origin = "pam://arnau";
+          authfile = config.age.secrets.u2f_keys.path;
+        };
+      };
+
+      age.secrets.u2f_keys = {
+        rekeyFile = /${private}/secrets/age/u2f_keys.age;
+        mode = "444";
+      };
+
+      # pam_rssh
+      security.pam.rssh.enable = true;
+
+      # Disabled because for new deployments we can't decrypt the password, for example pi3 sdcard
+      # age.secrets.passwordfile-arnau.rekeyFile = "${private}/secrets/age/password.age";
+
+      nix.settings.trusted-users = [ "${user}" ];
     })
     (lib.mkIf cfg.cloud.enable {
       services.fail2ban = {

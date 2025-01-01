@@ -1,26 +1,27 @@
 { inputs, pkgs, config, lib, secrets, ... }:
-let
-  cfg = config.custom.grafana;
-in
-{
-  options.custom.grafana.enable = lib.mkEnableOption "Whether to enable Grafana";
+let cfg = config.custom.grafana;
+in {
+  options.custom.grafana.enable =
+    lib.mkEnableOption "Whether to enable Grafana";
 
   config = lib.mkIf cfg.enable {
     services.grafana = {
       enable = true;
-      settings.server.domain = "grafana.${secrets.domain}";
+      settings.server.domain = "grafana.${config.custom.homelab.primaryDomain}";
     };
     services.prometheus = {
       enable = true;
       globalConfig.scrape_interval = "1m"; # "1m"
-      scrapeConfigs = [
-        {
-          job_name = "node";
-          static_configs = [{
-            targets = [ "localhost:${toString config.services.prometheus.exporters.node.port}" ];
-          }];
-        }
-      ];
+      scrapeConfigs = [{
+        job_name = "node";
+        static_configs = [{
+          targets = [
+            "localhost:${
+              toString config.services.prometheus.exporters.node.port
+            }"
+          ];
+        }];
+      }];
     };
     services.prometheus.exporters.node = {
       enable = true;
@@ -28,7 +29,8 @@ in
       # https://github.com/NixOS/nixpkgs/blob/nixos-24.05/nixos/modules/services/monitoring/prometheus/exporters.nix
       enabledCollectors = [ "systemd" ];
       # /nix/store/zgsw0yx18v10xa58psanfabmg95nl2bb-node_exporter-1.8.1/bin/node_exporter  --help
-      extraFlags = [ "--collector.ethtool" "--collector.softirqs" "--collector.tcpstat" ];
+      extraFlags =
+        [ "--collector.ethtool" "--collector.softirqs" "--collector.tcpstat" ];
     };
   };
 }

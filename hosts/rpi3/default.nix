@@ -5,8 +5,6 @@ in
 {
   imports = [
     #./hardware-configuration.nix
-    ../../users/arnau.nix
-    "${private}/system/rpi3-wg.nix"
     "${nixpkgs}/nixos/modules/installer/sd-card/sd-image-aarch64.nix"
     # Minimal stuff
     (nixpkgs.outPath + "/nixos/modules/profiles/minimal.nix")

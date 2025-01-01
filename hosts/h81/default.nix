@@ -1,5 +1,7 @@
 { config, pkgs, lib, flake-root, private, secrets, ... }: {
-  imports = [ ./hardware-configuration.nix ../../users/arnau.nix ./disko.nix ];
+  imports = [ ./hardware-configuration.nix  ./disko.nix ]
+    ++ lib.optional (builtins.pathExists /${private}/system/homepage.nix)
+    /${private}/system/homepage.nix;
 
   nixpkgs.config.allowUnfree = true;
 
@@ -26,7 +28,7 @@
   custom.homepage-dashboard.enable = true;
   custom.homeassistant.enable = true;
   custom.immich.enable = true;
-  custom.nextcloud.enable = false;
+  custom.nextcloud.enable = true;
   custom.smb = {
     enable = true;
     userShares = {
@@ -36,9 +38,9 @@
     };
   };
   custom.grafana.enable = true;
-  custom.vm.podman.enable = true;
   custom.vm.docker.enable = true;
   custom.vm.libvirtd.enable = true;
+  custom.vm.podman.enable = true;
 
   security.polkit.enable = true;
 

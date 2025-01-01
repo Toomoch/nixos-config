@@ -1,7 +1,7 @@
 { config, pkgs, lib, sops-nix, inputs, ... }: {
   networking.hostName = "b450"; # Define your hostname.
 
-  imports = [ ./hardware-configuration.nix ../../users/arnau.nix ];
+  imports = [ ./hardware-configuration.nix ];
 
   # Enable VAAPI hardware acceleration
   programs.firefox = {

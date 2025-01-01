@@ -6,7 +6,6 @@ in
 {
   imports = [
     ./hardware-configuration.nix
-    ../../users/arnau.nix
     ./disko.nix
   ];
 

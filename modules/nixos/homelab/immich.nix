@@ -2,7 +2,7 @@
 let
   immichRoot = "${config.custom.homelab.serviceDataDir}/immich";
   cfg = config.custom.immich;
-  hostname = "immich.${secrets.domain}";
+  hostname = "immich.${config.custom.homelab.primaryDomain}";
 in {
   options.custom.immich.enable =
     lib.mkEnableOption "Whether to enable immich stuff";

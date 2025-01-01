@@ -4,6 +4,7 @@ let
     "${config.custom.homelab.serviceDataDir}/postgresql/${config.services.postgresql.package.psqlSchema}";
   ncHome = "${config.custom.homelab.serviceDataDir}/nextcloud";
   cfg = config.custom.nextcloud;
+  domain = config.custom.homelab.primaryDomain;
 in {
 
   options.custom.nextcloud.enable =
@@ -84,8 +85,8 @@ in {
 
     age.secrets.borgnextcloud = {
       rekeyFile = "${private}/secrets/age/borgnextcloud.age";
-      owner = "nextcloud";
-      group = "nextcloud";
+      owner = "root";
+      group = "root";
     };
 
     age.secrets.borgnextcloud_repokey = {
@@ -103,7 +104,7 @@ in {
 
     services.nextcloud = {
       enable = true;
-      hostName = "cloud.${secrets.domain}";
+      hostName = "cloud.${domain}";
       # Need to manually increment with every major upgrade.
       package = pkgs.nextcloud30;
       # Let NixOS install and configure the database automatically.
@@ -205,7 +206,7 @@ in {
           file_server
         '';
       };
-      virtualHosts."office.${secrets.domain}".extraConfig = ''
+      virtualHosts."office.${domain}".extraConfig = ''
         reverse_proxy http://127.0.0.1:8000 {
           # Required to circumvent bug of Onlyoffice loading mixed non-https content
           header_up X-Forwarded-Proto https

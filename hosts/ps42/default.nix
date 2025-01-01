@@ -9,7 +9,7 @@ let
   '';
 in {
   imports =
-    [ ./hardware-configuration.nix ../../users/arnau.nix ../../users/aina.nix ];
+    [ ./hardware-configuration.nix  ];
 
   config = lib.mkMerge [
     {

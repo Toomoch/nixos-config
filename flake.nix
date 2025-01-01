@@ -63,9 +63,9 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, nixpkgs-stable
-    , home-manager-stable, deploy-rs, nixvim, disko-stable, disko, nix-on-droid
-    , agenix, agenix-rekey, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, nixpkgs-stable, home-manager-stable
+    , deploy-rs, nixvim, disko-stable, disko, nix-on-droid, agenix, agenix-rekey
+    , ... }@inputs:
     let
       inherit (self) outputs;
       # specialArgs
@@ -153,6 +153,7 @@
       packages = forAllSystems (pkgs: system: import ./pkgs pkgs nixvim system)
         nixpkgs-stable;
       nixosModules.common = import ./modules/nixos;
+      nixosModules.private = import /${private}/modules/nixos;
       overlays = import ./overlays { inherit inputs nixvim; };
 
       nixOnDroidConfigurations.default =
@@ -182,12 +183,14 @@
       nixosConfigurations = let
         defaultModules = host: branch: [
           self.nixosModules.common
+          self.nixosModules.private
           branch.disko.nixosModules.disko
           branch.agenix.nixosModules.default
           agenix-rekey.nixosModules.default
-          ./system/machine/${host}
+          ./hosts/${host}
           {
-            nix.registry.nixpkgs-unstable.flake = nixpkgs; # Add nixpkgs-unstable to registry
+            nix.registry.nixpkgs-unstable.flake =
+              nixpkgs; # Add nixpkgs-unstable to registry
           }
         ];
 
@@ -196,8 +199,8 @@
           value = let # surely theres a better way of doing this
             host-folder = secrets.hosts.${host}.hostFolder;
             specialArgs = {
-              inherit inputs secrets flake-root private
-                agenix-rekey self outputs;
+              inherit inputs secrets flake-root private agenix-rekey self
+                outputs;
               nixpkgs = branch.nixpkgs;
               nixpkgs-unstable = nixpkgs;
             };
@@ -218,7 +221,10 @@
                       ./home/unstable.nix;
                   };
                 }
-              ];
+              ] ++ branch.nixpkgs.lib.optional
+              (builtins.pathExists /${private}/hosts/${host})
+              /${private}/hosts/${host};
+            # Include private host config
           };
         };
 
