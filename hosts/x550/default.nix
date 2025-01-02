@@ -1,7 +1,6 @@
 { inputs, config, pkgs, lib, ... }:
 {
   imports = [
-    ./hardware-configuration.nix
   ];
 
   networking.hostName = "x550"; 
@@ -12,9 +11,8 @@
     vlc
     tenacity
     kdePackages.ark
-    gnome.gnome-boxes
+    gnome-boxes
     kdePackages.skanlite
-    kdePackages.kamoso
     kdePackages.krfb
     kdePackages.kpat
     libreoffice-qt
@@ -26,18 +24,17 @@
     mpv
     kdePackages.spectacle
     kdePackages.elisa
+    kdePackages.dragon
   ];
 
   # aliza ms
-  # dragon player
-  # elisa
 
-  common.enable = true;
-  common.x86.enable = true;
-  desktop.enable = true;
-  desktop.kde.enable = true;
-  desktop.flatpak.enable = true;
-  vm.libvirtd.enable = true;
+  custom.common.enable = true;
+  custom.common.systemd-boot.enable = true;
+  custom.desktop.enable = true;
+  custom.desktop.kde.enable = true;
+  custom.desktop.flatpak.enable = true;
+  custom.vm.libvirtd.enable = true;
 
   # Enable VAAPI hardware acceleration
   hardware.graphics = {
