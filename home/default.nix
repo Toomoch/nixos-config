@@ -92,7 +92,7 @@ in {
       starship_precmd_user_func="set_win_title"
     '';
     profileExtra = "";
-    sessionVariables = { };
+    sessionVariables = { MANPAGER = "nvim +Man!";};
     inherit shellAliases;
   };
 
