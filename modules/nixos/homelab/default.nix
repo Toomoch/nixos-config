@@ -8,5 +8,6 @@
     ./smb.nix
     ./nextcloud.nix
     ./grafana.nix
+    ./sanoid.nix
   ];
 }

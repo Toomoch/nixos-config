@@ -1,7 +1,5 @@
 { config, pkgs, lib, flake-root, private, secrets, ... }: {
-  imports = [ ./hardware-configuration.nix  ./disko.nix ]
-    ++ lib.optional (builtins.pathExists /${private}/system/homepage.nix)
-    /${private}/system/homepage.nix;
+  imports = [ ./hardware-configuration.nix ./disko.nix ];
 
   nixpkgs.config.allowUnfree = true;
 
@@ -28,7 +26,7 @@
   custom.homepage-dashboard.enable = true;
   custom.homeassistant.enable = true;
   custom.immich.enable = true;
-  custom.nextcloud.enable = true;
+  custom.nextcloud.enable = false;
   custom.smb = {
     enable = true;
     userShares = {
@@ -41,6 +39,12 @@
   custom.vm.docker.enable = true;
   custom.vm.libvirtd.enable = true;
   custom.vm.podman.enable = true;
+
+  # enable sanoid templates
+  custom.homelab.sanoid.enable = true;
+  services.sanoid.datasets = {
+    "zstorage/share".use_template = [ "storage" ];
+  };
 
   security.polkit.enable = true;
 

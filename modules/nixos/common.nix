@@ -113,6 +113,7 @@ in {
         iperf3
         tree
         unzip
+        borgbackup
       ];
 
       # Enable the OpenSSH daemon.
