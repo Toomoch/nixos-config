@@ -11,5 +11,6 @@ pkgs: nixvim: system: rec {
   caddy-plugins = pkgs.callPackage ./caddy-plugins.nix { };
   firefox-profile-switcher-connector =
     pkgs.callPackage ./firefox-profile-switcher-connector.nix { };
+  help-blog = pkgs.callPackage ./blog.nix { };
 
 }
