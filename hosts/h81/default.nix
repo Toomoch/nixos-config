@@ -23,6 +23,7 @@
     enable = true;
     serviceDataDir = "/zstorage/data";
   };
+  custom.telegraf.enable = true;
   custom.homepage-dashboard.enable = true;
   custom.homeassistant.enable = true;
   custom.immich.enable = true;

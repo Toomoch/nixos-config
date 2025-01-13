@@ -32,5 +32,9 @@ in {
       extraFlags =
         [ "--collector.ethtool" "--collector.softirqs" "--collector.tcpstat" ];
     };
+
+    services.victoriametrics = {
+      enable = true;
+    };
   };
 }
