@@ -1,8 +1,7 @@
 { config, inputs, nixpkgs, pkgs, lib, secrets, private, ... }:
 let
 
-in
-{
+in {
   imports = [
     #./hardware-configuration.nix
     "${nixpkgs}/nixos/modules/installer/sd-card/sd-image-aarch64.nix"
@@ -13,10 +12,7 @@ in
   networking.hostName = "rpi3"; # Define your hostname.
   nixpkgs.hostPlatform = lib.mkDefault "aarch64-linux";
 
-  environment.systemPackages = [
-    pkgs.libraspberrypi
-    pkgs.borgbackup
-  ];
+  environment.systemPackages = [ pkgs.libraspberrypi pkgs.borgbackup ];
 
   custom.common.enable = true;
   hardware.enableRedistributableFirmware = true;
@@ -25,12 +21,19 @@ in
     enable = true;
     useRoutingFeatures = "both";
   };
+  custom.telegraf = {
+    enable = true;
+    mode = "pull";
+  };
 
   # Borg repos
   services.borgbackup.repos = {
     nextcloud = {
       path = "/external/borg/nextcloud";
-      authorizedKeys = [ "${builtins.readFile /${private}/secrets/ssh/id_ed25519.borgnextcloud.pub}" ];
+      authorizedKeys = [
+        "${builtins.readFile
+        /${private}/secrets/ssh/id_ed25519.borgnextcloud.pub}"
+      ];
     };
   };
 
@@ -46,7 +49,8 @@ in
   # USB storage
   boot.initrd.availableKernelModules = [ "usb_storage" ];
   fileSystems."/external" = {
-    device = "/dev/disk/by-id/usb-WD_Elements_10B8_575833314539343830434630-0:0-part1";
+    device =
+      "/dev/disk/by-id/usb-WD_Elements_10B8_575833314539343830434630-0:0-part1";
     fsType = "ext4";
     options = [ "nofail" ];
   };

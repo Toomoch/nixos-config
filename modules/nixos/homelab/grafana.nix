@@ -32,9 +32,23 @@ in {
       extraFlags =
         [ "--collector.ethtool" "--collector.softirqs" "--collector.tcpstat" ];
     };
+    networking.firewall.allowedTCPPorts = [ 8428 ];
 
     services.victoriametrics = {
       enable = true;
+      prometheusConfig = {
+        scrape_configs = [{
+          job_name = "telegraf";
+          metrics_path = "/metrics";
+          static_configs = [{
+            targets = [
+              "${secrets.hosts.rpi3.dns}:${
+                toString config.custom.telegraf.prometheusPort
+              }"
+            ];
+          }];
+        }];
+      };
     };
   };
 }

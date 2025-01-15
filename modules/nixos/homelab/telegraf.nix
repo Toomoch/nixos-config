@@ -14,11 +14,24 @@ in {
       default = 8428;
       description = "victoriametrics port";
     };
+    mode = lib.mkOption {
+      type = lib.types.enum [ "push" "pull" ];
+      default = "push";
+      description = "Push or pull";
+    };
+    prometheusPort = lib.mkOption {
+      type = lib.types.int;
+      default = 9273;
+      description = "victoriametrics port";
+    };
   };
 
   # manually add the passwords with smbpasswd -a my_user
 
   config = lib.mkIf cfg.enable {
+    networking.firewall = {
+      allowedTCPPorts = lib.optional (cfg.mode == "pull") cfg.prometheusPort;
+    };
     services.telegraf = {
       enable = true;
       extraConfig = {
@@ -34,12 +47,14 @@ in {
           system = { };
           disk = { };
         };
-        outputs = {
+        outputs = lib.optionalAttrs (cfg.mode == "push") {
           influxdb = {
             database = "victoriametrics";
             urls =
               [ "http://${cfg.influxdbHost}:${toString cfg.influxdbPort}" ];
           };
+        } // lib.optionalAttrs (cfg.mode == "pull") {
+          prometheus_client = { listen = ":${toString cfg.prometheusPort}"; };
         };
       };
     };
