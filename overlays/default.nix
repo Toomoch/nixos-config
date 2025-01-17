@@ -11,6 +11,7 @@
     # ...
     # });
       firefoxpwa = final.unstable.firefoxpwa;
+      caddy = final.unstable.caddy;
   };
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will

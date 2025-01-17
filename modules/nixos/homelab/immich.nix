@@ -89,7 +89,7 @@ in {
     users.users.${config.services.immich.user}.extraGroups =
       [ "video" "render" ];
 
-    services.caddy.virtualHosts."https://${hostname}" = {
+    services.caddy.virtualHosts."${hostname}" = {
       extraConfig = ''
         reverse_proxy http://${config.services.immich.host}:${builtins.toString config.services.immich.port} 
       '';

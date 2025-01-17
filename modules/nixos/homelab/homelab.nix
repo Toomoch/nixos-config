@@ -16,7 +16,8 @@ in {
     primaryDomain = lib.mkOption {
       type = lib.types.str;
       default = secrets.hosts.${config.networking.hostName}.primaryDomain;
-      description = "Domain that points to this host. Used to expose web services.";
+      description =
+        "Domain that points to this host. Used to expose web services.";
     };
   };
 
@@ -34,8 +35,10 @@ in {
       #Caddy reverse proxy
       services.caddy = {
         enable = true;
-        package = pkgs.caddy-plugins;
-        extraConfig = builtins.readFile /${private}/configfiles/Caddyfile;
+        package = pkgs.caddy.withPlugins {
+          plugins = [ "github.com/caddy-dns/duckdns@v0.4.0" ];
+          hash = "sha256-WBIYucu1Ayj+DdfbAgtSITAwfuwcPYWslVzQXeuFupo=";
+        };
       };
       age.secrets.duckdns.rekeyFile = /${private}/secrets/age/duckdns.age;
 
