@@ -30,6 +30,7 @@ in {
         scrape_configs = [{
           job_name = "telegraf";
           metrics_path = "/metrics";
+          scrape_interval = "10s";
           static_configs = [{
             targets = [
               "${secrets.hosts.rpi3.dns}:${

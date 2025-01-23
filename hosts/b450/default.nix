@@ -9,7 +9,11 @@
     preferences = { "media.ffmpeg.vaapi.enabled" = true; };
   };
 
-  services.tailscale = { enable = true; };
+  services.tailscale = {
+    enable = true;
+    useRoutingFeatures = "both";
+  };
+
   custom.common.enable = true;
   custom.common.systemd-boot.enable = true;
   custom.desktop.enable = true;

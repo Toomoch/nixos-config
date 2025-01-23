@@ -19,7 +19,7 @@ in {
   boot.supportedFilesystems.zfs = lib.mkForce false;
   services.tailscale = {
     enable = true;
-    useRoutingFeatures = "both";
+    useRoutingFeatures = "server";
   };
   custom.telegraf = {
     enable = true;
