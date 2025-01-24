@@ -1,5 +1,5 @@
 { config, pkgs, lib, flake-root, private, secrets, ... }: {
-  imports = [ ./hardware-configuration.nix ./disko.nix ];
+  imports = [ ./hardware-configuration.nix ./disko.nix ./hass.nix ];
 
   nixpkgs.config.allowUnfree = true;
 
@@ -25,7 +25,6 @@
   };
   custom.telegraf.enable = true;
   custom.homepage-dashboard.enable = true;
-  custom.homeassistant.enable = true;
   custom.immich.enable = true;
   custom.nextcloud.enable = false;
   custom.smb = {
