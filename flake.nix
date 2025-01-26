@@ -61,6 +61,8 @@
       url = "github:oddlama/agenix-rekey";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    isd.url = "github:isd-project/isd";
   };
 
   outputs = { self, nixpkgs, home-manager, nixpkgs-stable, home-manager-stable
