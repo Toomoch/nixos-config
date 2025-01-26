@@ -43,6 +43,7 @@ in {
     deploy-rs
     iperf3
     borgbackup
+    git-lfs
   ];
   programs.fzf.enableZshIntegration = true;
   programs.fzf.enableBashIntegration = true;
@@ -54,6 +55,7 @@ in {
 
   programs.git = {
     enable = true;
+    lfs.enable = true;
     aliases = {
       co = "checkout";
       ci = "commit";
