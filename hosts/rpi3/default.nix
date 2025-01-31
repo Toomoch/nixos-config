@@ -20,7 +20,19 @@ in {
   services.tailscale = {
     enable = true;
     useRoutingFeatures = "server";
+    openFirewall = true;
   };
+  services.networkd-dispatcher = {
+    enable = true;
+    rules."50-tailscale" = {
+      onState = [ "routable" ];
+      script = ''
+        #!${pkgs.runtimeShell}
+        ${lib.getExe pkgs.ethtool} -K enu1u1 rx-udp-gro-forwarding on rx-gro-list off
+      '';
+    };
+  };
+
   custom.telegraf = {
     enable = true;
     mode = "pull";

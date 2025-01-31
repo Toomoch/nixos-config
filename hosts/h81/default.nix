@@ -1,5 +1,5 @@
 { config, pkgs, lib, flake-root, private, secrets, ... }: {
-  imports = [ ./hardware-configuration.nix ./disko.nix ./hass.nix ];
+  imports = [ ./hardware-configuration.nix ./disko.nix ./hass.nix ./jellyfin.nix ];
 
   nixpkgs.config.allowUnfree = true;
 
