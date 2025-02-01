@@ -57,6 +57,7 @@ in {
         glxinfo
         libva-utils
         firefoxpwa
+        trayscale
       ];
 
       programs.localsend.enable = true;
