@@ -57,6 +57,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    colmena.url = "github:zhaofengli/colmena";
+
     agenix-rekey = {
       url = "github:oddlama/agenix-rekey";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -156,7 +158,36 @@
           };
         in function syspkgs system);
 
+      mkColmenaHive = nixpkgs: nodeDeployments:
+        let
+          confs = inputs.self.nixosConfigurations;
+          colmenaConf = {
+            meta = {
+              inherit nixpkgs;
+              nodeNixpkgs = builtins.mapAttrs (_name: value: value.pkgs) confs;
+              nodeSpecialArgs =
+                builtins.mapAttrs (_name: value: value._module.specialArgs)
+                confs;
+            };
+          } // builtins.mapAttrs (nodeName: value: {
+            imports = value._module.args.modules;
+            deployment = nodeDeployments.${nodeName} or { };
+          }) confs;
+        in inputs.colmena.lib.makeHive colmenaConf;
+
     in {
+      colmenaHive =
+        mkColmenaHive (import nixpkgs { system = "x86_64-linux"; }) {
+          ps42 = {
+            allowLocalDeployment = true;
+            targetHost = null;
+          };
+          h81 = {
+            targetHost = "h81";
+            buildOnTarget = true;
+            targetUser = "arnau";
+          };
+        };
       # Import every package found in the attr pkgs from ./pkgs/default.nix
       packages = forAllSystems (pkgs: system: import ./pkgs pkgs nixvim system)
         nixpkgs-stable;

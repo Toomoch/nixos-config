@@ -104,8 +104,8 @@ in {
     variables = {
       editing-mode = "vi";
       show-mode-in-prompt = "on";
-      vi-ins-mode-string = ''\1\e[34;1m\2└─[ins] \1\e[0m\2'';
-      vi-cmd-mode-string = ''\1\e[33;1m\2└─[cmd] \1\e[0m\2'';
+      vi-cmd-mode-string = ''\1\e[34;1m\2(cmd) \1\e[0m\2'';
+      vi-ins-mode-string = '''';
       keyseq-timeout = "50";
     };
   };

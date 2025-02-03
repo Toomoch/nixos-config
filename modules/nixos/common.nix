@@ -1,4 +1,4 @@
-{ inputs, config, lib, pkgs, secrets, outputs, private, ... }:
+{ inputs, config, lib, pkgs, nixpkgs, secrets, outputs, private, ... }:
 let
   cfg = config.custom.common;
   user = "${secrets.hosts.${config.networking.hostName}.user}";
@@ -86,6 +86,15 @@ in {
         xkb.layout = "es";
         xkb.variant = "cat";
       };
+
+      environment.etc.inputrc.text = ''
+        $include ${nixpkgs.outPath + "/nixos/modules/programs/bash/inputrc"}
+        set editing-mode vi
+        set keyseq-timeout 50
+        set show-mode-in-prompt on
+        set vi-cmd-mode-string \1\e[34;1m\2(cmd) \1\e[0m\2
+        set vi-ins-mode-string
+      '';
 
       # Configure console keymap
       console = {
