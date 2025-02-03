@@ -187,6 +187,18 @@
             buildOnTarget = true;
             targetUser = "arnau";
           };
+          b450 = {
+            allowLocalDeployment = true;
+          };
+          oracle2 = {
+            targetHost = "oracle2";
+            buildOnTarget = true;
+            targetUser = "arnau";
+          };
+          oracle1 = {
+            targetHost = "oracle1";
+            targetUser = "arnau";
+          };
         };
       # Import every package found in the attr pkgs from ./pkgs/default.nix
       packages = forAllSystems (pkgs: system: import ./pkgs pkgs nixvim system)
