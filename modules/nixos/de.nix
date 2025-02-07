@@ -14,6 +14,9 @@ in
       services.xserver.enable = true;
       services.xserver.displayManager.gdm.enable = true;
       services.xserver.desktopManager.gnome.enable = true;
+
+      # Enable plymouth bootanimation
+      boot.plymouth.enable = true;
     })
     (lib.mkIf cfg.kde.enable {
       # Enable KDE Plasma
@@ -26,6 +29,9 @@ in
       environment.systemPackages = [
         pkgs.kdePackages.discover
       ];
+
+      # Enable plymouth bootanimation
+      boot.plymouth.enable = true;
     })
   ];
 }

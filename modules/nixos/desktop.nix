@@ -117,8 +117,6 @@ in {
         };
       };
 
-      # Enable plymouth bootanimation
-      boot.plymouth.enable = true;
 
     })
     (lib.mkIf cfg.arctis9.enable {

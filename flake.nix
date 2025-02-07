@@ -57,8 +57,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    colmena.url = "github:zhaofengli/colmena";
-
     agenix-rekey = {
       url = "github:oddlama/agenix-rekey";
       inputs.nixpkgs.follows = "nixpkgs";

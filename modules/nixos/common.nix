@@ -97,9 +97,10 @@ in {
       '';
 
       # Configure console keymap
+      # https://github.com/NixOS/nixpkgs/issues/257904
       console = {
-        font = "ter-124b";
-        keyMap = "es";
+        # font = "${pkgs.terminus_font}/share/consolefonts/ter-124b.psf.gz";
+        useXkbConfig = true;
         packages = with pkgs; [ terminus_font ];
       };
 
