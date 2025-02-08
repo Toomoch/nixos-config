@@ -124,6 +124,7 @@ in {
         tree
         unzip
         borgbackup
+        rsync
       ];
 
       # Enable the OpenSSH daemon.
