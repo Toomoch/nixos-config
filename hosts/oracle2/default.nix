@@ -4,6 +4,7 @@
     ./hardware-configuration.nix
     # Minimal stuff
     (nixpkgs.outPath + "/nixos/modules/profiles/minimal.nix")
+    ./minecraft.nix
   ];
 
   networking.hostName = "oracle2";

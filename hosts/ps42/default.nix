@@ -68,7 +68,7 @@ in {
         #};
       };
 
-      environment.systemPackages = with pkgs; [ powertop ];
+      environment.systemPackages = with pkgs; [ powertop prismlauncher ];
 
       custom.common.enable = true;
       custom.common.systemd-boot.enable = true;

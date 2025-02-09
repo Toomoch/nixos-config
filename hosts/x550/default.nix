@@ -1,9 +1,7 @@
-{ inputs, config, pkgs, lib, ... }:
-{
-  imports = [
-  ];
+{ inputs, config, pkgs, lib, ... }: {
+  imports = [ ./disko.nix ];
 
-  networking.hostName = "x550"; 
+  networking.hostName = "x550";
 
   environment.systemPackages = with pkgs; [
     telegram-desktop
@@ -29,6 +27,8 @@
 
   # aliza ms
 
+  i18n.defaultLocale = lib.mkForce "ca_ES.UTF-8";
+
   custom.common.enable = true;
   custom.common.systemd-boot.enable = true;
   custom.desktop.enable = true;
@@ -39,9 +39,7 @@
   # Enable VAAPI hardware acceleration
   hardware.graphics = {
     enable = true;
-    extraPackages = with pkgs; [
-      intel-vaapi-driver
-    ];
+    extraPackages = with pkgs; [ intel-vaapi-driver ];
   };
 
   # Undervolt
@@ -52,7 +50,6 @@
     uncoreOffset = 0;
     analogioOffset = 0;
   };
-
 
   virtualisation.vmVariant = {
     # following configuration is added only when building VM with build-vm

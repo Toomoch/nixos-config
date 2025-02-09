@@ -63,11 +63,17 @@
     };
 
     isd.url = "github:isd-project/isd";
+
+    nix-minecraft = {
+      url = "github:Infinidoge/nix-minecraft";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-compat.follows = "";
+    };
   };
 
   outputs = { self, nixpkgs, home-manager, nixpkgs-stable, home-manager-stable
     , deploy-rs, nixvim, disko-stable, disko, nix-on-droid, agenix, agenix-rekey
-    , ... }@inputs:
+    , nix-minecraft, ... }@inputs:
     let
       inherit (self) outputs;
       # specialArgs
@@ -185,9 +191,7 @@
             buildOnTarget = true;
             targetUser = "arnau";
           };
-          b450 = {
-            allowLocalDeployment = true;
-          };
+          b450 = { allowLocalDeployment = true; };
           oracle2 = {
             targetHost = "oracle2";
             buildOnTarget = true;

@@ -157,6 +157,7 @@ in {
         obs-studio
         webcord
         protonup-qt
+        prismlauncher
       ];
 
       #Steam

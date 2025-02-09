@@ -125,6 +125,7 @@ in {
         unzip
         borgbackup
         rsync
+        tmux
       ];
 
       # Enable the OpenSSH daemon.

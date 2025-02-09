@@ -36,6 +36,12 @@ nix run github:nix-community/nixos-anywhere -- --flake .#hostname --vm-test
 ```
 
 Boot the installer and change the root password, then run:
+Generate the hardware config:
+```shell
+nix run github:nix-community/nixos-anywhere -- --generate-hardware-config nixos-generate-config ./hosts/hostname/hardware-configuration.nix root@ip
+```
+
+Install:
 ```bash
 nix run github:nix-community/nixos-anywhere -- --flake .#hostname root@ip
 ```
