@@ -1,5 +1,4 @@
-{ config, pkgs, lib, inputs, ... }:
-{
+{ config, pkgs, lib, inputs, ... }: {
   home.packages = with pkgs; [
     #desktop apps
     gnome-disk-utility
@@ -17,6 +16,7 @@
     localsend
     (nerdfonts.override { fonts = [ "Noto" ]; })
     masterpdfeditor4
+    networkmanager_dmenu
   ];
 
   fonts.fontconfig.enable = true;
@@ -38,7 +38,7 @@
     # Issue: https://github.com/nix-community/home-manager/issues/1213
     configFile."mimeapps.list".force = true;
     configFile."firefoxprofileswitcher/config.json".text = ''
-      	{"browser_binary": "/run/current-system/sw/bin/firefox"}
+      {"browser_binary": "/run/current-system/sw/bin/firefox"}
     '';
     mimeApps = {
       enable = true;
@@ -102,7 +102,8 @@
 
     userSettings = {
       editor = {
-        fontFamily = "'Noto Sans Mono','Fira Code','Font Awesome 6 Free','Font Awesome 6 Brands','Font Awesome 6 Free Solid', monospace";
+        fontFamily =
+          "'Noto Sans Mono','Fira Code','Font Awesome 6 Free','Font Awesome 6 Brands','Font Awesome 6 Free Solid', monospace";
         fontLigatures = true;
       };
 
@@ -118,22 +119,16 @@
 
       redhat.telemetry.enabled = false;
 
-      clangd.fallbackFlags = [
-        "-I\${workspaceFolder}/include"
-      ];
+      clangd.fallbackFlags = [ "-I\${workspaceFolder}/include" ];
 
       update.mode = "none";
       nix.enableLanguageServer = true;
       nix.serverPath = "nixd";
       nix.serverSettings.nixd = {
-        formatting = {
-          command = [ "nixpkgs-fmt" ];
-        };
+        formatting = { command = [ "nixpkgs-fmt" ]; };
         options = {
           enable = true;
-          target = {
-            installable = ".#nixosConfigurations.ps42.options";
-          };
+          target = { installable = ".#nixosConfigurations.ps42.options"; };
         };
       };
     };
@@ -161,11 +156,20 @@
   #    '';
   #  };
 
+  xdg.configFile."networkmanager-dmenu/config.ini".text =
+    lib.generators.toINI { } {
+      dmenu = {
+        dmenu_command = ''${lib.getExe pkgs.fuzzel} --dmenu --no-exit-on-keyboard-focus-loss -b 000000FF --font="NotoSansM Nerd Font Mono:size=20"'';
+      };
+      editor = {
+        terminal = "alacritty";
+      };
+    };
+
   programs.mpv = {
     enable = true;
     config = { hwdec = "auto"; };
   };
-
 
   home.pointerCursor = {
     name = "Adwaita";
@@ -197,12 +201,8 @@
       package = pkgs.rubik;
       size = 11;
     };
-    gtk3.extraConfig = {
-      gtk-application-prefer-dark-theme = true;
-    };
-    gtk4.extraConfig = {
-      gtk-application-prefer-dark-theme = true;
-    };
+    gtk3.extraConfig = { gtk-application-prefer-dark-theme = true; };
+    gtk4.extraConfig = { gtk-application-prefer-dark-theme = true; };
   };
   qt = {
     enable = true;
@@ -223,8 +223,6 @@
   };
 
   dconf.settings = {
-    "org/gnome/desktop/interface" = {
-      color-scheme = "prefer-dark";
-    };
+    "org/gnome/desktop/interface" = { color-scheme = "prefer-dark"; };
   };
 }

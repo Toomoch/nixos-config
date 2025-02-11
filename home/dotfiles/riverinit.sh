@@ -25,6 +25,9 @@ riverctl map normal Super+Shift N spawn 'swaync-client -t -sw'
 
 riverctl map normal None Print spawn 'screenshot area'
 
+riverctl map normal Super E spawn 'thunar'
+riverctl map normal Super N spawn 'networkmanager_dmenu'
+
 # Super+J and Super+K to focus the next/previous view in the layout stack
 riverctl map normal Super J focus-view next
 riverctl map normal Super K focus-view previous
