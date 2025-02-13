@@ -2,7 +2,11 @@
 let
   cfg = config.custom.desktop;
   custom-session = import ./functions/custom-session.nix;
-  river-custom = custom-session { inherit pkgs lib; name = "river"; exec = "${lib.getExe pkgs.river}"; };
+  river-custom = custom-session {
+    inherit pkgs lib;
+    name = "river";
+    exec = "${lib.getExe pkgs.river}";
+  };
 in {
   options.custom.desktop = {
     sway.enable = lib.mkEnableOption "Whether to enable Sway with GTKgreet";
@@ -25,7 +29,8 @@ in {
 
       programs.hyprland.enable = cfg.hyprland.enable;
       programs.river.enable = cfg.river.enable;
-      services.displayManager.sessionPackages = [] ++ lib.optional cfg.river.enable river-custom;
+      services.displayManager.sessionPackages = [ ]
+        ++ lib.optional cfg.river.enable river-custom;
 
       # Sway
       programs.sway.enable = true;
@@ -76,6 +81,7 @@ in {
       services.blueman.enable = true;
 
       security.pam.services.gtklock = { };
+      security.pam.services.hyprlock = { };
     })
     (lib.mkIf cfg.regreet.enable {
       programs.regreet = {

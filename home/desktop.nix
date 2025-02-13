@@ -159,11 +159,12 @@
   xdg.configFile."networkmanager-dmenu/config.ini".text =
     lib.generators.toINI { } {
       dmenu = {
-        dmenu_command = ''${lib.getExe pkgs.fuzzel} --dmenu --no-exit-on-keyboard-focus-loss -b 000000FF --font="NotoSansM Nerd Font Mono:size=20"'';
+        dmenu_command = ''
+          ${
+            lib.getExe pkgs.fuzzel
+          } --dmenu --no-exit-on-keyboard-focus-loss -b 000000FF --font="NotoSansM Nerd Font Mono:size=20"'';
       };
-      editor = {
-        terminal = "alacritty";
-      };
+      editor = { terminal = "alacritty"; };
     };
 
   programs.mpv = {
@@ -224,5 +225,34 @@
 
   dconf.settings = {
     "org/gnome/desktop/interface" = { color-scheme = "prefer-dark"; };
+  };
+  programs.hyprlock.enable = true;
+  programs.hyprlock.settings = {
+    general = {
+      disable_loading_bar = true;
+      grace = 300;
+      hide_cursor = true;
+      no_fade_in = false;
+    };
+
+    background = [{
+      path = "screenshot";
+      blur_passes = 3;
+      blur_size = 8;
+    }];
+
+    input-field = [{
+      size = "200, 50";
+      position = "0, -80";
+      monitor = "";
+      dots_center = true;
+      fade_on_empty = false;
+      font_color = "rgb(202, 211, 245)";
+      inner_color = "rgb(91, 96, 120)";
+      outer_color = "rgb(24, 25, 38)";
+      outline_thickness = 5;
+      placeholder_text = "Password...";
+      shadow_passes = 2;
+    }];
   };
 }

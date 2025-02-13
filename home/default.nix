@@ -44,7 +44,6 @@ in {
     iperf3
     borgbackup
     git-lfs
-    inputs.isd.packages.${system}.default
   ];
   programs.fzf.enableZshIntegration = true;
   programs.fzf.enableBashIntegration = true;

@@ -13,5 +13,6 @@ pkgs: nixvim: system: rec {
   firefox-profile-switcher-connector =
     pkgs.callPackage ./firefox-profile-switcher-connector.nix { };
   help-blog = pkgs.callPackage ./blog.nix { };
+  notion_todo = pkgs.callPackage ./notion_todo.nix { };
 
 }

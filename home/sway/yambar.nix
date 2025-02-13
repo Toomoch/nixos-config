@@ -245,7 +245,7 @@ bar:
     - label:
         content:
           string:
-            on-click: swaynag -t warning -m ' Power Menu' -z 'Lock' 'gtklock -d' -z 'Logout' 'swaymsg exit || hyprctl dispatch exit' -z 'Suspend' 'systemctl suspend' -z 'Poweroff' 'systemctl poweroff' -z 'Reboot' 'systemctl reboot' -z 'Reboot to UEFI' 'systemctl reboot --firmware-setup' -z 'Reboot to Windows' 'systemctl reboot --boot-loader-entry=auto-windows' --background=#00000033 --text=#FFFFFF --button-text=#FFFFFF --button-background=#00000033 --button-border=#000000 --border-bottom-size=0 --message-padding=0
+            on-click: swaynag -t warning -m ' Power Menu' -z 'Lock' 'hyprlock --immediate' -z 'Logout' 'swaymsg exit || hyprctl dispatch exit' -z 'Suspend' 'systemctl suspend' -z 'Poweroff' 'systemctl poweroff' -z 'Reboot' 'systemctl reboot' -z 'Reboot to UEFI' 'systemctl reboot --firmware-setup' -z 'Reboot to Windows' 'systemctl reboot --boot-loader-entry=auto-windows' --background=#00000033 --text=#FFFFFF --button-text=#FFFFFF --button-background=#00000033 --button-border=#000000 --border-bottom-size=0 --message-padding=0
             text: 
             font: *awesome
 

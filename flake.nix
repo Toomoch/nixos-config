@@ -62,7 +62,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    isd.url = "github:isd-project/isd";
 
     nix-minecraft = {
       url = "github:Infinidoge/nix-minecraft";
