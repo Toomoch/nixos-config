@@ -1,15 +1,15 @@
 { inputs, config, pkgs, lib, ... }: {
   imports = [ inputs.nix-minecraft.nixosModules.minecraft-servers ];
   nixpkgs.overlays = [ inputs.nix-minecraft.overlay ];
+
   # Minecraft server settings
-users.users.arnau.extraGroups = [ config.services.minecraft-servers.group ];
+  users.users.arnau.extraGroups = [ config.services.minecraft-servers.group ];
   services.minecraft-servers = {
     enable = true;
     eula = true;
     openFirewall = true;
     servers.fabric = {
       enable = true;
-
       # Specify the custom minecraft server package
       package = pkgs.fabricServers.fabric-1_21_4;
 
