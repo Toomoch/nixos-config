@@ -4,6 +4,7 @@ apps=("waybar" "swayosd-server" "swaync" "nm-applet --indicator" "wpaperd" "fire
 
 for app in "${apps[@]}"
 do
-        pkill -f "$app"
+        pname=$(echo "$app" | awk '{print $1}')
+        pkill -f "$pname"
         riverctl spawn "$app" 
 done
