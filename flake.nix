@@ -27,7 +27,7 @@
 
     nixvim = {
       url = "github:nix-community/nixvim";
-      inputs.nixpkgs.follows = "nixpkgs";
+      #inputs.nixpkgs.follows = "nixpkgs";
       inputs.devshell.follows = "";
       inputs.flake-compat.follows = "";
       inputs.git-hooks.follows = "";

@@ -27,6 +27,7 @@ riverctl map normal None Print spawn 'screenshot area'
 
 riverctl map normal Super E spawn 'thunar'
 riverctl map normal Super N spawn 'networkmanager_dmenu'
+riverctl map normal Super Escape spawn 'hyprlock --immediate'
 
 # Super+J and Super+K to focus the next/previous view in the layout stack
 riverctl map normal Super J focus-view next
@@ -107,7 +108,7 @@ riverctl map normal Super 0 set-focused-tags $all_tags
 riverctl map normal Super+Shift 0 set-view-tags $all_tags
 
 # Super+Space to toggle float
-riverctl map normal Super Space toggle-float
+riverctl map normal Super+Shift Space toggle-float
 
 # Super+F to toggle fullscreen
 riverctl map normal Super F toggle-fullscreen

@@ -3,8 +3,8 @@
   home.packages = with pkgs; [
     #dev tools
     llvmPackages_15.libclang
-    nixpkgs-fmt
-    nixfmt-classic
+    #nixfmt-classic
+    nixfmt-rfc-style
     shellcheck
     shfmt
     gnumake

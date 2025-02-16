@@ -1,14 +1,27 @@
-{ config, pkgs, lib, flake-root, private, secrets, ... }: {
-  imports = [ ./hardware-configuration.nix ./disko.nix ./hass.nix ./jellyfin.nix ];
+{
+  config,
+  pkgs,
+  lib,
+  flake-root,
+  private,
+  secrets,
+  ...
+}:
+{
+  imports = [
+    ./hardware-configuration.nix
+    ./disko.nix
+    ./hass.nix
+    ./jellyfin.nix
+  ];
 
   nixpkgs.config.allowUnfree = true;
 
-  networking.hostName = "h81"; # Define your hostname.
-
+  networking.hostName = "h81"; 
   virtualisation.vmVariant = {
     # following configuration is added only when building VM with build-vm
     virtualisation = {
-      memorySize = 4096; # Use 2048MiB memory.
+      memorySize = 4096; 
       cores = 4;
     };
   };
@@ -61,18 +74,28 @@
     };
   };
 
+  services.telegraf.extraConfig = {
+    inputs.socket_listener = {
+      service_address = "udp://:25826";
+      data_format = "collectd";
+      collectd_typesdb = [ "${pkgs.collectd}/share/collectd/types.db" ];
+    };
+  };
+  networking.firewall.allowedUDPPorts = [ 25826 ];
+
   security.polkit.enable = true;
 
   nixpkgs.config.packageOverrides = pkgs: {
-    intel-vaapi-driver =
-      pkgs.intel-vaapi-driver.override { enableHybridCodec = true; };
+    intel-vaapi-driver = pkgs.intel-vaapi-driver.override {
+      enableHybridCodec = true;
+    }; # i5-4590 is Haswell Refresh, supports intel-hybrid-driver
   };
+
   hardware.graphics = {
     enable = true;
-    extraPackages = with pkgs;
-      [
-        intel-vaapi-driver # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
-      ];
+    extraPackages = with pkgs; [
+      intel-vaapi-driver # LIBVA_DRIVER_NAME=i965 Haswell does not support intel-media-driver
+    ];
   };
 
   # This value determines the NixOS release from which the default

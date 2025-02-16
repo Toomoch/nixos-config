@@ -22,7 +22,7 @@
         vim.bo.filetype = "yaml.gitlab"
       end,
     })
-    '';
+  '';
 
   keymaps = [
     {

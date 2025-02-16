@@ -38,7 +38,7 @@
   services.home-assistant = {
     enable = true;
     openFirewall = true;
-    customComponents = [ pkgs.huawei_solar pkgs.som-energia-hass ];
+    customComponents = [ pkgs.huawei_solar pkgs.som-energia-hass pkgs.home-assistant-custom-components.localtuya ];
     extraComponents = [
       # Components required to complete the onboarding
       "analytics"
@@ -51,6 +51,7 @@
       "isal"
       "melcloud"
       "lg_netcast"
+      "tuya"
     ];
     config = {
       # Includes dependencies for a basic setup
