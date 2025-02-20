@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   extraPlugins = with pkgs; [
     vimPlugins.vim-just
     vimPlugins.vim-shellcheck
@@ -55,8 +56,7 @@
       options.desc = "Git status";
     }
     {
-      action =
-        ":set nosplitright<CR>:execute 'Gvdiff ' .. g:git_base<CR>:set splitright<CR>";
+      action = ":set nosplitright<CR>:execute 'Gvdiff ' .. g:git_base<CR>:set splitright<CR>";
       key = "<leader>gd";
       options.desc = "Git diff";
     }
@@ -126,9 +126,24 @@
   };
 
   plugins = {
+    render-markdown = {
+      enable = true;
+      settings = {
+        heading = {
+          enabled = false;
+        };
+        code = {
+          highlight = "RenderMarkdownCode";
+          highlight_inline = "RenderMarkdownCodeInline";
+          style = "full";
+        };
+      };
+
+    };
     web-devicons.enable = true;
     nix.enable = true;
     treesitter.enable = true;
+    treesitter.settings.highlight.enable = true;
     auto-save.enable = true;
     luasnip.enable = true;
     fugitive.enable = true;
@@ -143,8 +158,7 @@
         { name = "luasnip"; }
         { name = "buffer"; }
       ];
-      settings.snippet.expand =
-        "function(args) require('luasnip').lsp_expand(args.body) end";
+      settings.snippet.expand = "function(args) require('luasnip').lsp_expand(args.body) end";
       settings.mapping = {
         "<C-Space>" = "cmp.mapping.complete()";
         "<C-d>" = "cmp.mapping.scroll_docs(-4)";
@@ -166,7 +180,9 @@
         "<leader>fd" = "grep_curbuf";
       };
     };
-    tmux-navigator = { enable = true; };
+    tmux-navigator = {
+      enable = true;
+    };
 
     lsp = {
       enable = true;
@@ -178,7 +194,9 @@
           gd = "definition";
           gi = "implementation";
           #gt = "type_definition";
-          "<leader>ca" = { action = "code_action"; };
+          "<leader>ca" = {
+            action = "code_action";
+          };
         };
         diagnostic = {
           "<leader>j" = "goto_next";
@@ -186,9 +204,11 @@
         };
       };
       servers = {
-        nixd = { enable = true; };
-        ltex = {
+        nixd = {
           enable = true;
+        };
+        ltex = {
+          enable = false;
           settings.language = "en-US";
         };
         pyright.enable = true;
@@ -210,10 +230,14 @@
           enable = true;
           autostart = true;
           filetypes = [ "yaml.ansible" ];
-          rootDir =
-            "require 'lspconfig.util'.root_pattern('ansible.cfg', '.ansible-lint')";
-          cmd = [ "ansible-language-server" "--stdio" ];
-          extraOptions = { single_file_support = true; };
+          rootDir = "require 'lspconfig.util'.root_pattern('ansible.cfg', '.ansible-lint')";
+          cmd = [
+            "ansible-language-server"
+            "--stdio"
+          ];
+          extraOptions = {
+            single_file_support = true;
+          };
           settings.ansible = {
             python.interpreterPath = "python";
             ansible.path = "ansible";

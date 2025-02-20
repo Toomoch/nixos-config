@@ -31,13 +31,13 @@ Follow [the official manual](https://nixos.org/manual/nixos/stable/#sec-installa
 
 ### Installing NixOS with nixos-anywhere
 To check that the configuration is bootable, run:
-```bash
+```shell
 nix run github:nix-community/nixos-anywhere -- --flake .#hostname --vm-test
 ```
 
 Boot the installer and change the root password, then run:
 Generate the hardware config:
-```shell
+```bash
 nix run github:nix-community/nixos-anywhere -- --generate-hardware-config nixos-generate-config ./hosts/hostname/hardware-configuration.nix root@ip
 ```
 
@@ -62,7 +62,7 @@ curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix 
 
 Add to ~/.config/nix/nix.conf:
 
-```
+```conf
 experimental-features = nix-command flakes
 ```
 
