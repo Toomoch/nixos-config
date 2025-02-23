@@ -189,6 +189,23 @@ do
         riverctl input "$touchpad" tap-button-map left-right-middle
 done
 
+add_ssd_to=(
+    "firefox"
+    "org.pulseaudio.pavucontrol"
+    "org.remmina.Remmina"
+    "chromium-browser"
+    "thunar"
+)
+for app in "${add_ssd_to[@]}"; do
+    riverctl rule-add -app-id "$app" ssd
+done
+
+float_apps=(
+    "org.pulseaudio.pavucontrol"
+)
+for app in "${float_apps[@]}"; do
+    riverctl rule-add -app-id "$app" float
+done
 
 # Set the default layout generator to be rivertile and start it.
 # River will send the process group of the init executable SIGTERM on exit.

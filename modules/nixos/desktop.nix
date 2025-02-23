@@ -58,6 +58,7 @@ in {
         libva-utils
         firefoxpwa
         trayscale
+        yt-dlp
       ];
 
       programs.localsend.enable = true;

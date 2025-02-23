@@ -118,7 +118,8 @@ in {
     (lib.mkIf (config.specialisation != { }) {
       custom.desktop.blacklistnvidia.enable = true;
       custom.desktop.sway.enable = true;
-      custom.desktop.regreet.enable = true;
+      custom.desktop.tuigreet.enable = true;
+      custom.desktop.regreet.enable = false;
       custom.desktop.river.enable = true;
       custom.desktop.hyprland.enable = false;
       custom.vm.libvirtd.enable = true;

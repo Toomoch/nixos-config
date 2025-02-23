@@ -9,6 +9,7 @@
     scrcpy
     virt-manager
     gnome-network-displays
+    remmina
     imhex
     ungoogled-chromium
     resources

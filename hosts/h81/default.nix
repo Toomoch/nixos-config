@@ -74,6 +74,8 @@
     };
   };
 
+  environment.systemPackages = [ pkgs.yt-dlp ];
+
   services.telegraf.extraConfig = {
     inputs.socket_listener = {
       service_address = "udp://:25826";

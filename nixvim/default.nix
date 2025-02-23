@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   extraPlugins = with pkgs; [
     vimPlugins.vim-just
@@ -232,7 +232,7 @@
           filetypes = [ "yaml.ansible" ];
           rootDir = "require 'lspconfig.util'.root_pattern('ansible.cfg', '.ansible-lint')";
           cmd = [
-            "ansible-language-server"
+            "${lib.getExe pkgs.ansible-language-server}"
             "--stdio"
           ];
           extraOptions = {
@@ -246,7 +246,7 @@
               enabled = true;
               lint = {
                 enabled = true;
-                path = "ansible-lint";
+                path = "${lib.getExe pkgs.ansible-lint}";
               };
             };
           };

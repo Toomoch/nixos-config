@@ -1,4 +1,10 @@
-{ config, lib, pkgs, flake-root, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  flake-root,
+  ...
+}:
 let
   cfg = config.custom.desktop;
   custom-session = import ./functions/custom-session.nix;
@@ -7,7 +13,8 @@ let
     name = "river";
     exec = "${lib.getExe pkgs.river}";
   };
-in {
+in
+{
   options.custom.desktop = {
     sway.enable = lib.mkEnableOption "Whether to enable Sway with GTKgreet";
     river.enable = lib.mkEnableOption "Whether to enable riverwm";
@@ -29,8 +36,7 @@ in {
 
       programs.hyprland.enable = cfg.hyprland.enable;
       programs.river.enable = cfg.river.enable;
-      services.displayManager.sessionPackages = [ ]
-        ++ lib.optional cfg.river.enable river-custom;
+      services.displayManager.sessionPackages = [ ] ++ lib.optional cfg.river.enable river-custom;
 
       # Sway
       programs.sway.enable = true;
@@ -60,8 +66,7 @@ in {
       };
       programs.file-roller.enable = true;
       # Enable wayland in electron apps
-      environment.sessionVariables.NIXOS_OZONE_WL =
-        "1"; # Disabled because of https://github.com/microsoft/vscode/issues/184124
+      environment.sessionVariables.NIXOS_OZONE_WL = "1"; # Disabled because of https://github.com/microsoft/vscode/issues/184124
       # Enable wayland in firefox
       environment.sessionVariables.MOZ_ENABLE_WAYLAND = "1";
       # Fix Java apps in WMs
@@ -86,7 +91,11 @@ in {
     (lib.mkIf cfg.regreet.enable {
       programs.regreet = {
         enable = true;
-        cageArgs = [ "-s" "-m" "last" ];
+        cageArgs = [
+          "-s"
+          "-m"
+          "last"
+        ];
         font = {
           package = pkgs.rubik;
           name = "Rubik";
@@ -98,7 +107,9 @@ in {
             path = /${flake-root}/assets/lockscreen.png;
 
           };
-          GTK = { application_prefer_dark_theme = true; };
+          GTK = {
+            application_prefer_dark_theme = true;
+          };
         };
       };
     })
@@ -108,8 +119,7 @@ in {
         enable = true;
         settings = {
           default_session = {
-            command =
-              "${pkgs.greetd.tuigreet}/bin/tuigreet --time --remember --cmd sway";
+            command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --remember --remember-session";
             user = "greeter";
           };
         };
