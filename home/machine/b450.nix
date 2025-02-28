@@ -14,7 +14,7 @@ in {
     ../river.nix
   ];
 
-  home.packages = with pkgs; [ vesktop ];
+  home.packages = with pkgs; [ discord ];
   services.kanshi = {
     enable = true;
     settings = [{

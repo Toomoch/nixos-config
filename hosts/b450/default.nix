@@ -18,7 +18,6 @@
   custom.common.systemd-boot.enable = true;
   custom.desktop.enable = true;
   custom.desktop.arctis9.enable = true;
-  custom.desktop.regreet.enable = true;
   custom.desktop.sway.enable = true;
   custom.desktop.hyprland.enable = false;
   custom.desktop.river.enable = true;
@@ -30,6 +29,9 @@
   custom.vm.libvirtd.enable = true;
   custom.vm.docker.enable = true;
   virtualisation.waydroid.enable = true;
+
+  custom.desktop.tuigreet.enable = true;
+  custom.desktop.regreet.enable = false;
 
   programs.singularity = {
     enable = true;

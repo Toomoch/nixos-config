@@ -16,7 +16,7 @@ in {
     ../river.nix
   ];
 
-  home.packages = [ pkgs.unstable.vesktop ];
+  home.packages = [ pkgs.discord ];
 
   wayland.windowManager.sway = {
     config.workspaceOutputAssign = [
