@@ -76,14 +76,9 @@
 
   environment.systemPackages = [ pkgs.yt-dlp ];
 
-  services.telegraf.extraConfig = {
-    inputs.socket_listener = {
-      service_address = "udp://:25826";
-      data_format = "collectd";
-      collectd_typesdb = [ "${pkgs.collectd}/share/collectd/types.db" ];
-    };
-  };
   networking.firewall.allowedUDPPorts = [ 25826 ];
+
+  
 
   security.polkit.enable = true;
 
@@ -99,6 +94,21 @@
       intel-vaapi-driver # LIBVA_DRIVER_NAME=i965 Haswell does not support intel-media-driver
     ];
   };
+
+    services.victoriametrics = {
+      enable = true;
+      prometheusConfig = {
+        scrape_configs = [{
+          job_name = "openwrt";
+          scrape_interval = "30s";
+          static_configs = [{
+            targets = [
+              "10.1.2.1:9103"
+            ];
+          }];
+        }];
+      };
+    };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
