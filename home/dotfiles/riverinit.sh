@@ -101,6 +101,8 @@ do
     riverctl map normal Super+Shift+Control $i toggle-view-tags $tags
 done
 
+riverctl map normal Super Tab focus-previous-tags
+
 # Super+0 to focus all tags
 # Super+Shift+0 to tag focused view with all tags
 all_tags=$(((1 << 32) - 1))

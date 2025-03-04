@@ -24,6 +24,7 @@ in {
             environment.systemPackages = with pkgs; [
               libsForQt5.kpat
               libsForQt5.kio-gdrive
+              x2goclient
             ];
             i18n.defaultLocale = lib.mkDefault "ca_ES.UTF-8";
           };
