@@ -18,6 +18,7 @@
     (nerdfonts.override { fonts = [ "Noto" ]; })
     masterpdfeditor4
     networkmanager_dmenu
+    wireshark
   ];
 
   fonts.fontconfig.enable = true;
@@ -205,14 +206,6 @@
     };
     gtk3.extraConfig = { gtk-application-prefer-dark-theme = true; };
     gtk4.extraConfig = { gtk-application-prefer-dark-theme = true; };
-  };
-  qt = {
-    enable = true;
-    platformTheme.name = "gtk";
-    style = {
-      name = "gtk2";
-      package = pkgs.kdePackages.breeze;
-    };
   };
 
   xresources.properties = {

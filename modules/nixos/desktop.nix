@@ -1,4 +1,11 @@
-{ inputs, config, lib, pkgs, self, ... }:
+{
+  inputs,
+  config,
+  lib,
+  pkgs,
+  self,
+  ...
+}:
 let
   cfg = config.custom.desktop;
   g29init = pkgs.writeShellScriptBin "g29init" ''
@@ -8,18 +15,16 @@ let
   matlab-wrapped = pkgs.writeShellScriptBin "matlab" ''
     exec env MESA_GL_VERSION_OVERRIDE=3.0 ${pkgs.matlab}/bin/matlab
   '';
-in {
+in
+{
   options.custom.desktop = {
-    enable =
-      lib.mkEnableOption "Whether to enable common stuff for desktop systems";
+    enable = lib.mkEnableOption "Whether to enable common stuff for desktop systems";
     arctis9.enable = lib.mkEnableOption "Whether to enable Arctis9 support";
     flatpak.enable = lib.mkEnableOption "Whether to enable Flatpak support";
     gaming.enable = lib.mkEnableOption "Whether to enable gaming stuff";
-    gaming.g29.enable =
-      lib.mkEnableOption "Whether to enable G29 wheel support";
+    gaming.g29.enable = lib.mkEnableOption "Whether to enable G29 wheel support";
     matlab.enable = lib.mkEnableOption "Whether to enable MATLAB";
-    blacklistnvidia.enable =
-      lib.mkEnableOption "Whether to disable and hide all detected Nvidia GPUs";
+    blacklistnvidia.enable = lib.mkEnableOption "Whether to disable and hide all detected Nvidia GPUs";
   };
 
   config = lib.mkMerge [
@@ -52,6 +57,14 @@ in {
       programs.nix-ld.enable = true;
       services.envfs.enable = true;
 
+      qt = {
+        enable = true;
+        style = "adwaita-dark";
+      };
+      environment.sessionVariables = {
+        QT_STYLE_OVERRIDE = "adwaita-dark";
+      };
+
       environment.systemPackages = with pkgs; [
         vulkan-tools
         glxinfo
@@ -77,10 +90,12 @@ in {
       };
 
       # Tailscale
-      services.tailscale = { enable = true; };
+      services.tailscale = {
+        enable = true;
+      };
       systemd.services."tailscaled".wantedBy = lib.mkForce [ ];
 
-      # OpenGL    
+      # OpenGL
       hardware.graphics.enable = true;
 
       # PipeWire
@@ -101,23 +116,26 @@ in {
       programs.adb.enable = true;
 
       # Firefox
-      programs.firefox = let
-        firefox-package = pkgs.wrapFirefox pkgs.firefox-unwrapped {
-          nativeMessagingHosts = [ pkgs.firefox-profile-switcher-connector ];
-          extraPolicies = { ExtensionSettings = { }; };
+      programs.firefox =
+        let
+          firefox-package = pkgs.wrapFirefox pkgs.firefox-unwrapped {
+            nativeMessagingHosts = [ pkgs.firefox-profile-switcher-connector ];
+            extraPolicies = {
+              ExtensionSettings = { };
+            };
+          };
+
+        in
+        {
+          enable = true;
+          package = firefox-package;
+          nativeMessagingHosts.packages = [ pkgs.firefoxpwa ];
+
+          preferences = {
+            "browser.fullscreen.autohide" = false;
+            "pdfjs.defaultZoomValue" = "page-fit";
+          };
         };
-
-      in {
-        enable = true;
-        package = firefox-package;
-        nativeMessagingHosts.packages = [ pkgs.firefoxpwa ];
-
-        preferences = {
-          "browser.fullscreen.autohide" = false;
-          "pdfjs.defaultZoomValue" = "page-fit";
-        };
-      };
-
 
     })
     (lib.mkIf cfg.arctis9.enable {
@@ -131,21 +149,21 @@ in {
     (lib.mkIf cfg.flatpak.enable {
       services.flatpak.enable = true;
       # Ugly hack to add remote
-      systemd.user.services."flatpak-remote-add" = let
-        name = "flathub";
-        location = builtins.fetchurl {
-          url = "https://dl.flathub.org/repo/flathub.flatpakrepo";
-          sha256 =
-            "sha256:0fm0zvlf4fipqfhazx3jdx1d8g0mvbpky1rh6riy3nb11qjxsw9k";
+      systemd.user.services."flatpak-remote-add" =
+        let
+          name = "flathub";
+          location = builtins.fetchurl {
+            url = "https://dl.flathub.org/repo/flathub.flatpakrepo";
+            sha256 = "sha256:0fm0zvlf4fipqfhazx3jdx1d8g0mvbpky1rh6riy3nb11qjxsw9k";
+          };
+        in
+        {
+          wantedBy = [ "default.target" ];
+          serviceConfig = {
+            Type = "oneshot";
+            ExecStart = "/run/current-system/sw/bin/flatpak remote-add --user --if-not-exists ${name} ${location}";
+          };
         };
-      in {
-        wantedBy = [ "default.target" ];
-        serviceConfig = {
-          Type = "oneshot";
-          ExecStart =
-            "/run/current-system/sw/bin/flatpak remote-add --user --if-not-exists ${name} ${location}";
-        };
-      };
 
     })
     (lib.mkIf cfg.gaming.enable {
@@ -165,15 +183,17 @@ in {
       programs.steam = {
         enable = true;
         gamescopeSession.enable = true;
-        remotePlay.openFirewall =
-          true; # Open ports in the firewall for Steam Remote Play
-        dedicatedServer.openFirewall =
-          true; # Open ports in the firewall for Source Dedicated Server
+        remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+        dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
       };
 
     })
     (lib.mkIf cfg.gaming.g29.enable {
-      environment.systemPackages = [ pkgs.oversteer pkgs.at g29init ];
+      environment.systemPackages = [
+        pkgs.oversteer
+        pkgs.at
+        g29init
+      ];
       services.atd.enable = true;
 
       hardware.new-lg4ff.enable = true;
@@ -185,8 +205,11 @@ in {
 
     })
     (lib.mkIf cfg.matlab.enable {
-      environment.systemPackages =
-        [ matlab-wrapped pkgs.matlab-mlint pkgs.matlab-mex ];
+      environment.systemPackages = [
+        matlab-wrapped
+        pkgs.matlab-mlint
+        pkgs.matlab-mex
+      ];
       nixpkgs.overlays = [ inputs.nix-matlab.overlay ];
     })
     (lib.mkIf cfg.blacklistnvidia.enable {
@@ -205,8 +228,12 @@ in {
         # Remove NVIDIA VGA/3D controller devices
         ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x03[0-9]*", ATTR{power/control}="auto", ATTR{remove}="1"
       '';
-      boot.blacklistedKernelModules =
-        [ "nouveau" "nvidia" "nvidia_drm" "nvidia_modeset" ];
+      boot.blacklistedKernelModules = [
+        "nouveau"
+        "nvidia"
+        "nvidia_drm"
+        "nvidia_modeset"
+      ];
     })
   ];
 }
