@@ -1,27 +1,39 @@
-{ inputs, config, lib, pkgs, nixpkgs, secrets, outputs, private, ... }:
+{
+  inputs,
+  config,
+  lib,
+  pkgs,
+  nixpkgs,
+  secrets,
+  outputs,
+  private,
+  ...
+}:
 let
   cfg = config.custom.common;
   user = "${secrets.hosts.${config.networking.hostName}.user}";
-  ifTheyExist = groups:
-    builtins.filter (group: builtins.hasAttr group config.users.groups) groups;
-in {
+  ifTheyExist = groups: builtins.filter (group: builtins.hasAttr group config.users.groups) groups;
+in
+{
   options.custom.common = {
     enable = lib.mkEnableOption "Whether to enable common stuff";
-    systemd-boot.enable =
-      lib.mkEnableOption "Whether to enable systemd-boot bootloader";
-    cloud.enable =
-      lib.mkEnableOption "Whether to enable cloud specific settings";
-    defaultUser.enable = lib.mkEnableOption
-      "Whether to enable the default user with a configurable name";
+    systemd-boot.enable = lib.mkEnableOption "Whether to enable systemd-boot bootloader";
+    cloud.enable = lib.mkEnableOption "Whether to enable cloud specific settings";
+    defaultUser.enable = lib.mkEnableOption "Whether to enable the default user with a configurable name";
   };
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
       nix = {
         settings = {
-          experimental-features = [ "nix-command" "flakes" ];
+          experimental-features = [
+            "nix-command"
+            "flakes"
+          ];
           auto-optimise-store = true;
           builders-use-substitutes = true;
+          substituters = [ "https://cosmic.cachix.org/" ];
+          trusted-public-keys = [ "cosmic.cachix.org-1:Dya9IyXD4xdBehWjrkPv6rtxpmMdRel02smYzA85dPE=" ];
         };
         gc = {
           automatic = true;
@@ -30,24 +42,29 @@ in {
           persistent = true;
         };
         distributedBuilds = false;
-        buildMachines = [{
-          hostName = "h81";
-          sshUser = secrets.hosts.h81.user;
-          publicHostKey = secrets.hosts.h81.pubKeyBase64;
-          sshKey = "${
-              config.users.users.${
-                secrets.hosts.${config.networking.hostName}.user
-              }.home
+        buildMachines = [
+          {
+            hostName = "h81";
+            sshUser = secrets.hosts.h81.user;
+            publicHostKey = secrets.hosts.h81.pubKeyBase64;
+            sshKey = "${
+              config.users.users.${secrets.hosts.${config.networking.hostName}.user}.home
             }/.ssh/id_ed25519";
-          system = "x86_64-linux";
-          protocol = "ssh-ng";
-          # default is 1 but may keep the builder idle in between builds
-          maxJobs = 3;
-          # how fast is the builder compared to your local machine
-          speedFactor = 2;
-          supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
-          mandatoryFeatures = [ ];
-        }];
+            system = "x86_64-linux";
+            protocol = "ssh-ng";
+            # default is 1 but may keep the builder idle in between builds
+            maxJobs = 3;
+            # how fast is the builder compared to your local machine
+            speedFactor = 2;
+            supportedFeatures = [
+              "nixos-test"
+              "benchmark"
+              "big-parallel"
+              "kvm"
+            ];
+            mandatoryFeatures = [ ];
+          }
+        ];
       };
       nixpkgs.overlays = [
         outputs.overlays.additions
@@ -66,8 +83,11 @@ in {
 
       # Select internationalisation properties.
       i18n = {
-        supportedLocales =
-          [ "en_GB.UTF-8/UTF-8" "ca_ES.UTF-8/UTF-8" "en_US.UTF-8/UTF-8" ];
+        supportedLocales = [
+          "en_GB.UTF-8/UTF-8"
+          "ca_ES.UTF-8/UTF-8"
+          "en_US.UTF-8/UTF-8"
+        ];
         defaultLocale = "en_US.UTF-8";
         extraLocaleSettings = {
           LC_NUMERIC = "ca_ES.UTF-8";
@@ -166,10 +186,8 @@ in {
         ];
         packages = with pkgs; [ ];
 
-        initialHashedPassword =
-          builtins.readFile /${private}/secrets/plain/inithashpass;
-        openssh.authorizedKeys.keys =
-          secrets.authlist config.networking.hostName;
+        initialHashedPassword = builtins.readFile /${private}/secrets/plain/inithashpass;
+        openssh.authorizedKeys.keys = secrets.authlist config.networking.hostName;
         shell = pkgs.bash;
       };
       programs.starship.enable = true;
@@ -235,7 +253,11 @@ in {
           "virtio_blk"
           "virtio_scsi"
         ];
-        kernelModules = [ "virtio_balloon" "virtio_console" "virtio_rng" ];
+        kernelModules = [
+          "virtio_balloon"
+          "virtio_console"
+          "virtio_rng"
+        ];
       };
       boot.kernelParams = [
         # Disable auditing

@@ -192,11 +192,7 @@ do
 done
 
 add_ssd_to=(
-    "firefox"
-    "org.pulseaudio.pavucontrol"
-    "org.remmina.Remmina"
-    "chromium-browser"
-    "Thunar"
+    "*"
 )
 for app in "${add_ssd_to[@]}"; do
     riverctl rule-add -app-id "$app" ssd

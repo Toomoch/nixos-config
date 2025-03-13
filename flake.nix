@@ -15,6 +15,7 @@
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
+
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -27,13 +28,6 @@
 
     nixvim = {
       url = "github:nix-community/nixvim";
-      #inputs.nixpkgs.follows = "nixpkgs";
-      inputs.devshell.follows = "";
-      inputs.flake-compat.follows = "";
-      inputs.git-hooks.follows = "";
-      inputs.home-manager.follows = "";
-      inputs.nix-darwin.follows = "";
-      inputs.treefmt-nix.follows = "";
     };
 
     agenix = {
@@ -68,11 +62,25 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-compat.follows = "";
     };
+
+    nixpkgs-cosmic.follows = "nixos-cosmic/nixpkgs-stable"; # NOTE: change "nixpkgs" to "nixpkgs-stable" to use stable NixOS release
+
+    nixos-cosmic = { inputs.flake-compat.follows = ""; url = "github:lilyinstarlight/nixos-cosmic"; };
+
+    home-manager-cosmic = {
+      url = "github:nix-community/home-manager/release-24.11";
+      inputs.nixpkgs.follows = "nixos-cosmic/nixpkgs-stable";
+    };
+
+    disko-cosmic = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixos-cosmic/nixpkgs-stable";
+    };
   };
 
   outputs = { self, nixpkgs, home-manager, nixpkgs-stable, home-manager-stable
     , deploy-rs, nixvim, disko-stable, disko, nix-on-droid, agenix, agenix-rekey
-    , nix-minecraft, ... }@inputs:
+    , nixpkgs-cosmic, home-manager-cosmic, disko-cosmic, ... }@inputs:
     let
       inherit (self) outputs;
       # specialArgs
@@ -91,6 +99,13 @@
         nixpkgs = nixpkgs;
         home-manager = home-manager;
         disko = disko;
+        agenix = agenix;
+      };
+
+      cosmic = {
+        nixpkgs = nixpkgs-cosmic;
+        home-manager = home-manager-cosmic;
+        disko = disko-cosmic;
         agenix = agenix;
       };
 

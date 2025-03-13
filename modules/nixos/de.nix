@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 let
   cfg = config.custom.desktop;
 in
@@ -6,8 +6,10 @@ in
   options.custom.desktop = {
     gnome.enable = lib.mkEnableOption "Whether to enable Gnome with GDM";
     kde.enable = lib.mkEnableOption "Whether to enable KDE with SDDM";
+    cosmic.enable = lib.mkEnableOption "Whether to enable cosmic with SDDM";
   };
 
+  imports = [ inputs.nixos-cosmic.nixosModules.default ];
   config = lib.mkMerge [
     (lib.mkIf cfg.gnome.enable {
       # Enable GNOME
@@ -32,6 +34,11 @@ in
 
       # Enable plymouth bootanimation
       boot.plymouth.enable = true;
+    })
+    (lib.mkIf cfg.cosmic.enable {
+      services.desktopManager.cosmic.enable = true;
+      services.displayManager.cosmic-greeter.enable = true;
+      programs.dconf.enable = true;
     })
   ];
 }
