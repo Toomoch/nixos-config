@@ -11,6 +11,7 @@ in {
     services.grafana = {
       enable = true;
       settings.server.domain = "grafana.${config.custom.homelab.primaryDomain}";
+      settings.server.root_url = "https://%(domain)s:443/";
     };
 
     services.caddy.virtualHosts."grafana.${config.custom.homelab.primaryDomain}" =

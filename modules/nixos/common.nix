@@ -20,6 +20,7 @@ in
     systemd-boot.enable = lib.mkEnableOption "Whether to enable systemd-boot bootloader";
     cloud.enable = lib.mkEnableOption "Whether to enable cloud specific settings";
     defaultUser.enable = lib.mkEnableOption "Whether to enable the default user with a configurable name";
+    wol.enable = lib.mkEnableOption "Enable Wake On LAN via udev rules";
   };
 
   config = lib.mkMerge [
@@ -266,6 +267,11 @@ in
         # Generate names based on orders (e.g. eth0)
         "net.ifnames=0"
       ];
+    })
+    (lib.mkIf cfg.wol.enable {
+      services.udev.extraRules = ''
+        ACTION=="add", SUBSYSTEM=="net", NAME=="en*",, RUN+="${lib.getExe pkgs.ethtool} -s $name wol g"
+      '';
     })
 
   ];

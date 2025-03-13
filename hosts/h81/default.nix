@@ -17,11 +17,13 @@
 
   nixpkgs.config.allowUnfree = true;
 
-  networking.hostName = "h81"; 
+  networking.hostName = "h81";
+
+
   virtualisation.vmVariant = {
     # following configuration is added only when building VM with build-vm
     virtualisation = {
-      memorySize = 4096; 
+      memorySize = 4096;
       cores = 4;
     };
   };
@@ -78,8 +80,6 @@
 
   networking.firewall.allowedUDPPorts = [ 25826 ];
 
-  
-
   security.polkit.enable = true;
 
   nixpkgs.config.packageOverrides = pkgs: {
@@ -95,20 +95,24 @@
     ];
   };
 
-    services.victoriametrics = {
-      enable = true;
-      prometheusConfig = {
-        scrape_configs = [{
+  services.victoriametrics = {
+    enable = true;
+    prometheusConfig = {
+      scrape_configs = [
+        {
           job_name = "openwrt";
           scrape_interval = "30s";
-          static_configs = [{
-            targets = [
-              "10.1.2.1:9103"
-            ];
-          }];
-        }];
-      };
+          static_configs = [
+            {
+              targets = [
+                "10.1.2.1:9103"
+              ];
+            }
+          ];
+        }
+      ];
     };
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

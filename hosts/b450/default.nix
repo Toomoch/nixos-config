@@ -1,4 +1,12 @@
-{ config, pkgs, lib, sops-nix, inputs, ... }: {
+{
+  config,
+  pkgs,
+  lib,
+  sops-nix,
+  inputs,
+  ...
+}:
+{
   networking.hostName = "b450"; # Define your hostname.
 
   imports = [ ./hardware-configuration.nix ];
@@ -6,7 +14,9 @@
   # Enable VAAPI hardware acceleration
   programs.firefox = {
     enable = true;
-    preferences = { "media.ffmpeg.vaapi.enabled" = true; };
+    preferences = {
+      "media.ffmpeg.vaapi.enabled" = true;
+    };
   };
 
   services.tailscale = {
@@ -46,8 +56,11 @@
 
   # Enable the IOMMU
   boot.kernelParams = [ "amd_iommu=on" ];
-  boot.loader.systemd-boot.windows = { "10".efiDeviceHandle = "HD1b65535a1"; };
+  boot.loader.systemd-boot.windows = {
+    "10".efiDeviceHandle = "HD1b65535a1";
+  };
 
+  custom.common.wol.enable = true; 
   # LTS Kernel
   #boot.kernelPackages = pkgs.linuxPackages_latest;
 
