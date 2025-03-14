@@ -79,6 +79,7 @@
   environment.systemPackages = [ pkgs.yt-dlp ];
 
   networking.firewall.allowedUDPPorts = [ 25826 ];
+  networking.firewall.allowedTCPPorts = [ 5201 ];
 
   security.polkit.enable = true;
 
