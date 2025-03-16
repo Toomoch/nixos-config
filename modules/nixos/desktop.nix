@@ -82,7 +82,7 @@ in
       networking.networkmanager.enable = true;
 
       # Printing
-      services.printing.enable = false;
+      services.printing.enable = true;
       services.avahi = {
         enable = true;
         nssmdns4 = true;
