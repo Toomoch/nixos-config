@@ -13,12 +13,12 @@
     ./disko.nix
     ./hass.nix
     ./jellyfin.nix
+    ./containers.nix
   ];
 
   nixpkgs.config.allowUnfree = true;
 
   networking.hostName = "h81";
-
 
   virtualisation.vmVariant = {
     # following configuration is added only when building VM with build-vm
