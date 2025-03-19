@@ -144,7 +144,7 @@
     nix.enable = true;
     treesitter.enable = true;
     treesitter.settings.highlight.enable = true;
-    auto-save.enable = true;
+    auto-save.enable = false;
     luasnip.enable = true;
     fugitive.enable = true;
     nvim-tree.enable = true;
@@ -172,6 +172,17 @@
 
     cmp-nvim-lsp.enable = true;
     lualine.enable = true;
+    copilot-chat.enable = true;
+    copilot-lua = {
+      enable = true;
+      settings = {
+        suggestion.enabled = false;
+        panel.enabled = false;
+        filetypes = {
+          "." = false; # disable for all other filetypes and ignore default `filetypes`
+        };
+      };
+    };
     fzf-lua = {
       enable = true;
       keymaps = {
