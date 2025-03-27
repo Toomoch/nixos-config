@@ -46,6 +46,7 @@ in {
             criteria = workplace_name;
             mode = "3440x1440@75Hz";
             position = "1440,0";
+            scale = 1.25;
             status = "enable";
           }
           {
