@@ -13,6 +13,7 @@
       firefoxpwa = final.unstable.firefoxpwa;
       caddy = final.unstable.caddy;
       trayscale = final.unstable.trayscale;
+      river = final.unstable.river;
   };
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will
