@@ -17,7 +17,7 @@ in {
     inputs.nixvim.homeManagerModules.nixvim
   ];
 
-  home.packages = with pkgs; [ glab uuu freerdp3 cmake pandoc ];
+  home.packages = with pkgs; [ glab uuu freerdp3 cmake pandoc bind ];
 
   home.username = lib.mkForce secrets.hosts.${secrets.work.hostName}.user;
   home.homeDirectory =
