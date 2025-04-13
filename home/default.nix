@@ -5,6 +5,8 @@ let
   sshfix = "NIX_SSHOPTS=-i ${sshpath}";
   tmux-sessionizer = pkgs.writeShellScriptBin "sessionizer"
     (builtins.readFile (./dotfiles/tmux-sessionizer.sh));
+  tmux-ssh = pkgs.writeShellScriptBin "sshmulti"
+    (builtins.readFile (./dotfiles/tmux-ssh.sh));
   shellAliases = {
     ls = "ls --human-readable --color=auto -la";
     ip = "ip -c";
@@ -44,6 +46,7 @@ in {
     iperf3
     borgbackup
     git-lfs
+    tmux-ssh
   ];
   programs.fzf.enableZshIntegration = true;
   programs.fzf.enableBashIntegration = true;
@@ -151,6 +154,27 @@ in {
       "rpi3" = {
         hostname = secrets.hosts.rpi3.dns;
         forwardAgent = true;
+      };
+
+      ax3000t-1 = {
+        hostname = secrets.hosts.ax3000t-1.dns;
+        user = "root";
+      };
+      ax3000t-2 = {
+        hostname = secrets.hosts.ax3000t-2.dns;
+        user = "root";
+      };
+      r2100 = {
+        hostname = secrets.hosts.r2100.dns;
+        user = "root";
+      };
+      mi4a-1 = {
+        hostname = secrets.hosts.mi4a-1.dns;
+        user = "root";
+      };
+      mi4a-2 = {
+        hostname = secrets.hosts.mi4a-2.dns;
+        user = "root";
       };
     };
     includes = [ "config.d/*" ];
