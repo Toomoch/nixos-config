@@ -23,9 +23,23 @@
         vim.bo.filetype = "yaml.gitlab"
       end,
     })
+    vim.api.nvim_create_autocmd( "FileType", {
+      pattern = "yaml.ansible",
+      callback = function(args)
+        vim.cmd.TSDisable('highlight', 'buffer=' .. args.buf)
+      end,
+    })
   '';
 
   keymaps = [
+    {
+      action = ''"_dP'';
+      key = "<leader>p";
+    }
+    {
+      action = ''"_d'';
+      key = "<leader>d";
+    }
     {
       action = "<cmd>NvimTreeToggle<cr>";
       key = "<leader>e";
@@ -143,7 +157,9 @@
     web-devicons.enable = true;
     nix.enable = true;
     treesitter.enable = true;
-    treesitter.settings.highlight.enable = true;
+    treesitter.settings = {
+      highlight.enable = true;
+    };
     auto-save.enable = false;
     luasnip.enable = true;
     fugitive.enable = true;
