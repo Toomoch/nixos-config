@@ -25,6 +25,8 @@ in
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
+      # populate branch name/commit hash
+      system.configurationRevision = let self = inputs.self; in self.shortRev or self.dirtyShortRev or self.lastModified or "unknown";
       nix = {
         settings = {
           experimental-features = [
