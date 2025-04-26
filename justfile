@@ -46,3 +46,9 @@ cleangen:
 
 repl:
   nix repl --expr 'builtins.getFlake (toString ./.)'
+
+revision:
+  nixos-version --configuration-revision
+
+show:
+  git show $(nixos-version --configuration-revision)

@@ -13,6 +13,7 @@
 * [Deployment](#deployment)
     * [Deploying NixOS locally](#deploying-nixos-locally)
     * [Deploying NixOS over the network with deploy-rs](#deploying-nixos-over-the-network-with-deploy-rs)
+    * [Getting the git revision of this repo in a running system](#getting-the-git-revision-of-this-repo-in-a-running-system)
 
 <!-- vim-markdown-toc -->
 ## Setting up the environment
@@ -90,4 +91,9 @@ just rebuild hostname
 To deploy:
 ```bash
 just deploy hostname
+```
+
+### Getting the git revision of this repo in a running system
+```bash
+nixos-version --configuration-revision
 ```
