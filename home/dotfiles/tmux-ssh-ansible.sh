@@ -3,14 +3,14 @@
 JQ_CMD='._meta.hostvars as $hostvars |
 [to_entries[] |
 select(.key != "_meta" and .key != "all") |
-.value.hosts[] as $hostname |
+try .value.hosts[] as $hostname |
 ($hostvars[$hostname].ansible_host) as $ansiblehost |
 ($ansiblehost // $hostname) as $target |
 (if $ansiblehost != null and $ansiblehost != $hostname then "\($hostname)-->\($ansiblehost)" else $hostname end) as $display |
 "\($display) \($target)"] | unique[]'
 
 readarray -t selected_target < <(
-        ansible-inventory -i inventory.yaml --list --export |
+        ansible-inventory -i "$ANSIBLE_INV" --list --export |
                 jq -r "$JQ_CMD" |
                 fzf --delimiter=' ' --with-nth=1 --multi --tmux --border --prompt="Target(s): " |
                 awk -F ' ' '{print $2}'

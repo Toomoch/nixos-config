@@ -1,12 +1,12 @@
 { pkgs, lib, ... }:
 {
   extraPlugins = with pkgs; [
-    vimPlugins.vim-just
-    vimPlugins.vim-shellcheck
+    # vimPlugins.vim-just
+    # vimPlugins.vim-shellcheck
     vimPlugins.markdown-preview-nvim
-    vimPlugins.vim-caddyfile
+    # vimPlugins.vim-caddyfile
     vimPlugins.vim-markdown-toc
-    vimPlugins.ansible-vim
+    # vimPlugins.ansible-vim
   ];
 
   clipboard.providers.wl-copy.enable = true;
@@ -17,12 +17,6 @@
   };
 
   extraConfigLuaPost = ''
-    vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
-      pattern = "*.gitlab-ci*.{yml,yaml}",
-      callback = function()
-        vim.bo.filetype = "yaml.gitlab"
-      end,
-    })
     vim.api.nvim_create_autocmd( "FileType", {
       pattern = "yaml.ansible",
       callback = function(args)
@@ -30,6 +24,36 @@
       end,
     })
   '';
+
+  filetype = {
+    filename = {
+      "Caddyfile" = "caddy";
+    };
+    extension = {
+      "caddyfile" = "caddy";
+      # systemd
+      automount = "systemd";
+      mount = "systemd";
+      path = "systemd";
+      slice = "systemd";
+      scope = "systemd";
+      service = "systemd";
+      socket = "systemd";
+      swap = "systemd";
+      target = "systemd";
+      timer = "systemd";
+      jinja = "jinja";
+      jinja2 = "jinja";
+      j2 = "jinja";
+    };
+    pattern = {
+      ".*%.gitlab%-ci%.yml" = "yaml.gitlab";
+      # ".*/tasks/.*%.ya?ml" = "yaml.ansible";
+      # ".*/roles/.*%.ya?ml" = "yaml.ansible";
+      # ".*/playbooks/.*%.ya?ml" = "yaml.ansible";
+      # ".*playbook.*%.ya?ml" = "yaml.ansible";
+    };
+  };
 
   keymaps = [
     {
@@ -188,9 +212,9 @@
 
     cmp-nvim-lsp.enable = true;
     lualine.enable = true;
-    copilot-chat.enable = true;
+    copilot-chat.enable = false;
     copilot-lua = {
-      enable = true;
+      enable = false;
       settings = {
         suggestion.enabled = false;
         panel.enabled = false;
@@ -231,6 +255,8 @@
         };
       };
       servers = {
+        jinja_lsp.enable = true;
+        jinja_lsp.package = pkgs.jinja-lsp;
         nixd = {
           enable = true;
         };
@@ -257,7 +283,12 @@
           enable = true;
           autostart = true;
           filetypes = [ "yaml.ansible" ];
-          rootDir = "require 'lspconfig.util'.root_pattern('ansible.cfg', '.ansible-lint')";
+          # rootDir = "require 'lspconfig.util'.root_pattern('ansible.cfg', '.ansible-lint')";
+          rootMarkers = [
+            "ansible.cfg"
+            ".ansible-lint"
+          ];
+
           cmd = [
             "${lib.getExe pkgs.ansible-language-server}"
             "--stdio"

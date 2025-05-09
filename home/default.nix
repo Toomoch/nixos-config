@@ -6,7 +6,7 @@ let
   tmux-sessionizer = pkgs.writeShellScriptBin "sessionizer"
     (builtins.readFile (./dotfiles/tmux-sessionizer.sh));
   tmux-ssh = pkgs.writeShellScriptBin "sshmulti"
-    (builtins.readFile (./dotfiles/tmux-ssh.sh));
+    (builtins.readFile (./dotfiles/tmux-ssh-ansible.sh));
   shellAliases = {
     ls = "ls --human-readable --color=auto -la";
     ip = "ip -c";
