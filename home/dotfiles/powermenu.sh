@@ -24,7 +24,7 @@ case "$chosen" in
         swaymsg exit || riverctl exit || hyprctl dispatch exit
         ;;
 "  Lock")
-        hyprlock --immediate
+        waylock
         ;;
 "  Reboot to UEFI")
         systemctl reboot --firmware-setup

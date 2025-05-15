@@ -55,6 +55,11 @@
     };
   };
 
+  # Fix errors not showing in neovim 0.11
+  diagnostic.settings = {
+    virtual_text = true;
+  };
+
   keymaps = [
     {
       action = ''"_dP'';
@@ -244,6 +249,7 @@
           gD = "references";
           gd = "definition";
           gi = "implementation";
+          # conflicts with next tab binding
           #gt = "type_definition";
           "<leader>ca" = {
             action = "code_action";

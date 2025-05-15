@@ -12,7 +12,6 @@ in {
     ../personal.nix
     ../devtools.nix
     ../nvim.nix
-    ../class.nix
     ../river.nix
   ];
 

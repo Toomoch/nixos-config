@@ -15,7 +15,6 @@
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
-
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -56,7 +55,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-
     nix-minecraft = {
       url = "github:Infinidoge/nix-minecraft";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -65,7 +63,10 @@
 
     nixpkgs-cosmic.follows = "nixos-cosmic/nixpkgs-stable"; # NOTE: change "nixpkgs" to "nixpkgs-stable" to use stable NixOS release
 
-    nixos-cosmic = { inputs.flake-compat.follows = ""; url = "github:lilyinstarlight/nixos-cosmic"; };
+    nixos-cosmic = {
+      inputs.flake-compat.follows = "";
+      url = "github:lilyinstarlight/nixos-cosmic";
+    };
 
     home-manager-cosmic = {
       url = "github:nix-community/home-manager/release-24.11";
@@ -78,9 +79,25 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, nixpkgs-stable, home-manager-stable
-    , deploy-rs, nixvim, disko-stable, disko, nix-on-droid, agenix, agenix-rekey
-    , nixpkgs-cosmic, home-manager-cosmic, disko-cosmic, ... }@inputs:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      home-manager,
+      nixpkgs-stable,
+      home-manager-stable,
+      deploy-rs,
+      nixvim,
+      disko-stable,
+      disko,
+      nix-on-droid,
+      agenix,
+      agenix-rekey,
+      nixpkgs-cosmic,
+      home-manager-cosmic,
+      disko-cosmic,
+      ...
+    }@inputs:
     let
       inherit (self) outputs;
       # specialArgs
@@ -166,139 +183,181 @@
         }
       ];
 
-      forAllSystems = let systems = [ "x86_64-linux" "aarch64-linux" ];
-      in function: pkgs:
-      nixpkgs.lib.genAttrs systems (system:
+      forAllSystems =
         let
-          syspkgs = import pkgs {
-            inherit system;
-            config.allowUnfree = true;
-          };
-        in function syspkgs system);
+          systems = [
+            "x86_64-linux"
+            "aarch64-linux"
+          ];
+        in
+        function: pkgs:
+        nixpkgs.lib.genAttrs systems (
+          system:
+          let
+            syspkgs = import pkgs {
+              inherit system;
+              config.allowUnfree = true;
+            };
+          in
+          function syspkgs system
+        );
 
-      mkColmenaHive = nixpkgs: nodeDeployments:
+      mkColmenaHive =
+        nixpkgs: nodeDeployments:
         let
           confs = inputs.self.nixosConfigurations;
-          colmenaConf = {
-            meta = {
-              inherit nixpkgs;
-              nodeNixpkgs = builtins.mapAttrs (_name: value: value.pkgs) confs;
-              nodeSpecialArgs =
-                builtins.mapAttrs (_name: value: value._module.specialArgs)
-                confs;
-            };
-          } // builtins.mapAttrs (nodeName: value: {
-            imports = value._module.args.modules;
-            deployment = nodeDeployments.${nodeName} or { };
-          }) confs;
-        in inputs.colmena.lib.makeHive colmenaConf;
+          colmenaConf =
+            {
+              meta = {
+                inherit nixpkgs;
+                nodeNixpkgs = builtins.mapAttrs (_name: value: value.pkgs) confs;
+                nodeSpecialArgs = builtins.mapAttrs (_name: value: value._module.specialArgs) confs;
+              };
+            }
+            // builtins.mapAttrs (nodeName: value: {
+              imports = value._module.args.modules;
+              deployment = nodeDeployments.${nodeName} or { };
+            }) confs;
+        in
+        inputs.colmena.lib.makeHive colmenaConf;
 
-    in {
-      colmenaHive =
-        mkColmenaHive (import nixpkgs { system = "x86_64-linux"; }) {
-          ps42 = {
-            allowLocalDeployment = true;
-            targetHost = null;
-          };
-          h81 = {
-            targetHost = "h81";
-            buildOnTarget = true;
-            targetUser = "arnau";
-          };
-          b450 = { allowLocalDeployment = true; };
-          oracle2 = {
-            targetHost = "oracle2";
-            buildOnTarget = true;
-            targetUser = "arnau";
-          };
-          oracle1 = {
-            targetHost = "oracle1";
-            targetUser = "arnau";
-          };
+    in
+    {
+      colmenaHive = mkColmenaHive (import nixpkgs { system = "x86_64-linux"; }) {
+        ps42 = {
+          allowLocalDeployment = true;
+          targetHost = null;
         };
+        h81 = {
+          targetHost = "h81";
+          buildOnTarget = true;
+          targetUser = "arnau";
+        };
+        b450 = {
+          allowLocalDeployment = true;
+        };
+        oracle2 = {
+          targetHost = "oracle2";
+          buildOnTarget = true;
+          targetUser = "arnau";
+        };
+        oracle1 = {
+          targetHost = "oracle1";
+          targetUser = "arnau";
+        };
+      };
       # Import every package found in the attr pkgs from ./pkgs/default.nix
-      packages = forAllSystems (pkgs: system: import ./pkgs pkgs nixvim system)
-        nixpkgs-stable;
+      packages = forAllSystems (pkgs: system: import ./pkgs pkgs nixvim system) nixpkgs-stable;
       nixosModules.common = import ./modules/nixos;
       nixosModules.private = import /${private}/modules/nixos;
       overlays = import ./overlays { inherit inputs nixvim; };
 
-      nixOnDroidConfigurations.default =
-        nix-on-droid.lib.nixOnDroidConfiguration {
-          extraSpecialArgs = let nixpkgs = nixpkgs-stable;
-          in { inherit inputs nixpkgs secrets self; };
-          pkgs = import nixpkgs-stable { system = "aarch64-linux"; };
-          modules = [
-            ./nix-on-droid
-            {
-              home-manager = {
-                config.imports = [ ];
-                extraSpecialArgs = { inherit inputs secrets self; };
-              };
-            }
-          ];
-          home-manager-path = home-manager-stable.outPath;
-        };
+      nixOnDroidConfigurations.default = nix-on-droid.lib.nixOnDroidConfiguration {
+        extraSpecialArgs =
+          let
+            nixpkgs = nixpkgs-stable;
+          in
+          {
+            inherit
+              inputs
+              nixpkgs
+              secrets
+              self
+              ;
+          };
+        pkgs = import nixpkgs-stable { system = "aarch64-linux"; };
+        modules = [
+          ./nix-on-droid
+          {
+            home-manager = {
+              config.imports = [ ];
+              extraSpecialArgs = { inherit inputs secrets self; };
+            };
+          }
+        ];
+        home-manager-path = home-manager-stable.outPath;
+      };
 
       homeConfigurations = {
         "arnau" = home-manager.lib.homeManagerConfiguration {
           pkgs = import nixpkgs { system = "x86_64-linux"; };
-          modules = [ ./home ./home/arnau.nix ];
+          modules = [
+            ./home
+            ./home/arnau.nix
+          ];
         };
       };
 
-      nixosConfigurations = let
-        defaultModules = host: branch: [
-          self.nixosModules.common
-          self.nixosModules.private
-          branch.disko.nixosModules.disko
-          branch.agenix.nixosModules.default
-          agenix-rekey.nixosModules.default
-          ./hosts/${host}
-          {
-            nix.registry.nixpkgs-unstable.flake =
-              nixpkgs; # Add nixpkgs-unstable to registry
-          }
-        ];
+      nixosConfigurations =
+        let
+          defaultModules = host: branch: [
+            self.nixosModules.common
+            self.nixosModules.private
+            branch.disko.nixosModules.disko
+            branch.agenix.nixosModules.default
+            agenix-rekey.nixosModules.default
+            ./hosts/${host}
+            {
+              nix.registry.nixpkgs-unstable.flake = nixpkgs; # Add nixpkgs-unstable to registry
+            }
+          ];
 
-        mkHostConfig = { host, arch, branch, hm, ... }: {
-          name = host;
-          value = let # surely theres a better way of doing this
-            host-folder = secrets.hosts.${host}.hostFolder;
-            specialArgs = {
-              inherit inputs secrets flake-root private agenix-rekey self
-                outputs;
-              nixpkgs = branch.nixpkgs;
-              nixpkgs-unstable = nixpkgs;
-            };
-          in branch.nixpkgs.lib.nixosSystem {
-            system = arch;
-            inherit specialArgs;
-            modules = defaultModules host-folder branch
-              ++ branch.nixpkgs.lib.optionals hm [
-                branch.home-manager.nixosModules.home-manager
-                {
-                  home-manager = let user = secrets.hosts.${host}.user;
-                  in {
-                    useGlobalPkgs = true;
-                    extraSpecialArgs = specialArgs;
-                    users.${user}.imports =
-                      [ ./home/machine/${host-folder}.nix ]
-                      ++ branch.nixpkgs.lib.optional (branch == unstable)
-                      ./home/unstable.nix;
+          mkHostConfig =
+            {
+              host,
+              arch,
+              branch,
+              hm,
+              ...
+            }:
+            {
+              name = host;
+              value =
+                let # surely theres a better way of doing this
+                  host-folder = secrets.hosts.${host}.hostFolder;
+                  specialArgs = {
+                    inherit
+                      inputs
+                      secrets
+                      flake-root
+                      private
+                      agenix-rekey
+                      self
+                      outputs
+                      ;
+                    nixpkgs = branch.nixpkgs;
+                    nixpkgs-unstable = nixpkgs;
                   };
-                }
-              ] ++ branch.nixpkgs.lib.optional
-              (builtins.pathExists /${private}/hosts/${host})
-              /${private}/hosts/${host};
-            # Include private host config
-          };
-        };
+                in
+                branch.nixpkgs.lib.nixosSystem {
+                  system = arch;
+                  inherit specialArgs;
+                  modules =
+                    defaultModules host-folder branch
+                    ++ branch.nixpkgs.lib.optionals hm [
+                      branch.home-manager.nixosModules.home-manager
+                      {
+                        home-manager =
+                          let
+                            user = secrets.hosts.${host}.user;
+                          in
+                          {
+                            useGlobalPkgs = true;
+                            extraSpecialArgs = specialArgs;
+                            users.${user}.imports = [ ./home/machine/${host-folder}.nix ];
+                          };
+                      }
+                    ]
+                    ++ branch.nixpkgs.lib.optional (builtins.pathExists /${private}/hosts/${host}) /${private}/hosts/${host};
+                  # Include private host config
+                };
+            };
 
-        autoMachineConfigs = map mkHostConfig hosts;
+          autoMachineConfigs = map mkHostConfig hosts;
 
-        machineConfigs = autoMachineConfigs ++ [ ];
-      in builtins.listToAttrs machineConfigs;
+          machineConfigs = autoMachineConfigs ++ [ ];
+        in
+        builtins.listToAttrs machineConfigs;
 
       agenix-rekey = agenix-rekey.configure {
         userFlake = self;
@@ -306,32 +365,35 @@
       };
 
       # deploy-rs node configuration stolen from https://github.com/LongerHV/nixos-configuration
-      deploy.nodes = let
-        mkDeployConfig =
-          hostname: configuration: interactiveSudo: remoteBuild: {
+      deploy.nodes =
+        let
+          mkDeployConfig = hostname: configuration: interactiveSudo: remoteBuild: {
             inherit hostname interactiveSudo remoteBuild;
             profiles.system =
-              let inherit (configuration.config.nixpkgs.hostPlatform) system;
-              in {
+              let
+                inherit (configuration.config.nixpkgs.hostPlatform) system;
+              in
+              {
                 path = deploy-rs.lib."${system}".activate.nixos configuration;
                 sshUser = "arnau";
                 user = "root";
                 #interactiveSudo = true;
                 #sshOpts = ["-A"];
-                sshOpts = [ "-o" "ProxyCommand=none" ];
+                sshOpts = [
+                  "-o"
+                  "ProxyCommand=none"
+                ];
                 magicRollback = true;
               };
           };
-      in {
-        h81 = mkDeployConfig "h81" self.nixosConfigurations.h81 false true;
-        rpi3 = mkDeployConfig "rpi3" self.nixosConfigurations.rpi3 false false;
-        l50 = mkDeployConfig "" self.nixosConfigurations.l50 true false;
-        oracle1 =
-          mkDeployConfig "oracle1" self.nixosConfigurations.oracle1 false false;
-        oracle2 =
-          mkDeployConfig "oracle2" self.nixosConfigurations.oracle2 false true;
-      };
-      checks = builtins.mapAttrs
-        (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
+        in
+        {
+          h81 = mkDeployConfig "h81" self.nixosConfigurations.h81 false true;
+          rpi3 = mkDeployConfig "rpi3" self.nixosConfigurations.rpi3 false false;
+          l50 = mkDeployConfig "" self.nixosConfigurations.l50 true false;
+          oracle1 = mkDeployConfig "oracle1" self.nixosConfigurations.oracle1 false false;
+          oracle2 = mkDeployConfig "oracle2" self.nixosConfigurations.oracle2 false true;
+        };
+      checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
     };
 }

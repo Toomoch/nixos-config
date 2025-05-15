@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-apps=("waybar" "swayosd-server" "swaync" "nm-applet --indicator" "wpaperd" "firefox" "swayidle -w before-sleep 'hyprlock --immediate'")
+apps=("waybar" "swayosd-server" "swaync" "nm-applet --indicator" "wpaperd" "firefox" "swayidle -w before-sleep 'waylock'")
 
 for app in "${apps[@]}"
 do

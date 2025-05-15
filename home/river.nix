@@ -19,6 +19,7 @@ let
   riverspawn = pkgs.writeShellScriptBin "riverspawn"
     (builtins.readFile ./dotfiles/riverspawn.sh);
 in {
+  home.packages = [ pkgs.waylock ];
   wayland.windowManager.river = {
     enable = true;
     package = null;

@@ -54,3 +54,5 @@ show HOSTNAME="":
   if [[ -n "{{ HOSTNAME }}" ]]; then HASH="$(ssh {{HOSTNAME}} 'nixos-version --configuration-revision')"; else HASH="$(nixos-version --configuration-revision)"; fi && \
   if git cat-file -e ${HASH} &>/dev/null; then git show ${HASH}; else echo unknown revison \""${HASH}"\"; fi;
 
+size HOSTNAME="$(hostname)":
+  nix path-info -Sh  .\?submodules=1#nixosConfigurations.{{HOSTNAME}}.config.system.build.toplevel

@@ -87,6 +87,7 @@ in
 
       security.pam.services.gtklock = { };
       security.pam.services.hyprlock = { };
+      security.pam.services.waylock = { };
     })
     (lib.mkIf cfg.regreet.enable {
       programs.regreet = {
