@@ -37,6 +37,9 @@
           "max-length" = 50;
           "icon" = true;
         };
+        "river/window" = {
+          "max-length" = 50;
+        };
         "hyprland/window" = {
           "format" = "{}";
           "separate-outputs" = true;
