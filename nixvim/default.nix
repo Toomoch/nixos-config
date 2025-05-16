@@ -277,6 +277,7 @@
         ruff.enable = true;
         jsonls.enable = true;
         bashls.enable = true;
+        rust_analyzer.enable = true;
         gitlab_ci_ls = {
           enable = true;
           package = pkgs.gitlab-ci-ls;
