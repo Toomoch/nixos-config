@@ -250,6 +250,7 @@
       packages = forAllSystems (pkgs: system: import ./pkgs pkgs nixvim system) nixpkgs-stable;
       nixosModules.common = import ./modules/nixos;
       nixosModules.private = import /${private}/modules/nixos;
+      homeManagerModules.common = import ./modules/home-manager;
       overlays = import ./overlays { inherit inputs nixvim; };
 
       nixOnDroidConfigurations.default = nix-on-droid.lib.nixOnDroidConfiguration {
@@ -344,7 +345,7 @@
                           {
                             useGlobalPkgs = true;
                             extraSpecialArgs = specialArgs;
-                            users.${user}.imports = [ ./home/machine/${host-folder}.nix ];
+                            users.${user}.imports = [ self.homeManagerModules.common ];
                           };
                       }
                     ]

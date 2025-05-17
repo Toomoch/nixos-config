@@ -277,7 +277,12 @@
         ruff.enable = true;
         jsonls.enable = true;
         bashls.enable = true;
-        rust_analyzer.enable = true;
+        rust_analyzer = {
+          enable = true;
+          # use cargo & rustc from the env, don't install it
+          installCargo = false;
+          installRustc = false;
+        };
         gitlab_ci_ls = {
           enable = true;
           package = pkgs.gitlab-ci-ls;

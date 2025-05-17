@@ -55,11 +55,13 @@
         "x-scheme-handler/unknown" = [ "firefox.desktop" ];
         "video/x-matroska" = "mpv.desktop";
         "image/png" = "firefox.desktop";
+        "x-scheme-handler/terminal" = "Alacritty.desktop";
       };
       associations.added = {
         "image/png" = "firefox.desktop";
         "video/x-matroska" = "mpv.desktop";
         "application/pdf" = "firefox.desktop";
+        "x-scheme-handler/terminal" = "Alacritty.desktop";
       };
     };
 
