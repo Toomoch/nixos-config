@@ -115,8 +115,8 @@ in
         set editing-mode vi
         set keyseq-timeout 50
         set show-mode-in-prompt on
-        set vi-cmd-mode-string \1\e[34;1m\2(cmd) \1\e[0m\2
-        set vi-ins-mode-string
+        set vi-cmd-mode-string \1\e[34;1m\2[N] \1\e[0m\2
+        set vi-ins-mode-string \1\e[32;1m\2[I] \1\e[0m\2
       '';
 
       # Configure console keymap

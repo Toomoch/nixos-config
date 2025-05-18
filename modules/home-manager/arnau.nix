@@ -7,9 +7,6 @@
   ...
 }:
 let
-  nixos-config = "~/projects/nixos-config";
-  sshpath = "${config.home.homeDirectory}/.ssh/id_ed25519";
-  sshfix = "NIX_SSHOPTS=-i ${sshpath}";
   tmux-sessionizer = pkgs.writeShellScriptBin "sessionizer" (
     builtins.readFile (./dotfiles/tmux-sessionizer.sh)
   );
@@ -19,15 +16,6 @@ let
     ip = "ip -c";
     ".." = "cd ..";
     lsperms = "stat --format '%a'";
-    upcdown = "rclone copy upc:/assig ~/assig/ --drive-acknowledge-abuse -P";
-    upcup = "rclone copy ~/assig/ upc:/assig/ --drive-acknowledge-abuse -P";
-    upcsync = "upcdown && upcup";
-    upclink = "${config.home.homeDirectory}/scripts/upclink.sh";
-    nrswitch = "cd ${nixos-config} && git add . && nix flake archive && sudo '${sshfix}' nixos-rebuild switch --flake . && cd -";
-    nrboot = "cd ${nixos-config} && git add . && nix flake archive && sudo '${sshfix}' nixos-rebuild boot --flake . && cd -";
-    nrtest = "cd ${nixos-config} && git add . && nix flake archive && sudo '${sshfix}' nixos-rebuild test --flake . && cd -";
-    nrbuild = "cd ${nixos-config} && git add . && nix flake archive && nixos-rebuild build --flake . && cd -";
-    nu = "cd ${nixos-config} && git add . && nix flake update && cd -";
     sshgen = "ssh-keygen -t ed25519 -C $USER@$(hostname)";
     tiomenu = ''tio -b 115200 $(FZF_DEFAULT_COMMAND='find /dev/serial/by-id | tail -n +2 ' fzf --header="Pick a serial port")'';
     agenix = "agenix --extra-flake-params \\?submodules=1";
@@ -64,7 +52,6 @@ in
   programs.fzf.enableBashIntegration = true;
   programs.fzf.enable = true;
 
-  #sops.age.sshKeyPaths = [ "${sshpath}" ];
 
   xdg.enable = true;
 
@@ -94,10 +81,6 @@ in
     extraConfig = builtins.readFile ./dotfiles/tmux.conf;
   };
 
-  programs.zellij = {
-    enable = false;
-  };
-
   programs.direnv.enable = true;
   programs.direnv.nix-direnv.enable = true;
 
@@ -125,14 +108,14 @@ in
     variables = {
       editing-mode = "vi";
       show-mode-in-prompt = "on";
-      vi-cmd-mode-string = ''\1\e[34;1m\2(cmd) \1\e[0m\2'';
-      vi-ins-mode-string = '''';
+      vi-cmd-mode-string = ''\1\e[34;1m\2[N] \1\e[0m\2'';
+      vi-ins-mode-string = ''\1\e[32;1m\2[I] \1\e[0m\2'';
       keyseq-timeout = "50";
     };
   };
 
   programs.zsh = {
-    enable = true;
+    enable = false;
     enableCompletion = true;
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
