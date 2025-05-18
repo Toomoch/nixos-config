@@ -1,4 +1,10 @@
-{ inputs, config, pkgs, lib, ... }:
+{
+  inputs,
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   nvidia-offload = pkgs.writeShellScriptBin "nvidia-offload" ''
     export __NV_PRIME_RENDER_OFFLOAD=1
@@ -7,9 +13,9 @@ let
     export __VK_LAYER_NV_optimus=NVIDIA_only
     exec "$@"
   '';
-in {
-  imports =
-    [ ./hardware-configuration.nix  ];
+in
+{
+  imports = [ ./hardware-configuration.nix ];
 
   config = lib.mkMerge [
     {
@@ -69,7 +75,10 @@ in {
         #};
       };
 
-      environment.systemPackages = with pkgs; [ powertop prismlauncher ];
+      environment.systemPackages = with pkgs; [
+        powertop
+        prismlauncher
+      ];
 
       custom.common.enable = true;
       custom.common.systemd-boot.enable = true;
@@ -86,7 +95,9 @@ in {
       };
       programs.firefox = {
         enable = true;
-        preferences = { "media.ffmpeg.vaapi.enabled" = true; };
+        preferences = {
+          "media.ffmpeg.vaapi.enabled" = true;
+        };
       };
 
       boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
@@ -105,6 +116,12 @@ in {
 
       virtualisation.waydroid.enable = false;
 
+      home-manager.users.arnau =
+        { pkgs, ... }:
+        {
+          imports = [ ./home-manager.nix ];
+        };
+
       # LTS Kernel
       #boot.kernelPackages = pkgs.linuxPackages_latest;
 
@@ -117,6 +134,7 @@ in {
       system.stateVersion = "22.11"; # Did you read the comment?
     }
     (lib.mkIf (config.specialisation != { }) {
+
       custom.desktop.blacklistnvidia.enable = true;
       custom.desktop.sway.enable = true;
       custom.desktop.tuigreet.enable = true;

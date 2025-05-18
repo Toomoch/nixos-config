@@ -89,6 +89,7 @@ in
       security.pam.services.hyprlock = { };
       security.pam.services.waylock = { };
     })
+    # buggy https://github.com/rharish101/ReGreet/issues/45
     (lib.mkIf cfg.regreet.enable {
       programs.regreet = {
         enable = true;

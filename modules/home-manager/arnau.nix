@@ -70,8 +70,8 @@ in
       ds = "diff --staged";
     };
 
-    userName = "Toomoch";
-    userEmail = "vallsfustearnau@gmail.com";
+    userName = lib.mkDefault "Toomoch";
+    userEmail = lib.mkDefault "vallsfustearnau@gmail.com";
   };
 
   programs.tmux = {

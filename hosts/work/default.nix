@@ -78,6 +78,11 @@ in
   };
 
 
+  home-manager.users.${user} =
+    { pkgs, ... }:
+    {
+      imports = [ ./home-manager.nix ];
+    };
 
   system.stateVersion = "24.05";
 }
