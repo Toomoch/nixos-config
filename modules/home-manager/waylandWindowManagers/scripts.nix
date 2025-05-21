@@ -5,8 +5,8 @@
   ...
 }:
 let
-  wlscreenshot = pkgs.writeShellApplication {
-    name = "wlscreenshot";
+  wl-screenshot = pkgs.writeShellApplication {
+    name = "wl-screenshot";
     runtimeInputs = [
       pkgs.slurp
       pkgs.grim
@@ -30,7 +30,12 @@ let
               fi
           ;;
           output)
-              grim -o "$(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name')" - | wl-copy --type image/png && wl-paste > "$filename"
+              slurpout=$(slurp -o -f "%o")
+              if [ -z "$slurpout" ]; then
+                  exit
+              else
+                  grim -o "$slurpout" - | wl-copy --type image/png && wl-paste > "$filename"
+              fi
           ;;
           window)
               grim -g "$(swaymsg -t get_tree | jq -j '.. | select(.type?) | select(.focused).rect | "\(.x),\(.y) \(.width)x\(.height)"')" - | wl-copy --type image/png && wl-paste > "$filename"
@@ -89,7 +94,7 @@ in
 {
   home.packages = lib.optionals config.custom.wl.enable [
     fuzzelpoweroffmenu
-    wlscreenshot
+    wl-screenshot
   ];
 
 }

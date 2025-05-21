@@ -23,7 +23,8 @@ riverctl map normal Super+Shift E exit
 
 riverctl map normal Super+Shift N spawn 'swaync-client -t -sw'
 
-riverctl map normal None Print spawn 'screenshot area'
+riverctl map normal None Print spawn 'wl-screenshot area'
+riverctl map normal Super Print spawn 'wl-screenshot output'
 
 riverctl map normal Super E spawn 'thunar'
 riverctl map normal Super N spawn 'networkmanager_dmenu'
