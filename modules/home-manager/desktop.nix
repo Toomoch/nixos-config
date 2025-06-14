@@ -26,13 +26,21 @@
       resources
       krita
       localsend
-      (nerdfonts.override { fonts = [ "Noto" ]; })
+      # (nerdfonts.override { fonts = [ "Noto" ]; })
       masterpdfeditor4
       networkmanager_dmenu
       wireshark
     ];
 
-    fonts.fontconfig.enable = true;
+    fonts = {
+      fontconfig = {
+        enable = true;
+        defaultFonts = {
+          monospace = ["Iosevka Nerd Font Mono"];
+          sansSerif = ["Rubik"];
+        };
+      };
+    };
 
     home.file."${config.xdg.userDirs.pictures}/wallpapers/" = {
       source = ./wallpapers;
@@ -84,7 +92,7 @@
         window.opacity = 1;
         font = {
           normal = {
-            family = "NotoSansM Nerd Font Mono";
+            family = "monospace";
             style = "Regular";
           };
           size = 12;
@@ -101,8 +109,8 @@
       enable = true;
       settings = {
         main = {
-          font = "NotoSansM Nerd Font Mono:size=12";
-          dpi-aware = "no";
+          font = "monospace:size=12";
+          dpi-aware = "yes";
         };
         colors = {
           background = "242424";
@@ -176,7 +184,7 @@
 
     xdg.configFile."networkmanager-dmenu/config.ini".text = lib.generators.toINI { } {
       dmenu = {
-        dmenu_command = ''${lib.getExe pkgs.fuzzel} --dmenu --no-exit-on-keyboard-focus-loss -b 000000FF --font="NotoSansM Nerd Font Mono:size=20"'';
+        dmenu_command = ''${lib.getExe pkgs.fuzzel} --dmenu --no-exit-on-keyboard-focus-loss -b 000000FF --font="NotoSansM NFM:size=20"'';
       };
       editor = {
         terminal = "alacritty";

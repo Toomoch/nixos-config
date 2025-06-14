@@ -51,6 +51,7 @@ in
           noto-fonts-extra
           noto-fonts-cjk-sans
           noto-fonts-emoji
+          nerd-fonts.iosevka
         ];
       };
 
@@ -106,7 +107,7 @@ in
         pulse.enable = true;
         wireplumber.enable = true;
       };
-      hardware.pulseaudio.enable = false;
+      services.pulseaudio.enable = false;
 
       # Bluetooth
       hardware.bluetooth.enable = true;
@@ -116,26 +117,15 @@ in
       programs.adb.enable = true;
 
       # Firefox
-      programs.firefox =
-        let
-          firefox-package = pkgs.wrapFirefox pkgs.firefox-unwrapped {
-            nativeMessagingHosts = [ pkgs.firefox-profile-switcher-connector ];
-            extraPolicies = {
-              ExtensionSettings = { };
-            };
-          };
+      programs.firefox = {
+        enable = true;
+        nativeMessagingHosts.packages = [ pkgs.firefoxpwa ];
 
-        in
-        {
-          enable = true;
-          package = firefox-package;
-          nativeMessagingHosts.packages = [ pkgs.firefoxpwa ];
-
-          preferences = {
-            "browser.fullscreen.autohide" = false;
-            "pdfjs.defaultZoomValue" = "page-fit";
-          };
+        preferences = {
+          "browser.fullscreen.autohide" = false;
+          "pdfjs.defaultZoomValue" = "page-fit";
         };
+      };
 
     })
     (lib.mkIf cfg.arctis9.enable {

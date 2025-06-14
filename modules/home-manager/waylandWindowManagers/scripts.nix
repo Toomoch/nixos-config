@@ -61,7 +61,7 @@ let
         Reboot to UEFI
         Reboot to Windows"
 
-      chosen=$(echo -e "$options" | fuzzel --no-exit-on-keyboard-focus-loss --dmenu --font="NotoSansM Nerd Font Mono:size=20")
+      chosen=$(echo -e "$options" | fuzzel --no-exit-on-keyboard-focus-loss --dmenu --font="mono:size=20")
 
       case "$chosen" in
       "  Power Off")

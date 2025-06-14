@@ -25,6 +25,9 @@ rebuildremote HOSTNAME="$(hostname)": gitadd
 rebuild HOSTNAME="$(hostname)": gitadd
   sudo nixos-rebuild switch --flake .\?submodules=1#{{HOSTNAME}}
 
+test HOSTNAME="$(hostname)": gitadd
+  sudo nixos-rebuild test --flake .\?submodules=1#{{HOSTNAME}}
+
 boot HOSTNAME="$(hostname)": gitadd
   sudo nixos-rebuild boot --flake .\?submodules=1#{{HOSTNAME}}
 
