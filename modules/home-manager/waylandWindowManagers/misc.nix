@@ -5,9 +5,6 @@
   lib,
   ...
 }:
-let
-  font = "Rubik";
-in
 {
 
   options.custom.wl = {
@@ -17,19 +14,40 @@ in
     home.packages = with pkgs; [
       jq
       wl-clipboard
-      swaynotificationcenter
-      polkit_gnome
-      networkmanagerapplet
       fuzzel
       brightnessctl
       wayvnc
-      wpaperd
       gtklock
       gtklock-userinfo-module
       gtklock-powerbar-module
-      blueman
       swayosd
+      obs-studio
     ];
+
+    services.swaync.enable = true;
+    programs.waybar = {
+      enable = true;
+      systemd.enable = true;
+    };
+    services.blueman-applet.enable = true;
+    services.network-manager-applet.enable = true;
+    services.wpaperd = {
+      enable = true;
+      settings.default = {
+        path = "${config.xdg.userDirs.pictures}/wallpapers";
+        duration = "5m";
+      };
+    };
+    services.polkit-gnome.enable = true;
+    services.swayidle = {
+      enable = true;
+      events = [
+        { event = "before-sleep"; command = "${pkgs.swaylock}/bin/swaylock -fF"; }
+      ];
+      timeouts = [
+        { timeout = 15 * 60; command = "${pkgs.swaylock}/bin/swaylock -fF"; }
+      ];
+    };
 
     # removes close button from gtk apps
     dconf.settings = {
@@ -38,11 +56,11 @@ in
       };
     };
 
-    xdg.configFile."wpaperd/wallpaper.toml".text = ''
-      [default]
-      path = "${config.xdg.userDirs.pictures}/wallpapers"
-      duration = "5m"
-    '';
+    # xdg.configFile."wpaperd/wallpaper.toml".text = ''
+    #   [default]
+    #   path = "${config.xdg.userDirs.pictures}/wallpapers"
+    #   duration = "5m"
+    # '';
 
     xdg.configFile."gtklock/config.ini".text = ''
       [main]
@@ -51,7 +69,7 @@ in
     '';
 
     xdg.configFile."fuzzel/fuzzel.ini".text = ''
-      font=${font}
+      font=sans
       dpi-aware=auto
       icon-theme="Papirus-Dark"
 

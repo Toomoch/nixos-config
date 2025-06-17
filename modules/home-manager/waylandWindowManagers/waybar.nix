@@ -25,6 +25,10 @@ in
               "sway/mode"
               "sway/window"
             ]
+            ++ lib.lists.optionals config.custom.wl.niri.enable [
+              "niri/workspaces"
+              "niri/window"
+            ]
             ++ lib.lists.optionals config.wayland.windowManager.river.enable [
               "river/tags"
               "river/window"
@@ -56,6 +60,11 @@ in
             "format" = ''<span style="italic">{}</span>'';
           };
           "sway/window" = {
+            "format" = "{title}";
+            "max-length" = 50;
+            "icon" = true;
+          };
+          "niri/window" = {
             "format" = "{title}";
             "max-length" = 50;
             "icon" = true;

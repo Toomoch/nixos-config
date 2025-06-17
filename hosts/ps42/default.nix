@@ -91,7 +91,7 @@ in
       # Enable VAAPI hardware acceleration
       hardware.graphics = {
         enable = true;
-        extraPackages = with pkgs; [ intel-media-driver ];
+        extraPackages = with pkgs; [ intel-media-driver intel-media-sdk ];
       };
       programs.firefox = {
         enable = true;
@@ -140,6 +140,7 @@ in
       custom.desktop.tuigreet.enable = true;
       custom.desktop.regreet.enable = false;
       custom.desktop.river.enable = true;
+      custom.desktop.niri.enable = true;
       custom.desktop.hyprland.enable = false;
       custom.vm.libvirtd.enable = true;
       custom.vfio = {

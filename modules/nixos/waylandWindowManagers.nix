@@ -18,6 +18,7 @@ in
   options.custom.desktop = {
     sway.enable = lib.mkEnableOption "Whether to enable Sway with GTKgreet";
     river.enable = lib.mkEnableOption "Whether to enable riverwm";
+    niri.enable = lib.mkEnableOption "Whether to enable niri";
     hyprland.enable = lib.mkEnableOption "Whether to enable Hyprland";
     regreet.enable = lib.mkEnableOption "Whether to enable regreet";
     tuigreet.enable = lib.mkEnableOption "Whether to enable tuigreet";
@@ -37,6 +38,8 @@ in
       programs.hyprland.enable = cfg.hyprland.enable;
       programs.river.enable = cfg.river.enable;
       services.displayManager.sessionPackages = [ ] ++ lib.optional cfg.river.enable river-custom;
+      programs.niri.enable = cfg.niri.enable;
+
 
       # Sway
       programs.sway.enable = true;

@@ -17,7 +17,6 @@ in
     grim
     slurp
     wl-clipboard
-    swaynotificationcenter
     autotiling-rs
     polkit_gnome
     networkmanagerapplet

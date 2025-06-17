@@ -18,6 +18,7 @@ in
       enable = true;
       river.enable = true;
       waybar.enable = true;
+      niri.enable = true;
     };
     desktop.enable = true;
     dev.enable = true;
@@ -93,6 +94,7 @@ in
           {
             criteria = internal_name;
             status = "enable";
+            scale = 1.0;
           }
         ];
       }

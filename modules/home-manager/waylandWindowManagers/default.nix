@@ -7,6 +7,7 @@
     ./sway.nix
     ./waybar.nix
     ./scripts.nix
+    ./niri.nix
   ];
 
 }

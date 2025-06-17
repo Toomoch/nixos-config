@@ -14,6 +14,11 @@
       caddy = final.unstable.caddy;
       trayscale = final.unstable.trayscale;
       river = final.unstable.river;
+      niri = prev.niri.overrideAttrs (previousAttrs: {
+        patches = previousAttrs.patches ++ [ 
+          ./niri-noautostart.patch
+        ];
+      });
   };
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will

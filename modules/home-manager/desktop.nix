@@ -95,7 +95,7 @@
             family = "monospace";
             style = "Regular";
           };
-          size = 12;
+          size = 13;
         };
       };
     };
@@ -224,8 +224,8 @@
         package = pkgs.adwaita-icon-theme;
       };
       font = {
-        name = "Rubik";
-        package = pkgs.rubik;
+        name = "sans";
+        # package = pkgs.rubik;
         size = 11;
       };
       # gtk3.extraConfig = {
