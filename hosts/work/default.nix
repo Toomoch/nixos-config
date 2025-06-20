@@ -16,6 +16,7 @@ in
   custom.desktop.regreet.enable = true;
   custom.desktop.sway.enable = true;
   custom.desktop.river.enable = true;
+  custom.desktop.niri.enable = true;
   custom.vm.podman.enable = true;
   custom.vm.docker.enable = true;
   custom.vm.libvirtd.enable = true;
