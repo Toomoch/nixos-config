@@ -2,6 +2,8 @@
   description = "Arnau NixOS configs";
 
   inputs = {
+    self.submodules = true;
+
     nixpkgs.url = "nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "nixpkgs/nixos-25.05";
 

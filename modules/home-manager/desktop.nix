@@ -30,6 +30,7 @@
       masterpdfeditor4
       networkmanager_dmenu
       wireshark
+      numbat
     ];
 
     fonts = {
@@ -58,9 +59,6 @@
       #   '/nix/store/...-home-manager-files/.config/mimeapps.list'
       # Issue: https://github.com/nix-community/home-manager/issues/1213
       configFile."mimeapps.list".force = true;
-      configFile."firefoxprofileswitcher/config.json".text = ''
-        {"browser_binary": "/run/current-system/sw/bin/firefox"}
-      '';
       mimeApps = {
         enable = true;
         defaultApplications = {
@@ -123,9 +121,9 @@
       enable = true;
       package = pkgs.vscode;
 
-      userSettings = {
+      profiles.default.userSettings = {
         editor = {
-          fontFamily = "'Noto Sans Mono','Fira Code','Font Awesome 6 Free','Font Awesome 6 Brands','Font Awesome 6 Free Solid', monospace";
+          fontFamily = "monospace, 'Font Awesome 6 Free','Font Awesome 6 Brands','Font Awesome 6 Free Solid'";
           fontLigatures = true;
         };
 
@@ -184,7 +182,7 @@
 
     xdg.configFile."networkmanager-dmenu/config.ini".text = lib.generators.toINI { } {
       dmenu = {
-        dmenu_command = ''${lib.getExe pkgs.fuzzel} --dmenu --no-exit-on-keyboard-focus-loss -b 000000FF --font="NotoSansM NFM:size=20"'';
+        dmenu_command = ''${lib.getExe pkgs.fuzzel} --dmenu --no-exit-on-keyboard-focus-loss -b 000000FF --font="monospace:size=20"'';
       };
       editor = {
         terminal = "alacritty";

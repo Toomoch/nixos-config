@@ -165,6 +165,9 @@ in
       #Allow all VPN traffic routing
       networking.firewall.checkReversePath = "loose";
 
+      # nixos-rebuild-ng
+      system.rebuild.enableNg = true;
+
     })
     (lib.mkIf cfg.systemd-boot.enable {
       # Bootloader.

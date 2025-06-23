@@ -1,4 +1,4 @@
-#!/usr/bin/env just --justfile
+#!/usr/bin/env -S just --justfile
 
 gitadd:
   git add . && cd private && git add . && cd -
@@ -7,39 +7,39 @@ default:
   @just --list
 
 deploy HOSTNAME: gitadd
-  deploy .\?submodules=1#{{HOSTNAME}} --skip-checks
+  deploy .#{{HOSTNAME}} --skip-checks
 
 deployremote HOSTNAME: gitadd
-  deploy .\?submodules=1#{{HOSTNAME}} --skip-checks --remote-build
+  deploy .#{{HOSTNAME}} --skip-checks --remote-build
 
 
 build HOSTNAME="$(hostname)": gitadd
-  nixos-rebuild build --flake .\?submodules=1#{{HOSTNAME}} --show-trace
+  nixos-rebuild build --flake .#{{HOSTNAME}} --show-trace
 
 rebuildremote HOSTNAME="$(hostname)": gitadd
   ssh-add && \
   user=$(ssh -G h81 | grep -w ^user | cut -d " " -f2) && \
   host=$(ssh -G h81 | grep -w ^hostname | cut -d " " -f2) && \
-  sudo NIX_SSHOPTS="-o ForwardAgent=yes" nixos-rebuild switch --flake .\?submodules=1#{{HOSTNAME}} --build-host ${user}@${host}
+  sudo NIX_SSHOPTS="-o ForwardAgent=yes" nixos-rebuild switch --flake .#{{HOSTNAME}} --build-host ${user}@${host}
 
 rebuild HOSTNAME="$(hostname)": gitadd
-  sudo nixos-rebuild switch --flake .\?submodules=1#{{HOSTNAME}}
+  sudo nixos-rebuild switch --flake .#{{HOSTNAME}}
 
 test HOSTNAME="$(hostname)": gitadd
-  sudo nixos-rebuild test --flake .\?submodules=1#{{HOSTNAME}}
+  sudo nixos-rebuild test --flake .#{{HOSTNAME}}
 
 boot HOSTNAME="$(hostname)": gitadd
-  sudo nixos-rebuild boot --flake .\?submodules=1#{{HOSTNAME}}
+  sudo nixos-rebuild boot --flake .#{{HOSTNAME}}
 
 rebuildtarget HOSTNAME: gitadd
-  nixos-rebuild switch --flake .\?submodules=1#{{HOSTNAME}} --target-host {{HOSTNAME}} --use-remote-sudo
+  nixos-rebuild switch --flake .#{{HOSTNAME}} --target-host {{HOSTNAME}} --use-remote-sudo
 
 rebuildtargetremote HOSTNAME: gitadd
-  nixos-rebuild switch --flake .\?submodules=1#{{HOSTNAME}} --target-host {{HOSTNAME}} --use-remote-sudo --build-host {{HOSTNAME}}
+  nixos-rebuild switch --flake .#{{HOSTNAME}} --target-host {{HOSTNAME}} --use-remote-sudo --build-host {{HOSTNAME}}
 
 
 droid: gitadd
-  nix-on-droid switch --flake .\?submodules=1
+  nix-on-droid switch --flake .
 
 update:
   nix flake update
@@ -58,4 +58,4 @@ show HOSTNAME="":
   if git cat-file -e ${HASH} &>/dev/null; then git show ${HASH}; else echo unknown revison \""${HASH}"\"; fi;
 
 size HOSTNAME="$(hostname)":
-  nix path-info -Sh  .\?submodules=1#nixosConfigurations.{{HOSTNAME}}.config.system.build.toplevel
+  nix path-info -Sh  .#nixosConfigurations.{{HOSTNAME}}.config.system.build.toplevel
