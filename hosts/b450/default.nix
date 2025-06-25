@@ -31,6 +31,7 @@
   custom.desktop.sway.enable = true;
   custom.desktop.hyprland.enable = false;
   custom.desktop.river.enable = true;
+  custom.desktop.niri.enable = true;
   custom.desktop.flatpak.enable = true;
   custom.desktop.gaming.enable = true;
   custom.desktop.gaming.g29.enable = true;

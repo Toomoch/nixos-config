@@ -1,5 +1,6 @@
 # This file defines overlays
-{inputs, nixvim, ...}: {
+{ inputs, nixvim, ... }:
+{
   # This one brings our custom packages from the 'pkgs' directory
   additions = final: _prev: import ../pkgs final.pkgs nixvim final.system;
 
@@ -10,15 +11,33 @@
     # example = prev.example.overrideAttrs (oldAttrs: rec {
     # ...
     # });
-      firefoxpwa = final.unstable.firefoxpwa;
-      caddy = final.unstable.caddy;
-      trayscale = final.unstable.trayscale;
-      river = final.unstable.river;
-      niri = prev.niri.overrideAttrs (previousAttrs: {
-        patches = previousAttrs.patches ++ [ 
-          ./niri-noautostart.patch
-        ];
-      });
+    firefoxpwa = final.unstable.firefoxpwa;
+    caddy = final.unstable.caddy;
+    trayscale = final.unstable.trayscale;
+    river = final.unstable.river;
+    niri = prev.niri.overrideAttrs (previousAttrs: {
+      patches = previousAttrs.patches ++ [
+        ./niri-noautostart.patch
+      ];
+    });
+    numbat = prev.numbat.overrideAttrs (previousAttrs: {
+      postInstall = ''
+        # The source files are in a directory named 'assets' at the root
+        # of the unpacked source code. The destination paths are relative
+        # to $out, which points to the package's output directory in the Nix store.
+
+        # Create the applications directory and install the .desktop file
+        install -Dm644 assets/numbat.desktop $out/share/applications/numbat.desktop
+
+        # Install the scalable SVG icon
+        install -Dm644 assets/numbat.svg $out/share/icons/hicolor/scalable/apps/numbat.svg
+
+        # Loop through the specified sizes and install the PNG icons
+        for s in 16 22 24 32 48 64 128 256 512; do
+          install -Dm644 "assets/numbat-''${s}x''${s}.png" "$out/share/icons/hicolor/''${s}x''${s}/apps/numbat.png"
+        done
+      '';
+    });
   };
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will

@@ -37,14 +37,14 @@
       fontconfig = {
         enable = true;
         defaultFonts = {
-          monospace = ["Iosevka Nerd Font Mono"];
-          sansSerif = ["Rubik"];
+          monospace = [ "Iosevka Nerd Font Mono" ];
+          sansSerif = [ "Rubik" ];
         };
       };
     };
 
     home.sessionVariables = {
-      TERMINAL = "alacritty";
+      TERMINAL = "alacritty --class xdgterminal";
     };
 
     home.file."${config.xdg.userDirs.pictures}/wallpapers/" = {
@@ -252,6 +252,18 @@
         color-scheme = "prefer-dark";
       };
     };
+
+    # xdg.desktopEntries = {
+    #   numbat = {
+    #     name = "Numbat";
+    #     genericName = "Calculator";
+    #     exec = "${lib.getExe pkgs.numbat}";
+    #     terminal = true;
+    #     categories = [
+    #       "Application"
+    #     ];
+    #   };
+    # };
     programs.hyprlock.enable = false;
     programs.hyprlock.settings = {
       general = {
