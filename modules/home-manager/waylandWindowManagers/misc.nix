@@ -14,7 +14,6 @@
     home.packages = with pkgs; [
       jq
       wl-clipboard
-      fuzzel
       brightnessctl
       wayvnc
       gtklock
@@ -42,10 +41,16 @@
     services.swayidle = {
       enable = true;
       events = [
-        { event = "before-sleep"; command = "${pkgs.swaylock}/bin/swaylock -fF"; }
+        {
+          event = "before-sleep";
+          command = "${pkgs.swaylock}/bin/swaylock -fF";
+        }
       ];
       timeouts = [
-        { timeout = 15 * 60; command = "${pkgs.swaylock}/bin/swaylock -fF"; }
+        {
+          timeout = 15 * 60;
+          command = "${pkgs.swaylock}/bin/swaylock -fF";
+        }
       ];
     };
 
@@ -67,20 +72,39 @@
       modules=${pkgs.gtklock-powerbar-module}/lib/gtklock/powerbar-module.so;
       background=${/${flake-root}/assets/lockscreen.png};
     '';
+    programs.fuzzel = {
+      enable = true;
+      settings = {
+        main = {
+          font = "sans";
+          dpi-aware = "auto";
+          icon-theme = config.gtk.iconTheme.name;
 
-    xdg.configFile."fuzzel/fuzzel.ini".text = ''
-      font=sans
-      dpi-aware=auto
-      icon-theme="Papirus-Dark"
+        };
+        colors = {
+          background = "00000080";
+          text = "ffffffff";
+          match = "cb4b16ff";
+          selection = "00fffaff";
+          selection-text = "000000ff";
+          border = "00fffaff";
+        };
+      };
+    };
 
-      [colors]
-      background=00000080
-      text=ffffffff
-      match=cb4b16ff
-      selection=00fffaff
-      selection-text=000000ff
-      border=00fffaff
-    '';
+    # xdg.configFile."fuzzel/fuzzel.ini".text = ''
+    #   font=sans
+    #   dpi-aware=auto
+    #   icon-theme="Papirus-Dark"
+    #
+    #   [colors]
+    #   background=00000080
+    #   text=ffffffff
+    #   match=cb4b16ff
+    #   selection=00fffaff
+    #   selection-text=000000ff
+    #   border=00fffaff
+    # '';
   };
 
 }

@@ -43,6 +43,10 @@
       };
     };
 
+    home.sessionVariables = {
+      TERMINAL = "alacritty";
+    };
+
     home.file."${config.xdg.userDirs.pictures}/wallpapers/" = {
       source = ./wallpapers;
       recursive = true;

@@ -81,6 +81,7 @@ in
       systemd.network.enable = lib.mkForce false;
       networking.useNetworkd = lib.mkForce false;
       networking.networkmanager.enable = true;
+      services.resolved.enable = true;
 
       # Printing
       services.printing.enable = true;

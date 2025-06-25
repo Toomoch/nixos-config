@@ -347,6 +347,7 @@ binds {
     Mod+D hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
     Mod+Escape hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock" "-fF"; }
     Mod+Shift+N hotkey-overlay-title="View notifications: swaync" { spawn "swaync-client" "-t" "-sw"; }
+    Mod+E hotkey-overlay-title="Open file browser: thunar" { spawn "thunar"; }
 
     // You can also use a shell. Do this if you need pipes, multiple commands, etc.
     // Note: the entire command goes as a single argument in the end.
@@ -358,6 +359,9 @@ binds {
     XF86AudioLowerVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1-"; }
     XF86AudioMute        allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"; }
     XF86AudioMicMute     allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle"; }
+    XF86MonBrightnessUp  allow-when-locked=true { spawn "brightnessctl" "set" "+5%"; }
+    XF86MonBrightnessDown  allow-when-locked=true { spawn "brightnessctl" "set" "5%-"; }
+
 
     // Open/close the Overview: a zoomed-out view of workspaces and windows.
     // You can also move the mouse into the top-left hot corner,
