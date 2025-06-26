@@ -7,6 +7,7 @@
 // Find the full list of options on the wiki:
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Input
 input {
+    focus-follows-mouse max-scroll-amount="0%"
     keyboard {
         xkb {
             // You can set rules, model, layout, variant and options.
@@ -599,6 +600,11 @@ workspace ""
 window-rule {
     match app-id="Alacritty"
     open-on-workspace ""
+}
+workspace ""
+window-rule {
+    match app-id=r#"^FFPWA-.*"#
+    open-on-workspace ""
 }
 
 spawn-at-startup "xwayland-satellite"

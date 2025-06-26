@@ -1,17 +1,32 @@
-{ inputs, config, pkgs, lib, secrets, osConfig, private, ... }:
+{
+  inputs,
+  config,
+  pkgs,
+  lib,
+  secrets,
+  osConfig,
+  private,
+  ...
+}:
 let
   internal_name = "Samsung Display Corp. 0x417B Unknown";
   workplace_name = "ASUSTek COMPUTER INC VG34VQEL1A S4LMDW002954";
   ultrawide_hdmi_name = "LG Electronics LG ULTRAWIDE 0x0003BECD";
   hostname = osConfig.networking.hostName;
-in {
+in
+{
 
-  home.packages = with pkgs; [ glab uuu freerdp3 cmake pandoc bind ];
+  home.packages = with pkgs; [
+    glab
+    uuu
+    freerdp3
+    cmake
+    pandoc
+    bind
+  ];
 
   home.username = lib.mkForce secrets.hosts.${secrets.work.hostName}.user;
-  home.homeDirectory =
-    lib.mkForce "/home/${secrets.hosts.${secrets.work.hostName}.user}";
-
+  home.homeDirectory = lib.mkForce "/home/${secrets.hosts.${secrets.work.hostName}.user}";
 
   custom = {
     wl = {
@@ -31,14 +46,21 @@ in {
     settings = [
       {
         profile.name = "laptop";
-        profile.outputs = [{
-          criteria = internal_name;
-          status = "enable";
-          scale = 2.0;
-        }];
+        profile.outputs = [
+          {
+            criteria = internal_name;
+            status = "enable";
+            scale = 2.0;
+          }
+        ];
       }
       {
         profile.name = "workspace";
+        profile.exec = [
+          ''niri msg action move-workspace-to-monitor --reference "" "${internal_name}"''
+          ''niri msg action move-workspace-to-monitor --reference "" "${workplace_name}"''
+          ''niri msg action move-workspace-to-monitor --reference "" "${workplace_name}"''
+        ];
         profile.outputs = [
           {
             criteria = workplace_name;
@@ -60,4 +82,3 @@ in {
 
   home.stateVersion = "24.11";
 }
-
