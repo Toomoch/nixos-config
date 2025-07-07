@@ -8,20 +8,16 @@
 buildHomeAssistantComponent rec {
   owner = "wlcrs";
   domain = "huawei_solar";
-  version = "1.4.1";
+  version = "1.5.5";
 
   src = fetchFromGitHub {
-    inherit owner;
+    owner = "wlcrs";
     repo = "huawei_solar";
     rev = version;
-    hash = "sha256-NQusnrXZOmRVVcX6a/GvwOeW62MrkypTG01+y+L6Ihs=";
+    hash = "sha256-6vtYN4b1IFpyRy3KiEs3r2RswQBK7Vq2N6aZXtZEBqo=";
   };
 
-  patchPhase = ''
-    mkdir -p custom_components/huawei_solar && \
-    find . -mindepth 1 -maxdepth 1 -not -name custom_components -exec mv -t custom_components/huawei_solar {} +'';
-
-  propagatedBuildInputs = [ huawei-solar ];
+  dependencies = [ huawei-solar ];
 
   meta = with lib; {
     description = "Home Assistant integration for Huawei Solar inverters via Modbus";

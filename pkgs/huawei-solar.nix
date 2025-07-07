@@ -15,14 +15,14 @@
 
 buildPythonPackage rec {
   pname = "huawei-solar";
-  version = "2.3.0";
+  version = "2.4.4";
   pyproject = true;
 
   src = fetchFromGitLab {
     owner = "Emilv2";
     repo = pname;
-    rev = version;
-    hash = "sha256-PcpyyEH3Ad9oyr4aPlUgxU5S/NPoIDUZj+Ncs7FXhVA=";
+    rev = "749601842f33b161ed75d05eaf2d97be0f56f10e";
+    hash = "sha256-Gr4JoSgD0CQoujNyanTuvewsrP8MoSD0LlJTGtx1Ir4=";
   };
 
   build-system = [
@@ -49,7 +49,8 @@ buildPythonPackage rec {
     changelog = "https://gitlab.com/Emilv2/huawei-solar/-/tags/${version}";
     maintainers = with maintainers; [ Toomoch ];
     license = licenses.agpl3Only;
-    broken = lib.versionAtLeast pymodbus.version "3.7.0";
+    # broken = lib.versionAtLeast pymodbus.version "3.7.0";
   };
 
 }
+

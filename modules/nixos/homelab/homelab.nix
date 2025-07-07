@@ -36,8 +36,8 @@ in {
       services.caddy = {
         enable = true;
         package = pkgs.caddy.withPlugins {
-          plugins = [ "github.com/caddy-dns/duckdns@v0.4.0" "github.com/caddy-dns/desec@v0.0.0-20240526070323-822a6a2014b2"];
-          hash = "sha256-/U9o5S8FbiDtL1Xin49Vrdqf28Rfwqw+Oiqd0Ro28eU=";
+          plugins = [ "github.com/caddy-dns/duckdns@v0.5.0" "github.com/caddy-dns/desec@v1.0.1"];
+          hash = "sha256-NQU7fEEHvjs6xUkWAw52lq8I/1p/NMCJikIV4N0x9XA=";
         };
       };
       age.secrets.duckdns.rekeyFile = /${private}/secrets/age/duckdns.age;

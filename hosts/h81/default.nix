@@ -114,6 +114,7 @@
       ];
     };
   };
+  # programs.dconf.enable = true;
 
   home-manager.users.arnau =
     { pkgs, ... }:
