@@ -23,6 +23,7 @@ in
     cmake
     pandoc
     bind
+    tigervnc
   ];
 
   home.username = lib.mkForce secrets.hosts.${secrets.work.hostName}.user;

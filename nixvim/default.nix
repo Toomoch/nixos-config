@@ -1,4 +1,15 @@
 { pkgs, lib, ... }:
+let
+  nvim-ansible = pkgs.vimUtils.buildVimPlugin {
+    name = "vim-NeoDebug";
+    src = pkgs.fetchFromGitHub {
+      owner = "mfussenegger";
+      repo = "nvim-ansible";
+      rev = "bba61168b7aef735e7f950fdfece5ef6c388eacf";
+      hash = "sha256-hhmhXV9qkZfjHnSBYZ05SX9QD4qBgW9Ob2k3VRfCDgs=";
+    };
+  };
+in
 {
   extraPlugins = with pkgs; [
     # vimPlugins.vim-just
@@ -6,7 +17,7 @@
     vimPlugins.markdown-preview-nvim
     # vimPlugins.vim-caddyfile
     vimPlugins.vim-markdown-toc
-    # vimPlugins.ansible-vim
+    # nvim-ansible 
   ];
 
   clipboard.providers.wl-copy.enable = true;
@@ -48,10 +59,10 @@
     };
     pattern = {
       ".*%.gitlab%-ci%.yml" = "yaml.gitlab";
-      # ".*/tasks/.*%.ya?ml" = "yaml.ansible";
-      # ".*/roles/.*%.ya?ml" = "yaml.ansible";
-      # ".*/playbooks/.*%.ya?ml" = "yaml.ansible";
-      # ".*playbook.*%.ya?ml" = "yaml.ansible";
+      ".*/tasks/.*%.ya?ml" = "yaml.ansible";
+      ".*/roles/.*%.ya?ml" = "yaml.ansible";
+      ".*/playbooks/.*%.ya?ml" = "yaml.ansible";
+      ".*playbook.*%.ya?ml" = "yaml.ansible";
     };
   };
 
