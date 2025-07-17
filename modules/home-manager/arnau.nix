@@ -64,10 +64,12 @@ in
       a = "add";
       aa = "add --all";
       r = "restore";
+      rs = "restore --staged";
       s = "status";
       l = "log --graph --all --decorate";
       d = "diff";
       ds = "diff --staged";
+      home = "rev-parse --show-toplevel";
     };
 
     userName = lib.mkDefault "Toomoch";
