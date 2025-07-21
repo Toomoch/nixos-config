@@ -39,6 +39,7 @@ in
       programs.river.enable = cfg.river.enable;
       services.displayManager.sessionPackages = [ ] ++ lib.optional cfg.river.enable river-custom;
       programs.niri.enable = cfg.niri.enable;
+      systemd.user.targets.xdg-desktop-autostart.enable = false;
 
 
       # Sway

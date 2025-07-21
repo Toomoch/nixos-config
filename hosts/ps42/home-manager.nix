@@ -145,6 +145,20 @@ in
           }
         ];
       }
+      {
+        profile.name = "desk_lid_down_2";
+        profile.outputs = [
+          {
+            criteria = "Ancor Communications Inc ASUS VP228 J7LMTF119528";
+            status = "enable";
+            position = "0,0";
+          }
+          {
+            criteria = internal_name;
+            status = "disable";
+          }
+        ];
+      }
     ];
   };
 

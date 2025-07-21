@@ -149,6 +149,8 @@ in
         borgbackup
         rsync
         tmux
+        traceroute
+        mtr
       ];
 
       # Enable the OpenSSH daemon.

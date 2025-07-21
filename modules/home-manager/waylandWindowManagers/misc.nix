@@ -31,7 +31,7 @@
     services.blueman-applet.enable = true;
     services.network-manager-applet.enable = true;
     services.wpaperd = {
-      enable = true;
+      enable = false;
       settings.default = {
         path = "${config.xdg.userDirs.pictures}/wallpapers";
         duration = "5m";
