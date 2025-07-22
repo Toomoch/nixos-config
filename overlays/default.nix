@@ -15,11 +15,6 @@
     caddy = final.unstable.caddy;
     trayscale = final.unstable.trayscale;
     river = final.unstable.river;
-    # niri = prev.niri.overrideAttrs (previousAttrs: {
-    #   patches = previousAttrs.patches ++ [
-    #     ./niri-noautostart.patch
-    #   ];
-    # });
     numbat = prev.numbat.overrideAttrs (previousAttrs: {
       postInstall = ''
         # The source files are in a directory named 'assets' at the root
