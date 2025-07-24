@@ -70,7 +70,6 @@ in
         vulkan-tools
         glxinfo
         libva-utils
-        firefoxpwa
         trayscale
         yt-dlp
       ];
@@ -120,8 +119,6 @@ in
       # Firefox
       programs.firefox = {
         enable = true;
-        nativeMessagingHosts.packages = [ pkgs.firefoxpwa ];
-
         preferences = {
           "browser.fullscreen.autohide" = false;
           "pdfjs.defaultZoomValue" = "page-fit";
