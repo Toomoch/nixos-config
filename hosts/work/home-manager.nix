@@ -35,6 +35,7 @@ in
     bind
     tigervnc
     gchat-wayland
+    altus
   ];
 
   home.username = lib.mkForce secrets.hosts.${secrets.work.hostName}.user;

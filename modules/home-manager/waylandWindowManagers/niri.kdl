@@ -611,6 +611,11 @@ window-rule {
     open-on-workspace ""
 }
 
+window-rule {
+    match app-id="Altus"
+    open-on-workspace ""
+}
+
 spawn-at-startup "xwayland-satellite"
 // Or, if you built it by hand:
 // spawn-at-startup "~/path/to/code/target/release/xwayland-satellite"
