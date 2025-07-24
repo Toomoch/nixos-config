@@ -13,6 +13,16 @@ let
   workplace_name = "ASUSTek COMPUTER INC VG34VQEL1A S4LMDW002954";
   ultrawide_hdmi_name = "LG Electronics LG ULTRAWIDE 0x0003BECD";
   hostname = osConfig.networking.hostName;
+  gchat-wayland = pkgs.symlinkJoin {
+    name = "google-chat-linux";
+    paths = [ pkgs.google-chat-linux ];
+    buildInputs = [ pkgs.makeWrapper ];
+    postBuild = ''
+      wrapProgram $out/bin/google-chat-linux \
+        --add-flags "\''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations --enable-wayland-ime=true}}"
+    '';
+  };
+
 in
 {
 
@@ -24,6 +34,7 @@ in
     pandoc
     bind
     tigervnc
+    gchat-wayland
   ];
 
   home.username = lib.mkForce secrets.hosts.${secrets.work.hostName}.user;

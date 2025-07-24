@@ -606,6 +606,10 @@ window-rule {
     match app-id=r#"^FFPWA-.*"#
     open-on-workspace ""
 }
+window-rule {
+    match app-id="google-chat-linux"
+    open-on-workspace ""
+}
 
 spawn-at-startup "xwayland-satellite"
 // Or, if you built it by hand:
