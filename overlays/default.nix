@@ -15,6 +15,7 @@
     caddy = final.unstable.caddy;
     trayscale = final.unstable.trayscale;
     river = final.unstable.river;
+    openapi-generator-cli = final.unstable.openapi-generator-cli;
     numbat = prev.numbat.overrideAttrs (previousAttrs: {
       postInstall = ''
         # The source files are in a directory named 'assets' at the root

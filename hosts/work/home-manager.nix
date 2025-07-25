@@ -36,6 +36,7 @@ in
     tigervnc
     gchat-wayland
     altus
+    openapi-generator-cli
   ];
 
   home.username = lib.mkForce secrets.hosts.${secrets.work.hostName}.user;
