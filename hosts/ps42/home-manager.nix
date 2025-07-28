@@ -10,6 +10,14 @@ let
   ultrawide_hdmi_name = "LG Electronics LG ULTRAWIDE 0x0003BECD";
   # vars = import ../sway/functions.nix { inherit pkgs lib; };
   lg_22inch_name = "LG Electronics 2D FHD LG TV 0x01010101";
+  kodi = (
+    pkgs.kodi-wayland.withPackages (
+      kodiPackages: with kodiPackages; [
+        netflix
+        youtube
+      ]
+    )
+  );
 in
 {
 
@@ -23,7 +31,10 @@ in
     desktop.enable = true;
     dev.enable = true;
   };
-  home.packages = [ pkgs.discord ];
+  home.packages = [
+    pkgs.discord
+    kodi
+  ];
 
   wayland.windowManager.sway = {
     config.workspaceOutputAssign = [

@@ -21,6 +21,7 @@ let
     agenix = "agenix --extra-flake-params \\?submodules=1";
     vim = "nvim";
     vimdiff = "nvim -d";
+    aspm = "sudo lspci -vv | awk '/ASPM/{print $0}' RS= | grep --color -P '(^[a-z0-9:.]+|ASPM )'";
   };
 in
 {
