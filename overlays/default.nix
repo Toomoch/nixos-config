@@ -34,6 +34,15 @@
         done
       '';
     });
+    home-assistant-custom-components.tuya_local =
+      prev.home-assistant-custom-components.tuya_local.overrideAttrs
+        (previousAttrs: {
+          postInstall =
+            (previousAttrs.postInstall or "")
+            + ''
+              install -Dm444 ${./airmart.yaml} $out/custom_components/tuya_local/devices/airmart.yaml
+            '';
+        });
   };
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will

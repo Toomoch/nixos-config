@@ -32,6 +32,7 @@
   boot.zfs.extraPools = [ "zstorage" ];
   boot.zfs.forceImportRoot = false;
   networking.hostId = "e0684fdb";
+  programs.dconf.enable = true;
 
   custom.common.systemd-boot.enable = true;
   custom.homelab = {
