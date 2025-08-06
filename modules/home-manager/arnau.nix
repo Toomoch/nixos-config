@@ -22,6 +22,7 @@ let
     vim = "nvim";
     vimdiff = "nvim -d";
     aspm = "sudo lspci -vv | awk '/ASPM/{print $0}' RS= | grep --color -P '(^[a-z0-9:.]+|ASPM )'";
+    grep = "grep --color=auto";
   };
 in
 {
@@ -35,7 +36,6 @@ in
 
   home.sessionVariables = {
     EDITOR = "nvim";
-    GREP_OPTIONS = "--color=auto";
   };
 
   home.packages = with pkgs; [

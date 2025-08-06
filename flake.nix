@@ -37,16 +37,6 @@
       inputs.darwin.follows = "";
     };
 
-    nix-on-droid = {
-      url = "github:nix-community/nix-on-droid/release-24.05";
-      inputs.nixpkgs.follows = "nixpkgs-stable";
-    };
-
-    nix-matlab = {
-      url = "gitlab:doronbehar/nix-matlab";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     deploy-rs = {
       url = "github:serokell/deploy-rs";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -61,23 +51,6 @@
       url = "github:Infinidoge/nix-minecraft";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-compat.follows = "";
-    };
-
-    nixpkgs-cosmic.follows = "nixos-cosmic/nixpkgs-stable"; # NOTE: change "nixpkgs" to "nixpkgs-stable" to use stable NixOS release
-
-    nixos-cosmic = {
-      inputs.flake-compat.follows = "";
-      url = "github:lilyinstarlight/nixos-cosmic";
-    };
-
-    home-manager-cosmic = {
-      url = "github:nix-community/home-manager/release-24.11";
-      inputs.nixpkgs.follows = "nixos-cosmic/nixpkgs-stable";
-    };
-
-    disko-cosmic = {
-      url = "github:nix-community/disko";
-      inputs.nixpkgs.follows = "nixos-cosmic/nixpkgs-stable";
     };
   };
 
@@ -95,9 +68,6 @@
       nix-on-droid,
       agenix,
       agenix-rekey,
-      nixpkgs-cosmic,
-      home-manager-cosmic,
-      disko-cosmic,
       ...
     }@inputs:
     let
@@ -118,13 +88,6 @@
         nixpkgs = nixpkgs;
         home-manager = home-manager;
         disko = disko;
-        agenix = agenix;
-      };
-
-      cosmic = {
-        nixpkgs = nixpkgs-cosmic;
-        home-manager = home-manager-cosmic;
-        disko = disko-cosmic;
         agenix = agenix;
       };
 
@@ -254,32 +217,6 @@
       nixosModules.private = import /${private}/modules/nixos;
       homeManagerModules.common = import ./modules/home-manager;
       overlays = import ./overlays { inherit inputs nixvim; };
-
-      nixOnDroidConfigurations.default = nix-on-droid.lib.nixOnDroidConfiguration {
-        extraSpecialArgs =
-          let
-            nixpkgs = nixpkgs-stable;
-          in
-          {
-            inherit
-              inputs
-              nixpkgs
-              secrets
-              self
-              ;
-          };
-        pkgs = import nixpkgs-stable { system = "aarch64-linux"; };
-        modules = [
-          ./nix-on-droid
-          {
-            home-manager = {
-              config.imports = [ ];
-              extraSpecialArgs = { inherit inputs secrets self; };
-            };
-          }
-        ];
-        home-manager-path = home-manager-stable.outPath;
-      };
 
       homeConfigurations = {
         "arnau" = home-manager.lib.homeManagerConfiguration {

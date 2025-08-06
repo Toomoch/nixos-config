@@ -192,14 +192,6 @@ in
       '';
 
     })
-    (lib.mkIf cfg.matlab.enable {
-      environment.systemPackages = [
-        matlab-wrapped
-        pkgs.matlab-mlint
-        pkgs.matlab-mex
-      ];
-      nixpkgs.overlays = [ inputs.nix-matlab.overlay ];
-    })
     (lib.mkIf cfg.blacklistnvidia.enable {
       boot.extraModprobeConfig = ''
         blacklist nouveau

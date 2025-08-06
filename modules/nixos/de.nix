@@ -9,7 +9,6 @@ in
     cosmic.enable = lib.mkEnableOption "Whether to enable cosmic with SDDM";
   };
 
-  imports = [ inputs.nixos-cosmic.nixosModules.default ];
   config = lib.mkMerge [
     (lib.mkIf cfg.gnome.enable {
       # Enable GNOME
