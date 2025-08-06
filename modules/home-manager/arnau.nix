@@ -35,6 +35,7 @@ in
 
   home.sessionVariables = {
     EDITOR = "nvim";
+    GREP_OPTIONS = "--color=auto";
   };
 
   home.packages = with pkgs; [
@@ -52,7 +53,6 @@ in
   programs.fzf.enableZshIntegration = true;
   programs.fzf.enableBashIntegration = true;
   programs.fzf.enable = true;
-
 
   xdg.enable = true;
 
