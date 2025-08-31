@@ -95,5 +95,5 @@ just deploy hostname
 
 ### Getting the git revision of this repo in a running system
 ```bash
-nixos-version --configuration-revision
+just revision
 ```
