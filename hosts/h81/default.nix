@@ -14,6 +14,7 @@
     ./hass.nix
     ./jellyfin.nix
     ./containers.nix
+    ./gitlab-runner.nix
   ];
 
   nixpkgs.config.allowUnfree = true;

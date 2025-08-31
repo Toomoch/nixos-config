@@ -32,10 +32,10 @@ boot HOSTNAME="$(hostname)": gitadd
   sudo nixos-rebuild boot --flake .#{{HOSTNAME}}
 
 rebuildtarget HOSTNAME: gitadd
-  nixos-rebuild switch --flake .#{{HOSTNAME}} --target-host {{HOSTNAME}} --use-remote-sudo
+  nixos-rebuild switch --flake .#{{HOSTNAME}} --target-host {{HOSTNAME}} --sudo
 
 rebuildtargetremote HOSTNAME: gitadd
-  nixos-rebuild switch --flake .#{{HOSTNAME}} --target-host {{HOSTNAME}} --use-remote-sudo --build-host {{HOSTNAME}}
+  nixos-rebuild switch --flake .#{{HOSTNAME}} --target-host {{HOSTNAME}} --sudo --build-host {{HOSTNAME}}
 
 
 droid: gitadd
