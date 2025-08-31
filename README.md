@@ -27,7 +27,7 @@ nix-shell
 ```
 
 ## Installation
-### Installing NixOS in UEFI x86 manually
+### Installing NixOS in UEFI manually
 Follow [the official manual](https://nixos.org/manual/nixos/stable/#sec-installation-manual)
 
 ### Installing NixOS with nixos-anywhere
