@@ -65,7 +65,6 @@
       nixvim,
       disko-stable,
       disko,
-      nix-on-droid,
       agenix,
       agenix-rekey,
       ...

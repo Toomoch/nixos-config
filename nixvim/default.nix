@@ -63,6 +63,7 @@ in
       ".*/roles/.*%.ya?ml" = "yaml.ansible";
       ".*/playbooks/.*%.ya?ml" = "yaml.ansible";
       ".*playbook.*%.ya?ml" = "yaml.ansible";
+      ".*/templates?/.*%.tmpl" = "gotmpl";
     };
   };
 

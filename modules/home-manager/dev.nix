@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 {
   options.custom.dev = {
     enable = lib.mkEnableOption "Devtools";
@@ -16,21 +21,23 @@
       sops
       rage
       age-plugin-fido2-hmac
-      ansible_2_16
-      ansible-lint
+      # ansible_2_16
+      # ansible-lint
       uv
       sshpass
       just
       tio
       tldr
-      (python3.withPackages (ps: [
-        ps.pip
-        ps.requests
-        ps.python-gitlab
-        ps.pygments
-      ]))
+      python313
       nixd
       file
       git-agecrypt
     ];
+  config.programs.uv = lib.optionalAttrs config.custom.dev.enable {
+    enable = true;
+    settings = {
+      python-downloads = "never";
+      python-preference = "only-system";
+    };
+  };
 }
