@@ -5,6 +5,7 @@
   flake-root,
   private,
   secrets,
+  self,
   ...
 }:
 {
@@ -78,6 +79,23 @@
     };
   };
 
+  wirenix = {
+    enable = true;
+    configurer = "networkd"; # defaults to "static", could also be "networkd"
+    keyProviders = ["agenix-rekey"]; # could also be ["agenix-rekey"] or ["acl" "agenix-rekey"]
+  };
+
+  custom.prometheus = {
+    enable = true;
+    exporters = [
+      {
+        hostname = "h81";
+        port = 5000;
+        job = "node";
+      }
+    ];
+  };
+
   environment.systemPackages = [ pkgs.yt-dlp ];
 
   networking.firewall.allowedUDPPorts = [ 25826 ];
@@ -98,25 +116,57 @@
     ];
   };
 
+  # services.victoriametrics = {
+  #   enable = true;
+  #   prometheusConfig = {
+  #     scrape_configs = [
+  #       {
+  #         job_name = "openwrt";
+  #         scrape_interval = "30s";
+  #         static_configs = [
+  #           {
+  #             targets = [
+  #               "10.1.2.1:9103"
+  #             ];
+  #           }
+  #         ];
+  #       }
+  #     ];
+  #   };
+  # };
+  # programs.dconf.enable = true;
+
   services.victoriametrics = {
     enable = true;
-    prometheusConfig = {
-      scrape_configs = [
-        {
-          job_name = "openwrt";
-          scrape_interval = "30s";
-          static_configs = [
-            {
-              targets = [
-                "10.1.2.1:9103"
-              ];
-            }
-          ];
-        }
-      ];
-    };
+    retentionPeriod = "1y";
+    prometheusConfig.scrape_configs =
+      let
+        # If we don't do this,
+        # evaluating prometheus-server.config would require prometheus-server.config .....
+        otherHosts = lib.filterAttrs (
+          name: host: name != config.networking.hostName && host.config.custom.prometheus.enable
+        ) self.nixosConfigurations;
+
+        remoteExporters = lib.flatten (
+          map (host: host.config.custom.prometheus.exporters) (lib.attrValues otherHosts)
+        );
+
+        localExporters = config.custom.prometheus.exporters;
+
+        allExporters = localExporters ++ remoteExporters;
+
+        groupedExporters = lib.groupBy (exporter: exporter.job) allExporters;
+
+      in
+      lib.mapAttrsToList (jobName: exportersForJob: {
+        job_name = jobName;
+        static_configs = [
+          {
+            targets = map (exporter: "${exporter.hostname}:${toString exporter.port}") exportersForJob;
+          }
+        ];
+      }) groupedExporters;
   };
-  # programs.dconf.enable = true;
 
   home-manager.users.arnau =
     { pkgs, ... }:

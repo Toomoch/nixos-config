@@ -52,6 +52,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-compat.follows = "";
     };
+
+     wirenix.url = "sourcehut:~msalerno/wirenix";
   };
 
   outputs =
@@ -67,6 +69,7 @@
       disko,
       agenix,
       agenix-rekey,
+      wirenix,
       ...
     }@inputs:
     let
@@ -235,6 +238,7 @@
             branch.disko.nixosModules.disko
             branch.agenix.nixosModules.default
             agenix-rekey.nixosModules.default
+            wirenix.nixosModules.default
             ./hosts/${host}
             {
               nix.registry.nixpkgs-unstable.flake = nixpkgs; # Add nixpkgs-unstable to registry

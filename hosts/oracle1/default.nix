@@ -18,6 +18,13 @@
   security.polkit.enable = true;
   custom.homelab.enablevps = true;
 
+  wirenix = {
+    enable = true;
+    configurer = "networkd"; # defaults to "static", could also be "networkd"
+    keyProviders = ["agenix-rekey"]; # could also be ["agenix-rekey"] or ["acl" "agenix-rekey"]
+  };
+  networking.firewall.allowedUDPPorts = [ 51820 ];
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave

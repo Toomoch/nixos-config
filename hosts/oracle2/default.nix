@@ -1,10 +1,19 @@
-{ config, pkgs, lib, private, nixpkgs, secrets, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  private,
+  nixpkgs,
+  secrets,
+  ...
+}:
 {
   imports = [
     ./hardware-configuration.nix
     # Minimal stuff
     (nixpkgs.outPath + "/nixos/modules/profiles/minimal.nix")
     ./minecraft.nix
+    ./metrics.nix
   ];
 
   networking.hostName = "oracle2";
@@ -15,9 +24,30 @@
   custom.common.systemd-boot.enable = true;
   custom.common.cloud.enable = true;
   custom.vm.podman.enable = true;
-  custom.vm.docker.enable  = true;
+  custom.vm.docker.enable = true;
   security.polkit.enable = true;
   services.boinc.enable = true;
+
+  custom.prometheus = {
+    enable = true;
+    exporters = [
+      {
+        port = 5000;
+        job = "node";
+      }
+      {
+        port = 5003;
+        job = "zfs";
+      }
+    ];
+  };
+
+  wirenix = {
+    enable = true;
+    configurer = "networkd"; # defaults to "static", could also be "networkd"
+    keyProviders = ["agenix-rekey"]; # could also be ["agenix-rekey"] or ["acl" "agenix-rekey"]
+  };
+  networking.firewall.allowedUDPPorts = [ 51820 ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

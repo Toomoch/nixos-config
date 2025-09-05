@@ -420,6 +420,18 @@
         "type": "github"
       }
     },
+    "nixpkgs_3": {
+      "locked": {
+        "lastModified": 0,
+        "narHash": "sha256-ECni+IkwXjusHsm9Sexdtq8weAq/yUyt1TWIemXt3Ko=",
+        "path": "/nix/store/bi5zxc0v5g6ylygdwyqzh280sccg3ykb-source",
+        "type": "path"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "type": "indirect"
+      }
+    },
     "nixvim": {
       "inputs": {
         "flake-parts": "flake-parts_2",
@@ -499,7 +511,8 @@
         "nix-minecraft": "nix-minecraft",
         "nixpkgs": "nixpkgs",
         "nixpkgs-stable": "nixpkgs-stable",
-        "nixvim": "nixvim"
+        "nixvim": "nixvim",
+        "wirenix": "wirenix"
       }
     },
     "systems": {
@@ -614,6 +627,24 @@
         "owner": "numtide",
         "repo": "flake-utils",
         "type": "github"
+      }
+    },
+    "wirenix": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_3"
+      },
+      "locked": {
+        "lastModified": 1721448132,
+        "narHash": "sha256-z+uRqGQgQah40a6wRUKm1QdUlcbMvN3V9IP/OQIZcHA=",
+        "owner": "~msalerno",
+        "repo": "wirenix",
+        "rev": "e6a936d6a9c3e832a133ef72eb1acad1dfbddddd",
+        "type": "sourcehut"
+      },
+      "original": {
+        "owner": "~msalerno",
+        "repo": "wirenix",
+        "type": "sourcehut"
       }
     }
   },
