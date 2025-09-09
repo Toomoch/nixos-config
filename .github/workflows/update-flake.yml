@@ -11,11 +11,4 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Update flake.lock
-        uses: https://github.com/DeterminateSystems/update-flake-lock@v20
-        with:
-          token: ${{ secrets.NIX_TOKEN }}
-          pr-labels: |
-            dependencies
-            automated
-            nix
+      - run: just build h81
