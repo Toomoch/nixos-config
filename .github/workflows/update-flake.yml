@@ -6,20 +6,11 @@ on:
 
 jobs:
   lockfile:
-    runs-on: ubuntu-latest
+    runs-on: nix-x86_64-linux
     environment: update
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Add SSH key  
-        uses: webfactory/ssh-agent@v0.8.0
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-      - name: Install Nix
-        uses: cachix/install-nix-action@v24
-        with:
-          extra_nix_config: |
-            access-tokens = github.com=${{ secrets.NIX_TOKEN }}
       - name: Update flake.lock
         uses: DeterminateSystems/update-flake-lock@v20
         with:
