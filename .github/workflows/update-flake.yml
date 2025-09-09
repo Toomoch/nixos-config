@@ -11,4 +11,4 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - run: just build h81
+      - run: nix-shell --command "just build h81"
