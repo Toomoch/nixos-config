@@ -14,13 +14,11 @@
       #desktop apps
       gnome-disk-utility
       pavucontrol
-      kooha
       gnome-calculator
       onlyoffice-bin
       scrcpy
       virt-manager
       gnome-network-displays
-      remmina
       imhex
       ungoogled-chromium
       resources

@@ -22,20 +22,20 @@ rebuildremote HOSTNAME="$(hostname)": gitadd
   host=$(ssh -G h81 | grep -w ^hostname | cut -d " " -f2) && \
   sudo NIX_SSHOPTS="-o ForwardAgent=yes" nixos-rebuild switch --flake .#{{HOSTNAME}} --build-host ${user}@${host}
 
-rebuild HOSTNAME="$(hostname)": gitadd
-  sudo nixos-rebuild switch --flake .#{{HOSTNAME}}
+rebuild HOSTNAME="": gitadd
+  nixos-rebuild switch --flake .#{{HOSTNAME}} --sudo
 
-test HOSTNAME="$(hostname)": gitadd
-  sudo nixos-rebuild test --flake .#{{HOSTNAME}}
+test HOSTNAME="": gitadd
+  nixos-rebuild test --flake .#{{HOSTNAME}} --sudo
 
-boot HOSTNAME="$(hostname)": gitadd
-  sudo nixos-rebuild boot --flake .#{{HOSTNAME}}
+boot HOSTNAME="": gitadd
+  nixos-rebuild boot --flake .#{{HOSTNAME}} --sudo
 
 rebuildtarget HOSTNAME: gitadd
-  nixos-rebuild switch --flake .#{{HOSTNAME}} --target-host {{HOSTNAME}} --sudo
+  nixos-rebuild switch --flake .#{{HOSTNAME}} --target-host {{HOSTNAME}} --use-substitutes --sudo 
 
 rebuildtargetremote HOSTNAME: gitadd
-  nixos-rebuild switch --flake .#{{HOSTNAME}} --target-host {{HOSTNAME}} --sudo --build-host {{HOSTNAME}}
+  nixos-rebuild switch --flake .#{{HOSTNAME}} --target-host {{HOSTNAME}} --build-host {{HOSTNAME}} --use-substitutes --sudo
 
 
 droid: gitadd

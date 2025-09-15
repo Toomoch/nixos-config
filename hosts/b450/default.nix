@@ -23,6 +23,7 @@
     enable = true;
     useRoutingFeatures = "both";
   };
+  programs.steam.gamescopeSession.args = ["--adaptive-sync" "-R 100"];
 
   custom.common.enable = true;
   custom.common.systemd-boot.enable = true;
@@ -41,15 +42,14 @@
   custom.vm.docker.enable = true;
   virtualisation.waydroid.enable = true;
 
-  custom.desktop.tuigreet.enable = true;
-  custom.desktop.regreet.enable = false;
+  custom.desktop.regreet.enable = true;
 
-  programs.singularity = {
-    enable = true;
-    package = pkgs.apptainer;
-    enableSuid = true;
-    enableFakeroot = true;
-  };
+  # programs.singularity = {
+  #   enable = true;
+  #   package = pkgs.apptainer;
+  #   enableSuid = true;
+  #   enableFakeroot = true;
+  # };
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   # OpenRGB
