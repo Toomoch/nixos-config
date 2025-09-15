@@ -14,7 +14,7 @@
     firefoxpwa = final.unstable.firefoxpwa;
     caddy = final.unstable.caddy;
     trayscale = final.unstable.trayscale;
-    river = final.unstable.river;
+    river = final.unstable.river-classic;
     openapi-generator-cli = final.unstable.openapi-generator-cli;
     numbat = prev.numbat.overrideAttrs (previousAttrs: {
       postInstall = ''
