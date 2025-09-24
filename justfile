@@ -1,4 +1,5 @@
 #!/usr/bin/env -S just --justfile
+commonRemoteOpts := "--use-substitutes --sudo"
 
 gitadd:
   git add . && cd private && git add . && cd -
@@ -13,14 +14,14 @@ deployremote HOSTNAME: gitadd
   deploy .#{{HOSTNAME}} --skip-checks --remote-build
 
 
-build HOSTNAME="$(hostname)": gitadd
+build HOSTNAME="": gitadd
   nixos-rebuild build --flake .#{{HOSTNAME}} --show-trace
 
-rebuildremote HOSTNAME="$(hostname)": gitadd
-  ssh-add && \
-  user=$(ssh -G h81 | grep -w ^user | cut -d " " -f2) && \
-  host=$(ssh -G h81 | grep -w ^hostname | cut -d " " -f2) && \
-  sudo NIX_SSHOPTS="-o ForwardAgent=yes" nixos-rebuild switch --flake .#{{HOSTNAME}} --build-host ${user}@${host}
+buildremote HOSTNAME="": gitadd
+  nixos-rebuild build --flake .#{{HOSTNAME}} --show-trace --build-host h81 {{commonRemoteOpts}}
+
+rebuildremote HOSTNAME="": gitadd
+  nixos-rebuild switch --flake .#{{HOSTNAME}} --build-host h81 {{commonRemoteOpts}}
 
 rebuild HOSTNAME="": gitadd
   nixos-rebuild switch --flake .#{{HOSTNAME}} --sudo
@@ -31,11 +32,13 @@ test HOSTNAME="": gitadd
 boot HOSTNAME="": gitadd
   nixos-rebuild boot --flake .#{{HOSTNAME}} --sudo
 
+# commonRemoteOpts := "--use-substitutes --sudo"
+
 rebuildtarget HOSTNAME: gitadd
-  nixos-rebuild switch --flake .#{{HOSTNAME}} --target-host {{HOSTNAME}} --use-substitutes --sudo 
+  nixos-rebuild switch --flake .#{{HOSTNAME}} --target-host {{HOSTNAME}} {{commonRemoteOpts}}
 
 rebuildtargetremote HOSTNAME: gitadd
-  nixos-rebuild switch --flake .#{{HOSTNAME}} --target-host {{HOSTNAME}} --build-host {{HOSTNAME}} --use-substitutes --sudo
+  nixos-rebuild switch --flake .#{{HOSTNAME}} --target-host {{HOSTNAME}} --build-host {{HOSTNAME}} {{commonRemoteOpts}}
 
 
 droid: gitadd

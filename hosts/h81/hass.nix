@@ -52,7 +52,13 @@
       "melcloud"
       "lg_netcast"
       "tuya"
+      "androidtv"
     ];
+    customLovelaceModules = with pkgs.home-assistant-custom-lovelace-modules; [
+      universal-remote-card
+      mini-media-player
+    ];
+    
     config = {
       # Includes dependencies for a basic setup
       # https://www.home-assistant.io/integrations/default_config/
