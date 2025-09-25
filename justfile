@@ -17,8 +17,8 @@ deployremote HOSTNAME: gitadd
 build HOSTNAME="": gitadd
   nixos-rebuild build --flake .#{{HOSTNAME}} --show-trace
 
-buildremote HOSTNAME="": gitadd
-  nixos-rebuild build --flake .#{{HOSTNAME}} --show-trace --build-host h81 {{commonRemoteOpts}}
+buildremote HOSTNAME="" BUILDHOST="h81": gitadd
+  nixos-rebuild build --flake .#{{HOSTNAME}} --show-trace --build-host {{BUILDHOST}} {{commonRemoteOpts}}
 
 rebuildremote HOSTNAME="": gitadd
   nixos-rebuild switch --flake .#{{HOSTNAME}} --build-host h81 {{commonRemoteOpts}}
@@ -50,8 +50,11 @@ update:
 cleangen:
   sudo nix-collect-garbage -d && nix-collect-garbage -d
 
-repl:
-  nix repl --expr 'builtins.getFlake (toString ./.)'
+repl HOSTNAME="": gitadd
+  nixos-rebuild repl --flake .#{{HOSTNAME}}
+
+dry-build HOSTNAME="": gitadd
+  nixos-rebuild dry-build --flake .#{{HOSTNAME}}
 
 revision:
   nixos-version --configuration-revision

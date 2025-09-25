@@ -33,11 +33,6 @@ in {
     };
   };
 
-  custom.telegraf = {
-    enable = true;
-    mode = "pull";
-  };
-
   # Borg repos
   services.borgbackup.repos = {
     nextcloud = {

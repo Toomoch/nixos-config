@@ -1,10 +1,7 @@
 { inputs, pkgs, config, lib, secrets, ... }:
 let
   cfg = config.custom.grafana;
-  vmPort = lib.strings.toInt (lib.strings.removePrefix ":"
-    config.services.victoriametrics.listenAddress);
-in {
-  options.custom.grafana.enable =
+in { options.custom.grafana.enable =
     lib.mkEnableOption "Whether to enable Grafana";
 
   config = lib.mkIf cfg.enable {
@@ -23,24 +20,6 @@ in {
         '';
       };
 
-    networking.firewall.allowedTCPPorts = [ vmPort ];
 
-    services.victoriametrics = {
-      enable = true;
-      prometheusConfig = {
-        scrape_configs = [{
-          job_name = "telegraf";
-          metrics_path = "/metrics";
-          scrape_interval = "10s";
-          static_configs = [{
-            targets = [
-              "${secrets.hosts.rpi3.dns}:${
-                toString config.custom.telegraf.prometheusPort
-              }"
-            ];
-          }];
-        }];
-      };
-    };
   };
 }

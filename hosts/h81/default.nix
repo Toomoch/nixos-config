@@ -41,7 +41,6 @@
     enable = true;
     serviceDataDir = "/zstorage/data";
   };
-  custom.telegraf.enable = true;
   custom.homepage-dashboard.enable = true;
   custom.immich.enable = true;
   custom.nextcloud.enable = false;

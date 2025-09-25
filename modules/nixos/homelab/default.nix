@@ -9,7 +9,6 @@
     ./nextcloud.nix
     ./grafana.nix
     ./sanoid.nix
-    ./telegraf.nix
     ./prometheus.nix
   ];
 }
