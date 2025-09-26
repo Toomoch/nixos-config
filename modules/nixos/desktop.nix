@@ -94,7 +94,10 @@ in
       services.tailscale = {
         enable = true;
       };
-      systemd.services."tailscaled".wantedBy = lib.mkForce [ ];
+      # tailscale remembers the last state
+      systemd.services.tailscaled.preStop = ''
+        ${config.services.tailscale.package}/bin/tailscale down
+      '';
 
       # OpenGL
       hardware.graphics.enable = true;
