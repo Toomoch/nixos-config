@@ -244,7 +244,7 @@ in
           MaxSessions = 2;
           MaxAuthTries = 3;
           ClientAliveCountMax = 2;
-          AllowTcpForwarding = "no";
+          # AllowTcpForwarding = "no";
           AllowAgentForwarding = "yes";
           AllowStreamLocalForwarding = "no";
           AuthenticationMethods = "publickey";

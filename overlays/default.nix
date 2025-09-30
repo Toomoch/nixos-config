@@ -16,6 +16,7 @@
     trayscale = final.unstable.trayscale;
     river = final.unstable.river-classic;
     openapi-generator-cli = final.unstable.openapi-generator-cli;
+    silverbullet = final.unstable.silverbullet;
     numbat = prev.numbat.overrideAttrs (previousAttrs: {
       postInstall = ''
         # The source files are in a directory named 'assets' at the root

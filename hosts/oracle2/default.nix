@@ -45,9 +45,19 @@
   wirenix = {
     enable = true;
     configurer = "networkd"; # defaults to "static", could also be "networkd"
-    keyProviders = ["agenix-rekey"]; # could also be ["agenix-rekey"] or ["acl" "agenix-rekey"]
+    keyProviders = [ "agenix-rekey" ]; # could also be ["agenix-rekey"] or ["acl" "agenix-rekey"]
   };
   networking.firewall.allowedUDPPorts = [ 51820 ];
+
+  services.silverbullet = {
+    enable = true;
+  };
+
+  # services.caddy.virtualHosts."silverbullet.${config.custom.homelab.primaryDomain}" = {
+  #   extraConfig = ''
+  #     reverse_proxy localhost:${config.services.silverbullet.listenPort}
+  #   '';
+  # };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

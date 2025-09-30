@@ -81,7 +81,7 @@
   wirenix = {
     enable = true;
     configurer = "networkd"; # defaults to "static", could also be "networkd"
-    keyProviders = ["agenix-rekey"]; # could also be ["agenix-rekey"] or ["acl" "agenix-rekey"]
+    keyProviders = [ "agenix-rekey" ]; # could also be ["agenix-rekey"] or ["acl" "agenix-rekey"]
   };
 
   custom.prometheus = {
@@ -101,6 +101,17 @@
   networking.firewall.allowedTCPPorts = [ 5201 ];
 
   security.polkit.enable = true;
+
+  services.silverbullet = {
+    enable = true;
+
+  };
+
+  services.caddy.virtualHosts."silverbullet.${config.custom.homelab.primaryDomain}" = {
+    extraConfig = ''
+      reverse_proxy localhost:${toString config.services.silverbullet.listenPort}
+    '';
+  };
 
   nixpkgs.config.packageOverrides = pkgs: {
     intel-vaapi-driver = pkgs.intel-vaapi-driver.override {

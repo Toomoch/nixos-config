@@ -1,5 +1,6 @@
 #!/usr/bin/env -S just --justfile
-commonRemoteOpts := "--use-substitutes --sudo"
+set unstable
+commonRemoteOpts := "--use-substitutes"
 
 gitadd:
   git add . && cd private && git add . && cd -
@@ -13,32 +14,32 @@ deploy HOSTNAME: gitadd
 deployremote HOSTNAME: gitadd
   deploy .#{{HOSTNAME}} --skip-checks --remote-build
 
+switch hostname="" buildhost=hostname:
+  nixos-rebuild switch --flake .#{{hostname && hostname }} \
+    {{ hostname && ("--target-host " + hostname) }} \
+    {{ buildhost  && ("--build-host " + buildhost) }} \
+    {{ hostname && commonRemoteOpts }} --sudo
 
-build HOSTNAME="": gitadd
-  nixos-rebuild build --flake .#{{HOSTNAME}} --show-trace
+boot hostname="" buildhost=hostname:
+  nixos-rebuild boot --flake .#{{hostname && hostname }} \
+    {{ hostname && ("--target-host " + hostname) }} \
+    {{ buildhost  && ("--build-host " + buildhost) }} \
+    {{ hostname && commonRemoteOpts }} --sudo
 
-buildremote HOSTNAME="" BUILDHOST="h81": gitadd
-  nixos-rebuild build --flake .#{{HOSTNAME}} --show-trace --build-host {{BUILDHOST}} {{commonRemoteOpts}}
+test hostname="" buildhost=hostname:
+  nixos-rebuild test --flake .#{{hostname && hostname }} \
+    {{ hostname && ("--target-host " + hostname) }} \
+    {{ buildhost  && ("--build-host " + buildhost) }} \
+    {{ hostname && commonRemoteOpts }} --sudo
 
-rebuildremote HOSTNAME="": gitadd
-  nixos-rebuild switch --flake .#{{HOSTNAME}} --build-host h81 {{commonRemoteOpts}}
+build hostname="" buildhost=hostname: gitadd
+  nixos-rebuild build --flake .#{{hostname && hostname }} \
+    {{ hostname && ("--target-host " + hostname) }} \
+    {{ buildhost  && ("--build-host " + buildhost) }} \
+    {{ hostname && commonRemoteOpts }}
 
-rebuild HOSTNAME="": gitadd
-  nixos-rebuild switch --flake .#{{HOSTNAME}} --sudo
-
-test HOSTNAME="": gitadd
-  nixos-rebuild test --flake .#{{HOSTNAME}} --sudo
-
-boot HOSTNAME="": gitadd
-  nixos-rebuild boot --flake .#{{HOSTNAME}} --sudo
-
-# commonRemoteOpts := "--use-substitutes --sudo"
-
-rebuildtarget HOSTNAME: gitadd
-  nixos-rebuild switch --flake .#{{HOSTNAME}} --target-host {{HOSTNAME}} {{commonRemoteOpts}}
-
-rebuildtargetremote HOSTNAME: gitadd
-  nixos-rebuild switch --flake .#{{HOSTNAME}} --target-host {{HOSTNAME}} --build-host {{HOSTNAME}} {{commonRemoteOpts}}
+dry-build hostname="": gitadd
+  nixos-rebuild dry-build --flake .#{{hostname}}
 
 
 droid: gitadd
@@ -53,8 +54,6 @@ cleangen:
 repl HOSTNAME="": gitadd
   nixos-rebuild repl --flake .#{{HOSTNAME}}
 
-dry-build HOSTNAME="": gitadd
-  nixos-rebuild dry-build --flake .#{{HOSTNAME}}
 
 revision:
   nixos-version --configuration-revision
