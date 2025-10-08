@@ -21,12 +21,6 @@ in
   custom.vm.docker.enable = true;
   custom.vm.libvirtd.enable = true;
 
-  programs.singularity = {
-    enable = true;
-    package = pkgs.apptainer;
-    enableSuid = true;
-    enableFakeroot = true;
-  };
   programs.winbox = {
     enable = true;
     openFirewall = true;
@@ -50,6 +44,8 @@ in
     };
   };
 
+  zramSwap.enable = true;
+
   #nfs mount
   environment.systemPackages = with pkgs; [
     nfs-utils
@@ -58,27 +54,6 @@ in
   ];
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
-
-  boot.initrd = {
-    supportedFilesystems = [ "nfs" ];
-    kernelModules = [ "nfs" ];
-  };
-  programs.ssh.knownHosts.${secrets.work.sshFs}.publicKey = secrets.work.knownHost;
-
-  fileSystems."/workspace" = { # infinite recursion if homeDir is used???
-    device = "${user}@${secrets.work.sshFs}:";
-    fsType = "sshfs";
-    options = [
-      "nodev"
-      "noatime"
-      "allow_other"
-      "nofail"
-      "ServerAliveInterval=5"
-      "reconnect"
-      "IdentityFile=${homeDir}/.ssh/id_ed25519"
-    ];
-  };
-
 
   home-manager.users.${user} =
     { pkgs, ... }:
