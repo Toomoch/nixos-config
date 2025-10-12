@@ -12,11 +12,18 @@
     ./hardware-configuration.nix
     # Minimal stuff
     (nixpkgs.outPath + "/nixos/modules/profiles/minimal.nix")
-    ./minecraft.nix
-    ./metrics.nix
+    # ./minecraft.nix
+    # ./metrics.nix
+    ./disko.nix
   ];
 
   networking.hostName = "oracle2";
+
+  # zfs required stuff
+  services.zfs.autoScrub.enable = true;
+  networking.hostId = "ba6f9367";
+  boot.loader.systemd-boot.netbootxyz.enable = true;
+
 
   services.openssh.ports = [ secrets.hosts.oracle2.sshPort ];
 
@@ -26,7 +33,7 @@
   custom.vm.podman.enable = true;
   custom.vm.docker.enable = true;
   security.polkit.enable = true;
-  services.boinc.enable = true;
+  # services.boinc.enable = true;
 
   custom.prometheus = {
     enable = true;
