@@ -75,6 +75,80 @@ in
 
     userName = lib.mkDefault "Toomoch";
     userEmail = lib.mkDefault "vallsfustearnau@gmail.com";
+    extraConfig = {
+      color = {
+        ui = true;
+      };
+
+      # https://git-scm.com/docs/git-rebase#Documentation/git-rebase.txt---autosquash
+      rebase = {
+        autosquash = true;
+      };
+
+      core = {
+        editor = "nvim";
+        # NOTE: you can invoke your editor with a different config
+        #   editor = nvim -u /path/to/your/config
+
+        # https://git-scm.com/docs/git-diff#Documentation/git-diff.txt---abbrevltngt
+        abbrev = 12;
+      };
+
+      # List branches and tags from newest to oldest
+      branch = {
+        sort = "-committerdate";
+      };
+      tag = {
+        sort = "-taggerdate";
+      };
+
+      column = {
+        ui = "auto";
+      };
+
+      push = {
+        # https://git-scm.com/docs/git-config#Documentation/git-config.txt-pushautoSetupRemote
+        autoSetupRemote = true;
+        # Push tags automatically
+        followtags = true;
+      };
+
+      # https://wiki.smd.dev/en/GitGuidelines#conflict-presentation
+      merge = {
+        conflictstyle = "zdiff3";
+        # https://git-scm.com/docs/git-config#Documentation/git-config.txt-mergelog
+        log = true;
+      };
+
+      commit = {
+        # verbose means that when you are writing the commit message, you will also see
+        # the diff introduced by the commit.
+        verbose = true;
+        #   template = /path/to/your/commit/template.txt
+      };
+
+      diff = {
+        #   algorithm = histogram
+        # Colors moved text differently
+        colorMoved = "plain";
+        #   compactionHeuristic = true
+      };
+
+      # https://git-scm.com/book/en/v2/Git-Tools-Rerere
+      # https://git-scm.com/docs/git-rerere
+      rerere = {
+        enabled = true;
+        autoUpdate = true;
+      };
+
+      # Useful to link fixed commits in your commit descriptions
+      # https://docs.kernel.org/process/submitting-patches.html#describe-your-changes
+      pretty = {
+        fixes = ''Fixes: %h ("%s")'';
+      };
+
+    };
+
   };
 
   programs.tmux = {
