@@ -31,9 +31,7 @@
   custom.common.systemd-boot.enable = true;
   custom.common.cloud.enable = true;
   custom.vm.podman.enable = true;
-  custom.vm.docker.enable = true;
   security.polkit.enable = true;
-  # services.boinc.enable = true;
 
   custom.prometheus = {
     enable = true;
