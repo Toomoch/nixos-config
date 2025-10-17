@@ -5,6 +5,46 @@
   self,
   ...
 }:
+let
+  supportedExporters = [
+    "node"
+    "smartctl"
+  ];
+
+  autogenScrapeConfigs = lib.flatten (
+    lib.map (
+      exporterName:
+      let
+        staticConfigs = lib.filter (sc: sc != null) (
+          lib.mapAttrsToList (
+            hostname: host:
+            let
+              exporterConfig = host.config.services.prometheus.exporters.${exporterName};
+            in
+            if exporterConfig.enable or false then
+              let
+                ipAddress = lib.removeSuffix "/64" (
+                  builtins.elemAt host.config.systemd.network.networks."50-metrics".address 0
+                );
+              in
+              {
+                targets = [ "[${ipAddress}]:${toString exporterConfig.port}" ];
+                labels = {
+                  instance = hostname;
+                };
+              }
+            else
+              null
+          ) self.nixosConfigurations
+        );
+      in
+      lib.optional (staticConfigs != [ ]) {
+        job_name = exporterName;
+        static_configs = staticConfigs;
+      }
+    ) supportedExporters
+  );
+in
 {
   services.prometheus.alertmanager = {
     enable = false;
@@ -14,65 +54,18 @@
     webExternalUrl = "https://alerts.avalls.dev";
 
   };
+  services.prometheus.exporters = {
+    node = {
+      enable = true;
+    };
+  };
   services.victoriametrics = {
     enable = true;
     retentionPeriod = "1y";
-    # prometheusConfig = {
-    #   scrape_configs = [
-    #     {
-    #       job_name = "postgres-exporter";
-    #       metrics_path = "/metrics";
-    #       static_configs = [
-    #         {
-    #           targets = ["1.2.3.4:9187"];
-    #           labels.type = "database";
-    #         }
-    #       ];
-    #     }
-    #     {
-    #       job_name = "node-exporter";
-    #       metrics_path = "/metrics";
-    #       static_configs = [
-    #         {
-    #           targets = ["1.2.3.4:9100"];
-    #           labels.type = "node";
-    #         }
-    #         {
-    #           targets = ["5.6.7.8:9100"];
-    #           labels.type = "node";
-    #         }
-    #       ];
-    #     }
-    #   ];
-    # }
-    # ;
-    prometheusConfig.scrape_configs =
-      let
-        # If we don't do this,
-        # evaluating prometheus-server.config would require prometheus-server.config .....
-        otherHosts = lib.filterAttrs (
-          name: host: name != config.networking.hostName && host.config.custom.prometheus.enable
-        ) self.nixosConfigurations;
-
-        remoteExporters = lib.flatten (
-          map (host: host.config.custom.prometheus.exporters) (lib.attrValues otherHosts)
-        );
-
-        localExporters = config.custom.prometheus.exporters;
-
-        allExporters = localExporters ++ remoteExporters;
-
-        groupedExporters = lib.groupBy (exporter: exporter.job) allExporters;
-
-      in
-      lib.mapAttrsToList (jobName: exportersForJob: {
-        job_name = jobName;
-        static_configs = [
-          {
-            targets = map (exporter: "${exporter.hostname}:${toString exporter.port}") exportersForJob;
-          }
-        ];
-      }) groupedExporters;
+    extraOptions = [
+      "-enableTCP6"
+    ];
+    prometheusConfig.scrape_configs = autogenScrapeConfigs;
   };
 
 }

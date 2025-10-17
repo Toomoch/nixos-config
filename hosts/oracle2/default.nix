@@ -13,7 +13,7 @@
     # Minimal stuff
     (nixpkgs.outPath + "/nixos/modules/profiles/minimal.nix")
     # ./minecraft.nix
-    # ./metrics.nix
+    ./metrics.nix
     ./disko.nix
   ];
 
@@ -32,20 +32,6 @@
   custom.common.cloud.enable = true;
   custom.vm.podman.enable = true;
   security.polkit.enable = true;
-
-  custom.prometheus = {
-    enable = true;
-    exporters = [
-      {
-        port = 5000;
-        job = "node";
-      }
-      {
-        port = 5003;
-        job = "zfs";
-      }
-    ];
-  };
 
   wirenix = {
     enable = true;
@@ -70,5 +56,5 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "24.05"; # Did you read the comment?
+  system.stateVersion = "25.05"; # Did you read the comment?
 }

@@ -9,6 +9,5 @@
     ./nextcloud.nix
     ./grafana.nix
     ./sanoid.nix
-    ./prometheus.nix
   ];
 }

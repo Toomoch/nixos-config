@@ -41,6 +41,11 @@ build hostname="" buildhost=hostname: gitadd
 dry-build hostname="": gitadd
   nixos-rebuild dry-build --flake .#{{hostname}}
 
+dry-activate hostname="" buildhost=hostname: gitadd
+  nixos-rebuild dry-activate --flake .#{{hostname && hostname }} \
+    {{ hostname && ("--target-host " + hostname) }} \
+    {{ buildhost  && ("--build-host " + buildhost) }} \
+    {{ hostname && commonRemoteOpts }} --sudo
 
 droid: gitadd
   nix-on-droid switch --flake .

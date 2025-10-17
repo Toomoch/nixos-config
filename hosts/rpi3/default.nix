@@ -82,16 +82,6 @@ in {
   #      super.makeModulesClosure (x // { allowMissing = true; });
   #  })
   #];
-  custom.prometheus = {
-    enable = true;
-    exporters = [
-      {
-        hostname = "rpi3.avalls.internal";
-        port = 9000;
-        job = "node";
-      }
-    ];
-  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
