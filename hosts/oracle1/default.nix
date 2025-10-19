@@ -4,6 +4,7 @@
     ./hardware-configuration.nix
     # Minimal stuff
     (nixpkgs.outPath + "/nixos/modules/profiles/minimal.nix")
+    ./disko.nix
   ];
 
   networking.hostName = "oracle1";
@@ -14,9 +15,9 @@
   custom.common.systemd-boot.enable = true;
   custom.common.cloud.enable = true;
   custom.vm.podman.enable = true;
-  custom.vm.docker.enable = true;
+  custom.vm.docker.enable = false;
   security.polkit.enable = true;
-  custom.homelab.enablevps = true;
+  custom.homelab.enablevps = false;
 
   wirenix = {
     enable = true;
@@ -31,5 +32,5 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "24.05"; # Did you read the comment?
+  system.stateVersion = "25.05"; # Did you read the comment?
 }
