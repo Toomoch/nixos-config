@@ -49,6 +49,8 @@ in
     ripgrep
     bitbake-language-server
     inputs.self.outputs.packages.${system}.nvim
+    inputs.self.outputs.packages.${system}.nixCats
+    inputs.self.outputs.packages.${system}.regularCats
   ];
   programs.fzf.enableZshIntegration = true;
   programs.fzf.enableBashIntegration = true;
@@ -57,6 +59,10 @@ in
   xdg.enable = true;
 
   programs.git = {
+    difftastic = {
+      enable = true;
+      enableAsDifftool = true;
+    };
     enable = true;
     lfs.enable = true;
     aliases = {
