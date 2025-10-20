@@ -1,4 +1,9 @@
-pkgs: nixvim: system: mnw: rec {
+{
+  pkgs,
+  nixvim,
+  mnw,
+}:
+rec {
   huawei_solar = pkgs.callPackage ./huawei_solar.nix { inherit huawei-solar; };
   huawei-solar = pkgs.callPackage ./huawei-solar.nix {
     inherit (pkgs.home-assistant.python.pkgs)
@@ -15,20 +20,35 @@ pkgs: nixvim: system: mnw: rec {
       ;
   };
   som-energia-hass = pkgs.callPackage ./som-energia-hass.nix { };
-  nvim = nixvim.legacyPackages.${system}.makeNixvimWithModule {
+  nvim = nixvim.legacyPackages.${pkgs.system}.makeNixvimWithModule {
     module = ../nixvim;
   };
   help-blog = pkgs.callPackage ./blog.nix { };
   notion_todo = pkgs.callPackage ./notion_todo.nix { };
-  neovim = mnw.lib.wrap pkgs {
+  nvim-mnw = mnw.lib.wrap pkgs {
+    appName = "nvim-mnw";
     neovim = pkgs.neovim-unwrapped;
     initLua = ''
       require('myconfig')
     '';
+    extraBinPath = [
+      pkgs.clang
+      pkgs.gitlab-ci-ls
+    ];
     plugins = {
-      start = [ pkgs.vimPlugins.oil-nvim ];
+      start = with pkgs.vimPlugins; [
+        oil-nvim
+        fzf-lua
+        vim-tmux-navigator
+        luasnip
+        nvim-treesitter.withAllGrammars
+        vim-fugitive
+        kanagawa-nvim
+        nvim-web-devicons
+
+      ];
       dev.myconfig = {
-        pure = ./neovim;
+        pure = ../neovim;
         impure = "/home/arnau/projects/nixos-config/neovim";
       };
 

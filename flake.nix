@@ -53,8 +53,8 @@
       inputs.flake-compat.follows = "";
     };
 
-     wirenix.url = "sourcehut:~msalerno/wirenix";
-     mnw.url = "github:Gerg-L/mnw";
+    wirenix.url = "sourcehut:~msalerno/wirenix";
+    mnw.url = "github:Gerg-L/mnw";
   };
 
   outputs =
@@ -175,18 +175,17 @@
         nixpkgs: nodeDeployments:
         let
           confs = inputs.self.nixosConfigurations;
-          colmenaConf =
-            {
-              meta = {
-                inherit nixpkgs;
-                nodeNixpkgs = builtins.mapAttrs (_name: value: value.pkgs) confs;
-                nodeSpecialArgs = builtins.mapAttrs (_name: value: value._module.specialArgs) confs;
-              };
-            }
-            // builtins.mapAttrs (nodeName: value: {
-              imports = value._module.args.modules;
-              deployment = nodeDeployments.${nodeName} or { };
-            }) confs;
+          colmenaConf = {
+            meta = {
+              inherit nixpkgs;
+              nodeNixpkgs = builtins.mapAttrs (_name: value: value.pkgs) confs;
+              nodeSpecialArgs = builtins.mapAttrs (_name: value: value._module.specialArgs) confs;
+            };
+          }
+          // builtins.mapAttrs (nodeName: value: {
+            imports = value._module.args.modules;
+            deployment = nodeDeployments.${nodeName} or { };
+          }) confs;
         in
         inputs.colmena.lib.makeHive colmenaConf;
 
@@ -216,11 +215,13 @@
         };
       };
       # Import every package found in the attr pkgs from ./pkgs/default.nix
-      packages = forAllSystems (pkgs: system: import ./pkgs pkgs nixvim system mnw) nixpkgs-stable;
+      packages = forAllSystems (
+        pkgs: system: import ./pkgs { inherit pkgs nixvim mnw; }
+      ) nixpkgs-stable;
       nixosModules.common = import ./modules/nixos;
       nixosModules.private = import /${private}/modules/nixos;
       homeManagerModules.common = import ./modules/home-manager;
-      overlays = import ./overlays { inherit inputs nixvim; };
+      overlays = import ./overlays { inherit inputs nixvim mnw; };
 
       homeConfigurations = {
         "arnau" = home-manager.lib.homeManagerConfiguration {

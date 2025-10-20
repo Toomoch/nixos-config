@@ -48,7 +48,8 @@ in
     tmux-ssh
     ripgrep
     bitbake-language-server
-    inputs.self.outputs.packages.${system}.nvim
+    # inputs.self.outputs.packages.${system}.nvim
+    inputs.self.outputs.packages.${system}.nvim-mnw
   ];
   programs.fzf.enableZshIntegration = true;
   programs.fzf.enableBashIntegration = true;

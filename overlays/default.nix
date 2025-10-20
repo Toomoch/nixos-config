@@ -1,8 +1,13 @@
 # This file defines overlays
-{ inputs, nixvim, ... }:
+{ inputs, nixvim, mnw, ... }:
 {
   # This one brings our custom packages from the 'pkgs' directory
-  additions = final: _prev: import ../pkgs final.pkgs nixvim final.system;
+  additions =
+    final: _prev:
+    import ../pkgs {
+      pkgs = final.pkgs;
+      inherit nixvim mnw;
+    };
 
   # This one contains whatever you want to overlay
   # You can change versions, add patches, set compilation flags, anything really.
@@ -38,11 +43,9 @@
     home-assistant-custom-components.tuya_local =
       prev.home-assistant-custom-components.tuya_local.overrideAttrs
         (previousAttrs: {
-          postInstall =
-            (previousAttrs.postInstall or "")
-            + ''
-              install -Dm444 ${./airmart.yaml} $out/custom_components/tuya_local/devices/airmart.yaml
-            '';
+          postInstall = (previousAttrs.postInstall or "") + ''
+            install -Dm444 ${./airmart.yaml} $out/custom_components/tuya_local/devices/airmart.yaml
+          '';
         });
   };
 
