@@ -54,6 +54,7 @@
     };
 
      wirenix.url = "sourcehut:~msalerno/wirenix";
+     mnw.url = "github:Gerg-L/mnw";
   };
 
   outputs =
@@ -70,6 +71,7 @@
       agenix,
       agenix-rekey,
       wirenix,
+      mnw,
       ...
     }@inputs:
     let
@@ -214,7 +216,7 @@
         };
       };
       # Import every package found in the attr pkgs from ./pkgs/default.nix
-      packages = forAllSystems (pkgs: system: import ./pkgs pkgs nixvim system) nixpkgs-stable;
+      packages = forAllSystems (pkgs: system: import ./pkgs pkgs nixvim system mnw) nixpkgs-stable;
       nixosModules.common = import ./modules/nixos;
       nixosModules.private = import /${private}/modules/nixos;
       homeManagerModules.common = import ./modules/home-manager;
