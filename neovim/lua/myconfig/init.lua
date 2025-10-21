@@ -20,6 +20,7 @@ vim.diagnostic.config({ virtual_text = true })
 
 vim.cmd([[colorscheme kanagawa
 ]])
+require("oil").setup()
 
 -- require("luasnip").config.setup({})
 --
@@ -121,7 +122,7 @@ vim.lsp.config.clangd = {
   filetypes = { 'c', 'cpp' },
 }
 
-local cache_dir = vim.uv.os_homedir() .. '/.cache/gitlab-ci-ls/'
+local cache_dir = vim.uv.os_homedir() .. '/.cache/gitlab-ci-ls'
 
 vim.lsp.config.gitlab_ci_ls = {
   cmd = { 'gitlab-ci-ls' },
@@ -136,3 +137,60 @@ vim.lsp.config.gitlab_ci_ls = {
 vim.lsp.enable({'clangd'})
 vim.lsp.enable({'gitlab_ci_ls'})
 
+vim.lsp.config.bashls = {
+  cmd = { 'bash-language-server', 'start' },
+  settings = {
+    bashIde = {
+      globPattern = vim.env.GLOB_PATTERN or '*@(.sh|.inc|.bash|.command)',
+    },
+  },
+  filetypes = { 'bash', 'sh' },
+  root_markers = { '.git' },
+}
+vim.lsp.enable({'bashls'})
+
+vim.lsp.config.lua_ls = {
+  cmd = { 'lua-language-server' },
+  filetypes = { 'lua' },
+  root_markers = {
+    '.luarc.json',
+    '.luarc.jsonc',
+    '.luacheckrc',
+    '.stylua.toml',
+    'stylua.toml',
+    'selene.toml',
+    'selene.yml',
+    '.git',
+},
+}
+
+vim.lsp.enable({'lua_ls'})
+
+vim.lsp.config.yamlls = {
+  cmd = { 'yaml-language-server', '--stdio' },
+  filetypes = { 'yaml', 'yaml.docker-compose', 'yaml.gitlab', 'yaml.helm-values' },
+  root_markers = { '.git' },
+  settings = {
+    -- https://github.com/redhat-developer/vscode-redhat-telemetry#how-to-disable-telemetry-reporting
+    redhat = { telemetry = { enabled = false } },
+    -- formatting disabled by default in yaml-language-server; enable it
+    yaml = { format = { enable = true } },
+  },
+  on_init = function(client)
+    --- https://github.com/neovim/nvim-lspconfig/pull/4016
+    --- Since formatting is disabled by default if you check `client:supports_method('textDocument/formatting')`
+    --- during `LspAttach` it will return `false`. This hack sets the capability to `true` to facilitate
+    --- autocmd's which check this capability
+    client.server_capabilities.documentFormattingProvider = true
+  end,
+}
+
+vim.lsp.enable({'yamlls'})
+
+vim.lsp.config.nixd = {
+  cmd = { 'nixd' },
+  filetypes = { 'nix' },
+  root_markers = { 'flake.nix', '.git' },
+}
+
+vim.lsp.enable({'nixd'})

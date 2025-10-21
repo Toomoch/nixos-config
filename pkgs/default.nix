@@ -34,6 +34,9 @@ rec {
     extraBinPath = [
       pkgs.clang
       pkgs.gitlab-ci-ls
+      pkgs.lua-language-server
+      pkgs.bash-language-server
+      pkgs.yaml-language-server
     ];
     plugins = {
       start = with pkgs.vimPlugins; [
