@@ -48,7 +48,11 @@ rec {
         vim-fugitive
         kanagawa-nvim
         nvim-web-devicons
-
+        nvim-cmp
+        cmp-buffer
+        cmp-path
+        cmp-nvim-lsp
+        lualine-nvim
       ];
       dev.myconfig = {
         pure = ../neovim;

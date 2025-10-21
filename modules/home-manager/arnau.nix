@@ -23,6 +23,7 @@ let
     vimdiff = "nvim -d";
     aspm = "sudo lspci -vv | awk '/ASPM/{print $0}' RS= | grep --color -P '(^[a-z0-9:.]+|ASPM )'";
     grep = "grep --color=auto";
+    vimdev = "${inputs.self.outputs.packages.${pkgs.system}.nvim-mnw.devMode}/bin/nvim";
   };
 in
 {
@@ -48,7 +49,6 @@ in
     tmux-ssh
     ripgrep
     bitbake-language-server
-    # inputs.self.outputs.packages.${system}.nvim
     inputs.self.outputs.packages.${system}.nvim-mnw
   ];
   programs.fzf.enableZshIntegration = true;
