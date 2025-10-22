@@ -119,11 +119,11 @@ in
 
       # Configure console keymap
       # https://github.com/NixOS/nixpkgs/issues/257904
-      console = {
-        font = "${pkgs.terminus_font}/share/consolefonts/ter-124b.psf.gz";
-        useXkbConfig = true;
-        # packages = with pkgs; [ terminus_font ];
-      };
+      # console = {
+      #   font = "${pkgs.terminus_font}/share/consolefonts/ter-124b.psf.gz";
+      #   useXkbConfig = true;
+      #   # packages = with pkgs; [ terminus_font ];
+      # };
 
       # Allow unfree packages
       nixpkgs.config.allowUnfree = true;

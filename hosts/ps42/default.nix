@@ -139,9 +139,7 @@ in
 
       custom.desktop.blacklistnvidia.enable = true;
       custom.desktop.sway.enable = true;
-      custom.desktop.tuigreet.enable = true;
-      custom.desktop.regreet.enable = false;
-      custom.desktop.river.enable = true;
+      custom.desktop.greeter = "regreet";
       custom.desktop.niri.enable = true;
       custom.desktop.hyprland.enable = false;
       custom.vm.libvirtd.enable = true;

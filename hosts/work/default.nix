@@ -13,10 +13,9 @@ in
   custom.common.enable = true;
   custom.common.systemd-boot.enable = true;
   custom.desktop.enable = true;
-  custom.desktop.regreet.enable = true;
   custom.desktop.sway.enable = true;
-  custom.desktop.river.enable = true;
   custom.desktop.niri.enable = true;
+  custom.desktop.greeter = "regreet";
   custom.vm.podman.enable = true;
   custom.vm.docker.enable = true;
   custom.vm.libvirtd.enable = true;

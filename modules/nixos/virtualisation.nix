@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   cfg = config.custom.vm;
 in
@@ -9,48 +14,31 @@ in
     libvirtd.enable = lib.mkEnableOption "Whether to enable libvirtd";
   };
 
-  config = lib.mkMerge [
-    (lib.mkIf cfg.podman.enable {
-      environment.systemPackages = with pkgs; [
-        podman-compose
-      ];
-      virtualisation = {
-        podman = {
-          enable = true;
-          # Create a `docker` alias for podman, to use it as a drop-in replacement
-          dockerCompat = false;
-          # Required for containers under podman-compose to be able to talk to each other.
-          defaultNetwork.settings.dns_enabled = true;
+  config = {
+    environment.systemPackages =
+      lib.optional cfg.podman.enable pkgs.podman-compose
+      ++ lib.optional cfg.libvirtd.enable pkgs.win-virtio
+      ++ lib.optional cfg.docker.enable pkgs.docker-compose;
+    virtualisation = {
+      podman = {
+        enable = cfg.podman.enable;
+        dockerCompat = false;
+        defaultNetwork.settings.dns_enabled = true;
+      };
+      docker.enable = cfg.docker.enable;
+    };
+
+    virtualisation = {
+      libvirtd = {
+        enable = cfg.libvirtd.enable;
+        qemu = {
+          swtpm.enable = true;
+          ovmf.packages = [
+            pkgs.OVMFFull.fd
+          ];
         };
       };
-    })
-    (lib.mkIf cfg.docker.enable {
-      environment.systemPackages = with pkgs; [
-        docker-compose
-      ];
-      virtualisation = {
-        docker.enable = true;
-      };
-    })
-    (lib.mkIf cfg.libvirtd.enable {
-      environment.systemPackages = with pkgs; [
-        win-virtio
-      ];
-
-      virtualisation = {
-        # Enable libvirt
-        libvirtd = {
-          enable = true;
-          qemu = {
-            swtpm.enable = true;
-            ovmf.packages = [
-              pkgs.OVMFFull.fd
-            ];
-          };
-        };
-      };
-    })
-  ];
-
+    };
+  };
 
 }

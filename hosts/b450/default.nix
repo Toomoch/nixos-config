@@ -31,7 +31,6 @@
   custom.desktop.arctis9.enable = true;
   custom.desktop.sway.enable = true;
   custom.desktop.hyprland.enable = false;
-  custom.desktop.river.enable = true;
   custom.desktop.niri.enable = true;
   custom.desktop.flatpak.enable = true;
   custom.desktop.gaming.enable = true;
@@ -42,7 +41,7 @@
   custom.vm.docker.enable = true;
   virtualisation.waydroid.enable = true;
 
-  custom.desktop.regreet.enable = true;
+  custom.desktop.greeter = "cosmic";
 
   # programs.singularity = {
   #   enable = true;

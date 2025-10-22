@@ -22,6 +22,8 @@
     river = final.unstable.river-classic;
     openapi-generator-cli = final.unstable.openapi-generator-cli;
     silverbullet = final.unstable.silverbullet;
+    cosmic-session = final.unstable.cosmic-session;
+    cosmic-greeter = final.unstable.cosmic-greeter;
     numbat = prev.numbat.overrideAttrs (previousAttrs: {
       postInstall = ''
         # The source files are in a directory named 'assets' at the root
