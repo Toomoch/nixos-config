@@ -73,10 +73,6 @@ in
       ds = "diff --staged";
       home = "rev-parse --show-toplevel";
     };
-    difftastic = {
-      enable = true;
-      enableAsDifftool = true;
-    };
 
     userName = lib.mkDefault "Toomoch";
     userEmail = lib.mkDefault "vallsfustearnau@gmail.com";

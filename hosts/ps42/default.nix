@@ -134,6 +134,8 @@ in
       system.stateVersion = "22.11"; # Did you read the comment?
     }
     (lib.mkIf (config.specialisation != { }) {
+      environment.systemPackages = [ pkgs.docker-compose ];
+      virtualisation.docker.enable = true;
 
       custom.desktop.blacklistnvidia.enable = true;
       custom.desktop.sway.enable = true;
