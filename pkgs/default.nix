@@ -39,6 +39,7 @@ rec {
       pkgs.yaml-language-server
       pkgs.ruff
       pkgs.ty
+      pkgs.rust-analyzer
     ];
     plugins = {
       start = with pkgs.vimPlugins; [

@@ -222,6 +222,19 @@ vim.lsp.config.ruff = {
 
 vim.lsp.enable('ruff')
 
+
+vim.lsp.config.rust_analyzer = {
+  cmd = { 'rust-analyzer' },
+  filetypes = { 'rust' },
+  root_markers = { '.git', 'Cargo.lock' },
+  capabilities = {
+    experimental = {
+      serverStatusNotification = true,
+    },
+  },
+}
+vim.lsp.enable({ 'rust_analyzer' })
+
 local cmp = require("cmp")
 cmp.setup({
   mapping = {
