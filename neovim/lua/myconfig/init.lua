@@ -77,7 +77,7 @@ do
     { action = ":TmuxNavigatePrevious<CR>", key = "<M-\\>",     mode = "" },
     { action = "<C-d>zz",                   key = "<C-d>",      mode = "" },
     { action = "<C-u>zz",                   key = "<C-u>",      mode = "" },
-    { action = ":Oil<cr>",              key = "-",          mode = "" },
+    { action = ":Oil<cr>",                  key = "-",          mode = "" },
   }
   for i, map in ipairs(__nixvim_binds) do
     vim.keymap.set(map.mode, map.key, map.action, map.options)
@@ -181,7 +181,12 @@ vim.lsp.config.yamlls = {
     -- https://github.com/redhat-developer/vscode-redhat-telemetry#how-to-disable-telemetry-reporting
     redhat = { telemetry = { enabled = false } },
     -- formatting disabled by default in yaml-language-server; enable it
-    yaml = { format = { enable = true } },
+    yaml = {
+      format = { enable = true },
+      customTags = {
+        '!unsafe scalar',
+      },
+    },
   },
   on_init = function(client)
     --- https://github.com/neovim/nvim-lspconfig/pull/4016
@@ -248,4 +253,3 @@ vim.api.nvim_create_autocmd('LspAttach', {
     on_attach(client, bufnr)
   end,
 })
-
