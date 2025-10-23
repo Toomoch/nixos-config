@@ -37,6 +37,8 @@ rec {
       pkgs.lua-language-server
       pkgs.bash-language-server
       pkgs.yaml-language-server
+      pkgs.ruff
+      pkgs.ty
     ];
     plugins = {
       start = with pkgs.vimPlugins; [
