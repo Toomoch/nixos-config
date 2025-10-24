@@ -41,7 +41,7 @@
   custom.vm.docker.enable = true;
   virtualisation.waydroid.enable = true;
 
-  custom.desktop.greeter = "cosmic";
+  custom.desktop.greeter = "regreet";
 
   # programs.singularity = {
   #   enable = true;
