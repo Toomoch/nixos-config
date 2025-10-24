@@ -25,7 +25,7 @@
   boot.loader.systemd-boot.netbootxyz.enable = true;
 
 
-  services.openssh.ports = [ secrets.hosts.oracle2.sshPort ];
+  services.openssh.ports = [ secrets.hosts.ampere.sshPort ];
 
   custom.common.enable = true;
   custom.common.cloud.enable = true;
