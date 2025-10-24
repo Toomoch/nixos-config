@@ -36,7 +36,6 @@
   networking.hostId = "e0684fdb";
   programs.dconf.enable = true;
 
-  custom.common.systemd-boot.enable = true;
   custom.homelab = {
     enable = true;
     serviceDataDir = "/zstorage/data";

@@ -7,10 +7,11 @@
   ...
 }:
 let
-  cfg = config.custom.desktop;
+  cfg = config.custom.desktop.wm;
 in
 {
-  options.custom.desktop = {
+  options.custom.desktop.wm = {
+    enable = lib.mkEnableOption "Whether to enable the module";
     sway.enable = lib.mkEnableOption "Whether to enable Sway and common desktop services";
     niri.enable = lib.mkEnableOption "Whether to enable niri";
     hyprland.enable = lib.mkEnableOption "Whether to enable Hyprland";
@@ -34,9 +35,9 @@ in
     "${inputs.nixpkgs}/nixos/modules/services/display-managers/cosmic-greeter.nix"
   ];
 
-  config = {
+  config = lib.mkIf cfg.enable {
     xdg.portal = lib.optionalAttrs cfg.sway.enable {
-      enable = cfg.sway.enable;
+      enable = true;
       # gtk portal needed to make gtk apps happy
       extraPortals = with pkgs; [
         xdg-desktop-portal-gtk
@@ -44,10 +45,10 @@ in
       ];
     };
 
-    programs.hyprland.enable = cfg.sway.enable && cfg.hyprland.enable;
-    programs.niri.enable = cfg.sway.enable && cfg.niri.enable;
+    programs.hyprland.enable = cfg.hyprland.enable;
+    programs.niri.enable = cfg.niri.enable;
     # niri attaches to xdg-desktop-autostart.target and this masks it
-    systemd.user.targets.xdg-desktop-autostart.enable = cfg.sway.enable || cfg.niri.enable;
+    systemd.user.targets.xdg-desktop-autostart.enable = true;
 
     # Sway
     programs.sway = {
@@ -70,40 +71,40 @@ in
     );
 
     # Gnome Keyring
-    services.gnome.gnome-keyring.enable = cfg.sway.enable;
-    security.pam.services.greetd.enableGnomeKeyring = cfg.sway.enable;
+    services.gnome.gnome-keyring.enable = true;
+    security.pam.services.greetd.enableGnomeKeyring = true;
     programs.thunar = {
-      enable = cfg.sway.enable;
+      enable = true;
       plugins = with pkgs.xfce; [
         thunar-archive-plugin
         thunar-volman
         thunar-media-tags-plugin
       ];
     };
-    programs.file-roller.enable = cfg.sway.enable;
+    programs.file-roller.enable = true;
     # Enable wayland in electron apps
-    environment.sessionVariables.NIXOS_OZONE_WL = lib.mkIf cfg.sway.enable "1"; # Disabled because of https://github.com/microsoft/vscode/issues/184124
+    environment.sessionVariables.NIXOS_OZONE_WL = "1"; # Disabled because of https://github.com/microsoft/vscode/issues/184124
     # Enable wayland in firefox
-    environment.sessionVariables.MOZ_ENABLE_WAYLAND = lib.mkIf cfg.sway.enable "1";
+    environment.sessionVariables.MOZ_ENABLE_WAYLAND = "1";
     # Fix Java apps in WMs
-    environment.sessionVariables._JAVA_AWT_WM_NONREPARENTING = lib.mkIf cfg.sway.enable "1";
+    environment.sessionVariables._JAVA_AWT_WM_NONREPARENTING = "1";
 
     # For Gnome Disks
-    services.udisks2.enable = cfg.sway.enable;
+    services.udisks2.enable = true;
 
     # For auto mounting in Nautilus and Thunar
-    services.gvfs.enable = cfg.sway.enable;
-    services.dbus.enable = cfg.sway.enable;
+    services.gvfs.enable = true;
+    services.dbus.enable = true;
 
     # Don’t shutdown when power button is short-pressed
-    services.logind.extraConfig = lib.optionalString cfg.sway.enable ''
+    services.logind.extraConfig = ''
       HandlePowerKey=ignore
     '';
-    services.blueman.enable = cfg.sway.enable;
+    services.blueman.enable = true;
 
-    security.pam.services.gtklock = lib.mkIf cfg.sway.enable { };
-    security.pam.services.hyprlock = lib.mkIf cfg.sway.enable { };
-    security.pam.services.waylock = lib.mkIf cfg.sway.enable { };
+    security.pam.services.gtklock = { };
+    security.pam.services.hyprlock = { };
+    security.pam.services.waylock = { };
 
     services.displayManager.cosmic-greeter.enable = cfg.greeter == "cosmic";
 

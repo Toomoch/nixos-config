@@ -12,7 +12,6 @@
   services.openssh.ports = [ secrets.hosts.oracle1.sshPort ];
 
   custom.common.enable = true;
-  custom.common.systemd-boot.enable = true;
   custom.common.cloud.enable = true;
   custom.vm.podman.enable = true;
   custom.vm.docker.enable = false;

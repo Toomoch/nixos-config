@@ -23,25 +23,33 @@
     enable = true;
     useRoutingFeatures = "both";
   };
-  programs.steam.gamescopeSession.args = ["--adaptive-sync" "-R 100"];
+  programs.steam.gamescopeSession.args = [
+    "--adaptive-sync"
+    "-R 100"
+  ];
 
   custom.common.enable = true;
-  custom.common.systemd-boot.enable = true;
-  custom.desktop.enable = true;
-  custom.desktop.arctis9.enable = true;
-  custom.desktop.sway.enable = true;
-  custom.desktop.hyprland.enable = false;
-  custom.desktop.niri.enable = true;
-  custom.desktop.flatpak.enable = true;
-  custom.desktop.gaming.enable = true;
-  custom.desktop.gaming.g29.enable = true;
-  custom.desktop.matlab.enable = false;
+
   custom.vm.podman.enable = true;
   custom.vm.libvirtd.enable = true;
   custom.vm.docker.enable = true;
   virtualisation.waydroid.enable = true;
 
-  custom.desktop.greeter = "regreet";
+  custom.desktop = {
+    wm = {
+      enable = true;
+      greeter = "regreet";
+      sway.enable = true;
+      hyprland.enable = false;
+      niri.enable = true;
+    };
+    flatpak.enable = true;
+    gaming = {
+      enable = true;
+      g29.enable = true;
+    };
+    arctis9.enable = true;
+  };
 
   # programs.singularity = {
   #   enable = true;
