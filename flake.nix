@@ -127,7 +127,7 @@
           hm = false;
         }
         {
-          host = "oracle2";
+          host = "ampere";
           arch = "aarch64-linux";
           branch = stable;
           hm = false;
@@ -204,8 +204,8 @@
         b450 = {
           allowLocalDeployment = true;
         };
-        oracle2 = {
-          targetHost = "oracle2";
+        ampere = {
+          targetHost = "ampere";
           buildOnTarget = true;
           targetUser = "arnau";
         };
@@ -338,7 +338,7 @@
           rpi3 = mkDeployConfig "rpi3" self.nixosConfigurations.rpi3 false false;
           l50 = mkDeployConfig "" self.nixosConfigurations.l50 true false;
           oracle1 = mkDeployConfig "oracle1" self.nixosConfigurations.oracle1 false false;
-          oracle2 = mkDeployConfig "oracle2" self.nixosConfigurations.oracle2 false true;
+          ampere = mkDeployConfig "ampere" self.nixosConfigurations.oracle2 false true;
         };
       checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
     };

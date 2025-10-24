@@ -17,7 +17,7 @@
     ./disko.nix
   ];
 
-  networking.hostName = "oracle2";
+  networking.hostName = "ampere";
 
   # zfs required stuff
   services.zfs.autoScrub.enable = true;
