@@ -51,7 +51,6 @@
       users = secrets.smbUsers;
     };
   };
-  custom.grafana.enable = true;
   # custom.vm.docker.enable = true;
   custom.vm.libvirtd.enable = true;
   custom.vm.podman.enable = true;
