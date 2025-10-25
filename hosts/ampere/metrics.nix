@@ -67,5 +67,12 @@ in
     ];
     prometheusConfig.scrape_configs = autogenScrapeConfigs;
   };
+  services.vmalert = {
+    enable = true;
+    rules = { };
+    settings = {
+      "datasource.url" = "http://localhost:${toString config.services.victoriametrics.port}";
+    };
+  };
 
 }

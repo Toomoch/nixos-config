@@ -24,7 +24,6 @@
   networking.hostId = "ba6f9367";
   boot.loader.systemd-boot.netbootxyz.enable = true;
 
-
   services.openssh.ports = [ secrets.hosts.ampere.sshPort ];
 
   custom.common.enable = true;
@@ -41,6 +40,23 @@
 
   services.silverbullet = {
     enable = true;
+  };
+
+  services.tailscale = {
+    openFirewall = true;
+    enable = false;
+    extraUpFlags = [ "--accept-dns=false --accept-routes=false" ];
+    authKeyFile = config.age.secrets.tailscale.path;
+    authKeyParameters = {
+      preauthorized = true;
+      baseURL = config.services.headscale.settings.server_url;
+    };
+  };
+
+  age.secrets.tailscale = {
+    rekeyFile = /${private}/secrets/age/tailscale_ampere.age;
+    owner = "root";
+    group = "root";
   };
 
   # services.caddy.virtualHosts."silverbullet.${config.custom.homelab.primaryDomain}" = {
