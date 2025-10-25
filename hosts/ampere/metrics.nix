@@ -71,7 +71,7 @@ in
     enable = true;
     rules = { };
     settings = {
-      "datasource.url" = "http://localhost:${toString config.services.victoriametrics.port}";
+      "datasource.url" = "http://localhost:${toString (lib.removePrefix ":" config.services.victoriametrics.listenAddress)}";
     };
   };
 

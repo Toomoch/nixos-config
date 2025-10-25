@@ -44,17 +44,21 @@
 
   services.tailscale = {
     openFirewall = true;
-    enable = false;
-    extraUpFlags = [ "--accept-dns=false --accept-routes=false" ];
+    enable = true;
+    extraUpFlags = [
+      "--accept-dns=false"
+      "--accept-routes=false"
+      "--login-server=${config.services.headscale.settings.server_url}"
+    ];
     authKeyFile = config.age.secrets.tailscale.path;
-    authKeyParameters = {
-      preauthorized = true;
-      baseURL = config.services.headscale.settings.server_url;
-    };
+    # authKeyParameters = {
+    #   preauthorized = true;
+    #   # baseURL = config.services.headscale.settings.server_url;
+    # };
   };
 
   age.secrets.tailscale = {
-    rekeyFile = /${private}/secrets/age/tailscale_ampere.age;
+    rekeyFile = /${private}/secrets/age/tailscale-tag-server.age;
     owner = "root";
     group = "root";
   };
