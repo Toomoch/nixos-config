@@ -3,7 +3,6 @@
   config,
   lib,
   pkgs,
-  nixpkgs,
   secrets,
   outputs,
   private,
@@ -18,7 +17,7 @@ in
   options.custom.common = {
     enable = lib.mkEnableOption "Whether to enable common stuff";
     systemd-boot.enable = lib.mkEnableOption "Whether to enable systemd-boot bootloader";
-    cloud.enable = lib.mkEnableOption "Whether to enable cloud specific settings";
+    cloud.enable = lib.mkEnableOption "Whether to enable minimal setup for cloud vms";
     defaultUser.enable = lib.mkEnableOption "Whether to enable the default user with a configurable name";
     wol.enable = lib.mkEnableOption "Enable Wake On LAN via udev rules";
   };
@@ -26,7 +25,11 @@ in
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
       # populate branch name/commit hash
-      system.configurationRevision = let self = inputs.self; in self.shortRev or self.dirtyShortRev or self.lastModified or "unknown";
+      system.configurationRevision =
+        let
+          self = inputs.self;
+        in
+        self.shortRev or self.dirtyShortRev or self.lastModified or "unknown";
       nix = {
         settings = {
           experimental-features = [
@@ -42,30 +45,6 @@ in
           options = "--delete-older-than 15d";
           persistent = true;
         };
-        distributedBuilds = false;
-        buildMachines = [
-          {
-            hostName = "h81";
-            sshUser = secrets.hosts.h81.user;
-            publicHostKey = secrets.hosts.h81.pubKeyBase64;
-            sshKey = "${
-              config.users.users.${secrets.hosts.${config.networking.hostName}.user}.home
-            }/.ssh/id_ed25519";
-            system = "x86_64-linux";
-            protocol = "ssh-ng";
-            # default is 1 but may keep the builder idle in between builds
-            maxJobs = 3;
-            # how fast is the builder compared to your local machine
-            speedFactor = 2;
-            supportedFeatures = [
-              "nixos-test"
-              "benchmark"
-              "big-parallel"
-              "kvm"
-            ];
-            mandatoryFeatures = [ ];
-          }
-        ];
       };
       nixpkgs.overlays = [
         outputs.overlays.additions
@@ -73,8 +52,8 @@ in
         outputs.overlays.unstable-packages
         inputs.agenix-rekey.overlays.default
       ];
-      # nixpkgs.flake.setNixPath = true;
-      # nixpkgs.flake.setFlakeRegistry = true;
+      nixpkgs.flake.setNixPath = ! cfg.cloud.enable;
+      nixpkgs.flake.setFlakeRegistry = ! cfg.cloud.enable;
 
       systemd.network.enable = true;
       networking.useNetworkd = true;
@@ -141,11 +120,7 @@ in
 
       # Enable the OpenSSH daemon.
       services.openssh.enable = true;
-      programs.ssh = {
-        startAgent = true;
-        enableAskPassword = true;
-        askPassword = "${pkgs.seahorse}/libexec/seahorse/ssh-askpass";
-      };
+      programs.ssh.startAgent = true;
 
       #Allow all VPN traffic routing
       networking.firewall.checkReversePath = "loose";
@@ -175,15 +150,14 @@ in
           "docker"
           "dialout"
         ];
-        packages = with pkgs; [ ];
 
         initialHashedPassword = builtins.readFile /${private}/secrets/plain/inithashpass;
         openssh.authorizedKeys.keys = secrets.authlist config.networking.hostName;
         shell = pkgs.bash;
       };
-      programs.starship.enable = true;
-      programs.fzf.fuzzyCompletion = true;
-      programs.fzf.keybindings = true;
+      programs.starship.enable = !cfg.cloud.enable;
+      programs.fzf.fuzzyCompletion = !cfg.cloud.enable;
+      programs.fzf.keybindings = !cfg.cloud.enable;
 
       security.pam = {
         services = {
@@ -207,9 +181,6 @@ in
 
       # pam_rssh
       security.pam.rssh.enable = true;
-
-      # Disabled because for new deployments we can't decrypt the password, for example pi3 sdcard
-      # age.secrets.passwordfile-arnau.rekeyFile = "${private}/secrets/age/password.age";
 
       nix.settings.trusted-users = [ "${user}" ];
     })
