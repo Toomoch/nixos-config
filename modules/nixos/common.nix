@@ -73,8 +73,8 @@ in
         outputs.overlays.unstable-packages
         inputs.agenix-rekey.overlays.default
       ];
-      nixpkgs.flake.setNixPath = true;
-      nixpkgs.flake.setFlakeRegistry = true;
+      # nixpkgs.flake.setNixPath = true;
+      # nixpkgs.flake.setFlakeRegistry = true;
 
       systemd.network.enable = true;
       networking.useNetworkd = true;
@@ -107,16 +107,6 @@ in
         xkb.layout = "es";
         xkb.variant = "cat";
       };
-
-      environment.etc.inputrc.text = ''
-        $include ${nixpkgs.outPath + "/nixos/modules/programs/bash/inputrc"}
-        set editing-mode vi
-        set keyseq-timeout 50
-        set show-mode-in-prompt on
-        set vi-cmd-mode-string \1\e[34;1m\2[N] \1\e[0m\2
-        set vi-ins-mode-string \1\e[32;1m\2[I] \1\e[0m\2
-      '';
-
       # Configure console keymap
       # https://github.com/NixOS/nixpkgs/issues/257904
       # console = {
@@ -134,10 +124,8 @@ in
         vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
         wget
         pciutils
-        fastfetch
-        xdg-utils
+        fastfetchMinimal
         usbutils
-        lm_sensors
         htop
         just
         dig
@@ -158,9 +146,6 @@ in
         enableAskPassword = true;
         askPassword = "${pkgs.seahorse}/libexec/seahorse/ssh-askpass";
       };
-
-      # Enable mosh
-      programs.mosh.enable = true;
 
       #Allow all VPN traffic routing
       networking.firewall.checkReversePath = "loose";

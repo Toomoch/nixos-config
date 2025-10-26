@@ -72,6 +72,8 @@ in
         libva-utils
         trayscale
         yt-dlp
+        xdg-utils
+        lm_sensors
       ];
 
       programs.localsend.enable = true;

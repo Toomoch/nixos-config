@@ -133,6 +133,12 @@
           hm = false;
         }
         {
+          host = "headscale";
+          arch = "x86_64-linux";
+          branch = stable;
+          hm = false;
+        }
+        {
           host = "x550";
           arch = "x86_64-linux";
           branch = stable;
