@@ -133,7 +133,7 @@
           hm = false;
         }
         {
-          host = "headscale";
+          host = "potato";
           arch = "x86_64-linux";
           branch = stable;
           hm = false;

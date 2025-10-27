@@ -1,4 +1,11 @@
-{ config, pkgs, lib, nixpkgs, secrets, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  nixpkgs,
+  secrets,
+  ...
+}:
 {
   imports = [
     ./hardware-configuration.nix
@@ -8,10 +15,12 @@
     ./disko.nix
   ];
 
-  networking.hostName = "headscale";
+  networking.hostName = "potato";
 
   custom.common.enable = true;
   custom.common.cloud.enable = true;
+  boot.kernelParams = [ "console=ttyS0,115200n8" ];
+  zramSwap.enable = true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
