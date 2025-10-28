@@ -1,4 +1,12 @@
-{ inputs, config, pkgs, lib, secrets, private, ... }:
+{
+  inputs,
+  config,
+  pkgs,
+  lib,
+  secrets,
+  private,
+  ...
+}:
 let
   homeDir = "${config.users.users.${user}.home}";
   user = "${secrets.hosts.${config.networking.hostName}.user}";
@@ -10,12 +18,15 @@ in
   ];
 
   networking.hostName = secrets.work.hostName;
-  custom.common.enable = true;
-  custom.common.systemd-boot.enable = true;
-  custom.desktop.enable = true;
-  custom.desktop.sway.enable = true;
-  custom.desktop.niri.enable = true;
-  custom.desktop.greeter = "regreet";
+
+  custom.desktop.wm = {
+    enable = true;
+    greeter = "regreet";
+    sway.enable = true;
+    hyprland.enable = false;
+    niri.enable = true;
+  };
+
   custom.vm.podman.enable = true;
   custom.vm.docker.enable = true;
   custom.vm.libvirtd.enable = true;
@@ -62,4 +73,3 @@ in
 
   system.stateVersion = "24.05";
 }
-

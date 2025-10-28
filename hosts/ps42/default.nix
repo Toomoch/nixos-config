@@ -81,7 +81,6 @@ in
       ];
 
       custom.common.enable = true;
-      custom.common.systemd-boot.enable = true;
       custom.desktop.enable = true;
       custom.desktop.arctis9.enable = false;
       custom.desktop.matlab.enable = false;
@@ -91,7 +90,10 @@ in
       # Enable VAAPI hardware acceleration
       hardware.graphics = {
         enable = true;
-        extraPackages = with pkgs; [ intel-media-driver intel-media-sdk ];
+        extraPackages = with pkgs; [
+          intel-media-driver
+          intel-media-sdk
+        ];
       };
       programs.firefox = {
         enable = true;
@@ -134,15 +136,19 @@ in
       system.stateVersion = "22.11"; # Did you read the comment?
     }
     (lib.mkIf (config.specialisation != { }) {
-      environment.systemPackages = [ pkgs.docker-compose ];
-      virtualisation.docker.enable = true;
 
       custom.desktop.blacklistnvidia.enable = true;
-      custom.desktop.sway.enable = true;
-      custom.desktop.greeter = "regreet";
-      custom.desktop.niri.enable = true;
-      custom.desktop.hyprland.enable = false;
+
+      custom.desktop.wm = {
+        enable = true;
+        greeter = "regreet";
+        sway.enable = true;
+        hyprland.enable = false;
+        niri.enable = true;
+      };
+
       custom.vm.libvirtd.enable = true;
+      custom.vm.docker.enable = true;
       custom.vfio = {
         enable = true;
         devices = [ "10de:1d10" ];

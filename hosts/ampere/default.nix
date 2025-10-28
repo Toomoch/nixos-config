@@ -17,18 +17,16 @@
     ./disko.nix
   ];
 
-  networking.hostName = "oracle2";
+  networking.hostName = "ampere";
 
   # zfs required stuff
   services.zfs.autoScrub.enable = true;
   networking.hostId = "ba6f9367";
   boot.loader.systemd-boot.netbootxyz.enable = true;
 
-
-  services.openssh.ports = [ secrets.hosts.oracle2.sshPort ];
+  services.openssh.ports = [ secrets.hosts.ampere.sshPort ];
 
   custom.common.enable = true;
-  custom.common.systemd-boot.enable = true;
   custom.common.cloud.enable = true;
   custom.vm.podman.enable = true;
   security.polkit.enable = true;
@@ -42,6 +40,27 @@
 
   services.silverbullet = {
     enable = true;
+  };
+
+  services.tailscale = {
+    openFirewall = true;
+    enable = true;
+    extraUpFlags = [
+      "--accept-dns=false"
+      "--accept-routes=false"
+      "--login-server=${config.services.headscale.settings.server_url}"
+    ];
+    authKeyFile = config.age.secrets.tailscale.path;
+    # authKeyParameters = {
+    #   preauthorized = true;
+    #   # baseURL = config.services.headscale.settings.server_url;
+    # };
+  };
+
+  age.secrets.tailscale = {
+    rekeyFile = /${private}/secrets/age/tailscale-tag-server.age;
+    owner = "root";
+    group = "root";
   };
 
   # services.caddy.virtualHosts."silverbullet.${config.custom.homelab.primaryDomain}" = {

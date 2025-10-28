@@ -224,10 +224,10 @@ in
         forwardAgent = true;
         port = secrets.hosts.oracle1.sshPort;
       };
-      "oracle2" = {
-        hostname = secrets.hosts.oracle2.dns;
+      "ampere" = {
+        hostname = secrets.hosts.ampere.dns;
         forwardAgent = true;
-        port = secrets.hosts.oracle2.sshPort;
+        port = secrets.hosts.ampere.sshPort;
       };
 
       "h81" = {

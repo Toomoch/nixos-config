@@ -1,29 +1,26 @@
-{ config, pkgs, lib, nixpkgs, secrets, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  nixpkgs,
+  secrets,
+  ...
+}:
 {
   imports = [
     ./hardware-configuration.nix
     # Minimal stuff
     (nixpkgs.outPath + "/nixos/modules/profiles/minimal.nix")
+    (nixpkgs.outPath + "/nixos/modules/profiles/perlless.nix")
     ./disko.nix
   ];
 
-  networking.hostName = "oracle1";
-
-  services.openssh.ports = [ secrets.hosts.oracle1.sshPort ];
+  networking.hostName = "potato";
 
   custom.common.enable = true;
   custom.common.cloud.enable = true;
-  custom.vm.podman.enable = true;
-  custom.vm.docker.enable = false;
-  security.polkit.enable = true;
-  custom.homelab.enablevps = false;
-
-  wirenix = {
-    enable = true;
-    configurer = "networkd"; # defaults to "static", could also be "networkd"
-    keyProviders = ["agenix-rekey"]; # could also be ["agenix-rekey"] or ["acl" "agenix-rekey"]
-  };
-  networking.firewall.allowedUDPPorts = [ 51820 ];
+  boot.kernelParams = [ "console=ttyS0,115200n8" ];
+  zramSwap.enable = true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

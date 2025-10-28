@@ -30,7 +30,6 @@
   i18n.defaultLocale = lib.mkForce "ca_ES.UTF-8";
 
   custom.common.enable = true;
-  custom.common.systemd-boot.enable = true;
   custom.desktop.enable = true;
   custom.desktop.kde.enable = true;
   custom.desktop.flatpak.enable = true;

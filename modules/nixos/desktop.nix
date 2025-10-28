@@ -33,6 +33,12 @@ in
         enable = true;
         binfmt = true;
       };
+
+      programs.ssh = {
+        enableAskPassword = true;
+        askPassword = "${pkgs.seahorse}/libexec/seahorse/ssh-askpass";
+      };
+
       services.fwupd.enable = true;
       fonts = {
         fontconfig.defaultFonts = {
@@ -58,13 +64,13 @@ in
       programs.nix-ld.enable = true;
       services.envfs.enable = true;
 
-      qt = {
-        enable = true;
-        style = "adwaita-dark";
-      };
-      environment.sessionVariables = {
-        QT_STYLE_OVERRIDE = "adwaita-dark";
-      };
+      # qt = {
+      #   enable = true;
+      #   style = "adwaita-dark";
+      # };
+      # environment.sessionVariables = {
+      #   QT_STYLE_OVERRIDE = "adwaita-dark";
+      # };
 
       environment.systemPackages = with pkgs; [
         vulkan-tools
@@ -72,6 +78,8 @@ in
         libva-utils
         trayscale
         yt-dlp
+        xdg-utils
+        lm_sensors
       ];
 
       programs.localsend.enable = true;

@@ -64,8 +64,32 @@ in
     retentionPeriod = "1y";
     extraOptions = [
       "-enableTCP6"
+      "-vmalert.proxyURL=http://localhost${toString config.services.vmalert.settings."httpListenAddr"}"
     ];
     prometheusConfig.scrape_configs = autogenScrapeConfigs;
+  };
+  services.vmalert = {
+    enable = true;
+    rules = { };
+    settings = {
+      "datasource.url" =
+        "http://localhost:${toString (lib.removePrefix ":" config.services.victoriametrics.listenAddress)}";
+      "httpListenAddr" = ":8880";
+    };
+  };
+  # networking.firewall.allowedTCPPorts = [
+  #   (lib.toInt (lib.removePrefix ":" config.services.victoriametrics.listenAddress))
+  # ];
+
+  services.caddy = {
+    enable = true;
+    virtualHosts = {
+      "metrics.avalls.dev" = {
+        extraConfig = ''
+          reverse_proxy localhost:${toString (lib.removePrefix ":" config.services.victoriametrics.listenAddress)}
+        '';
+      };
+    };
   };
 
 }

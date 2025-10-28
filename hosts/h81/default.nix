@@ -36,7 +36,6 @@
   networking.hostId = "e0684fdb";
   programs.dconf.enable = true;
 
-  custom.common.systemd-boot.enable = true;
   custom.homelab = {
     enable = true;
     serviceDataDir = "/zstorage/data";
@@ -52,7 +51,6 @@
       users = secrets.smbUsers;
     };
   };
-  custom.grafana.enable = true;
   # custom.vm.docker.enable = true;
   custom.vm.libvirtd.enable = true;
   custom.vm.podman.enable = true;
