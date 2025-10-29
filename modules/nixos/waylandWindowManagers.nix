@@ -57,8 +57,8 @@ in
       extraOptions = [ "--unsupported-gpu" ];
     };
 
-    programs.dconf.enable = cfg.sway.enable;
-    environment.systemPackages = lib.optionals cfg.sway.enable (
+    programs.dconf.enable = cfg.enable;
+    environment.systemPackages = lib.optionals cfg.enable (
       with pkgs;
       [
         wayland

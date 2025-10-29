@@ -36,6 +36,7 @@
   virtualisation.waydroid.enable = true;
 
   custom.desktop = {
+    enable = true;
     wm = {
       enable = true;
       greeter = "regreet";
