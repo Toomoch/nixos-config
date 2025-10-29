@@ -240,6 +240,11 @@ in
         forwardAgent = true;
       };
 
+      "potato" = {
+        hostname = secrets.hosts.potato.dns;
+        forwardAgent = true;
+      };
+
       ax3000t-1 = {
         hostname = secrets.hosts.ax3000t-1.dns;
         user = "root";

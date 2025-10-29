@@ -11,7 +11,7 @@
     ./hardware-configuration.nix
     # Minimal stuff
     (nixpkgs.outPath + "/nixos/modules/profiles/minimal.nix")
-    (nixpkgs.outPath + "/nixos/modules/profiles/perlless.nix")
+    # (nixpkgs.outPath + "/nixos/modules/profiles/perlless.nix")
     ./disko.nix
   ];
 
