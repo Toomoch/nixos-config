@@ -21,6 +21,7 @@
   custom.common.cloud.enable = true;
   boot.kernelParams = [ "console=ttyS0,115200n8" ];
   zramSwap.enable = true;
+  environment.systemPackages = [ pkgs.cryptsetup ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
