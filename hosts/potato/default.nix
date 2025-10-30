@@ -11,7 +11,6 @@
     ./hardware-configuration.nix
     # Minimal stuff
     (nixpkgs.outPath + "/nixos/modules/profiles/minimal.nix")
-    # (nixpkgs.outPath + "/nixos/modules/profiles/perlless.nix")
     ./disko.nix
   ];
 
@@ -21,7 +20,7 @@
   custom.common.cloud.enable = true;
   boot.kernelParams = [ "console=ttyS0,115200n8" ];
   zramSwap.enable = true;
-  environment.systemPackages = [ pkgs.cryptsetup ];
+  environment.systemPackages = [ pkgs.cloud-utils ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

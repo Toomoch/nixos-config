@@ -4,7 +4,7 @@
       root = {
         type = "disk";
         device = "/dev/sda";
-        imageSize = "10G";
+        imageSize = "6G";
         content = {
           type = "gpt";
           partitions = {
@@ -18,19 +18,26 @@
                 mountOptions = [ "umask=0077" ];
               };
             };
-            root = {
-              end = "-2G";
-              content = {
-                type = "filesystem";
-                format = "ext4";
-                mountpoint = "/";
-              };
-            };
             encryptedSwap = {
-              size = "100%";
+              size = "2G";
               content = {
                 type = "swap";
                 randomEncryption = true;
+              };
+            };
+            luks = {
+              size = "100%";
+              content = {
+                type = "luks";
+                name = "crypted";
+                # askPassword = true;
+                passwordFile = "/tmp/secret.key";
+                settings.allowDiscards = true;
+                content = {
+                  type = "filesystem";
+                  format = "ext4";
+                  mountpoint = "/";
+                };
               };
             };
           };
