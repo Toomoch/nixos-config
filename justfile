@@ -14,19 +14,19 @@ deploy HOSTNAME: gitadd
 deployremote HOSTNAME: gitadd
   deploy .#{{HOSTNAME}} --skip-checks --remote-build
 
-switch hostname="" buildhost=hostname:
+switch hostname="" buildhost=hostname: gitadd
   nixos-rebuild switch --flake .#{{hostname && hostname }} \
     {{ hostname && ("--target-host " + hostname) }} \
     {{ buildhost  && ("--build-host " + buildhost) }} \
     {{ hostname && commonRemoteOpts }} --sudo
 
-boot hostname="" buildhost=hostname:
+boot hostname="" buildhost=hostname: gitadd
   nixos-rebuild boot --flake .#{{hostname && hostname }} \
     {{ hostname && ("--target-host " + hostname) }} \
     {{ buildhost  && ("--build-host " + buildhost) }} \
     {{ hostname && commonRemoteOpts }} --sudo
 
-test hostname="" buildhost=hostname:
+test hostname="" buildhost=hostname: gitadd
   nixos-rebuild test --flake .#{{hostname && hostname }} \
     {{ hostname && ("--target-host " + hostname) }} \
     {{ buildhost  && ("--build-host " + buildhost) }} \
