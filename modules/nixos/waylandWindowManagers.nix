@@ -67,6 +67,7 @@ in
         adw-gtk3
         adwaita-icon-theme
         waypipe
+        nautilus
       ]
     );
 

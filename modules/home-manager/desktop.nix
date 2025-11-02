@@ -20,7 +20,9 @@
       virt-manager
       gnome-network-displays
       imhex
-      ungoogled-chromium
+      (ungoogled-chromium.override {
+        commandLineArgs = [ "--enable-features=TouchpadOverscrollHistoryNavigation" ];
+      })
       resources
       krita
       localsend

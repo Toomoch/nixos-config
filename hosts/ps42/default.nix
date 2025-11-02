@@ -138,6 +138,7 @@ in
     (lib.mkIf (config.specialisation != { }) {
 
       custom.desktop.blacklistnvidia.enable = true;
+      custom.desktop.enable = true;
 
       custom.desktop.wm = {
         enable = true;

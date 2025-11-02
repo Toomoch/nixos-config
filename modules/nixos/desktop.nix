@@ -87,6 +87,7 @@ in
       # Enable networking
       systemd.network.enable = lib.mkForce false;
       networking.useNetworkd = lib.mkForce false;
+      # Use NetworkManager + resolved for desktop systems
       networking.networkmanager.enable = true;
       services.resolved.enable = true;
 
@@ -133,6 +134,41 @@ in
         preferences = {
           "browser.fullscreen.autohide" = false;
           "pdfjs.defaultZoomValue" = "page-fit";
+        };
+      };
+      programs.chromium = {
+
+        enable = true;
+        # doesn't work with chromium
+        # extensions = [
+        #   "alhmbbnlcggfcjjfihglopfopcbigmil;https://clients2.google.com/service/update2/crx" # waincognito
+        #   "cjpalhdlnbpafiamejdnhcphjbkeiagm;https://clients2.google.com/service/update2/crx" # ublock origin
+        #   "mdjildafknihdffpkfmmpnpoiajfjnjd;https://clients2.google.com/service/update2/crx" # consent O matic
+        #   "gbkeegbaiigmenfmjfclcdgdpimamgkj;https://clients2.google.com/service/update2/crx" # docs offline
+        #   "nngceckbapebfimnlniiiahkandclblb;https://clients2.google.com/service/update2/crx" # bitwarden
+        # ];
+        defaultSearchProviderEnabled = true;
+        defaultSearchProviderSearchURL = "https://www.google.com/search?q={searchTerms}&{google:RLZ}{google:originalQueryForSuggestion}{google:assistedQueryStats}{google:searchFieldtrialParameter}{google:searchClient}{google:sourceId}{google:instantExtendedEnabledParameter}ie={inputEncoding}";
+        defaultSearchProviderSuggestURL = "https://www.google.com/complete/search?output=chrome&q={searchTerms}";
+        extraOpts = {
+          "SearchSuggestEnabled" = true;
+          "RestoreOnStartup" = 1;
+          "PasswordManagerEnabled" = false;
+          "SpellcheckEnabled" = false;
+          "WebAppInstallForceList" = [
+            {
+              "custom_name" = "WhatsApp";
+              "create_desktop_shortcut" = true;
+              "default_launch_container" = "window";
+              "url" = "https://web.whatsapp.com";
+            }
+            {
+              "custom_name" = "Google Chat";
+              "create_desktop_shortcut" = true;
+              "default_launch_container" = "window";
+              "url" = "https://mail.google.com";
+            }
+          ];
         };
       };
 

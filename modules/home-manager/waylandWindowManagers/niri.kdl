@@ -592,7 +592,7 @@ binds {
 }
 workspace ""
 window-rule {
-    match app-id=r#"firefox$"#
+    match app-id=r#"firefox|chromium-browser$"#
     open-on-workspace ""
     open-maximized true
 }
@@ -603,16 +603,7 @@ window-rule {
 }
 workspace ""
 window-rule {
-    match app-id=r#"^FFPWA-.*"#
-    open-on-workspace ""
-}
-window-rule {
-    match app-id="google-chat-linux"
-    open-on-workspace ""
-}
-
-window-rule {
-    match app-id="Altus"
+    match app-id=r#"chrome-hnpfjngllnobngcgfapefoaidbinmjnm-Default|chrome-fmgjjmmmlfnkbppncabfkddbjimcfncm-Default|discord"#
     open-on-workspace ""
 }
 
