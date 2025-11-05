@@ -19,6 +19,7 @@ in
 
   networking.hostName = secrets.work.hostName;
 
+  custom.desktop.enable = true;
   custom.desktop.wm = {
     enable = true;
     greeter = "regreet";
