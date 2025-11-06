@@ -55,12 +55,22 @@
     #   preauthorized = true;
     #   # baseURL = config.services.headscale.settings.server_url;
     # };
+    useRoutingFeatures = "both";
   };
 
   age.secrets.tailscale = {
     rekeyFile = /${private}/secrets/age/tailscale-tag-server.age;
     owner = "root";
     group = "root";
+  };
+
+  services.immich = {
+    enable = true;
+    database = {
+      enableVectors = false;
+    };
+    openFirewall = true;
+    host = "0.0.0.0";
   };
 
   # services.caddy.virtualHosts."silverbullet.${config.custom.homelab.primaryDomain}" = {

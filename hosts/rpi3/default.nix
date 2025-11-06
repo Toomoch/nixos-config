@@ -42,7 +42,8 @@ in
       onState = [ "routable" ];
       script = ''
         #!${pkgs.runtimeShell}
-        ${lib.getExe pkgs.ethtool} -K enu1u1 rx-udp-gro-forwarding on rx-gro-list off
+        DEV="$(${pkgs.iproute2}/bin/ip --json route show default | ${lib.getExe pkgs.jq} .[0].dev -r)"
+        ${lib.getExe pkgs.ethtool} -K "$DEV" rx-udp-gro-forwarding on rx-gro-list off
       '';
     };
   };
