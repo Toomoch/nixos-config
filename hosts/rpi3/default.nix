@@ -48,14 +48,14 @@ in
   };
 
   # Borg repos
-  services.borgbackup.repos = {
-    nextcloud = {
-      path = "/external/borg/nextcloud";
-      authorizedKeys = [
-        "${builtins.readFile /${private}/secrets/ssh/id_ed25519.borgnextcloud.pub}"
-      ];
-    };
-  };
+  # services.borgbackup.repos = {
+  #   nextcloud = {
+  #     path = "/external/borg/nextcloud";
+  #     authorizedKeys = [
+  #       "${builtins.readFile /${private}/secrets/ssh/id_ed25519.borgnextcloud.pub}"
+  #     ];
+  #   };
+  # };
 
   # Use the extlinux boot loader.
   boot.loader.grub.enable = false;
@@ -67,12 +67,12 @@ in
   #];
 
   # USB storage
-  boot.initrd.availableKernelModules = [ "usb_storage" ];
-  fileSystems."/external" = {
-    device = "/dev/disk/by-id/usb-WD_Elements_10B8_575833314539343830434630-0:0-part1";
-    fsType = "ext4";
-    options = [ "nofail" ];
-  };
+  # boot.initrd.availableKernelModules = [ "usb_storage" ];
+  # fileSystems."/external" = {
+  #   device = "/dev/disk/by-id/usb-WD_Elements_10B8_575833314539343830434630-0:0-part1";
+  #   fsType = "ext4";
+  #   options = [ "nofail" ];
+  # };
 
   networking.useDHCP = lib.mkDefault true;
 
