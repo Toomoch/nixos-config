@@ -22,6 +22,7 @@
       imhex
       (ungoogled-chromium.override {
         commandLineArgs = [ "--enable-features=TouchpadOverscrollHistoryNavigation" ];
+        enableWideVine = true;
       })
       resources
       krita
