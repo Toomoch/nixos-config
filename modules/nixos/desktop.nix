@@ -76,7 +76,6 @@ in
         vulkan-tools
         glxinfo
         libva-utils
-        trayscale
         yt-dlp
         xdg-utils
         lm_sensors
@@ -137,7 +136,6 @@ in
         };
       };
       programs.chromium = {
-
         enable = true;
         # doesn't work with chromium
         # extensions = [
@@ -209,7 +207,6 @@ in
         heroic
         gamescope
         obs-studio
-        webcord
         protonup-qt
         prismlauncher
       ];

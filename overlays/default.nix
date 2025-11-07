@@ -16,14 +16,11 @@
     # example = prev.example.overrideAttrs (oldAttrs: rec {
     # ...
     # });
-    firefoxpwa = final.unstable.firefoxpwa;
-    caddy = final.unstable.caddy;
-    trayscale = final.unstable.trayscale;
-    river = final.unstable.river-classic;
-    openapi-generator-cli = final.unstable.openapi-generator-cli;
     silverbullet = final.unstable.silverbullet;
     cosmic-session = final.unstable.cosmic-session;
     cosmic-greeter = final.unstable.cosmic-greeter;
+    openrgb = final.unstable.openrgb;
+    # ungoogled-chromium = final.unstable.ungoogled-chromium;
     numbat = prev.numbat.overrideAttrs (previousAttrs: {
       postInstall = ''
         # The source files are in a directory named 'assets' at the root
