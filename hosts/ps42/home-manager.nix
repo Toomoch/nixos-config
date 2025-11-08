@@ -33,7 +33,7 @@ in
   };
   home.packages = [
     pkgs.discord
-    kodi
+    # kodi
   ];
 
   wayland.windowManager.sway = {
