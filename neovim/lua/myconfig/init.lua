@@ -1,32 +1,37 @@
+-- opts
 do
-  local nixvim_options = { expandtab = true, number = true, smartindent = true, wrap = true }
-
-  for k, v in pairs(nixvim_options) do
+  local opts = {
+    expandtab = true,
+    number = true,
+    smartindent = true,
+    wrap = true,
+  }
+  for k, v in pairs(opts) do
     vim.opt[k] = v
   end
 end
 
 do
-  local nixvim_globals = { mapleader = " ", maplocalleader = " " }
-
-  for k, v in pairs(nixvim_globals) do
+  local globals = {
+    mapleader = " ",
+    maplocalleader = " ",
+  }
+  for k, v in pairs(globals) do
     vim.g[k] = v
   end
 end
 
+-- Theme
 require("kanagawa").setup({ background = { dark = "wave" } })
+vim.cmd.colorscheme("kanagawa")
 
-vim.diagnostic.config({ virtual_text = true })
-
-vim.cmd([[colorscheme kanagawa
-]])
-require("oil").setup()
+-- Plugins
 require("lualine").setup({})
+require("oil").setup()
+require("fzf-lua").setup({})
 require("nvim-treesitter.configs").setup({
   highlight = { enable = true },
 })
-
-require("fzf-lua").setup({})
 
 -- Set up keybinds {{{
 do
