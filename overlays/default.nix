@@ -16,6 +16,7 @@
     # example = prev.example.overrideAttrs (oldAttrs: rec {
     # ...
     # });
+    tombi = final.unstable.tombi;
     silverbullet = final.unstable.silverbullet;
     cosmic-session = final.unstable.cosmic-session;
     cosmic-greeter = final.unstable.cosmic-greeter;

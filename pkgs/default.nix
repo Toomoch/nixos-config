@@ -40,6 +40,7 @@ rec {
       pkgs.ruff
       pkgs.ty
       pkgs.rust-analyzer
+      pkgs.tombi
     ];
     plugins = {
       start = with pkgs.vimPlugins; [

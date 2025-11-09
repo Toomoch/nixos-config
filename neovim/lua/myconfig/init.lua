@@ -32,6 +32,7 @@ require("fzf-lua").setup({})
 require("nvim-treesitter.configs").setup({
   highlight = { enable = true },
 })
+vim.diagnostic.config({ virtual_text = true })
 
 -- Set up keybinds {{{
 do
@@ -239,6 +240,14 @@ vim.lsp.config.rust_analyzer = {
   },
 }
 vim.lsp.enable({ 'rust_analyzer' })
+
+vim.lsp.config.tombi = {
+  cmd = { 'tombi', 'lsp' },
+  filetypes = { 'toml' },
+  root_markers = { '.git', 'tombi.toml', 'pyproject.toml' },
+}
+
+vim.lsp.enable({ 'tombi' })
 
 local cmp = require("cmp")
 cmp.setup({

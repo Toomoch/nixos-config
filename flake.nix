@@ -172,6 +172,11 @@
             syspkgs = import pkgs {
               inherit system;
               config.allowUnfree = true;
+              overlays = [
+                outputs.overlays.additions
+                outputs.overlays.modifications
+                outputs.overlays.unstable-packages
+              ];
             };
           in
           function syspkgs system
@@ -221,9 +226,7 @@
         };
       };
       # Import every package found in the attr pkgs from ./pkgs/default.nix
-      packages = forAllSystems (
-        pkgs: system: import ./pkgs { inherit pkgs nixvim mnw; }
-      ) nixpkgs-stable;
+      packages = forAllSystems (pkgs: system: import ./pkgs { inherit pkgs nixvim mnw; }) nixpkgs-stable;
       nixosModules.common = import ./modules/nixos;
       nixosModules.private = import /${private}/modules/nixos;
       homeManagerModules.common = import ./modules/home-manager;
