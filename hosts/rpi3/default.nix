@@ -48,32 +48,10 @@ in
     };
   };
 
-  # Borg repos
-  # services.borgbackup.repos = {
-  #   nextcloud = {
-  #     path = "/external/borg/nextcloud";
-  #     authorizedKeys = [
-  #       "${builtins.readFile /${private}/secrets/ssh/id_ed25519.borgnextcloud.pub}"
-  #     ];
-  #   };
-  # };
-
   # Use the extlinux boot loader.
   boot.loader.grub.enable = false;
   boot.loader.generic-extlinux-compatible.enable = true;
   zramSwap.enable = true;
-
-  #users.users.arnau.openssh.authorizedKeys.keyFiles = [
-  #  "${private}/secrets/ssh/id_ed25519.borgnextcloud.pub"
-  #];
-
-  # USB storage
-  # boot.initrd.availableKernelModules = [ "usb_storage" ];
-  # fileSystems."/external" = {
-  #   device = "/dev/disk/by-id/usb-WD_Elements_10B8_575833314539343830434630-0:0-part1";
-  #   fsType = "ext4";
-  #   options = [ "nofail" ];
-  # };
 
   networking.useDHCP = lib.mkDefault true;
 
@@ -87,7 +65,7 @@ in
   wirenix = {
     enable = true;
     configurer = "networkd"; # defaults to "static", could also be "networkd"
-    keyProviders = ["agenix-rekey"]; # could also be ["agenix-rekey"] or ["acl" "agenix-rekey"]
+    keyProviders = [ "agenix-rekey" ]; # could also be ["agenix-rekey"] or ["acl" "agenix-rekey"]
   };
 
   # Pi specific stuff
@@ -115,5 +93,5 @@ in
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "24.05"; # Did you read the comment?
+  system.stateVersion = "25.05"; # Did you read the comment?
 }
