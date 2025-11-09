@@ -211,6 +211,7 @@ in
         prismlauncher
       ];
 
+      programs.gamemode.enable = true;
       #Steam
       programs.steam = {
         enable = true;
