@@ -6,6 +6,7 @@
   lib,
   secrets,
   private,
+  self,
   ...
 }:
 let
@@ -32,9 +33,19 @@ in
   hardware.enableRedistributableFirmware = true;
   boot.supportedFilesystems.zfs = lib.mkForce false;
   services.tailscale = {
-    enable = true;
-    useRoutingFeatures = "server";
     openFirewall = true;
+    enable = true;
+    extraUpFlags = [
+      "--accept-dns=false"
+      "--accept-routes=true"
+      "--login-server=${self.nixosConfigurations.potato.config.services.headscale.settings.server_url}"
+    ];
+    authKeyFile = config.age.secrets.tailscale.path;
+    # authKeyParameters = {
+    #   preauthorized = true;
+    #   # baseURL = config.services.headscale.settings.server_url;
+    # };
+    useRoutingFeatures = "both";
   };
   services.networkd-dispatcher = {
     enable = true;
@@ -86,6 +97,12 @@ in
   #      super.makeModulesClosure (x // { allowMissing = true; });
   #  })
   #];
+
+  services.resolved.enable = false;
+
+  services.coredns = {
+    enable = true;
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

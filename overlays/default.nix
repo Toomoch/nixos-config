@@ -21,6 +21,7 @@
     cosmic-session = final.unstable.cosmic-session;
     cosmic-greeter = final.unstable.cosmic-greeter;
     openrgb = final.unstable.openrgb;
+    coredns = final.unstable.coredns;
     # ungoogled-chromium = final.unstable.ungoogled-chromium;
     numbat = prev.numbat.overrideAttrs (previousAttrs: {
       postInstall = ''
