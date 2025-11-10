@@ -37,8 +37,10 @@ in
     enable = true;
     extraUpFlags = [
       "--accept-dns=false"
-      "--accept-routes=true"
+      "--accept-routes=false"
       "--login-server=${self.nixosConfigurations.potato.config.services.headscale.settings.server_url}"
+      "--advertise-exit-node"
+      "--advertise-routes=10.1.0.0/21"
     ];
     authKeyFile = config.age.secrets.tailscale.path;
     # authKeyParameters = {
