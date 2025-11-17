@@ -41,6 +41,7 @@ rec {
       pkgs.ty
       pkgs.rust-analyzer
       pkgs.tombi
+      pkgs.vscode-langservers-extracted
     ];
     plugins = {
       start = with pkgs.vimPlugins; [

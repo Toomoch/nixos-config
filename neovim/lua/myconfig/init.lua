@@ -249,6 +249,17 @@ vim.lsp.config.tombi = {
 
 vim.lsp.enable({ 'tombi' })
 
+vim.lsp.config.jsonls = {
+  cmd = { 'vscode-json-language-server', '--stdio' },
+  filetypes = { 'json', 'jsonc' },
+  init_options = {
+    provideFormatter = true,
+  },
+  root_markers = { '.git' },
+}
+
+vim.lsp.enable({ 'jsonls' })
+
 local cmp = require("cmp")
 cmp.setup({
   mapping = {
