@@ -1,21 +1,30 @@
-{ inputs, pkgs, lib, config, secrets, private, ... }:
+{
+  inputs,
+  pkgs,
+  lib,
+  config,
+  secrets,
+  private,
+  ...
+}:
 let
   immichRoot = "${config.custom.homelab.serviceDataDir}/immich";
   cfg = config.custom.immich;
   hostname = "immich.${config.custom.homelab.primaryDomain}";
-in {
-  options.custom.immich.enable =
-    lib.mkEnableOption "Whether to enable immich stuff";
+in
+{
+  options.custom.immich.enable = lib.mkEnableOption "Whether to enable immich stuff";
 
   config = lib.mkIf cfg.enable {
     services.immich = {
       enable = true;
       mediaLocation = immichRoot;
+      database.enableVectors = false;
+      accelerationDevices = [ "/dev/dri/renderD128" ];
     };
 
     services.postgresql = {
-      dataDir =
-        "${config.custom.homelab.serviceDataDir}/postgresql/${config.services.postgresql.package.psqlSchema}";
+      dataDir = "${config.custom.homelab.serviceDataDir}/postgresql/${config.services.postgresql.package.psqlSchema}";
       identMap = ''
         # ArbitraryMapName systemUser DBUser
         superuser_map      root      postgres
@@ -47,17 +56,17 @@ in {
             path = "ssh://borg@${secrets.hosts.rpi3.dns}/./";
           }
         ];
-        postgresql_databases = [{
-          name = "immich";
-          format = "custom";
-          username = "postgres";
-        }];
-        ssh_command =
-          "${pkgs.openssh}/bin/ssh -i ${config.age.secrets.borgnextcloud.path}";
+        postgresql_databases = [
+          {
+            name = "immich";
+            format = "custom";
+            username = "postgres";
+          }
+        ];
+        ssh_command = "${pkgs.openssh}/bin/ssh -i ${config.age.secrets.borgnextcloud.path}";
         keep_daily = 7;
         keep_weekly = 4;
-        encryption_passcommand =
-          "cat ${config.age.secrets.borgnextcloud_repokey.path}";
+        encryption_passcommand = "cat ${config.age.secrets.borgnextcloud_repokey.path}";
       };
     };
 
@@ -81,17 +90,9 @@ in {
       "d ${immichRoot} 0750 ${config.services.immich.user} ${config.services.immich.group} - -"
     ];
 
-    systemd.services.immich-server.serviceConfig = {
-      DeviceAllow = [ "/dev/dri/renderD128" ];
-      SupplementaryGroups = [ "render" "video" ];
-    };
-
-    users.users.${config.services.immich.user}.extraGroups =
-      [ "video" "render" ];
-
     services.caddy.virtualHosts."${hostname}" = {
       extraConfig = ''
-        reverse_proxy http://${config.services.immich.host}:${builtins.toString config.services.immich.port} 
+        reverse_proxy http://${config.services.immich.host}:${builtins.toString config.services.immich.port}
       '';
     };
   };
