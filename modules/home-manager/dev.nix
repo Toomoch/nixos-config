@@ -12,7 +12,7 @@
     with pkgs;
     lib.optionals config.custom.dev.enable [
       #dev tools
-      llvmPackages_15.libclang
+      libclang
       #nixfmt-classic
       nixfmt-rfc-style
       shellcheck

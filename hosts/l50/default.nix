@@ -5,11 +5,11 @@
     ../../users/g.nix
   ];
 
-  networking.hostName = "l50"; 
+  networking.hostName = "l50";
 
   environment.systemPackages = with pkgs; [
     telegram-desktop
-    onlyoffice-bin
+    onlyoffice-desktopeditors
     vlc
     libsForQt5.dragon
     gnome.gnome-boxes

@@ -5,7 +5,7 @@
 
   environment.systemPackages = with pkgs; [
     telegram-desktop
-    onlyoffice-bin
+    onlyoffice-desktopeditors
     vlc
     tenacity
     kdePackages.ark

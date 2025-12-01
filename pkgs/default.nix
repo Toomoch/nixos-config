@@ -20,7 +20,7 @@ rec {
       ;
   };
   som-energia-hass = pkgs.callPackage ./som-energia-hass.nix { };
-  nvim = nixvim.legacyPackages.${pkgs.system}.makeNixvimWithModule {
+  nvim = nixvim.legacyPackages.${pkgs.stdenv.hostPlatform.system}.makeNixvimWithModule {
     module = ../nixvim;
   };
   help-blog = pkgs.callPackage ./blog.nix { };

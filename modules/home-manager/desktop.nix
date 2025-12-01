@@ -15,7 +15,7 @@
       gnome-disk-utility
       pavucontrol
       gnome-calculator
-      onlyoffice-bin
+      onlyoffice-desktopeditors
       scrcpy
       virt-manager
       gnome-network-displays

@@ -17,7 +17,7 @@ in
   config = {
     environment.systemPackages =
       lib.optional cfg.podman.enable pkgs.podman-compose
-      ++ lib.optional cfg.libvirtd.enable pkgs.win-virtio
+      ++ lib.optional cfg.libvirtd.enable pkgs.virtio-win
       ++ lib.optional cfg.docker.enable pkgs.docker-compose;
     virtualisation = {
       podman = {
@@ -33,9 +33,6 @@ in
         enable = cfg.libvirtd.enable;
         qemu = {
           swtpm.enable = true;
-          ovmf.packages = [
-            pkgs.OVMFFull.fd
-          ];
         };
       };
     };

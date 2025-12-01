@@ -4,11 +4,11 @@
     ./hardware-configuration.nix
   ];
 
-  networking.hostName = "cp6230"; 
+  networking.hostName = "cp6230";
 
   environment.systemPackages = with pkgs; [
     qucs-s
-    onlyoffice-bin
+    onlyoffice-desktopeditors
   ];
 
   common.enable = true;

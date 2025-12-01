@@ -23,7 +23,9 @@ let
     vimdiff = "nvim -d";
     aspm = "sudo lspci -vv | awk '/ASPM/{print $0}' RS= | grep --color -P '(^[a-z0-9:.]+|ASPM )'";
     grep = "grep --color=auto";
-    vimdev = "${inputs.self.outputs.packages.${pkgs.system}.nvim-mnw.devMode}/bin/nvim";
+    vimdev = "${
+      inputs.self.outputs.packages.${pkgs.stdenv.hostPlatform.system}.nvim-mnw.devMode
+    }/bin/nvim";
   };
 in
 {
@@ -49,7 +51,7 @@ in
     tmux-ssh
     ripgrep
     bitbake-language-server
-    inputs.self.outputs.packages.${system}.nvim-mnw
+    inputs.self.outputs.packages.${pkgs.stdenv.hostPlatform.system}.nvim-mnw
   ];
   programs.fzf.enableZshIntegration = true;
   programs.fzf.enableBashIntegration = true;
@@ -60,23 +62,23 @@ in
   programs.git = {
     enable = true;
     lfs.enable = true;
-    aliases = {
-      co = "checkout";
-      ci = "commit";
-      a = "add";
-      aa = "add --all";
-      r = "restore";
-      rs = "restore --staged";
-      s = "status";
-      l = "log --graph --all --decorate";
-      d = "diff";
-      ds = "diff --staged";
-      home = "rev-parse --show-toplevel";
-    };
+    settings = {
+      aliases = {
+        co = "checkout";
+        ci = "commit";
+        a = "add";
+        aa = "add --all";
+        r = "restore";
+        rs = "restore --staged";
+        s = "status";
+        l = "log --graph --all --decorate";
+        d = "diff";
+        ds = "diff --staged";
+        home = "rev-parse --show-toplevel";
+      };
 
-    userName = lib.mkDefault "Toomoch";
-    userEmail = lib.mkDefault "vallsfustearnau@gmail.com";
-    extraConfig = {
+      user.name = lib.mkDefault "Toomoch";
+      user.email = lib.mkDefault "vallsfustearnau@gmail.com";
       color = {
         ui = true;
       };
