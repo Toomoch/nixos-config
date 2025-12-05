@@ -19,7 +19,9 @@ rec {
       buildPythonPackage
       ;
   };
-  som-energia-hass = pkgs.callPackage ./som-energia-hass.nix { };
+  som-energia-hass = pkgs.callPackage ./som-energia-hass.nix {
+    inherit (pkgs.home-assistant.python.pkgs) holidays;
+  };
   nvim = nixvim.legacyPackages.${pkgs.stdenv.hostPlatform.system}.makeNixvimWithModule {
     module = ../nixvim;
   };
