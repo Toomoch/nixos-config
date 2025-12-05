@@ -11,7 +11,7 @@
     telegram-desktop
     onlyoffice-desktopeditors
     vlc
-    libsForQt5.dragon
+    kdePackages.dragon
     gnome.gnome-boxes
   ];
 

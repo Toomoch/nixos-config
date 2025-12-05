@@ -54,9 +54,8 @@ in
           fira-code-symbols
           font-awesome
           noto-fonts
-          noto-fonts-extra
           noto-fonts-cjk-sans
-          noto-fonts-emoji
+          noto-fonts-color-emoji
           nerd-fonts.iosevka
         ];
       };
@@ -74,7 +73,7 @@ in
 
       environment.systemPackages = with pkgs; [
         vulkan-tools
-        glxinfo
+        mesa-demos
         libva-utils
         yt-dlp
         xdg-utils

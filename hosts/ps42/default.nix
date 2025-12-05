@@ -28,8 +28,8 @@ in
             custom.desktop.kde.enable = true;
             custom.desktop.flatpak.enable = true;
             environment.systemPackages = with pkgs; [
-              libsForQt5.kpat
-              libsForQt5.kio-gdrive
+              kdePackages.kpat
+              kdePackages.kio-gdrive
               x2goclient
             ];
             i18n.defaultLocale = lib.mkDefault "ca_ES.UTF-8";
@@ -92,7 +92,6 @@ in
         enable = true;
         extraPackages = with pkgs; [
           intel-media-driver
-          intel-media-sdk
         ];
       };
       programs.firefox = {

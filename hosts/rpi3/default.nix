@@ -7,6 +7,7 @@
   secrets,
   private,
   self,
+  modulesPath,
   ...
 }:
 let
@@ -17,7 +18,7 @@ in
     #./hardware-configuration.nix
     (modulesPath + "/installer/sd-card/sd-image-aarch64.nix")
     # Minimal stuff
-    (modulesPath + "/nixos/modules/profiles/minimal.nix")
+    (modulesPath + "/profiles/minimal.nix")
   ];
 
   networking.hostName = "rpi3"; # Define your hostname.
@@ -43,10 +44,6 @@ in
       "--advertise-routes=10.1.0.0/21"
     ];
     authKeyFile = config.age.secrets.tailscale.path;
-    # authKeyParameters = {
-    #   preauthorized = true;
-    #   # baseURL = config.services.headscale.settings.server_url;
-    # };
     useRoutingFeatures = "both";
   };
   services.networkd-dispatcher = {

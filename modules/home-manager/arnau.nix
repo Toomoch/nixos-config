@@ -33,7 +33,7 @@ in
 
   nix.gc = {
     automatic = true;
-    frequency = "weekly";
+    dates = "weekly";
     options = "--delete-older-than 15d";
   };
 
@@ -211,14 +211,22 @@ in
 
   programs.ssh = {
     enable = true;
+    enableDefaultConfig = false;
     matchBlocks = {
       "*" = {
         setEnv = {
           TERM = "xterm-256color";
         };
         extraOptions = {
-          AddKeysToAgent = "yes";
+          "AddKeysToAgent" = "yes";
+          "ForwardAgent" = "no";
+          "Compression" = "no";
+          "ServerAliveInterval" = "0";
+          "ServerAliveCountMax" = "3";
+          "HashKnownHosts" = "no";
+          "UserKnownHostsFile" = "~/.ssh/known_hosts";
         };
+
       };
 
       "oracle1" = {

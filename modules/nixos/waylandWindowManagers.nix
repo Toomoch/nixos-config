@@ -62,11 +62,14 @@ in
         adwaita-icon-theme
         waypipe
         nautilus
+        file-roller
       ]
     );
 
     # Gnome Keyring
     services.gnome.gnome-keyring.enable = true;
+    # Use the default SSH agent
+    services.gnome.gcr-ssh-agent.enable = false;
     security.pam.services.greetd.enableGnomeKeyring = true;
     programs.thunar = {
       enable = true;
@@ -76,7 +79,6 @@ in
         thunar-media-tags-plugin
       ];
     };
-    programs.file-roller.enable = true;
     # Enable wayland in electron apps
     environment.sessionVariables.NIXOS_OZONE_WL = "1"; # Disabled because of https://github.com/microsoft/vscode/issues/184124
     # Enable wayland in firefox
@@ -92,9 +94,9 @@ in
     services.dbus.enable = true;
 
     # Don’t shutdown when power button is short-pressed
-    services.logind.extraConfig = ''
-      HandlePowerKey=ignore
-    '';
+    services.logind.settings.Login = {
+      HandlePowerKey = "ignore";
+    };
     services.blueman.enable = true;
 
     security.pam.services.gtklock = { };
