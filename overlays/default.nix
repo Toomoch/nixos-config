@@ -18,9 +18,6 @@
     # });
     tombi = final.unstable.tombi;
     silverbullet = final.unstable.silverbullet;
-    cosmic-session = final.unstable.cosmic-session;
-    cosmic-greeter = final.unstable.cosmic-greeter;
-    openrgb = final.unstable.openrgb;
     coredns = final.unstable.coredns;
     # ungoogled-chromium = final.unstable.ungoogled-chromium;
     numbat = prev.numbat.overrideAttrs (previousAttrs: {
@@ -54,7 +51,7 @@
   # be accessible through 'pkgs.unstable'
   unstable-packages = final: _prev: {
     unstable = import inputs.nixpkgs {
-      system = final.system;
+      system = final.stdenv.hostPlatform.system;
       config.allowUnfree = true;
     };
   };
