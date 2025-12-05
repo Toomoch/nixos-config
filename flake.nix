@@ -260,7 +260,6 @@
                       secrets
                       flake-root
                       private
-                      agenix-rekey
                       self
                       outputs
                       ;

@@ -19,7 +19,7 @@ in {
     };
   };
 
-  config = lib.mkIf (cfg.enable && pkgs.system == "x86_64-linux") {
+  config = lib.mkIf (cfg.enable && pkgs.stdenv.hostPlatform.system == "x86_64-linux") {
     boot = {
       initrd.kernelModules = [
         "vfio_pci"
