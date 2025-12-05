@@ -5,13 +5,14 @@
   private,
   nixpkgs,
   secrets,
+  modulesPath,
   ...
 }:
 {
   imports = [
     ./hardware-configuration.nix
     # Minimal stuff
-    (nixpkgs.outPath + "/nixos/modules/profiles/minimal.nix")
+    (modulesPath + "/nixos/modules/profiles/minimal.nix")
     # ./minecraft.nix
     ./metrics.nix
     ./disko.nix

@@ -15,9 +15,9 @@ in
 {
   imports = [
     #./hardware-configuration.nix
-    "${nixpkgs}/nixos/modules/installer/sd-card/sd-image-aarch64.nix"
+    (modulesPath + "/installer/sd-card/sd-image-aarch64.nix")
     # Minimal stuff
-    (nixpkgs.outPath + "/nixos/modules/profiles/minimal.nix")
+    (modulesPath + "/nixos/modules/profiles/minimal.nix")
   ];
 
   networking.hostName = "rpi3"; # Define your hostname.

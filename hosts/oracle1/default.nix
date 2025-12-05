@@ -1,9 +1,17 @@
-{ config, pkgs, lib, nixpkgs, secrets, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  nixpkgs,
+  secrets,
+  modulesPath,
+  ...
+}:
 {
   imports = [
     ./hardware-configuration.nix
     # Minimal stuff
-    (nixpkgs.outPath + "/nixos/modules/profiles/minimal.nix")
+    (modulesPath + "/profiles/minimal.nix")
     ./disko.nix
   ];
 
@@ -21,7 +29,7 @@
   wirenix = {
     enable = true;
     configurer = "networkd"; # defaults to "static", could also be "networkd"
-    keyProviders = ["agenix-rekey"]; # could also be ["agenix-rekey"] or ["acl" "agenix-rekey"]
+    keyProviders = [ "agenix-rekey" ]; # could also be ["agenix-rekey"] or ["acl" "agenix-rekey"]
   };
   networking.firewall.allowedUDPPorts = [ 51820 ];
 

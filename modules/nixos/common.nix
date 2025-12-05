@@ -36,8 +36,11 @@ in
             "nix-command"
             "flakes"
           ];
-          auto-optimise-store = true;
           builders-use-substitutes = true;
+        };
+        optimise = {
+          dates = "03:00";
+          automatic = true;
         };
         gc = {
           automatic = true;
@@ -52,8 +55,8 @@ in
         outputs.overlays.unstable-packages
         inputs.agenix-rekey.overlays.default
       ];
-      nixpkgs.flake.setNixPath = ! cfg.cloud.enable;
-      nixpkgs.flake.setFlakeRegistry = ! cfg.cloud.enable;
+      nixpkgs.flake.setNixPath = !cfg.cloud.enable;
+      nixpkgs.flake.setFlakeRegistry = !cfg.cloud.enable;
 
       systemd.network.enable = true;
       networking.useNetworkd = true;

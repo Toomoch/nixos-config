@@ -28,12 +28,6 @@ in
       description = "Which greeter to enable.";
     };
   };
-  disabledModules = [
-    "services/display-managers/cosmic-greeter.nix"
-  ];
-  imports = [
-    "${inputs.nixpkgs}/nixos/modules/services/display-managers/cosmic-greeter.nix"
-  ];
 
   config = lib.mkIf cfg.enable {
     xdg.portal = lib.optionalAttrs cfg.sway.enable {
