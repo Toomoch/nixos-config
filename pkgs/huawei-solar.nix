@@ -15,14 +15,14 @@
 
 buildPythonPackage rec {
   pname = "huawei-solar";
-  version = "2.4.4";
+  version = "2.5.0";
   pyproject = true;
 
   src = fetchFromGitLab {
     owner = "Emilv2";
     repo = pname;
-    rev = "749601842f33b161ed75d05eaf2d97be0f56f10e";
-    hash = "sha256-Gr4JoSgD0CQoujNyanTuvewsrP8MoSD0LlJTGtx1Ir4=";
+    rev = "f328a21d7e23134b7c4ff2aba8f3ea2b025197fa";
+    hash = "sha256-ikctsUSb0jz3w6Ph17DJR5IN/GrN8xI6oJfQmcgAZbs=";
   };
 
   build-system = [

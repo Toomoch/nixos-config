@@ -8,13 +8,13 @@
 buildHomeAssistantComponent rec {
   owner = "wlcrs";
   domain = "huawei_solar";
-  version = "1.5.5";
+  version = "1.6.0";
 
   src = fetchFromGitHub {
     owner = "wlcrs";
     repo = "huawei_solar";
     rev = version;
-    hash = "sha256-6vtYN4b1IFpyRy3KiEs3r2RswQBK7Vq2N6aZXtZEBqo=";
+    hash = "sha256-XUrNavmo4y7dOjlTvb+hvtqnwmVfcK7ervC7oUQV18M=";
   };
 
   dependencies = [ huawei-solar ];
