@@ -63,7 +63,7 @@ in
     enable = true;
     lfs.enable = true;
     settings = {
-      aliases = {
+      alias = {
         co = "checkout";
         ci = "commit";
         a = "add";

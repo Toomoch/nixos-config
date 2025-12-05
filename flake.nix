@@ -98,19 +98,16 @@
       hosts = [
         {
           host = "oracle1";
-          arch = "x86_64-linux";
           branch = stable;
           hm = false;
         }
         {
           host = "ps42";
-          arch = "x86_64-linux";
           branch = stable;
           hm = true;
         }
         {
           host = "h81";
-          arch = "x86_64-linux";
           branch = stable;
           hm = true;
         }
@@ -134,13 +131,11 @@
         }
         {
           host = "potato";
-          arch = "x86_64-linux";
           branch = stable;
           hm = false;
         }
         {
           host = "x550";
-          arch = "x86_64-linux";
           branch = stable;
           hm = false;
         }
@@ -152,34 +147,24 @@
         }
         {
           host = "vm";
-          arch = "x86_64-linux";
           branch = stable;
           hm = true;
         }
       ];
 
       forAllSystems =
-        let
-          systems = [
-            "x86_64-linux"
-            "aarch64-linux"
-          ];
-        in
-        function: pkgs:
-        nixpkgs.lib.genAttrs systems (
+        function: nixpkgs':
+        nixpkgs'.lib.genAttrs nixpkgs'.lib.systems.flakeExposed (
           system:
-          let
-            syspkgs = import pkgs {
-              inherit system;
-              config.allowUnfree = true;
-              overlays = [
-                outputs.overlays.additions
-                outputs.overlays.modifications
-                outputs.overlays.unstable-packages
-              ];
-            };
-          in
-          function syspkgs system
+          function (import nixpkgs' {
+            inherit system;
+            config.allowUnfree = true;
+            overlays = [
+              outputs.overlays.additions
+              outputs.overlays.modifications
+              outputs.overlays.unstable-packages
+            ];
+          }) system
         );
 
       mkColmenaHive =
@@ -260,7 +245,6 @@
           mkHostConfig =
             {
               host,
-              arch,
               branch,
               hm,
               ...
@@ -280,12 +264,9 @@
                       self
                       outputs
                       ;
-                    nixpkgs = branch.nixpkgs;
-                    nixpkgs-unstable = nixpkgs;
                   };
                 in
                 branch.nixpkgs.lib.nixosSystem {
-                  system = arch;
                   inherit specialArgs;
                   modules =
                     defaultModules host-folder branch
