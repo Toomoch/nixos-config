@@ -1,6 +1,7 @@
 { config, lib, ... }:
 let
-in {
+in
+{
   imports = [
     ./desktop.nix
     ./de.nix
@@ -14,5 +15,6 @@ in {
   custom.common.enable = lib.mkDefault true;
   custom.common.defaultUser.enable = lib.mkDefault true;
   custom.secrets.enable = lib.mkDefault true;
-  custom.common.systemd-boot.enable = lib.mkDefault true;
+
+  boot.loader.systemd-boot.enable = lib.mkDefault true;
 }

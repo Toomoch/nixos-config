@@ -16,7 +16,6 @@ in
 {
   options.custom.common = {
     enable = lib.mkEnableOption "Whether to enable common stuff";
-    systemd-boot.enable = lib.mkEnableOption "Whether to enable systemd-boot bootloader";
     cloud.enable = lib.mkEnableOption "Whether to enable minimal setup for cloud vms";
     defaultUser.enable = lib.mkEnableOption "Whether to enable the default user with a configurable name";
     wol.enable = lib.mkEnableOption "Enable Wake On LAN via udev rules";
@@ -131,13 +130,10 @@ in
       # nixos-rebuild-ng
       system.rebuild.enableNg = true;
 
-    })
-    (lib.mkIf cfg.systemd-boot.enable {
-      # Bootloader.
-      boot.loader.systemd-boot.enable = true;
       boot.loader.efi.canTouchEfiVariables = true;
       boot.loader.systemd-boot.configurationLimit = 10;
-
+      boot.loader.grub.configurationLimit = 10;
+      boot.loader.generic-extlinux-compatible.configurationLimit = 10;
     })
     (lib.mkIf cfg.defaultUser.enable {
 
@@ -209,20 +205,6 @@ in
           AuthenticationMethods = "publickey";
           TCPKeepAlive = "no";
         };
-      };
-      boot.initrd = {
-        availableKernelModules = [
-          "virtio_net"
-          "virtio_pci"
-          "virtio_mmio"
-          "virtio_blk"
-          "virtio_scsi"
-        ];
-        kernelModules = [
-          "virtio_balloon"
-          "virtio_console"
-          "virtio_rng"
-        ];
       };
       boot.kernelParams = [
         # Disable auditing

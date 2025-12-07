@@ -30,7 +30,7 @@ in
   ];
 
   custom.common.enable = true;
-  custom.common.systemd-boot.enable = false;
+  boot.loader.systemd-boot.enable = false;
   hardware.enableRedistributableFirmware = true;
   boot.supportedFilesystems.zfs = lib.mkForce false;
   services.tailscale = {
