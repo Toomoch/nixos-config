@@ -113,19 +113,16 @@
         }
         {
           host = "b450";
-          arch = "x86_64-linux";
           branch = stable;
           hm = true;
         }
         {
           host = "rpi3";
-          arch = "aarch64-linux";
           branch = stable;
           hm = false;
         }
         {
           host = "ampere";
-          arch = "aarch64-linux";
           branch = stable;
           hm = false;
         }
@@ -141,7 +138,6 @@
         }
         {
           host = secrets.work.hostName;
-          arch = "x86_64-linux";
           branch = stable;
           hm = true;
         }

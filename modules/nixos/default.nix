@@ -16,5 +16,4 @@ in
   custom.common.defaultUser.enable = lib.mkDefault true;
   custom.secrets.enable = lib.mkDefault true;
 
-  boot.loader.systemd-boot.enable = lib.mkDefault true;
 }

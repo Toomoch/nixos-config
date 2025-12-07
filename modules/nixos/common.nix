@@ -66,7 +66,6 @@ in
       # Select internationalisation properties.
       i18n = {
         supportedLocales = [
-          "en_GB.UTF-8/UTF-8"
           "ca_ES.UTF-8/UTF-8"
           "en_US.UTF-8/UTF-8"
         ];
@@ -127,9 +126,7 @@ in
       #Allow all VPN traffic routing
       networking.firewall.checkReversePath = "loose";
 
-      # nixos-rebuild-ng
-      system.rebuild.enableNg = true;
-
+      boot.loader.systemd-boot.enable = lib.mkDefault true;
       boot.loader.efi.canTouchEfiVariables = true;
       boot.loader.systemd-boot.configurationLimit = 10;
       boot.loader.grub.configurationLimit = 10;
