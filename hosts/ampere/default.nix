@@ -4,7 +4,6 @@
   lib,
   private,
   nixpkgs,
-  secrets,
   modulesPath,
   ...
 }:
@@ -12,7 +11,7 @@
   imports = [
     ./hardware-configuration.nix
     # Minimal stuff
-    (modulesPath + "/nixos/modules/profiles/minimal.nix")
+    (modulesPath + "/profiles/minimal.nix")
     # ./minecraft.nix
     ./metrics.nix
     ./disko.nix
@@ -25,7 +24,6 @@
   networking.hostId = "ba6f9367";
   boot.loader.systemd-boot.netbootxyz.enable = true;
 
-  services.openssh.ports = [ secrets.hosts.ampere.sshPort ];
 
   custom.common.enable = true;
   custom.common.cloud.enable = true;

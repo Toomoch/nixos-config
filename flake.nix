@@ -77,7 +77,6 @@
     let
       inherit (self) outputs;
       # specialArgs
-      secrets = import /${private}/secrets/secrets.nix;
       flake-root = ./.;
       private = /${flake-root}/private;
 
@@ -137,9 +136,10 @@
           hm = false;
         }
         {
-          host = secrets.work.hostName;
+          host = builtins.readFile /${private}/secrets/plain/workhostname;
           branch = stable;
           hm = true;
+          host-folder = "work";
         }
         {
           host = "vm";
@@ -243,17 +243,16 @@
               host,
               branch,
               hm,
+              host-folder ? host,
               ...
             }:
             {
               name = host;
               value =
                 let # surely theres a better way of doing this
-                  host-folder = secrets.hosts.${host}.hostFolder;
                   specialArgs = {
                     inherit
                       inputs
-                      secrets
                       flake-root
                       private
                       self
@@ -268,12 +267,11 @@
                     ++ branch.nixpkgs.lib.optionals hm [
                       branch.home-manager.nixosModules.home-manager
                       {
-                        home-manager =
-                          {
-                            useGlobalPkgs = true;
-                            extraSpecialArgs = specialArgs;
-                            users.arnau.imports = [ self.homeManagerModules.common ];
-                          };
+                        home-manager = {
+                          useGlobalPkgs = true;
+                          extraSpecialArgs = specialArgs;
+                          users.arnau.imports = [ self.homeManagerModules.common ];
+                        };
                       }
                     ]
                     ++ branch.nixpkgs.lib.optional (builtins.pathExists /${private}/hosts/${host}) /${private}/hosts/${host};

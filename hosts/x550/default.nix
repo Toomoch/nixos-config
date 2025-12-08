@@ -1,5 +1,5 @@
 { inputs, config, pkgs, lib, ... }: {
-  imports = [ ./disko.nix ];
+  imports = [ ./disko.nix ./hardware-configuration.nix];
 
   networking.hostName = "x550";
 

@@ -1,4 +1,4 @@
-{ config, secrets, lib, inputs, pkgs, flake-root, private, ... }:
+{ config, lib, inputs, pkgs, flake-root, private, ... }:
 let
   hostname = config.networking.hostName;
   cfg = config.custom.secrets;
@@ -6,7 +6,6 @@ in {
   options.custom.secrets.enable = lib.mkEnableOption "Enable secrets";
   config = lib.mkIf cfg.enable {
     age.rekey = {
-      hostPubkey = secrets.hosts.${hostname}.pubkey;
       masterIdentities = [
         {
           identity =

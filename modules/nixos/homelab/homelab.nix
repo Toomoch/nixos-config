@@ -1,4 +1,4 @@
-{ inputs, config, lib, pkgs, secrets, private, self, ... }:
+{ inputs, config, lib, pkgs,  private, self, ... }:
 let
   jmusicbot = "${config.custom.homelab.serviceDataDir}/jmusicbot";
   tgtg_volume = "${config.custom.homelab.serviceDataDir}/tgtg";
@@ -15,7 +15,6 @@ in {
     };
     primaryDomain = lib.mkOption {
       type = lib.types.str;
-      default = secrets.hosts.${config.networking.hostName}.primaryDomain;
       description =
         "Domain that points to this host. Used to expose web services.";
     };

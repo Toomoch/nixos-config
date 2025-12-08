@@ -4,7 +4,6 @@
   nixpkgs,
   pkgs,
   lib,
-  secrets,
   private,
   self,
   modulesPath,

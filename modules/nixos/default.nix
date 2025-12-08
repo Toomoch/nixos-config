@@ -11,7 +11,7 @@ in
     ./secrets.nix
     ./vfio.nix
     ./waylandWindowManagers.nix
-    # ./host.nix
+    ./deployment.nix
   ];
   custom.common.enable = lib.mkDefault true;
   custom.secrets.enable = lib.mkDefault true;

@@ -3,7 +3,6 @@
   pkgs,
   lib,
   nixpkgs,
-  secrets,
   modulesPath,
   ...
 }:
@@ -17,7 +16,6 @@
 
   networking.hostName = "oracle1";
 
-  services.openssh.ports = [ secrets.hosts.oracle1.sshPort ];
 
   custom.common.enable = true;
   custom.common.cloud.enable = true;

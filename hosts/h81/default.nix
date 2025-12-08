@@ -4,7 +4,6 @@
   lib,
   flake-root,
   private,
-  secrets,
   self,
   ...
 }:
@@ -40,15 +39,12 @@
     enable = true;
     serviceDataDir = "/zstorage/data";
   };
-  custom.homepage-dashboard.enable = true;
   custom.immich.enable = true;
-  custom.nextcloud.enable = false;
   custom.smb = {
     enable = true;
     userShares = {
       enable = true;
       baseDir = "/zstorage/share/personal";
-      users = secrets.smbUsers;
     };
   };
   # custom.vm.docker.enable = true;

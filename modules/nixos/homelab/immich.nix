@@ -3,7 +3,6 @@
   pkgs,
   lib,
   config,
-  secrets,
   private,
   ...
 }:
@@ -51,10 +50,10 @@ in
             path = "/zstorage/backup";
             label = "local";
           }
-          {
-            label = "rpi3";
-            path = "ssh://borg@${secrets.hosts.rpi3.dns}/./";
-          }
+          # {
+          #   label = "rpi3";
+          #   path = "ssh://borg@${secrets.hosts.rpi3.dns}/./";
+          # }
         ];
         postgresql_databases = [
           {
@@ -70,9 +69,9 @@ in
       };
     };
 
-    programs.ssh.knownHosts = {
-      ${secrets.hosts.rpi3.dns}.publicKey = secrets.hosts.rpi3.pubkey;
-    };
+    # programs.ssh.knownHosts = {
+    #   ${secrets.hosts.rpi3.dns}.publicKey = secrets.hosts.rpi3.pubkey;
+    # };
 
     age.secrets.borgnextcloud = {
       rekeyFile = "${private}/secrets/age/borgnextcloud.age";

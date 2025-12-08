@@ -1,10 +1,9 @@
-{ pkgs, lib, config, secrets, ... }:
+{ pkgs, lib, config, ... }:
 let
   # MX150
   gpuIDs = [
     "10de:1d10" # Graphics
   ];
-  user = "${secrets.hosts.${config.networking.hostName}.user}";
   cfg = config.custom.vfio;
 in {
   options.custom.vfio = {
@@ -36,7 +35,7 @@ in {
     hardware.graphics.enable = true;
     virtualisation.spiceUSBRedirection.enable = true;
     systemd.tmpfiles.rules =
-      [ "f /dev/shm/looking-glass 0660 ${user} libvirtd -" ];
+      [ "f /dev/shm/looking-glass 0660 arnau libvirtd -" ];
 
     environment.systemPackages = [ pkgs.looking-glass-client ];
   };

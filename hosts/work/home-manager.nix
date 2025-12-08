@@ -3,7 +3,6 @@
   config,
   pkgs,
   lib,
-  secrets,
   osConfig,
   private,
   ...

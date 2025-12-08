@@ -1,4 +1,4 @@
-{ inputs, pkgs, lib, config, secrets, private, ... }:
+{ inputs, pkgs, lib, config, private, ... }:
 let
   dataBase =
     "${config.custom.homelab.serviceDataDir}/postgresql/${config.services.postgresql.package.psqlSchema}";

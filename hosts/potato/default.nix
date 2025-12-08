@@ -3,7 +3,6 @@
   pkgs,
   lib,
   nixpkgs,
-  secrets,
   modulesPath,
   ...
 }:
@@ -16,6 +15,7 @@
   ];
 
   networking.hostName = "potato";
+
 
   custom.common.enable = true;
   custom.common.cloud.enable = true;

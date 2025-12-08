@@ -3,7 +3,6 @@
   config,
   pkgs,
   lib,
-  secrets,
   private,
   ...
 }:
@@ -13,7 +12,6 @@
     ./disko.nix
   ];
 
-  networking.hostName = secrets.work.hostName;
 
   custom.desktop.enable = true;
   custom.desktop.wm = {

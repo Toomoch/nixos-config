@@ -3,7 +3,8 @@
   pkgs,
   lib,
   inputs,
-  secrets,
+  self,
+  osConfig,
   ...
 }:
 let
@@ -27,6 +28,7 @@ let
       inputs.self.outputs.packages.${pkgs.stdenv.hostPlatform.system}.nvim-mnw.devMode
     }/bin/nvim";
   };
+  isValidHost = name: hostConfig: (hostConfig.config.custom.deployment.enable or false);
 in
 {
   programs.home-manager.enable = true;
@@ -229,53 +231,31 @@ in
 
       };
 
-      "oracle1" = {
-        hostname = secrets.hosts.oracle1.dns;
-        forwardAgent = true;
-        port = secrets.hosts.oracle1.sshPort;
-      };
-      "ampere" = {
-        hostname = secrets.hosts.ampere.dns;
-        forwardAgent = true;
-        port = secrets.hosts.ampere.sshPort;
-      };
-
-      "h81" = {
-        hostname = secrets.hosts.h81.dns;
-        forwardAgent = true;
-      };
-
-      "rpi3" = {
-        hostname = secrets.hosts.rpi3.dns;
-        forwardAgent = true;
-      };
-
-      "potato" = {
-        hostname = secrets.hosts.potato.dns;
-        forwardAgent = true;
-      };
-
-      ax3000t-1 = {
-        hostname = secrets.hosts.ax3000t-1.dns;
-        user = "root";
-      };
-      ax3000t-2 = {
-        hostname = secrets.hosts.ax3000t-2.dns;
-        user = "root";
-      };
-      r2100 = {
-        hostname = secrets.hosts.r2100.dns;
-        user = "root";
-      };
-      mi4a-1 = {
-        hostname = secrets.hosts.mi4a-1.dns;
-        user = "root";
-      };
-      mi4a-2 = {
-        hostname = secrets.hosts.mi4a-2.dns;
-        user = "root";
-      };
-    };
+      # ax3000t-1 = {
+      #   hostname = secrets.hosts.ax3000t-1.dns;
+      #   user = "root";
+      # };
+      # ax3000t-2 = {
+      #   hostname = secrets.hosts.ax3000t-2.dns;
+      #   user = "root";
+      # };
+      # r2100 = {
+      #   hostname = secrets.hosts.r2100.dns;
+      #   user = "root";
+      # };
+      # mi4a-1 = {
+      #   hostname = secrets.hosts.mi4a-1.dns;
+      #   user = "root";
+      # };
+      # mi4a-2 = {
+      #   hostname = secrets.hosts.mi4a-2.dns;
+      #   user = "root";
+      # };
+    }
+    // lib.mapAttrs (name: hostConfig: {
+      inherit (hostConfig.config.custom.deployment) hostname port user;
+      forwardAgent = true;
+    }) (lib.filterAttrs isValidHost self.nixosConfigurations);
     includes = [ "config.d/*" ];
   };
 

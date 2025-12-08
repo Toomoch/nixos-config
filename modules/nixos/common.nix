@@ -3,14 +3,12 @@
   config,
   lib,
   pkgs,
-  secrets,
   outputs,
   private,
   ...
 }:
 let
   cfg = config.custom.common;
-  user = "${secrets.hosts.${config.networking.hostName}.user}";
   ifTheyExist = groups: builtins.filter (group: builtins.hasAttr group config.users.groups) groups;
 in
 {
@@ -174,7 +172,7 @@ in
       # pam_rssh
       security.pam.rssh.enable = true;
 
-      nix.settings.trusted-users = [ "${user}" ];
+      nix.settings.trusted-users = [ "arnau" ];
     })
     (lib.mkIf cfg.cloud.enable {
       services.fail2ban = {

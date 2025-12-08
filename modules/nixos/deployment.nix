@@ -8,12 +8,18 @@
   ...
 }:
 let
-  cfg = config.custom.host;
+  cfg = config.custom.deployment;
 in
 {
-  options.custom.host = {
+  options.custom.deployment = {
     enable = lib.mkEnableOption "Whether to enable the module for host metadata";
-    # host = lib. "IP or name for accessing this host";
+
+    hostname = lib.mkOption {
+      type = lib.types.str;
+
+      description = "IP/DNS for accesing this host via SSH";
+
+    };
     port = lib.mkOption {
       type = lib.types.int;
 
@@ -24,6 +30,15 @@ in
     publicKey = lib.mkOption {
       type = lib.types.str;
       description = "Public SSH key of this host";
+      default = config.age.rekey.hostPubkey;
+    };
+
+    user = lib.mkOption {
+      type = lib.types.str;
+      default = "arnau";
+
+      description = "Username for accesing this host via SSH";
+
     };
   };
 
