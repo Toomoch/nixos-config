@@ -19,15 +19,14 @@ in
 
   home.packages = with pkgs; [
     glab
-    freerdp3
+    freerdp
     cmake
     pandoc
     bind
     tigervnc
   ];
 
-  home.username = lib.mkForce secrets.hosts.${secrets.work.hostName}.user;
-  home.homeDirectory = lib.mkForce "/home/${secrets.hosts.${secrets.work.hostName}.user}";
+  home.homeDirectory = lib.mkForce "/home/avalls";
 
   custom = {
     wl = {

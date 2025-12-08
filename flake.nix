@@ -269,13 +269,10 @@
                       branch.home-manager.nixosModules.home-manager
                       {
                         home-manager =
-                          let
-                            user = secrets.hosts.${host}.user;
-                          in
                           {
                             useGlobalPkgs = true;
                             extraSpecialArgs = specialArgs;
-                            users.${user}.imports = [ self.homeManagerModules.common ];
+                            users.arnau.imports = [ self.homeManagerModules.common ];
                           };
                       }
                     ]

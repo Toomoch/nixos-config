@@ -17,7 +17,6 @@ in
   options.custom.common = {
     enable = lib.mkEnableOption "Whether to enable common stuff";
     cloud.enable = lib.mkEnableOption "Whether to enable minimal setup for cloud vms";
-    defaultUser.enable = lib.mkEnableOption "Whether to enable the default user with a configurable name";
     wol.enable = lib.mkEnableOption "Enable Wake On LAN via udev rules";
   };
 
@@ -131,11 +130,9 @@ in
       boot.loader.systemd-boot.configurationLimit = 10;
       boot.loader.grub.configurationLimit = 10;
       boot.loader.generic-extlinux-compatible.configurationLimit = 10;
-    })
-    (lib.mkIf cfg.defaultUser.enable {
 
-      # Define a user account. Don't forget to set a password with ‘passwd’.
-      users.users.${user} = {
+      users.users.arnau = {
+        uid = 1000;
         isNormalUser = true;
         description = "Arnau";
         extraGroups = ifTheyExist [
@@ -148,7 +145,6 @@ in
         ];
 
         initialHashedPassword = builtins.readFile /${private}/secrets/plain/inithashpass;
-        openssh.authorizedKeys.keys = secrets.authlist config.networking.hostName;
         shell = pkgs.bash;
       };
       programs.starship.enable = !cfg.cloud.enable;

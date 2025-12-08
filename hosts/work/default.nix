@@ -7,10 +7,6 @@
   private,
   ...
 }:
-let
-  homeDir = "${config.users.users.${user}.home}";
-  user = "${secrets.hosts.${config.networking.hostName}.user}";
-in
 {
   imports = [
     ./hardware-configuration.nix
@@ -64,9 +60,11 @@ in
     openssl
   ];
 
+  users.users.arnau.home = "/home/avalls";
+
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
-  home-manager.users.${user} =
+  home-manager.users.arnau =
     { pkgs, ... }:
     {
       imports = [ ./home-manager.nix ];

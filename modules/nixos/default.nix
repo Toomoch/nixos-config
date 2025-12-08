@@ -11,9 +11,9 @@ in
     ./secrets.nix
     ./vfio.nix
     ./waylandWindowManagers.nix
+    # ./host.nix
   ];
   custom.common.enable = lib.mkDefault true;
-  custom.common.defaultUser.enable = lib.mkDefault true;
   custom.secrets.enable = lib.mkDefault true;
 
 }
