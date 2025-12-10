@@ -12,10 +12,10 @@
     # Minimal stuff
     (modulesPath + "/profiles/minimal.nix")
     ./disko.nix
+    (modulesPath + "/profiles/qemu-guest.nix") # Do NOT remove, for some reason nixos-generate-config doesn't detect qemu-guest in gcloud e2 micro
   ];
 
   networking.hostName = "potato";
-
 
   custom.common.enable = true;
   custom.common.cloud.enable = true;
