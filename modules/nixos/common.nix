@@ -25,7 +25,7 @@ in
         let
           self = inputs.self;
         in
-        self.shortRev or self.dirtyShortRev or self.lastModified or "unknown";
+        self.rev or self.shortRev or self.dirtyShortRev or self.lastModified or "unknown";
       nix = {
         settings = {
           experimental-features = [
