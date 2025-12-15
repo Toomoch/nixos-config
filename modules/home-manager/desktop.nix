@@ -53,6 +53,8 @@
       recursive = true;
     };
 
+    services.tailscale-systray.enable = true;
+
     xdg = {
       enable = true;
       userDirs = {
