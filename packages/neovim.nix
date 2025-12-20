@@ -35,7 +35,7 @@
     ];
     dev.myconfig = {
       pure = ../neovim;
-      impure = "/home/arnau/projects/nixos-config/neovim";
+      impure = "~/projects/nixos-config/neovim";
     };
 
   };
