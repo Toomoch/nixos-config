@@ -27,10 +27,6 @@
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
-    nixvim = {
-      url = "github:nix-community/nixvim";
-    };
-
     agenix = {
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -65,7 +61,6 @@
       nixpkgs-stable,
       home-manager-stable,
       deploy-rs,
-      nixvim,
       disko-stable,
       disko,
       agenix,
@@ -73,7 +68,7 @@
       wirenix,
       mnw,
       ...
-    }@inputs:
+    }:
     let
       # specialArgs
       flake-root = ./.;
@@ -158,37 +153,31 @@
       forAllSystems =
         function: nixpkgs':
         nixpkgs'.lib.genAttrs nixpkgs'.lib.systems.flakeExposed (
-          system:
-          function (import nixpkgs' {
-            inherit system;
-            config.allowUnfree = true;
-            overlays = [
-              self.overlays.additions
-              self.overlays.modifications
-              self.overlays.unstable-packages
-            ];
-          }) system
+          system: function (nixpkgs'.legacyPackages.${system}) system
         );
 
     in
     {
-      # Import every package found in the attr pkgs from ./pkgs/default.nix
-      packages = forAllSystems (pkgs: system: import ./pkgs { inherit pkgs nixvim mnw; }) nixpkgs-stable;
+      packages = forAllSystems (pkgs: system: {
+        help-blog = pkgs.callPackage ./pkgs/blog.nix { };
+        nvim-mnw = mnw.lib.wrap pkgs ./pkgs/neovim.nix;
+      }) nixpkgs;
+
       # do not use import keyword for pointing to modules, use the path
       nixosModules.common = ./modules/nixos;
       nixosModules.private = private + "/modules/nixos";
       homeManagerModules.common = ./modules/home-manager;
-      overlays = import ./overlays { inherit inputs nixvim mnw; };
+      overlays = import ./overlays;
 
-      homeConfigurations = {
-        "arnau" = home-manager.lib.homeManagerConfiguration {
-          pkgs = import nixpkgs { system = "x86_64-linux"; };
-          modules = [
-            ./home
-            ./home/arnau.nix
-          ];
-        };
-      };
+      # homeConfigurations = {
+      #   "arnau" = home-manager.lib.homeManagerConfiguration {
+      #     pkgs = import nixpkgs { system = "x86_64-linux"; };
+      #     modules = [
+      #       ./home
+      #       ./home/arnau.nix
+      #     ];
+      #   };
+      # };
 
       nixosConfigurations =
         let
@@ -201,7 +190,7 @@
             wirenix.nixosModules.default
             ./hosts/${host}
             {
-              nix.registry.nixpkgs-unstable.flake = nixpkgs; # Add nixpkgs-unstable to registry
+              nix.registry.nixpkgs-unstable.flake = nixpkgs;
             }
           ];
 
@@ -216,7 +205,7 @@
             {
               name = host;
               value =
-                let # surely theres a better way of doing this
+                let
                   specialArgs = {
                     inherit
                       flake-root

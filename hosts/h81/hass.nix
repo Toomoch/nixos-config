@@ -1,4 +1,32 @@
-{ config, pkgs, ... }: {
+{
+  config,
+  pkgs,
+  flake-root,
+  ...
+}:
+let
+
+  huawei_solar = pkgs.callPackage (flake-root + "/pkgs/huawei_solar.nix") { inherit huawei-solar; };
+  huawei-solar = pkgs.callPackage (flake-root + "/pkgs/huawei-solar.nix") {
+    inherit (pkgs.home-assistant.python.pkgs)
+      backoff
+      hatchling
+      hatch-vcs
+      pytz
+      pymodbus
+      pyserial-asyncio
+      typing-extensions
+      pytest-asyncio
+      pytestCheckHook
+      buildPythonPackage
+      ;
+  };
+  som-energia-hass = pkgs.callPackage (flake-root + "/pkgs/som-energia-hass.nix") {
+    inherit (pkgs.home-assistant.python.pkgs) holidays;
+  };
+
+in
+{
   #virtualisation.oci-containers.containers.homeassistant = {
   #  image = "ghcr.io/home-assistant/home-assistant:stable";
   #  ports = [ "8123:8123" ];
@@ -21,24 +49,24 @@
     ];
   };
 
-  services.caddy.virtualHosts."homeassistant.${config.custom.homelab.primaryDomain}" =
-    {
-      extraConfig = ''
-        reverse_proxy localhost:${
-          toString config.services.home-assistant.config.http.server_port
-        }
-      '';
-    };
+  services.caddy.virtualHosts."homeassistant.${config.custom.homelab.primaryDomain}" = {
+    extraConfig = ''
+      reverse_proxy localhost:${toString config.services.home-assistant.config.http.server_port}
+    '';
+  };
 
   systemd.services.home-assistant = {
-    serviceConfig.DeviceAllow =
-      "/dev/serial/by-id/usb-1a86_USB_Serial-if00-port0 rw";
+    serviceConfig.DeviceAllow = "/dev/serial/by-id/usb-1a86_USB_Serial-if00-port0 rw";
   };
 
   services.home-assistant = {
     enable = true;
     openFirewall = true;
-    customComponents = [ pkgs.huawei_solar pkgs.som-energia-hass pkgs.home-assistant-custom-components.tuya_local  ];
+    customComponents = [
+      huawei_solar
+      som-energia-hass
+      pkgs.home-assistant-custom-components.tuya_local
+    ];
     extraComponents = [
       # Components required to complete the onboarding
       "analytics"
@@ -58,7 +86,7 @@
       universal-remote-card
       mini-media-player
     ];
-    
+
     config = {
       # Includes dependencies for a basic setup
       # https://www.home-assistant.io/integrations/default_config/
@@ -66,7 +94,10 @@
 
       http = {
         use_x_forwarded_for = true;
-        trusted_proxies = [ "::1" "127.0.0.1" ];
+        trusted_proxies = [
+          "::1"
+          "127.0.0.1"
+        ];
       };
     };
   };

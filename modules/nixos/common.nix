@@ -42,9 +42,7 @@ in
         };
       };
       nixpkgs.overlays = [
-        self.overlays.additions
         self.overlays.modifications
-        self.overlays.unstable-packages
         self.inputs.agenix-rekey.overlays.default
       ];
       nixpkgs.flake.setNixPath = !cfg.cloud.enable;

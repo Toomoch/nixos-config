@@ -28,7 +28,6 @@
   programs.winbox = {
     enable = true;
     openFirewall = true;
-    package = pkgs.unstable.winbox4;
   };
 
   services.auto-cpufreq.enable = true;

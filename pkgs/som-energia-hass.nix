@@ -2,20 +2,19 @@
   lib,
   buildHomeAssistantComponent,
   fetchFromGitHub,
-  huawei-solar,
   holidays,
 }:
 
 buildHomeAssistantComponent rec {
   owner = "hectorespert";
   domain = "som_energia";
-  version = "2025.11.29";
+  version = " 2025.12.14";
 
   src = fetchFromGitHub {
     inherit owner;
     repo = "som-energia-hass";
     rev = version;
-    hash = "sha256-Enjhzcmz7nJ63D0O+Sj7H2UqgxzbNwFFiY0ixZwp5FQ=";
+    hash = lib.fakeHash;
   };
 
   dependencies = [
