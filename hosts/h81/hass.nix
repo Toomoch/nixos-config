@@ -6,8 +6,8 @@
 }:
 let
 
-  huawei_solar = pkgs.callPackage (flake-root + "/pkgs/huawei_solar.nix") { inherit huawei-solar; };
-  huawei-solar = pkgs.callPackage (flake-root + "/pkgs/huawei-solar.nix") {
+  huawei_solar = pkgs.callPackage (flake-root + "/packages/huawei_solar.nix") { inherit huawei-solar; };
+  huawei-solar = pkgs.callPackage (flake-root + "/packages/huawei-solar.nix") {
     inherit (pkgs.home-assistant.python.pkgs)
       backoff
       hatchling
@@ -21,7 +21,7 @@ let
       buildPythonPackage
       ;
   };
-  som-energia-hass = pkgs.callPackage (flake-root + "/pkgs/som-energia-hass.nix") {
+  som-energia-hass = pkgs.callPackage (flake-root + "/packages/som-energia-hass.nix") {
     inherit (pkgs.home-assistant.python.pkgs) holidays;
   };
 
