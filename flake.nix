@@ -78,7 +78,7 @@
       inherit (self) outputs;
       # specialArgs
       flake-root = ./.;
-      private = /${flake-root}/private;
+      private = flake-root + "/private";
 
       stable = {
         nixpkgs = nixpkgs-stable;
@@ -99,47 +99,55 @@
           host = "oracle1";
           branch = stable;
           hm = false;
+          privateConfigs = true;
         }
         {
           host = "ps42";
           branch = stable;
           hm = true;
+          privateConfigs = true;
         }
         {
           host = "h81";
           branch = stable;
           hm = true;
+          privateConfigs = true;
         }
         {
           host = "b450";
           branch = stable;
           hm = true;
+          privateConfigs = true;
         }
         {
           host = "rpi3";
           branch = stable;
           hm = false;
+          privateConfigs = true;
         }
         {
           host = "ampere";
           branch = stable;
           hm = false;
+          privateConfigs = true;
         }
         {
           host = "potato";
           branch = stable;
           hm = false;
+          privateConfigs = true;
         }
         {
           host = "x550";
           branch = stable;
           hm = false;
+          privateConfigs = true;
         }
         {
-          host = builtins.readFile /${private}/secrets/plain/workhostname;
+          host = "smdltp451";
           branch = stable;
           hm = true;
-          host-folder = "work";
+          privateConfigs = true;
         }
         {
           host = "vm";
@@ -163,54 +171,14 @@
           }) system
         );
 
-      mkColmenaHive =
-        nixpkgs: nodeDeployments:
-        let
-          confs = inputs.self.nixosConfigurations;
-          colmenaConf = {
-            meta = {
-              inherit nixpkgs;
-              nodeNixpkgs = builtins.mapAttrs (_name: value: value.pkgs) confs;
-              nodeSpecialArgs = builtins.mapAttrs (_name: value: value._module.specialArgs) confs;
-            };
-          }
-          // builtins.mapAttrs (nodeName: value: {
-            imports = value._module.args.modules;
-            deployment = nodeDeployments.${nodeName} or { };
-          }) confs;
-        in
-        inputs.colmena.lib.makeHive colmenaConf;
-
     in
     {
-      colmenaHive = mkColmenaHive (import nixpkgs { system = "x86_64-linux"; }) {
-        ps42 = {
-          allowLocalDeployment = true;
-          targetHost = null;
-        };
-        h81 = {
-          targetHost = "h81";
-          buildOnTarget = true;
-          targetUser = "arnau";
-        };
-        b450 = {
-          allowLocalDeployment = true;
-        };
-        ampere = {
-          targetHost = "ampere";
-          buildOnTarget = true;
-          targetUser = "arnau";
-        };
-        oracle1 = {
-          targetHost = "oracle1";
-          targetUser = "arnau";
-        };
-      };
       # Import every package found in the attr pkgs from ./pkgs/default.nix
       packages = forAllSystems (pkgs: system: import ./pkgs { inherit pkgs nixvim mnw; }) nixpkgs-stable;
-      nixosModules.common = import ./modules/nixos;
-      nixosModules.private = import /${private}/modules/nixos;
-      homeManagerModules.common = import ./modules/home-manager;
+      # do not use import keyword for pointing to modules, use the path
+      nixosModules.common = ./modules/nixos;
+      nixosModules.private = private + "/modules/nixos";
+      homeManagerModules.common = ./modules/home-manager;
       overlays = import ./overlays { inherit inputs nixvim mnw; };
 
       homeConfigurations = {
@@ -244,6 +212,7 @@
               branch,
               hm,
               host-folder ? host,
+              privateConfigs ? false,
               ...
             }:
             {
@@ -274,16 +243,13 @@
                         };
                       }
                     ]
-                    ++ branch.nixpkgs.lib.optional (builtins.pathExists /${private}/hosts/${host}) /${private}/hosts/${host};
+                    ++ branch.nixpkgs.lib.optional privateConfigs (private + "/hosts/${host}");
                   # Include private host config
                 };
             };
 
-          autoMachineConfigs = map mkHostConfig hosts;
-
-          machineConfigs = autoMachineConfigs ++ [ ];
         in
-        builtins.listToAttrs machineConfigs;
+        builtins.listToAttrs (map mkHostConfig hosts);
 
       agenix-rekey = agenix-rekey.configure {
         userFlake = self;
