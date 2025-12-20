@@ -8,13 +8,13 @@
 buildHomeAssistantComponent rec {
   owner = "hectorespert";
   domain = "som_energia";
-  version = " 2025.12.14";
+  version = "2025.12.14";
 
   src = fetchFromGitHub {
     inherit owner;
     repo = "som-energia-hass";
     rev = version;
-    hash = lib.fakeHash;
+    hash = "sha256-a6pcuO5/FsyuCkLcTE1pLKIhP5VBw8CkFkQPIw8jNRA=";
   };
 
   dependencies = [
