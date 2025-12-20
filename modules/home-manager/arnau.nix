@@ -2,7 +2,6 @@
   config,
   pkgs,
   lib,
-  inputs,
   self,
   osConfig,
   ...
@@ -24,9 +23,7 @@ let
     vimdiff = "nvim -d";
     aspm = "sudo lspci -vv | awk '/ASPM/{print $0}' RS= | grep --color -P '(^[a-z0-9:.]+|ASPM )'";
     grep = "grep --color=auto";
-    vimdev = "${
-      inputs.self.outputs.packages.${pkgs.stdenv.hostPlatform.system}.nvim-mnw.devMode
-    }/bin/nvim";
+    vimdev = "${self.packages.${pkgs.stdenv.hostPlatform.system}.nvim-mnw.devMode}/bin/nvim";
   };
   isValidHost = name: hostConfig: (hostConfig.config.custom.deployment.enable or false);
 in
@@ -53,7 +50,7 @@ in
     tmux-ssh
     ripgrep
     bitbake-language-server
-    inputs.self.outputs.packages.${pkgs.stdenv.hostPlatform.system}.nvim-mnw
+    self.packages.${pkgs.stdenv.hostPlatform.system}.nvim-mnw
   ];
   programs.fzf.enableZshIntegration = true;
   programs.fzf.enableBashIntegration = true;

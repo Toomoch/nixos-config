@@ -3,7 +3,6 @@
   pkgs,
   lib,
   sops-nix,
-  inputs,
   ...
 }:
 {

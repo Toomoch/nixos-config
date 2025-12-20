@@ -1,4 +1,4 @@
-{ inputs, config, lib, pkgs,  private, self, ... }:
+{ config, lib, pkgs,  private, self, ... }:
 let
   jmusicbot = "${config.custom.homelab.serviceDataDir}/jmusicbot";
   tgtg_volume = "${config.custom.homelab.serviceDataDir}/tgtg";

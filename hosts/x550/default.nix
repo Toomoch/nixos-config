@@ -1,4 +1,4 @@
-{ inputs, config, pkgs, lib, ... }: {
+{ config, pkgs, lib, ... }: {
   imports = [ ./disko.nix ./hardware-configuration.nix];
 
   networking.hostName = "x550";

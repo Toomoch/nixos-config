@@ -1,4 +1,4 @@
-{ config, lib, inputs, pkgs, flake-root, private, ... }:
+{ config, lib, pkgs, flake-root, private, ... }:
 let
   hostname = config.networking.hostName;
   cfg = config.custom.secrets;

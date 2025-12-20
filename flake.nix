@@ -75,7 +75,6 @@
       ...
     }@inputs:
     let
-      inherit (self) outputs;
       # specialArgs
       flake-root = ./.;
       private = flake-root + "/private";
@@ -164,9 +163,9 @@
             inherit system;
             config.allowUnfree = true;
             overlays = [
-              outputs.overlays.additions
-              outputs.overlays.modifications
-              outputs.overlays.unstable-packages
+              self.overlays.additions
+              self.overlays.modifications
+              self.overlays.unstable-packages
             ];
           }) system
         );
@@ -211,7 +210,6 @@
               host,
               branch,
               hm,
-              host-folder ? host,
               privateConfigs ? false,
               ...
             }:
@@ -221,18 +219,16 @@
                 let # surely theres a better way of doing this
                   specialArgs = {
                     inherit
-                      inputs
                       flake-root
                       private
                       self
-                      outputs
                       ;
                   };
                 in
                 branch.nixpkgs.lib.nixosSystem {
                   inherit specialArgs;
                   modules =
-                    defaultModules host-folder branch
+                    defaultModules host branch
                     ++ branch.nixpkgs.lib.optionals hm [
                       branch.home-manager.nixosModules.home-manager
                       {

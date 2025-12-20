@@ -1,4 +1,4 @@
-{ config, inputs, lib, pkgs,  private, ... }:
+{ config,  lib, pkgs,  private, ... }:
 let cfg = config.custom.homepage-dashboard;
 in {
   options.custom.homepage-dashboard.enable =

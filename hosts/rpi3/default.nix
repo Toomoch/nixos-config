@@ -1,6 +1,5 @@
 {
   config,
-  inputs,
   nixpkgs,
   pkgs,
   lib,

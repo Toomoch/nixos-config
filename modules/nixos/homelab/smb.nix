@@ -1,4 +1,4 @@
-{ inputs, pkgs, lib, config, ... }:
+{ pkgs, lib, config, ... }:
 let
   cfg = config.custom.smb;
   mkUserShares = baseDir: users:

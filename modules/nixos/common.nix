@@ -1,10 +1,9 @@
 {
-  inputs,
   config,
   lib,
   pkgs,
-  outputs,
   private,
+  self,
   ...
 }:
 let
@@ -22,9 +21,6 @@ in
     (lib.mkIf cfg.enable {
       # populate branch name/commit hash
       system.configurationRevision =
-        let
-          self = inputs.self;
-        in
         self.rev or self.shortRev or self.dirtyShortRev or self.lastModified or "unknown";
       nix = {
         settings = {
@@ -46,10 +42,10 @@ in
         };
       };
       nixpkgs.overlays = [
-        outputs.overlays.additions
-        outputs.overlays.modifications
-        outputs.overlays.unstable-packages
-        inputs.agenix-rekey.overlays.default
+        self.overlays.additions
+        self.overlays.modifications
+        self.overlays.unstable-packages
+        self.inputs.agenix-rekey.overlays.default
       ];
       nixpkgs.flake.setNixPath = !cfg.cloud.enable;
       nixpkgs.flake.setFlakeRegistry = !cfg.cloud.enable;

@@ -1,6 +1,6 @@
-{ inputs, config, pkgs, lib, ... }: {
-  imports = [ inputs.nix-minecraft.nixosModules.minecraft-servers ];
-  nixpkgs.overlays = [ inputs.nix-minecraft.overlay ];
+{  config, pkgs, lib, self, ... }: {
+  imports = [ self.inputs.nix-minecraft.nixosModules.minecraft-servers ];
+  nixpkgs.overlays = [ self.inputs.nix-minecraft.overlay ];
 
   # Minecraft server settings
   users.users.arnau.extraGroups = [ config.services.minecraft-servers.group ];
