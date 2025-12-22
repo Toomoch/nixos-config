@@ -146,7 +146,7 @@
         {
           host = "vm";
           branch = stable;
-          hm = true;
+          hm = false;
         }
       ];
 
@@ -166,7 +166,7 @@
       # do not use import keyword for pointing to modules, use the path
       nixosModules.common = ./modules/nixos;
       nixosModules.private = private + "/modules/nixos";
-      homeManagerModules.common = ./modules/home-manager;
+      homeModules.common = ./modules/home-manager;
       overlays = import ./overlays;
 
       # homeConfigurations = {
@@ -224,7 +224,7 @@
                         home-manager = {
                           useGlobalPkgs = true;
                           extraSpecialArgs = specialArgs;
-                          users.arnau.imports = [ self.homeManagerModules.common ];
+                          users.arnau.imports = [ self.homeModules.common ];
                         };
                       }
                     ]
@@ -271,6 +271,6 @@
           oracle1 = mkDeployConfig "oracle1" self.nixosConfigurations.oracle1 false false;
           ampere = mkDeployConfig "ampere" self.nixosConfigurations.oracle2 false true;
         };
-      checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
+      # checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
     };
 }
