@@ -160,7 +160,7 @@
     {
       packages = forAllSystems (pkgs: system: {
         help-blog = pkgs.callPackage ./packages/blog.nix { };
-        nvim-mnw = mnw.lib.wrap pkgs ./packages/neovim.nix;
+        nvim-mnw = mnw.lib.wrap pkgs ./modules/neovim.nix;
       }) nixpkgs;
 
       # do not use import keyword for pointing to modules, use the path
