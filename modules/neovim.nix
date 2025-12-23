@@ -32,6 +32,7 @@
       cmp-path
       cmp-nvim-lsp
       lualine-nvim
+      render-markdown-nvim
     ];
     dev.myconfig = {
       pure = ../neovim;

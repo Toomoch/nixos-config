@@ -32,6 +32,17 @@ require("fzf-lua").setup({})
 require("nvim-treesitter.configs").setup({
   highlight = { enable = true },
 })
+require('render-markdown').setup({
+  enabled = true,
+  heading = {
+    enabled = false,
+  },
+  code = {
+    highlight = "RenderMarkdownCode",
+    highlight_inline = "RenderMarkdownCodeInline",
+    style = "full",
+  }
+})
 vim.diagnostic.config({ virtual_text = true })
 
 -- Set up keybinds {{{
