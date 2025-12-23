@@ -17,7 +17,6 @@
     tombi
     vscode-langservers-extracted
     jinja-lsp
-    ansible-language-server
   ];
   plugins = {
     start = with pkgs.vimPlugins; [
