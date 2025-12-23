@@ -271,6 +271,13 @@ vim.lsp.config.jsonls = {
 
 vim.lsp.enable({ 'jsonls' })
 
+vim.lsp.config.jinja = {
+  cmd = { 'jinja-lsp' },
+  filetypes = { 'jinja' },
+  root_markers = { '.git' },
+}
+vim.lsp.enable({ 'jinja'})
+
 local cmp = require("cmp")
 cmp.setup({
   mapping = {

@@ -16,6 +16,7 @@
     rust-analyzer
     tombi
     vscode-langservers-extracted
+    jinja-lsp
   ];
   plugins = {
     start = with pkgs.vimPlugins; [
