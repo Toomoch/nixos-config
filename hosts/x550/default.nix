@@ -10,7 +10,7 @@
     tenacity
     kdePackages.ark
     gnome-boxes
-    kdePackages.skanlite
+    kdePackages.skanpage
     kdePackages.krfb
     kdePackages.kpat
     libreoffice-qt
