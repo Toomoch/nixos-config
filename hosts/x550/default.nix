@@ -4,7 +4,6 @@
   networking.hostName = "x550";
 
   environment.systemPackages = with pkgs; [
-    telegram-desktop
     onlyoffice-desktopeditors
     vlc
     tenacity
