@@ -4,6 +4,10 @@
   config,
   ...
 }:
+let
+ sopsPlugins =
+      pkgs.sops.withAgePlugins
+      (p: [ p.age-plugin-fido2-hmac ])
 {
   options.custom.dev = {
     enable = lib.mkEnableOption "Devtools";
@@ -18,10 +22,9 @@
       shellcheck
       shfmt
       gnumake
-      sops.withAgePlugins
-      (p: [ age-plugin-fido2-hmac ])
       rage
       age-plugin-fido2-hmac
+      sopsPlugins
       # ansible_2_16
       # ansible-lint
       uv
