@@ -5,9 +5,8 @@
   ...
 }:
 let
- sopsPlugins =
-      pkgs.sops.withAgePlugins
-      (p: [ p.age-plugin-fido2-hmac ])
+  sopsPlugins = pkgs.sops.withAgePlugins (p: [ p.age-plugin-fido2-hmac ]);
+in
 {
   options.custom.dev = {
     enable = lib.mkEnableOption "Devtools";
