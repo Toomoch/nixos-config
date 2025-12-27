@@ -18,7 +18,8 @@
       shellcheck
       shfmt
       gnumake
-      sops
+      sops.withAgePlugins
+      (p: [ age-plugin-fido2-hmac ])
       rage
       age-plugin-fido2-hmac
       # ansible_2_16
