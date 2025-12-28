@@ -2,6 +2,7 @@
   config,
   pkgs,
   lib,
+  self,
   ...
 }:
 {
@@ -53,6 +54,59 @@
     };
 
     services.tailscale-systray.enable = true;
+
+    systemd.user.sockets.ssh-tunnel-proxy = {
+      Unit.Description = "Socket-activation for SSH-tunnel";
+      Socket.ListenStream = [
+        "127.0.0.1:3000"
+        "[::1]:3000"
+      ];
+      Install.WantedBy = [ "sockets.target" ];
+    };
+    systemd.user.services =
+      let
+        silverbulletPort = toString self.nixosConfigurations.ampere.config.services.silverbullet.listenPort;
+        inherit (self.nixosConfigurations.ampere.config.custom.deployment) port user hostname;
+        remoteHost = "${user}@${hostname} -p ${toString port}";
+      in
+      {
+        ssh-tunnel = {
+          Unit = {
+            Description = "Tunnel to SSH server";
+            ## Stop-when-idle is controlled by `--exit-idle-time=` in proxy.service
+            #  (from `man systemd-socket-proxyd`)
+            StopWhenUnneeded = true;
+          };
+          Service = {
+            Type = "notify";
+            NotifyAccess = "all";
+            ## Prefixed with `-` not to mark service as failed on net-fails;
+            #  will be restarted on-demand by socket-activation.
+            ExecStart = ''-${pkgs.openssh}/bin/ssh -kaxNT  -o ExitOnForwardFailure=yes -o ControlMaster=no -o StreamLocalBindUnlink=yes -o PermitLocalCommand=yes -o LocalCommand="systemd-notify --ready" ${remoteHost} -L ''${XDG_RUNTIME_DIR}/ssh-tunnel-proxy:localhost:${silverbulletPort}'';
+          };
+        };
+        ssh-tunnel-proxy = {
+          Unit = {
+            Description = "Socket-activation proxy for SSH tunnel";
+
+            ## Stop also when stopped listening for socket-activation.
+            ## Stop also when ssh-tunnel stops/breaks
+            #  (otherwise, could not restart).
+            BindsTo = [
+              "ssh-tunnel-proxy.socket"
+              "ssh-tunnel.service"
+            ];
+            After = [
+              "ssh-tunnel-proxy.socket"
+              "ssh-tunnel.service"
+            ];
+          };
+
+          Service = {
+            ExecStart = ''${pkgs.systemd}/lib/systemd/systemd-socket-proxyd --exit-idle-time=500s ''${XDG_RUNTIME_DIR}/ssh-tunnel-proxy'';
+          };
+        };
+      };
 
     xdg = {
       enable = true;
