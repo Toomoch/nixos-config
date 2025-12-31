@@ -7,24 +7,6 @@
   ...
 }:
 let
-  tmux-sessionizer = pkgs.writeShellScriptBin "sessionizer" (
-    builtins.readFile (./dotfiles/tmux-sessionizer.sh)
-  );
-  tmux-ssh = pkgs.writeShellScriptBin "sshmulti" (builtins.readFile (./dotfiles/tmux-ssh-ansible.sh));
-  shellAliases = {
-    ls = "ls --human-readable --color=auto -la";
-    ip = "ip -c";
-    ".." = "cd ..";
-    lsperms = "stat --format '%a'";
-    sshgen = "ssh-keygen -t ed25519 -C $USER@$(hostname)";
-    tiomenu = ''tio -b 115200 $(FZF_DEFAULT_COMMAND='find /dev/serial/by-id | tail -n +2 ' fzf --header="Pick a serial port")'';
-    agenix = "agenix --extra-flake-params \\?submodules=1";
-    vim = "nvim";
-    vimdiff = "nvim -d";
-    aspm = "sudo lspci -vv | awk '/ASPM/{print $0}' RS= | grep --color -P '(^[a-z0-9:.]+|ASPM )'";
-    grep = "grep --color=auto";
-    vimdev = "${self.packages.${pkgs.stdenv.hostPlatform.system}.nvim-mnw.devMode}/bin/nvim";
-  };
   isValidHost = name: hostConfig: (hostConfig.config.custom.deployment.enable or false);
 in
 {
@@ -38,28 +20,13 @@ in
 
   home.sessionVariables = {
     EDITOR = "nvim";
+    MANPAGER = "nvim +Man!";
   };
-
-  home.packages = with pkgs; [
-    fzf
-    tmux-sessionizer
-    deploy-rs
-    iperf3
-    borgbackup
-    git-lfs
-    tmux-ssh
-    ripgrep
-    bitbake-language-server
-    self.packages.${pkgs.stdenv.hostPlatform.system}.nvim-mnw
-  ];
-  programs.fzf.enableZshIntegration = true;
-  programs.fzf.enableBashIntegration = true;
-  programs.fzf.enable = true;
 
   xdg.enable = true;
 
   programs.git = {
-    enable = true;
+    enable = false;
     lfs.enable = true;
     settings = {
       alias = {
@@ -153,18 +120,6 @@ in
 
   };
 
-  programs.tmux = {
-    enable = true;
-    mouse = true;
-    clock24 = true;
-    extraConfig = builtins.readFile ./dotfiles/tmux.conf;
-  };
-
-  programs.direnv.enable = true;
-  programs.direnv.nix-direnv.enable = true;
-
-  programs.starship.enable = true;
-
   programs.bash = {
     enable = true;
     bashrcExtra = ''
@@ -177,28 +132,27 @@ in
     '';
     profileExtra = "";
     sessionVariables = {
-      MANPAGER = "nvim +Man!";
     };
-    inherit shellAliases;
+    # inherit shellAliases;
   };
 
-  programs.readline = {
-    enable = true;
-    variables = {
-      editing-mode = "vi";
-      show-mode-in-prompt = "on";
-      vi-cmd-mode-string = ''\1\e[34;1m\2[N] \1\e[0m\2'';
-      vi-ins-mode-string = ''\1\e[32;1m\2[I] \1\e[0m\2'';
-      keyseq-timeout = "50";
-    };
-  };
+  # programs.readline = {
+  #   enable = true;
+  #   variables = {
+  #     editing-mode = "vi";
+  #     show-mode-in-prompt = "on";
+  #     vi-cmd-mode-string = ''\1\e[34;1m\2[N] \1\e[0m\2'';
+  #     vi-ins-mode-string = ''\1\e[32;1m\2[I] \1\e[0m\2'';
+  #     keyseq-timeout = "50";
+  #   };
+  # };
 
   programs.zsh = {
     enable = false;
     enableCompletion = true;
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
-    inherit shellAliases;
+    # inherit shellAliases;
     initExtraFirst = ''
       zstyle ':completion:*' menu select
       zstyle ':completion::*' menu yes select

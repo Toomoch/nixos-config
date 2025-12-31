@@ -32,6 +32,7 @@
   custom.vm.podman.enable = true;
   custom.vm.libvirtd.enable = true;
   custom.vm.docker.enable = true;
+  custom.dev.enable = true;
   virtualisation.waydroid.enable = true;
 
   custom.desktop = {

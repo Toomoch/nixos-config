@@ -146,6 +146,7 @@ in
         niri.enable = true;
       };
 
+      custom.dev.enable = true;
       custom.vm.libvirtd.enable = true;
       custom.vm.docker.enable = true;
       custom.vfio = {

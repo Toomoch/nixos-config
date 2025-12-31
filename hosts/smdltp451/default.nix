@@ -11,7 +11,6 @@
     ./disko.nix
   ];
 
-
   custom.desktop.enable = true;
   custom.desktop.wm = {
     enable = true;
@@ -20,6 +19,7 @@
     hyprland.enable = false;
     niri.enable = true;
   };
+  custom.dev.enable = true;
 
   custom.vm.podman.enable = true;
   custom.vm.docker.enable = true;

@@ -36,6 +36,7 @@
   networking.hostId = "e0684fdb";
   programs.dconf.enable = true;
 
+  custom.dev.enable = true;
   custom.homelab = {
     enable = true;
     serviceDataDir = "/zstorage/data";

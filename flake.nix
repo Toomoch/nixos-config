@@ -51,6 +51,7 @@
 
     wirenix.url = "sourcehut:~msalerno/wirenix";
     mnw.url = "github:Gerg-L/mnw";
+    wrappers.url = "github:lassulus/wrappers";
   };
 
   outputs =
@@ -67,6 +68,7 @@
       agenix-rekey,
       wirenix,
       mnw,
+      wrappers,
       ...
     }:
     let

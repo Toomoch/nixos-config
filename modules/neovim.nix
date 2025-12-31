@@ -17,6 +17,7 @@
     tombi
     vscode-langservers-extracted
     jinja-lsp
+    nixd
   ];
   plugins = {
     start = with pkgs.vimPlugins; [

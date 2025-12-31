@@ -93,8 +93,8 @@ let
 in
 {
   home.packages = lib.optionals config.custom.wl.enable [
-    fuzzelpoweroffmenu
-    wl-screenshot
+    # fuzzelpoweroffmenu
+    # wl-screenshot
   ];
 
 }

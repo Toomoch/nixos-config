@@ -12,6 +12,7 @@ let
 in
 {
 
+# unused here for reference
   home.packages = with pkgs; [
     jq
     grim

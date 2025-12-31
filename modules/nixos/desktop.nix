@@ -48,14 +48,9 @@ in
         };
 
         packages = with pkgs; [
-          rubik
-          fira-code
-          fira-code-symbols
-          font-awesome
           noto-fonts
           noto-fonts-cjk-sans
           noto-fonts-color-emoji
-          nerd-fonts.iosevka
         ];
       };
 
@@ -104,6 +99,18 @@ in
       systemd.services.tailscaled.preStop = ''
         ${config.services.tailscale.package}/bin/tailscale down
       '';
+
+      systemd.user.services.tailscale-systray = {
+        unitConfig = {
+          Description = "Official Tailscale systray application for Linux";
+          After = [
+            "graphical-session.target"
+          ];
+          PartOf = [ "graphical-session.target" ];
+        };
+        wantedBy = [ "graphical-session.target" ];
+        serviceConfig.ExecStart = "${lib.getExe config.services.tailscale.package} systray";
+      };
 
       # OpenGL
       hardware.graphics.enable = true;
