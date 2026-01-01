@@ -10,6 +10,7 @@ let
   cfg = config.custom.desktop.wm;
 
   inherit (self.inputs) wrappers;
+  userName = "arnau";
 
   desktopPackages = with pkgs; [
     (wrappers.wrapperModules.foot.apply {
@@ -513,7 +514,10 @@ in
 
     # silverbullet socket
     systemd.user.sockets.ssh-tunnel-proxy = {
-      unitConfig.Description = "Socket-activation for SSH-tunnel";
+      unitConfig = {
+        Description = "Socket-activation for SSH-tunnel";
+        ConditionUser = userName;
+      };
       socketConfig.ListenStream = [
         "127.0.0.1:3000"
         "[::1]:3000"
@@ -533,6 +537,7 @@ in
             ## Stop-when-idle is controlled by `--exit-idle-time=` in proxy.service
             #  (from `man systemd-socket-proxyd`)
             StopWhenUnneeded = true;
+            ConditionUser = userName;
           };
           serviceConfig = {
             Type = "notify";
@@ -547,6 +552,7 @@ in
         ssh-tunnel-proxy = {
           unitConfig = {
             Description = "Socket-activation proxy for SSH tunnel";
+            ConditionUser = userName;
             ## Stop also when stopped listening for socket-activation.
             ## Stop also when ssh-tunnel stops/breaks
             #  (otherwise, could not restart).
