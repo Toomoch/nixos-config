@@ -145,6 +145,7 @@ in
         hyprland.enable = false;
         niri.enable = true;
       };
+      boot.extraModprobeConfig = ''options hid_apple swap_opt_cmd=1'';
 
       custom.dev.enable = true;
       custom.vm.libvirtd.enable = true;
