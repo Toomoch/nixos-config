@@ -33,7 +33,6 @@ in
       niri.enable = true;
     };
     desktop.enable = true;
-    dev.enable = true;
   };
 
   programs.git.lfs.enable = true;

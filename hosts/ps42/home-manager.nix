@@ -27,7 +27,6 @@ in
       niri.enable = true;
     };
     desktop.enable = true;
-    dev.enable = true;
   };
   home.packages = [
     pkgs.discord

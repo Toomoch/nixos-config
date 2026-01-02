@@ -164,6 +164,10 @@ in
       grep = "grep --color=auto";
       vimdev = "${self.packages.${pkgs.stdenv.hostPlatform.system}.nvim-mnw.devMode}/bin/nvim";
     };
+    environment.sessionVariables = {
+      UV_PYTHON_DOWNLOADS = "never";
+      UV_NO_MANAGED_PYTHON = "1";
+    };
 
   };
 }
