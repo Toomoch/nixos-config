@@ -136,32 +136,6 @@ in
     # inherit shellAliases;
   };
 
-  # programs.readline = {
-  #   enable = true;
-  #   variables = {
-  #     editing-mode = "vi";
-  #     show-mode-in-prompt = "on";
-  #     vi-cmd-mode-string = ''\1\e[34;1m\2[N] \1\e[0m\2'';
-  #     vi-ins-mode-string = ''\1\e[32;1m\2[I] \1\e[0m\2'';
-  #     keyseq-timeout = "50";
-  #   };
-  # };
-
-  programs.zsh = {
-    enable = false;
-    enableCompletion = true;
-    autosuggestion.enable = true;
-    syntaxHighlighting.enable = true;
-    # inherit shellAliases;
-    initExtraFirst = ''
-      zstyle ':completion:*' menu select
-      zstyle ':completion::*' menu yes select
-      zstyle ':completion::complete:*' use-cache 1
-      zmodload zsh/complist
-      _comp_options+=(globdots)		# Include hidden files.
-    '';
-  };
-
   programs.ssh = {
     enable = true;
     enableDefaultConfig = false;

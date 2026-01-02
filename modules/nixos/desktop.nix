@@ -65,14 +65,43 @@ in
       #   QT_STYLE_OVERRIDE = "adwaita-dark";
       # };
 
-      environment.systemPackages = with pkgs; [
-        vulkan-tools
-        mesa-demos
-        libva-utils
-        yt-dlp
-        xdg-utils
-        lm_sensors
-      ];
+      environment.systemPackages =
+        with pkgs;
+        [
+          vulkan-tools
+          mesa-demos
+          libva-utils
+          yt-dlp
+          xdg-utils
+          lm_sensors
+        ]
+        ++ [
+          pkgs.adw-gtk3
+          pkgs.papirus-icon-theme
+          pkgs.adwaita-icon-theme
+        ];
+
+      environment.etc =
+        let
+          themeAttr = {
+            Settings = {
+              gtk-cursor-theme-name = "Adwaita";
+              gtk-font-name = "sans 11";
+              gtk-icon-theme-name = "Papirus-Dark";
+              gtk-theme-name = "adw-gtk3-dark";
+            };
+          };
+        in
+        {
+          "xdg/gtk-2.0/gtkrc".text = ''
+            gtk-cursor-theme-name = "Adwaita"
+            gtk-font-name = "sans 11"
+            gtk-icon-theme-name = "Papirus-Dark"
+            gtk-theme-name = "adw-gtk3-dark
+          '';
+          "xdg/gtk-3.0/settings.ini".text = lib.generators.toINI { } themeAttr;
+          "xdg/gtk-4.0/settings.ini".text = lib.generators.toINI { } themeAttr;
+        };
 
       programs.localsend.enable = true;
 
@@ -92,9 +121,7 @@ in
       };
 
       # Tailscale
-      services.tailscale = {
-        enable = true;
-      };
+      services.tailscale.enable = true;
       # tailscale remembers the last state
       systemd.services.tailscaled.preStop = ''
         ${config.services.tailscale.package}/bin/tailscale down
