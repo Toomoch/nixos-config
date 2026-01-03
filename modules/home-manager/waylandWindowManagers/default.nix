@@ -6,7 +6,6 @@
     ./river.nix
     # ./sway.nix
     ./scripts.nix
-    ./niri.nix
   ];
 
 }

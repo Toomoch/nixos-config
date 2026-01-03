@@ -13,6 +13,7 @@ in
     ./waylandWindowManagers.nix
     ./deployment.nix
     ./dev.nix
+    ./to-upstream
   ];
   custom.common.enable = lib.mkDefault true;
   custom.secrets.enable = lib.mkDefault true;

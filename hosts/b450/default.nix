@@ -2,9 +2,13 @@
   config,
   pkgs,
   lib,
-  sops-nix,
+  self,
   ...
 }:
+let
+  DP_ultrawide = "LG Electronics LG ULTRAWIDE 0x0003BECD";
+  inherit (self.inputs) wrappers;
+in
 {
   networking.hostName = "b450"; # Define your hostname.
 
@@ -72,6 +76,25 @@
   custom.common.wol.enable = true;
   # LTS Kernel
   #boot.kernelPackages = pkgs.linuxPackages_latest;
+
+  # set kanshi config
+  services.kanshi.package =
+    (
+      (import ../../modules/wrappers/kanshi.nix {
+        inherit lib;
+        wlib = wrappers.lib;
+      }).apply
+      {
+        inherit pkgs;
+        configFile.content = ''
+          profile desk_flat {
+            output "${DP_ultrawide}" enable mode 2560x1080@99.943Hz position 0,0 adaptive_sync off
+          }
+        '';
+      }
+    ).wrapper;
+
+  users.users.arnau.packages = [ pkgs.discord ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
