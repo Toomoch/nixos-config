@@ -106,7 +106,7 @@
         {
           host = "h81";
           branch = stable;
-          hm = true;
+          hm = false;
           privateConfigs = true;
         }
         {
