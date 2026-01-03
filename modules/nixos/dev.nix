@@ -167,7 +167,50 @@ in
     environment.sessionVariables = {
       UV_PYTHON_DOWNLOADS = "never";
       UV_NO_MANAGED_PYTHON = "1";
+      EDITOR = "nvim";
+      MANPAGER = "nvim +Man!";
     };
+    programs.ssh =
+      let
+        isValidHost = name: hostConfig: (hostConfig.config.custom.deployment.enable or false);
+
+        mkHostBlock =
+          name: hostConfig:
+          let
+            deploy = hostConfig.config.custom.deployment;
+          in
+          ''
+            Host ${name}
+              Hostname ${deploy.hostname}
+              User ${deploy.user}
+              Port ${toString deploy.port}
+              ForwardAgent yes
+          '';
+
+        validHosts = lib.filterAttrs isValidHost self.nixosConfigurations;
+
+        dynamicHostConfig = lib.concatStringsSep "\n" (lib.mapAttrsToList mkHostBlock validHosts);
+
+        globalConfig = ''
+          Host *
+            SetEnv TERM="xterm-256color"
+            AddKeysToAgent yes
+            Compression no
+            ForwardAgent no
+            HashKnownHosts no
+            ServerAliveCountMax 3
+            ServerAliveInterval 0
+            UserKnownHostsFile ~/.ssh/known_hosts
+        '';
+      in
+      {
+
+        extraConfig = ''
+          ${dynamicHostConfig}
+
+          ${globalConfig}
+        '';
+      };
 
   };
 }

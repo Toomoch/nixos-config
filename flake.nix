@@ -112,7 +112,7 @@
         {
           host = "b450";
           branch = stable;
-          hm = true;
+          hm = false;
           privateConfigs = true;
         }
         {

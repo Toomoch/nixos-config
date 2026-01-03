@@ -15,9 +15,7 @@
       swayosd
     ];
 
-    services.swaync.enable = true;
 
-    services.blueman-applet.enable = true;
     services.wpaperd = {
       enable = false;
       settings.default = {

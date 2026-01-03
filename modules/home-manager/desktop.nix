@@ -13,13 +13,7 @@
     home.packages = with pkgs; [
     ];
 
-    xdg = {
-      enable = true;
-      userDirs = {
-        enable = true;
-        createDirectories = true;
-      };
-    };
+
 
     # home.pointerCursor = {
     #   name = "Adwaita";
