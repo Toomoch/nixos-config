@@ -100,7 +100,7 @@
         {
           host = "ps42";
           branch = stable;
-          hm = true;
+          hm = false;
           privateConfigs = true;
         }
         {

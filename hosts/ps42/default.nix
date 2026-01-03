@@ -2,6 +2,7 @@
   config,
   pkgs,
   lib,
+  self,
   ...
 }:
 let
@@ -12,6 +13,7 @@ let
     export __VK_LAYER_NV_optimus=NVIDIA_only
     exec "$@"
   '';
+  inherit (self.inputs) wrappers;
 in
 {
   imports = [ ./hardware-configuration.nix ];
@@ -116,12 +118,6 @@ in
 
       virtualisation.waydroid.enable = false;
 
-      home-manager.users.arnau =
-        { pkgs, ... }:
-        {
-          imports = [ ./home-manager.nix ];
-        };
-
       # LTS Kernel
       #boot.kernelPackages = pkgs.linuxPackages_latest;
 
@@ -138,6 +134,50 @@ in
       custom.desktop.blacklistnvidia.enable = true;
       custom.desktop.enable = true;
 
+      # set kanshi config
+      services.kanshi.package =
+        let
+          internal_name = "Chimei Innolux Corporation 0x14D5 Unknown";
+          home_name = "Samsung Electric Company SyncMaster H1AK500000";
+          ultrawide_hdmi_name = "LG Electronics LG ULTRAWIDE 0x0003BECD";
+          lg_22inch_name = "LG Electronics 2D FHD LG TV 0x01010101";
+        in
+        (
+          (import ../../modules/wrappers/kanshi.nix {
+            inherit lib;
+            wlib = wrappers.lib;
+          }).apply
+          {
+            inherit pkgs;
+            configFile.content = ''
+              profile laptop {
+                output "${internal_name}" enable scale 1.000000
+              }
+
+              profile desk_lid_down {
+                output "${ultrawide_hdmi_name}" enable mode 2560x1080@100Hz position 0,0 adaptive_sync on
+                output "${internal_name}" disable
+              }
+
+              profile home {
+                output "${home_name}" enable position 280,0
+                output "${internal_name}" enable position 0,768
+              }
+
+              profile home2 {
+                output "${lg_22inch_name}" enable position 0,0
+                output "${internal_name}" enable position 0,1080
+              }
+
+              profile desk_lid_down_2 {
+                output "Ancor Communications Inc ASUS VP228 J7LMTF119528" enable position 0,0
+                output "${internal_name}" disable
+              }
+            '';
+          }
+        ).wrapper;
+
+      users.users.arnau.packages = [ pkgs.discord ];
       custom.desktop.wm = {
         enable = true;
         greeter = "regreet";
