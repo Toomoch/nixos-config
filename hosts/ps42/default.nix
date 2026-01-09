@@ -32,6 +32,7 @@ in
               kdePackages.kpat
               kdePackages.kio-gdrive
               x2goclient
+              gimp
             ];
             i18n.defaultLocale = lib.mkDefault "ca_ES.UTF-8";
           };
