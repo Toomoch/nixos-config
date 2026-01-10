@@ -142,7 +142,7 @@
         {
           host = "smdltp451";
           branch = stable;
-          hm = true;
+          hm = false;
           privateConfigs = true;
         }
         {

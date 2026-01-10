@@ -3,8 +3,12 @@
   pkgs,
   lib,
   private,
+  self,
   ...
 }:
+let
+  inherit (self.inputs) wrappers;
+in
 {
   imports = [
     ./hardware-configuration.nix
@@ -49,22 +53,49 @@
 
   zramSwap.enable = true;
 
-  #nfs mount
-  environment.systemPackages = with pkgs; [
-    nfs-utils
-    vscode.fhs
-    openssl
-  ];
-
   users.users.arnau.home = "/home/avalls";
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
-  home-manager.users.arnau =
-    { pkgs, ... }:
-    {
-      imports = [ ./home-manager.nix ];
-    };
+  users.users.arnau.packages = with pkgs; [
+    glab
+    freerdp
+    cmake
+    pandoc
+    bind
+    tigervnc
+    vscode.fhs
+  ];
+
+  services.kanshi.package =
+    let
+
+      internal_name = "Samsung Display Corp. 0x417B Unknown";
+      workplace_name = "ASUSTek COMPUTER INC VG34VQEL1A S4LMDW002954";
+    in
+    (
+      (import ../../modules/wrappers/kanshi.nix {
+        inherit lib;
+        wlib = wrappers.lib;
+      }).apply
+      {
+        inherit pkgs;
+        configFile.content = ''
+          profile laptop {
+            output "${internal_name}" enable scale 2.000000
+          }
+
+          profile workspace {
+            output "${workplace_name}" enable mode 3440x1440@75Hz position 1440,0 scale 1.25
+            output "${internal_name}" enable position 0,540 scale 2.0
+            exec niri msg action move-workspace-to-monitor --reference "" "${internal_name}"
+            exec niri msg action move-workspace-to-monitor --reference "" "${workplace_name}"
+            exec niri msg action move-workspace-to-monitor --reference "" "${workplace_name}"
+          }
+
+        '';
+      }
+    ).wrapper;
 
   system.stateVersion = "24.05";
 }
