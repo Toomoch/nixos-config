@@ -244,47 +244,6 @@
         "type": "github"
       }
     },
-    "home-manager-stable": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs-stable"
-        ]
-      },
-      "locked": {
-        "lastModified": 1764866045,
-        "narHash": "sha256-0GsEtXV9OquDQ1VclQfP16cU5VZh7NEVIOjSH4UaJuM=",
-        "owner": "nix-community",
-        "repo": "home-manager",
-        "rev": "f63d0fe9d81d36e5fc95497217a72e02b8b7bcab",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-community",
-        "ref": "release-25.11",
-        "repo": "home-manager",
-        "type": "github"
-      }
-    },
-    "home-manager_2": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1764998300,
-        "narHash": "sha256-fZatn/KLfHLDXnF0wy7JxXqGaZmGDTVufT4o/AOlj44=",
-        "owner": "nix-community",
-        "repo": "home-manager",
-        "rev": "27a6182347ccae90a88231ae0dc5dfa7d15815bb",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-community",
-        "repo": "home-manager",
-        "type": "github"
-      }
-    },
     "mnw": {
       "locked": {
         "lastModified": 1764066817,
@@ -406,8 +365,6 @@
         "deploy-rs": "deploy-rs",
         "disko": "disko",
         "disko-stable": "disko-stable",
-        "home-manager": "home-manager_2",
-        "home-manager-stable": "home-manager-stable",
         "mnw": "mnw",
         "nix-minecraft": "nix-minecraft",
         "nixpkgs": "nixpkgs",

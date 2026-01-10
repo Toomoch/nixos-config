@@ -7,16 +7,6 @@
     nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.xz";
     nixpkgs-stable.url = "https://channels.nixos.org/nixos-25.11/nixexprs.tar.xz";
 
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    home-manager-stable = {
-      url = "github:nix-community/home-manager/release-25.11";
-      inputs.nixpkgs.follows = "nixpkgs-stable";
-    };
-
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -58,9 +48,7 @@
     {
       self,
       nixpkgs,
-      home-manager,
       nixpkgs-stable,
-      home-manager-stable,
       deploy-rs,
       disko-stable,
       disko,
@@ -78,14 +66,12 @@
 
       stable = {
         nixpkgs = nixpkgs-stable;
-        home-manager = home-manager-stable;
         disko = disko-stable;
         agenix = agenix;
       };
 
       unstable = {
         nixpkgs = nixpkgs;
-        home-manager = home-manager;
         disko = disko;
         agenix = agenix;
       };
@@ -94,61 +80,51 @@
         {
           host = "oracle1";
           branch = stable;
-          hm = false;
           privateConfigs = true;
         }
         {
           host = "ps42";
           branch = stable;
-          hm = false;
           privateConfigs = true;
         }
         {
           host = "h81";
           branch = stable;
-          hm = false;
           privateConfigs = true;
         }
         {
           host = "b450";
           branch = stable;
-          hm = false;
           privateConfigs = true;
         }
         {
           host = "rpi3";
           branch = stable;
-          hm = false;
           privateConfigs = true;
         }
         {
           host = "ampere";
           branch = stable;
-          hm = false;
           privateConfigs = true;
         }
         {
           host = "potato";
           branch = stable;
-          hm = false;
           privateConfigs = true;
         }
         {
           host = "x550";
           branch = stable;
-          hm = false;
           privateConfigs = true;
         }
         {
           host = "smdltp451";
           branch = stable;
-          hm = false;
           privateConfigs = true;
         }
         {
           host = "vm";
           branch = stable;
-          hm = false;
         }
       ];
 
@@ -168,18 +144,7 @@
       # do not use import keyword for pointing to modules, use the path
       nixosModules.common = ./modules/nixos;
       nixosModules.private = private + "/modules/nixos";
-      homeModules.common = ./modules/home-manager;
       overlays = import ./overlays;
-
-      # homeConfigurations = {
-      #   "arnau" = home-manager.lib.homeManagerConfiguration {
-      #     pkgs = import nixpkgs { system = "x86_64-linux"; };
-      #     modules = [
-      #       ./home
-      #       ./home/arnau.nix
-      #     ];
-      #   };
-      # };
 
       nixosConfigurations =
         let
@@ -200,7 +165,6 @@
             {
               host,
               branch,
-              hm,
               privateConfigs ? false,
               ...
             }:
@@ -220,16 +184,6 @@
                   inherit specialArgs;
                   modules =
                     defaultModules host branch
-                    ++ branch.nixpkgs.lib.optionals hm [
-                      branch.home-manager.nixosModules.home-manager
-                      {
-                        home-manager = {
-                          useGlobalPkgs = true;
-                          extraSpecialArgs = specialArgs;
-                          users.arnau.imports = [ self.homeModules.common ];
-                        };
-                      }
-                    ]
                     ++ branch.nixpkgs.lib.optional privateConfigs (private + "/hosts/${host}");
                   # Include private host config
                 };
