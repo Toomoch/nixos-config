@@ -76,25 +76,6 @@ in
     keyProviders = [ "agenix-rekey" ]; # could also be ["agenix-rekey"] or ["acl" "agenix-rekey"]
   };
 
-  # Pi specific stuff
-  #boot = {
-  #  kernelParams = [ "cma=4M" ];
-  #  kernelPackages = pkgs.linuxPackages_rpi3;
-  #};
-  #hardware.deviceTree = {
-  #  filter = "*2837-rpi-3-b*";
-  #  overlays = [
-  #    { name = "sdoverclock"; dtsFile = ./sdhost-overclock.dts; }
-  #  ];
-  #};
-  #nixpkgs.overlays = [
-  #  #dt_ao_overlay
-  #  (final: super: {
-  #    makeModulesClosure = x:
-  #      super.makeModulesClosure (x // { allowMissing = true; });
-  #  })
-  #];
-
   # Disable stub resolver to not conflict with coredns
   services.resolved.extraConfig = ''
     DNSStubListener=no
