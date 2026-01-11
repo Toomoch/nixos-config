@@ -25,11 +25,20 @@
     });
     home-assistant-custom-components.tuya_local =
       prev.home-assistant-custom-components.tuya_local.overrideAttrs
-        (previousAttrs: {
-          postInstall = (previousAttrs.postInstall or "") + ''
-            install -Dm444 ${./airmart.yaml} $out/custom_components/tuya_local/devices/airmart.yaml
-          '';
-        });
+        (
+          finalAttrs: previousAttrs: rec {
+            version = "2025.12.3";
+            src = final.fetchFromGitHub {
+              inherit (previousAttrs.src) owner repo;
+              tag = version;
+              hash = "sha256-KKBon2SC7rW7Vgr/8r77mRvb+ii/ZnuJLHW9DQoqN5o=";
+            };
+
+            # postInstall = (previousAttrs.postInstall or "") + ''
+            #   install -Dm444 ${./airmart.yaml} $out/custom_components/tuya_local/devices/airmart.yaml
+            # '';
+          }
+        );
   };
 
 }

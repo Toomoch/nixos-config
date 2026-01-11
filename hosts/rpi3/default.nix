@@ -17,6 +17,7 @@ in
     (modulesPath + "/installer/sd-card/sd-image-aarch64.nix")
     # Minimal stuff
     (modulesPath + "/profiles/minimal.nix")
+    ./hass.nix
   ];
 
   networking.hostName = "rpi3"; # Define your hostname.
@@ -85,6 +86,7 @@ in
     enable = true;
   };
   networking.firewall.allowedUDPPorts = [ 53 ];
+  networking.firewall.allowedTCPPorts = [ 53 ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
