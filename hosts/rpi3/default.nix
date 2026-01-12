@@ -79,10 +79,7 @@ in
 
   # Disable stub resolver to not conflict with coredns
   services.resolved.enable = false;
-  networking.nameservers = [
-    "127.0.0.1"
-    "::1"
-  ];
+  networking.resolvconf.useLocalResolver = true;
 
   services.coredns.enable = true;
   networking.firewall.allowedUDPPorts = [ 53 ];
