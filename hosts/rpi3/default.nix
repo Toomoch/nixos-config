@@ -78,13 +78,13 @@ in
   };
 
   # Disable stub resolver to not conflict with coredns
-  services.resolved.extraConfig = ''
-    DNSStubListener=no
-  '';
+  services.resolved.enable = false;
+  networking.nameservers = [
+    "127.0.0.1"
+    "::1"
+  ];
 
-  services.coredns = {
-    enable = true;
-  };
+  services.coredns.enable = true;
   networking.firewall.allowedUDPPorts = [ 53 ];
   networking.firewall.allowedTCPPorts = [ 53 ];
 
