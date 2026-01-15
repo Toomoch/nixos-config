@@ -103,6 +103,7 @@ let
         configFile.content = ''
           timeout ${toString (15 * 60)} '${lib.getExe pkgs.swaylock} -fF'
           before-sleep '${lib.getExe pkgs.swaylock} -fF'
+          lock '${lib.getExe pkgs.swaylock} -fF'
         '';
       }
     ).wrapper;
@@ -134,11 +135,11 @@ let
       "  Suspend")
               systemctl suspend
               ;;
-      "  Log Out")
-              ${lib.getExe pkgs.niri} msg action quit
+      "  Log out")
+              loginctl terminate-session $XDG_SESSION_ID
               ;;
       "  Lock")
-              waylock
+              loginctl lock-session
               ;;
       "  Reboot to UEFI")
               systemctl reboot --firmware-setup
@@ -489,6 +490,7 @@ in
     security.pam.services.gtklock = { };
     security.pam.services.hyprlock = { };
     security.pam.services.waylock = { };
+    security.pam.services.swaylock = { };
 
     services.displayManager.cosmic-greeter.enable = cfg.greeter == "cosmic";
 
