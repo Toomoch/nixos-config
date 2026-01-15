@@ -136,7 +136,7 @@ let
               systemctl suspend
               ;;
       "  Log out")
-              loginctl terminate-session $XDG_SESSION_ID
+              loginctl terminate-session "$XDG_SESSION_ID"
               ;;
       "  Lock")
               loginctl lock-session
