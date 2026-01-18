@@ -47,7 +47,7 @@ vim.diagnostic.config({ virtual_text = true })
 
 -- Set up keybinds {{{
 do
-  local __nixvim_binds = {
+  local binds = {
     {
       action = function()
         require("fzf-lua").grep_curbuf()
@@ -96,7 +96,7 @@ do
     { action = "<C-u>zz",                   key = "<C-u>",      mode = "" },
     { action = ":Oil<cr>",                  key = "-",          mode = "" },
   }
-  for i, map in ipairs(__nixvim_binds) do
+  for i, map in ipairs(binds) do
     vim.keymap.set(map.mode, map.key, map.action, map.options)
   end
 end
