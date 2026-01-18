@@ -8,7 +8,6 @@
     vlc
     tenacity
     kdePackages.ark
-    gnome-boxes
     kdePackages.skanpage
     kdePackages.krfb
     kdePackages.kpat
@@ -22,6 +21,7 @@
     kdePackages.spectacle
     kdePackages.elisa
     kdePackages.dragon
+    virt-manager
   ];
 
   # aliza ms
