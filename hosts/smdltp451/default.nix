@@ -88,9 +88,9 @@ in
           profile workspace {
             output "${workplace_name}" enable mode 3440x1440@75Hz position 1440,0 scale 1.25
             output "${internal_name}" enable position 0,540 scale 2.0
-            exec niri msg action move-workspace-to-monitor --reference "" "${internal_name}"
-            exec niri msg action move-workspace-to-monitor --reference "" "${workplace_name}"
-            exec niri msg action move-workspace-to-monitor --reference "" "${workplace_name}"
+            exec ${lib.getExe config.services.niri.package} msg action move-workspace-to-monitor --reference "" "${internal_name}"
+            exec ${lib.getExe config.services.niri.package} msg action move-workspace-to-monitor --reference "" "${workplace_name}"
+            exec ${lib.getExe config.services.niri.package} msg action move-workspace-to-monitor --reference "" "${workplace_name}"
           }
 
         '';
