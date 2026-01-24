@@ -14,6 +14,7 @@ in
     ./deployment.nix
     ./dev.nix
     ./to-upstream
+    ./hetzner.nix
   ];
   custom.common.enable = lib.mkDefault true;
   custom.secrets.enable = lib.mkDefault true;
