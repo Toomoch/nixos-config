@@ -113,6 +113,11 @@
           privateConfigs = true;
         }
         {
+          host = "moniato";
+          branch = stable;
+          privateConfigs = true;
+        }
+        {
           host = "x550";
           branch = stable;
           privateConfigs = true;
