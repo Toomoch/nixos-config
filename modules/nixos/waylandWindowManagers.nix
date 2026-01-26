@@ -155,12 +155,12 @@ let
   niri-wrapped =
     (wrappers.wrapperModules.niri.apply {
       inherit pkgs;
-      "config.kdl".path = ./niri.kdl;
+      "config.kdl".content = builtins.readFile ./niri.kdl;
     }).wrapper;
   waybar-wrapped =
     (wrappers.wrapperModules.waybar.apply {
       inherit pkgs;
-      "style.css".path = ./waybar-style.css;
+      "style.css".content = builtins.readFile ./waybar-style.css;
       settings = {
         layer = "top";
         height = 30;
