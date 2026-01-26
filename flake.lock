@@ -480,11 +480,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1767440749,
-        "narHash": "sha256-HMPTjLM3vg5iLX/2ssqFIhAjoRLQJ6PHNqjzuyjj+No=",
+        "lastModified": 1768814019,
+        "narHash": "sha256-o+iz2K8CGSIZQVATXJHhRmAbwoWG9t0VX/WqNr6e7Qk=",
         "owner": "lassulus",
         "repo": "wrappers",
-        "rev": "c10d90a8907b57a8c57c232562820a1352fa98d7",
+        "rev": "9691cc658ea97d956dbfdb3ed4edee0ccb797f6c",
         "type": "github"
       },
       "original": {
