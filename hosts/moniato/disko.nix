@@ -4,10 +4,15 @@
       root = {
         type = "disk";
         device = "/dev/sda";
-        imageSize = "6G";
+        imageSize = "10G";
         content = {
           type = "gpt";
           partitions = {
+            boot = {
+              size = "1M";
+              type = "EF02";
+              priority = 1;
+            };
             ESP = {
               size = "1G";
               type = "EF00";
@@ -19,7 +24,7 @@
               };
             };
             encryptedSwap = {
-              size = "2G";
+              size = "4G";
               content = {
                 type = "swap";
                 randomEncryption = true;
@@ -46,3 +51,4 @@
     };
   };
 }
+
