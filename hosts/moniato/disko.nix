@@ -30,8 +30,8 @@
               content = {
                 type = "luks";
                 name = "crypted";
-                # askPassword = true;
-                passwordFile = "/tmp/secret.key";
+                askPassword = true;
+                # passwordFile = "/tmp/secret.key";
                 settings.allowDiscards = true;
                 content = {
                   type = "filesystem";
