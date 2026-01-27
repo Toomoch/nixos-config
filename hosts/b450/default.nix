@@ -21,6 +21,7 @@ in
       "media.ffmpeg.vaapi.enabled" = true;
     };
   };
+  programs.wireshark.enable = true;
 
   services.tailscale = {
     enable = true;
