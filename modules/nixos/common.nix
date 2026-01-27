@@ -174,6 +174,7 @@ in
         maxretry = 5;
         bantime-increment.enable = true;
       };
+      networking.firewall.logRefusedConnections = false;
       # Harden SSH
       services.openssh = {
         settings = {
