@@ -21,6 +21,9 @@ do
   end
 end
 
+-- Enable exrc support
+vim.opt.exrc = true
+
 -- Theme
 require("kanagawa").setup({ background = { dark = "wave" } })
 vim.cmd.colorscheme("kanagawa")
