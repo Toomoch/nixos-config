@@ -66,6 +66,12 @@ in
     tigervnc
     vscode.fhs
   ];
+  programs.wireshark.enable = true;
+  users.users.arnau = {
+    extraGroups = [
+      "wireshark"
+    ];
+  };
 
   services.kanshi.package =
     let
