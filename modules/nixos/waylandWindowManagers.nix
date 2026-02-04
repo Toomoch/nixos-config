@@ -318,10 +318,10 @@ let
 in
 {
   options.custom.desktop.wm = {
-    enable = lib.mkEnableOption "Whether to enable the module";
-    sway.enable = lib.mkEnableOption "Whether to enable Sway and common desktop services";
-    niri.enable = lib.mkEnableOption "Whether to enable niri";
-    hyprland.enable = lib.mkEnableOption "Whether to enable Hyprland";
+    enable = lib.mkEnableOption "opinionated wms";
+    sway.enable = lib.mkEnableOption "Sway and common desktop services";
+    niri.enable = lib.mkEnableOption "niri";
+    hyprland.enable = lib.mkEnableOption "Hyprland";
 
     greeter = lib.mkOption {
       type = lib.types.nullOr (

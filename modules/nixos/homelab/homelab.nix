@@ -6,8 +6,8 @@ let
   cfg = config.custom.homelab;
 in {
   options.custom.homelab = {
-    enable = lib.mkEnableOption "Whether to enable homelab stuff";
-    enablevps = lib.mkEnableOption "Whether to enable VPS homelab stuff";
+    enable = lib.mkEnableOption "homelab stuff";
+    enablevps = lib.mkEnableOption "VPS homelab stuff";
     serviceDataDir = lib.mkOption {
       type = lib.types.path;
       default = "/var/lib";

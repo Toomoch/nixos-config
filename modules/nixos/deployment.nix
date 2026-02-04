@@ -11,7 +11,7 @@ let
 in
 {
   options.custom.deployment = {
-    enable = lib.mkEnableOption "Whether to enable the module for host metadata";
+    enable = lib.mkEnableOption "module for host metadata";
 
     hostname = lib.mkOption {
       type = lib.types.str;

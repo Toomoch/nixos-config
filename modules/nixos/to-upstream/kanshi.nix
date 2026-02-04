@@ -10,7 +10,7 @@ let
 in
 {
   options.services.kanshi = {
-    enable = lib.mkEnableOption "Whether to enable kanshi, a Wayland daemon that automatically configures outputs";
+    enable = lib.mkEnableOption "kanshi, a Wayland daemon that automatically configures outputs";
     package = lib.mkPackageOption pkgs "kanshi" { };
     systemd.target = lib.mkOption {
       type = lib.types.str;

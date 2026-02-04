@@ -17,12 +17,12 @@ let
 in
 {
   options.custom.desktop = {
-    enable = lib.mkEnableOption "Whether to enable common stuff for desktop systems";
-    arctis9.enable = lib.mkEnableOption "Whether to enable Arctis9 support";
-    flatpak.enable = lib.mkEnableOption "Whether to enable Flatpak support";
-    gaming.enable = lib.mkEnableOption "Whether to enable gaming stuff";
-    gaming.g29.enable = lib.mkEnableOption "Whether to enable G29 wheel support";
-    matlab.enable = lib.mkEnableOption "Whether to enable MATLAB";
+    enable = lib.mkEnableOption "common stuff for desktop systems";
+    arctis9.enable = lib.mkEnableOption "Arctis9 support";
+    flatpak.enable = lib.mkEnableOption "Flatpak support";
+    gaming.enable = lib.mkEnableOption "gaming stuff";
+    gaming.g29.enable = lib.mkEnableOption "G29 wheel support";
+    matlab.enable = lib.mkEnableOption "MATLAB";
     blacklistnvidia.enable = lib.mkEnableOption "Whether to disable and hide all detected Nvidia GPUs";
   };
 

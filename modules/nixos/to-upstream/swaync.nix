@@ -17,7 +17,7 @@ in
 {
 
   options.services.swaync = {
-    enable = lib.mkEnableOption "Whether to enable Swaync notification daemon";
+    enable = lib.mkEnableOption "Swaync notification daemon";
 
     package = lib.mkPackageOption pkgs "swaynotificationcenter" { };
 

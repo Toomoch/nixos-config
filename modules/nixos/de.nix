@@ -4,9 +4,9 @@ let
 in
 {
   options.custom.desktop = {
-    gnome.enable = lib.mkEnableOption "Whether to enable Gnome with GDM";
-    kde.enable = lib.mkEnableOption "Whether to enable KDE with SDDM";
-    cosmic.enable = lib.mkEnableOption "Whether to enable cosmic with SDDM";
+    gnome.enable = lib.mkEnableOption "Gnome with GDM";
+    kde.enable = lib.mkEnableOption "KDE with SDDM";
+    cosmic.enable = lib.mkEnableOption "cosmic with SDDM";
   };
 
   config = lib.mkMerge [

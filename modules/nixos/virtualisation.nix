@@ -9,9 +9,9 @@ let
 in
 {
   options.custom.vm = {
-    podman.enable = lib.mkEnableOption "Wheter to enable podman";
-    docker.enable = lib.mkEnableOption "Wheter to enable Docker";
-    libvirtd.enable = lib.mkEnableOption "Whether to enable libvirtd";
+    podman.enable = lib.mkEnableOption "podman";
+    docker.enable = lib.mkEnableOption "Docker";
+    libvirtd.enable = lib.mkEnableOption "libvirtd";
   };
 
   config = {

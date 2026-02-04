@@ -8,7 +8,7 @@ let
 in {
 
   options.custom.nextcloud.enable =
-    lib.mkEnableOption "Whether to enable Nextcloud";
+    lib.mkEnableOption "Nextcloud";
 
   config = lib.mkIf cfg.enable {
     systemd.tmpfiles.rules = [

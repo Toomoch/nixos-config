@@ -23,9 +23,9 @@ let
 
 in {
   options.custom.smb = {
-    enable = lib.mkEnableOption "Whether to enable homelab stuff";
+    enable = lib.mkEnableOption "homelab stuff";
     userShares = {
-      enable = lib.mkEnableOption "Whether to enable homelab stuff";
+      enable = lib.mkEnableOption "user shares homelab stuff";
       baseDir = lib.mkOption {
         type = lib.types.path;
         default = null;

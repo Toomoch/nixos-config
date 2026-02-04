@@ -11,7 +11,7 @@ let
   hostname = "immich.${config.custom.homelab.primaryDomain}";
 in
 {
-  options.custom.immich.enable = lib.mkEnableOption "Whether to enable immich stuff";
+  options.custom.immich.enable = lib.mkEnableOption "immich stuff";
 
   config = lib.mkIf cfg.enable {
     services.immich = {

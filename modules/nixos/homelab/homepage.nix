@@ -2,7 +2,7 @@
 let cfg = config.custom.homepage-dashboard;
 in {
   options.custom.homepage-dashboard.enable =
-    lib.mkEnableOption "Whether to enable homepage";
+    lib.mkEnableOption "homepage";
 
   #imports = [ (import /${private}/system/homepage.nix { inherit secrets; }) ];
   config = lib.mkIf cfg.enable {

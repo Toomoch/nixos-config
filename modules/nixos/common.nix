@@ -12,8 +12,8 @@ let
 in
 {
   options.custom.common = {
-    enable = lib.mkEnableOption "Whether to enable common stuff";
-    cloud.enable = lib.mkEnableOption "Whether to enable minimal setup for cloud vms";
+    enable = lib.mkEnableOption "common stuff";
+    cloud.enable = lib.mkEnableOption "minimal setup for cloud vms";
     wol.enable = lib.mkEnableOption "Enable Wake On LAN via udev rules";
   };
 
