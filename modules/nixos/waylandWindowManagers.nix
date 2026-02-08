@@ -107,14 +107,18 @@ let
         '';
       }
     ).wrapper;
+  set-wallpaper = pkgs.writeShellApplication {
+    name = "set-wallpaper";
+    text = ''
+      ${lib.getExe pkgs.swaybg} -i ../../wallpapers/fuji.png -o "*" &
+    '';
+  };
   fuzzelPowerMenu = pkgs.writeShellApplication {
     name = "fuzzelpowermenu";
     runtimeInputs = [
       fuzzelWrapped
     ];
     text = ''
-      #!/usr/bin/env bash
-
       options="  Power Off
         Reboot
         Suspend
@@ -439,6 +443,7 @@ in
         nautilus
         file-roller
         fuzzelWrapped
+        set-wallpaper
       ]
       ++ desktopPackages
       ++ lib.optional (cfg.niri.enable) pkgs.xwayland-satellite;
@@ -595,7 +600,7 @@ in
             ];
           };
           serviceConfig = {
-            ExecStart = ''${pkgs.systemd}/lib/systemd/systemd-socket-proxyd --exit-idle-time=500s ''${XDG_RUNTIME_DIR}/ssh-tunnel-proxy'';
+            ExecStart = "${pkgs.systemd}/lib/systemd/systemd-socket-proxyd --exit-idle-time=500s \${XDG_RUNTIME_DIR}/ssh-tunnel-proxy";
           };
         };
       };
