@@ -110,7 +110,7 @@ let
   set-wallpaper = pkgs.writeShellApplication {
     name = "set-wallpaper";
     text = ''
-      ${lib.getExe pkgs.swaybg} -i ../../wallpapers/fuji.png -o "*" &
+      ${lib.getExe pkgs.swaybg} -i ${../../wallpapers/fuji.png} -o "*" &
     '';
   };
   fuzzelPowerMenu = pkgs.writeShellApplication {
